@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>BDG LOTTERY7 — Activity</title>
-    <!-- Font Awesome for Icons -->
+    <title>BDG LOTTERY7 — Rewards</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
     <style>
         /* ================= GLOBAL ================= */
@@ -13,81 +13,97 @@
         button { cursor: pointer; border: none; outline: none; background: transparent; }
 
         /* ================= NAVBAR ================= */
-        .navbar { position: sticky; top: 0; z-index: 100; background: #3F3F3F; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; height: 60px; }
-        .navbar-left { width: 40px; cursor: pointer; }
-        .navbar-left i { font-size: 20px; color: #fff; }
-        .navbar-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; }
-        .navbar-right { width: 40px; text-align: right; cursor: pointer; }
-        .navbar-right img { width: 24px; height: 24px; }
+        .navbar { position: sticky; top: 0; z-index: 100; background: #1A1A1A; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; height: 60px; border-bottom: 1px solid #333; }
+        .navbar-left { width: 40px; cursor: pointer; color: #fff; }
+        .navbar-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
+        .navbar-right { width: 40px; text-align: right; cursor: pointer; display: flex; justify-content: flex-end; align-items: center; }
+        /* Service Icon Fix */
+        .navbar-right svg { width: 24px; height: 24px; fill: none; stroke: #fff; stroke-width: 2; }
 
         /* ================= CHECK-IN UI ================= */
         .check-box { padding: 20px 15px; }
-        .check-header { text-align: center; margin-bottom: 20px; }
-        .check-header h4 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #FAE59F; }
+        .check-header { text-align: center; margin-bottom: 25px; }
+        .check-header h4 { font-size: 22px; font-weight: 700; margin-bottom: 12px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .action-links { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
-        .action-links p { font-size: 13px; color: #a6a9ae; text-decoration: underline; cursor: pointer; }
-        .action-links p:active { color: #D9AC4F; }
+        .action-links { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+        .action-links p { font-size: 13px; color: #a6a9ae; cursor: pointer; border-bottom: 1px solid #a6a9ae; padding-bottom: 2px; transition: 0.2s; }
+        .action-links p:active { color: #FAE59F; border-color: #FAE59F; }
 
         /* 7 Days Grid */
         .list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        
         .item { 
-            background: #3F3F3F; 
-            border: 1px solid #555; 
-            border-radius: 10px; 
+            background: #2A2A2A; 
+            border: 1px solid #3F3F3F; 
+            border-radius: 12px; 
             padding: 15px 10px; 
             text-align: center; 
             position: relative;
             transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .item.action { cursor: pointer; }
-        .item.action:active { transform: scale(0.95); }
-        .item.disabled { opacity: 0.6; pointer-events: none; }
+        .item.action:active { transform: scale(0.95); border-color: #FAE59F; }
+        .item.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
         
-        .item .num { font-size: 18px; font-weight: 700; color: #FAE59F; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; }
-        .item .num span { font-size: 22px; }
-        .item .img { width: 40px; height: 40px; object-fit: contain; margin-bottom: 5px; }
-        .item .txt { font-size: 12px; color: #8f5206; background: #FAE59F; padding: 4px 8px; border-radius: 10px; font-weight: 600; display: inline-block; }
+        .item .num { font-size: 22px; font-weight: 800; color: #FAE59F; margin-bottom: 8px; display: flex; align-items: center; justify-content: center;}
+        
+        /* SVG Gift Icon */
+        .item .gift-icon { width: 45px; height: 45px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); }
+        
+        .item .txt { font-size: 12px; color: #8f5206; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); padding: 6px 12px; border-radius: 20px; font-weight: 700; display: inline-block; width: 100%; }
         
         /* If received */
-        .item.received { background: #1f1f1f; border-color: #333; }
+        .item.received { background: #1A1A1A; border-color: #2A2A2A; }
         .item.received .num { color: #666; }
-        .item.received .img { filter: grayscale(100%); opacity: 0.5; }
-        .item.received .txt { background: #444; color: #888; }
+        .item.received .gift-icon { filter: grayscale(100%); opacity: 0.5; }
+        .item.received .txt { background: #333; color: #888; }
 
-        /* Day 7 special */
-        .item:nth-child(7) { grid-column: span 3; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 20px; background: linear-gradient(90deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; }
-        .item:nth-child(7) .num { color: #8f5206; font-size: 24px; margin-bottom: 0; }
-        .item:nth-child(7) .num span { font-size: 30px; }
-        .item:nth-child(7) .img { width: 60px; height: 60px; margin: 0; }
-        .item:nth-child(7) .txt { background: #8f5206; color: #FAE59F; font-size: 14px; padding: 8px 15px; }
-        .item:nth-child(7).received { background: #333; color: #666; }
+        /* Day 7 Special */
+        .item:nth-child(7) { 
+            grid-column: span 3; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #C4933F 0%, #FAE59F 100%); 
+            border: none;
+            box-shadow: 0 6px 15px rgba(196, 147, 63, 0.4);
+        }
+        .item:nth-child(7) .num { color: #8f5206; font-size: 26px; margin-bottom: 0; }
+        .item:nth-child(7) .gift-icon { width: 60px; height: 60px; margin: 0 10px; }
+        .item:nth-child(7) .txt { background: #8f5206; color: #FAE59F; font-size: 14px; width: auto; padding: 8px 18px; }
+        
+        .item:nth-child(7).received { background: #1A1A1A; box-shadow: none; }
         .item:nth-child(7).received .num { color: #666; }
-        .item:nth-child(7).received .txt { background: #444; color: #888; }
+        .item:nth-child(7).received .txt { background: #333; color: #888; }
 
         /* ================= SUB-PAGES (Rules / Record) ================= */
         .sub-page { display: none; padding: 20px 15px; }
         .sub-page.active { display: block; }
 
         /* Rules Table */
-        .rule-table { width: 100%; margin-bottom: 20px; border-collapse: collapse; }
-        .rule-table th, .rule-table td { border: 1px solid #FAE59F; padding: 10px; text-align: center; font-size: 13px; }
-        .rule-table th { background: #FAE59F; color: #8f5206; font-weight: bold; }
-        .rule-table td { color: #fff; }
+        .rule-table { width: 100%; margin-bottom: 20px; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
+        .rule-table th, .rule-table td { border: 1px solid #333; padding: 12px 8px; text-align: center; font-size: 13px; }
+        .rule-table th { background: #2A2A2A; color: #FAE59F; font-weight: bold; }
+        .rule-table td { color: #fff; background: #1A1A1A; }
         
         .rule-notes { margin-top: 20px; }
-        .rule-notes .con { font-size: 13px; color: #a6a9ae; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px; }
-        .rule-notes .yuan { display: inline-block; width: 6px; height: 6px; background: #f3c300; border-radius: 50%; margin-top: 6px; flex: none; }
+        .rule-notes .con { font-size: 13px; color: #a6a9ae; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+        .rule-notes .yuan { display: inline-block; width: 6px; height: 6px; background: #FAE59F; border-radius: 50%; margin-top: 6px; flex: none; }
 
         /* Record List */
         .record-list { display: flex; flex-direction: column; gap: 10px; }
-        .record-item { background: #3F3F3F; border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .record-item { background: #2A2A2A; border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
         .record-item .left h4 { font-size: 15px; color: #fff; margin-bottom: 4px; }
         .record-item .left p { font-size: 12px; color: #a6a9ae; }
         .record-item .right { font-size: 16px; font-weight: bold; color: #6bbe58; }
         
-        .no-data { text-align: center; padding: 40px 0; color: #a6a9ae; font-size: 14px; }
-        .no-data img { width: 120px; opacity: 0.5; margin-bottom: 10px; }
+        .no-data { text-align: center; padding: 40px 0; color: #a6a9ae; font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px;}
+        .no-data i { font-size: 50px; color: #333; }
 
         /* ================= BOTTOM TAB BAR ================= */
         .bottom-tabbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: #1A1A1A; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid #333; }
@@ -100,7 +116,7 @@
         .tab-item.center-tab span { margin-top: -5px; }
 
         /* Toast */
-        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: #fff; padding: 12px 20px; border-radius: 8px; display: none; z-index: 9999; font-size: 14px; text-align: center; }
+        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); color: #fff; padding: 14px 24px; border-radius: 10px; display: none; z-index: 9999; font-size: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #333; }
     </style>
 </head>
 <body>
@@ -118,11 +134,12 @@
 <!-- NAVBAR -->
 <div class="navbar">
     <div class="navbar-left" id="navBackBtn">
-        <i class="fa-light fa-angle-left fa-xl"></i>
+        <i class="fa-solid fa-chevron-left"></i>
     </div>
     <div class="navbar-title" id="navTitle">Rewards</div>
     <div class="navbar-right" onclick="openService()">
-        <img src="./images/audio.webp" alt="Service">
+        <!-- SVG Service Icon Fix -->
+        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
     </div>
 </div>
 
@@ -139,44 +156,94 @@
     <div class="list" id="checkinList">
         <!-- Day 1 -->
         <div class="item action" data-day="1" onclick="claimBonus(1, 5)">
-            <div class="num">₹ <span>5</span></div>
-            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <div class="num">₹5</div>
+            <!-- Premium SVG Gift Box -->
+            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
+                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
+                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
+                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
+                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
+                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
+            </svg>
             <span class="txt">Get it now</span>
         </div>
         <!-- Day 2 -->
         <div class="item action" data-day="2" onclick="claimBonus(2, 10)">
-            <div class="num">₹ <span>10</span></div>
-            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <div class="num">₹10</div>
+            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
+                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
+                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
+                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
+                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
+                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
+            </svg>
             <span class="txt">Get it now</span>
         </div>
         <!-- Day 3 -->
         <div class="item action" data-day="3" onclick="claimBonus(3, 15)">
-            <div class="num">₹ <span>15</span></div>
-            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <div class="num">₹15</div>
+            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
+                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
+                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
+                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
+                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
+                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
+            </svg>
             <span class="txt">Get it now</span>
         </div>
         <!-- Day 4 -->
         <div class="item action" data-day="4" onclick="claimBonus(4, 20)">
-            <div class="num">₹ <span>20</span></div>
-            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <div class="num">₹20</div>
+            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
+                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
+                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
+                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
+                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
+                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
+            </svg>
             <span class="txt">Get it now</span>
         </div>
         <!-- Day 5 -->
         <div class="item action" data-day="5" onclick="claimBonus(5, 25)">
-            <div class="num">₹ <span>25</span></div>
-            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <div class="num">₹25</div>
+            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
+                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
+                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
+                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
+                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
+                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
+            </svg>
             <span class="txt">Get it now</span>
         </div>
         <!-- Day 6 -->
         <div class="item action" data-day="6" onclick="claimBonus(6, 30)">
-            <div class="num">₹ <span>30</span></div>
-            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <div class="num">₹30</div>
+            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
+                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
+                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
+                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
+                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
+                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
+            </svg>
             <span class="txt">Get it now</span>
         </div>
         <!-- Day 7 -->
         <div class="item action" data-day="7" onclick="claimBonus(7, 35)">
-            <div class="num">₹ <span>35</span></div>
-            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <div class="num">₹35</div>
+            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 18V56" stroke="#FFF" stroke-width="4" stroke-linecap="round"/>
+                <rect x="8" y="18" width="48" height="38" rx="4" fill="#8F5206"/>
+                <rect x="4" y="12" width="56" height="12" rx="4" fill="#6F3F02"/>
+                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#FFF"/>
+                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#FFF"/>
+                <rect x="28" y="12" width="8" height="44" fill="#FFF"/>
+            </svg>
             <span class="txt">Get it now</span>
         </div>
     </div>
@@ -214,7 +281,7 @@
 <div id="page-record" class="sub-page">
     <div class="record-list" id="recordList">
         <div class="no-data">
-            <img src="./images/empty-image-default.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4076/4076432.png'">
+            <i class="fa-light fa-folder-open"></i>
             <p>No Registration Profile Data</p>
         </div>
     </div>
@@ -395,9 +462,9 @@ window.handleBack = () => {
 };
 document.getElementById('navBackBtn').onclick = handleBack;
 
-// Customer Service
+// Customer Service (Redirect to Home to open modal)
 window.openService = () => {
-    window.location.href = 'home.html'; // Or open modal if you have it
+    window.location.href = 'home.html'; 
 };
 </script>
 
