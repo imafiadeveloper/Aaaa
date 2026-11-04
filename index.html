@@ -449,8 +449,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  onAuthStateChanged,
-  signOut
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore,
@@ -460,16 +459,15 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ================= FIREBASE CONFIG ================= */
+/* ================= FIREBASE CONFIG (NEW) ================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
-  authDomain: "airavattt.firebaseapp.com",
-  databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
-  projectId: "airavattt",
-  storageBucket: "airavattt.appspot.com",
-  messagingSenderId: "906559825335",
-  appId: "1:906559825335:web:0c11437318fbd2aec4b432",
-  measurementId: "G-S56VT2DJ9H"
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb",
+  measurementId: "G-VRYNMCS0EZ"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -524,7 +522,6 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
 /* ================= AUTH STATE ================= */
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    // already logged in — go home
     try {
       const snap = await getDoc(doc(db, "users", user.uid));
       if (snap.exists()) {
@@ -548,7 +545,6 @@ async function doLogin(mode) {
   if (!username) { showToast(isPhone ? 'Please enter phone number' : 'Please enter email'); return; }
   if (!pwd) { showToast('Please enter password'); return; }
 
-  // Firebase Auth needs email. For phone login, we use internal email
   let email;
   if (isPhone) {
     email = `${country.replace('+','')}${username}@bdg7.local`;
@@ -615,10 +611,8 @@ async function doRegister() {
 
   showLoader();
   try {
-    // Firebase Auth: create with real email (for email login + password reset)
     const cred = await createUserWithEmailAndPassword(auth, email, pwd);
 
-    // Save profile to Firestore
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       country, phone, name, email,
@@ -630,8 +624,10 @@ async function doRegister() {
     closeModal('modal-register');
     document.getElementById('emailInput').value = email;
     switchTab('email');
+    
   } catch (err) {
     hideLoader();
+    console.error("ERROR:", err);
     const code = err.code || '';
     if (code.includes('email-already-in-use')) {
       showToast('This email is already registered.');
@@ -639,10 +635,11 @@ async function doRegister() {
       showToast('Invalid email format.');
     } else if (code.includes('weak-password')) {
       showToast('Password too weak (min 6).');
+    } else if (code.includes('permission-denied')) {
+      showToast('Firestore rules error! Check rules.');
     } else {
-      showToast('Registration failed: ' + (err.message || 'Try again'));
+      showToast('Error: ' + err.message);
     }
-    console.error(err);
   }
 }
 window.doRegister = doRegister;
@@ -683,8 +680,6 @@ function openService() {
     const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
     if (s.phone) {
       document.getElementById('csPhone').value = s.phone;
-    } else if (auth.currentUser) {
-      // if logged in but session empty, still let them fill
     }
   } catch {}
   openModal('modal-service');
@@ -706,7 +701,6 @@ async function sendSupport() {
 
   const user = auth.currentUser;
 
-  // Save to Firestore (support collection) if logged in
   if (user) {
     try {
       const supportRef = doc(db, "support", `t_${Date.now()}_${user.uid.slice(0,6)}`);
@@ -721,7 +715,6 @@ async function sendSupport() {
     } catch (e) { console.warn('Firestore support save failed:', e); }
   }
 
-  // Send to Telegram
   const msg =
     `🔔 *BDG LOTTERY7 — Support Request*\n\n` +
     `📱 Phone: \`${phone}\`\n` +
