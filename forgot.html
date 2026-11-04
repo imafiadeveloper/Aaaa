@@ -31,7 +31,7 @@
                 </div>
                 <div class="navbar-title"> Forgot password</div>
                 <div class="navbar-right">
-                    <div class="c-row" onclick="location.href='forgot.html'">
+                    <div class="c-row">
                         <!-- Online Audio Icon -->
                         <img src="https://cdn-icons-png.flaticon.com/512/727/727245.png" class="audio">
                     </div>
@@ -103,7 +103,7 @@
         function alertMess(text) {
             if ($('.alert-toast .msg').length === 0) {
                 $('.alert-toast').append(`<div class="msg"><div class="msg-content" style="display:block; color:white; background:rgba(0,0,0,0.8); padding:10px; border-radius:5px; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:99999; font-size:14px;">${text}</div></div>`);
-                setTimeout(() => { $('.msg').fadeOut(); setTimeout(() => $('.alert-toast .msg').remove(), 100); }, 2500);
+                setTimeout(() => { $('.msg').fadeOut(); setTimeout(() => { $('.alert-toast .msg').remove(); }, 100); }, 2500);
             }
         }
 
