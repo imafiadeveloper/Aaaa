@@ -1,63 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BDG LOTTERY7 - Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #292929; color: white; font-family: Arial, sans-serif; text-align: center; padding: 50px 20px; margin: 0; }
-        .card { background: #3F3F3F; padding: 30px 20px; border-radius: 12px; max-width: 400px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        h1 { color: #D9AC4F; margin-bottom: 20px; }
-        h2 { color: #fff; font-size: 18px; font-weight: normal; }
-        .balance-box { background: #292929; padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .balance { color: #D9AC4F; font-size: 32px; font-weight: bold; }
-        button { padding: 12px 20px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #292929; color: #fff; height: 100vh; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; background: #292929; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Navbar */
+        .navbar { background: #3F3F3F; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .navbar img { height: 35px; }
+        .logout-btn { background: #dc3545; color: white; padding: 8px 15px; border: none; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; }
+        
+        /* Main Area */
+        .main-content { padding: 30px 20px; flex: 1; }
+        
+        /* Wallet Card */
+        .wallet-card { background: linear-gradient(135deg, #C4933F 0%, #FAE59F 100%); border-radius: 20px; padding: 30px; color: #8f5206; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(196, 147, 63, 0.3); }
+        .wallet-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+        .wallet-card h1 { font-size: 36px; font-weight: 700; }
+        .wallet-card p { margin-top: 15px; font-size: 13px; background: rgba(255,255,255,0.3); display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+        
+        /* Options Grid */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-item { background: #3F3F3F; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #444; }
+        .option-item:hover { border-color: #C4933F; transform: translateY(-2px); }
+        .option-item img { width: 40px; margin-bottom: 10px; }
+        .option-item span { display: block; font-size: 13px; font-weight: 600; color: #fff; }
+        
+        /* Floating Support Icon (Customer Care) */
+        .support-icon { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #3F3F3F; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; z-index: 99; border: 2px solid #C4933F; }
+        .support-icon img { width: 35px; }
+        
+        /* Loader */
+        .loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #fff; border-top: 4px solid #C4933F; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>BDG LOTTERY7</h1>
-        <h2>Phone: <span id="userPhone" style="color:#D9AC4F;">Loading...</span></h2>
-        <div class="balance-box">
-            <div style="font-size: 14px; color: #aaa;">Total Balance</div>
-            <div class="balance">₹<span id="userBalance">0</span></div>
-        </div>
-        <button onclick="logout()">Logout</button>
+
+<div class="app-container">
+    <!-- Navbar -->
+    <div class="navbar">
+        <img src="./index_files/h5setting_202401100608011fs2.png" alt="Logo">
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Wallet Details -->
+        <div class="wallet-card">
+            <h2>Total Balance</h2>
+            <h1>₹<span id="userBalance">0.00</span></h1>
+            <p>ID: <span id="userPhone">Loading...</span></p>
+        </div>
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
-          authDomain: "airavattt.firebaseapp.com",
-          databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
-          projectId: "airavattt",
-          storageBucket: "airavattt.appspot.com",
-          messagingSenderId: "906559825335",
-          appId: "1:906559825335:web:0c11437318fbd2aec4b432"
-        };
+        <!-- Menu Grid -->
+        <div class="options-grid">
+            <div class="option-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/2331/2331970.png" alt="Deposit">
+                <span>Deposit</span>
+            </div>
+            <div class="option-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" alt="Withdraw">
+                <span>Withdraw</span>
+            </div>
+            <div class="option-item" onclick="window.location='index.html'">
+                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Profile">
+                <span>My Profile</span>
+            </div>
+            <div class="option-item" onclick="window.location='forgot.html'">
+                <img src="https://cdn-icons-png.flaticon.com/512/1067/1067357.png" alt="Security">
+                <span>Security</span>
+            </div>
+        </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+    </div>
+</div>
 
-        let phone = localStorage.getItem('bdg_user');
-        if (!phone) { window.location.href = 'index.html'; }
+<!-- Customer Care Support Icon -->
+<div class="support-icon" onclick="window.location='forgot.html'">
+    <img src="./index_files/icon_sevice-1ca64bcf.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712039.png'" alt="Customer Care">
+</div>
 
-        document.getElementById('userPhone').innerText = phone;
+<!-- Loader -->
+<div class="loader" id="loader"><div class="spinner"></div></div>
 
-        const userRef = ref(db, 'users/' + phone);
-        get(userRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                let data = snapshot.val();
-                document.getElementById('userBalance').innerText = data.balance;
-            }
-        });
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        window.logout = function() {
-            localStorage.removeItem('bdg_user');
-            window.location.href = 'index.html';
+    const firebaseConfig = {
+      apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
+      authDomain: "airavattt.firebaseapp.com",
+      databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
+      projectId: "airavattt",
+      storageBucket: "airavattt.appspot.com",
+      messagingSenderId: "906559825335",
+      appId: "1:906559825335:web:0c11437318fbd2aec4b432"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Check Login
+    let phone = localStorage.getItem('bdg_user');
+    if (!phone) { window.location.href = 'index.html'; }
+
+    document.getElementById('userPhone').innerText = phone;
+
+    // Fetch Balance
+    const userRef = ref(db, 'users/' + phone);
+    get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            let data = snapshot.val();
+            document.getElementById('userBalance').innerText = data.balance.toFixed(2);
         }
-    </script>
+    });
+
+    // Logout
+    window.logout = function() {
+        localStorage.removeItem('bdg_user');
+        window.location.href = 'index.html';
+    }
+</script>
+
 </body>
 </html>

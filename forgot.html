@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html translate="no" data-dpr="1" style="font-size: 49.36px;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>BDG LOTTERY7 - Forgot Password</title>
+    
+    <!-- Original Forgot CSS -->
+    <link href="./css/account/chunk-vendors.css" rel="stylesheet" />
+    <link href="./css/account/app.css" rel="stylesheet" />
+    <link href="./css/account/chunk-3abb8cfe.27bda068.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="./images/bitbug_favicon.ico" type="image/x-icon" />
+
+    <style>
+        html, body { height: 100%; width: 100%; background-color: #090909; padding: 0; margin: 0; }
+        .msg-content { animation: zoom-in 0.45s ease reverse; }
+        @keyframes zoom-in { 0% { opacity: 1; transform: scale(1, 1); } 50% { transform: scale(0.6, 0.6); } 100% { opacity: 0; transform: scale(1, 1); } }
+        .block-click { pointer-events: none; }
+    </style>
+</head>
+
+<body style="font-size: 12px;">
+    <div id="app">
+        <div data-v-51f72da1="" class="mian forgot">
+            <!-- Navbar -->
+            <div data-v-106b99c8="" class="navbar">
+                <div class="navbar-left" onclick="location.href='index.html'">
+                    <div class="bank c-row c-row-middle-center">
+                        <img src="./images/back.c3244ab0.png" class="navbar-back">
+                    </div>
+                </div>
+                <div class="navbar-title"> Forgot password</div>
+                <div class="navbar-right">
+                    <div class="c-row" onclick="location.href='forgot.html'">
+                        <img src="./images/audio.webp" class="audio">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Area -->
+            <div class="forgot-box">
+                <div class="mian-from m-t-20">
+                    <div class="lab">Phone number format:<span></span></div>
+                    
+                    <div class="item c-row c-row-center c-row-middle m-t-15 m-b-30 first">
+                        <div class="c-row number">
+                            <span class="c-row c-row-middle-center">
+                                <img height="22px" width="15px" src="./images/phone.png" class="mobile">
+                            </span>
+                            <div class="p-l-5">+91</div>
+                        </div>
+                        <input id="forgotPhone" type="text" maxlength="12" placeholder="Please Enter The Phone Number" oninput="value=value.replace(/\D/g,'')">
+                    </div>
+
+                    <div class="item c-row c-row-center c-row-middle m-b-30">
+                        <span class="img c-row c-row-middle-center">
+                            <img height="22px" width="15px" src="./images/verifie.png" class="mobile">
+                        </span>
+                        <input type="number" id="forgotOtp" placeholder="Please Enter The Verification Code">
+                        <button class="otp" onclick="sendOtp()">Send</button>
+                    </div>
+                    
+                    <div class="tip">Did not receive the OTP code? Please contact BDG LOTTERY7</div>
+
+                    <div class="item c-row c-row-center c-row-middle m-b-30">
+                        <span class="img c-row c-row-middle-center">
+                            <img height="20px" width="18px" src="./images/password.png" class="password">
+                        </span>
+                        <input id="forgotNewPass" type="password" placeholder="Plese Enter The New Password" class="pw-input">
+                    </div>
+
+                    <div class="mian-btn m-t-40">
+                        <button id="resetBtn" class="gradient van-button van-button--default van-button--normal van-button--block van-button--round" style="color: #fff; background: #c42929;">
+                            <div class="van-button__content">
+                                <span class="van-button__text">
+                                    <span>Reset</span>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div class="Loading c-row c-row-middle-center" style="display: none;">
+                <div class="van-loading van-loading--circular">
+                    <span class="van-loading__spinner van-loading__spinner--circular" style="width: auto; height: auto;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="width: 100%;height: 100%;">
+                            <image href="./index_files/loadingspinner.png" width="200" height="200"></image>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="van-overlay" style="z-index: 2003; display: none;"></div>
+    <div class="alert-toast"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get, child, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
+          authDomain: "airavattt.firebaseapp.com",
+          databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
+          projectId: "airavattt",
+          storageBucket: "airavattt.appspot.com",
+          messagingSenderId: "906559825335",
+          appId: "1:906559825335:web:0c11437318fbd2aec4b432"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        function alertMess(text) {
+            if ($('.alert-toast .msg').length === 0) {
+                $('.alert-toast').append(`<div class="msg"><div class="msg-content" style="display:block; color:white; background:rgba(0,0,0,0.8); padding:10px; border-radius:5px; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:99999; font-size:14px;">${text}</div></div>`);
+                setTimeout(() => { $('.msg').fadeOut(); setTimeout(() => $('.alert-toast .msg').remove(), 100); }, 2500);
+            }
+        }
+
+        let generatedOtp = "";
+
+        window.sendOtp = async function() {
+            let phone = document.getElementById('forgotPhone').value.trim();
+            if(!phone) { alertMess('Please enter phone number'); return; }
+
+            try {
+                const dbRef = ref(db);
+                const snapshot = await get(child(dbRef, `users/${phone}`));
+                if (!snapshot.exists()) { alertMess("Phone number not registered"); return; }
+
+                generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+                await update(ref(db, 'users/' + phone), { otp: generatedOtp });
+                
+                alertMess("Demo OTP Sent: " + generatedOtp);
+                
+                // 60 seconds block
+                $('.otp').addClass('block-click');
+                setTimeout(() => { $('.otp').removeClass('block-click'); }, 60000);
+
+            } catch(e) { alertMess("Error sending OTP"); }
+        }
+
+        document.getElementById('resetBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            let phone = document.getElementById('forgotPhone').value.trim();
+            let otp = document.getElementById('forgotOtp').value.trim();
+            let newPass = document.getElementById('forgotNewPass').value.trim();
+
+            if(!phone || !otp || !newPass) { alertMess("Please fill in the required section"); return; }
+
+            $('.van-overlay').fadeIn(10);
+
+            try {
+                const dbRef = ref(db);
+                const snapshot = await get(child(dbRef, `users/${phone}`));
+                if (!snapshot.exists()) { $('.van-overlay').fadeOut(300); alertMess("User not found"); return; }
+
+                let userData = snapshot.val();
+                if(userData.otp !== otp) { $('.van-overlay').fadeOut(300); alertMess("Invalid OTP"); return; }
+
+                await update(ref(db, 'users/' + phone), { password: newPass, otp: "" });
+                
+                $('.van-overlay').fadeOut(300);
+                alertMess("Password Reset Successful!");
+                setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+                
+            } catch(e) { $('.van-overlay').fadeOut(300); alertMess("Error resetting password"); }
+        });
+    </script>
+</body>
+</html>
