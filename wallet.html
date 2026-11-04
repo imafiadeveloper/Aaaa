@@ -25,13 +25,15 @@ img{display:block;max-width:100%;}
   background:#090909;
   border-bottom:1px solid rgba(255,255,255,0.06);
 }
-.navbar-left,.navbar-right{
+.navbar-left{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.navbar-logo{width:32px;height:24px;background:url('./images/indiaFlag.png') no-repeat center / contain;border-radius:3px;}
+.navbar-brand{font-size:15px;font-weight:700;color:#fff;}
+.navbar-right{
   width:40px;height:40px;display:flex;align-items:center;justify-content:center;
   border-radius:50%;cursor:pointer;transition:background .2s;
 }
-.navbar-left:active,.navbar-right:active{background:rgba(255,255,255,0.08);}
-.navbar-left svg,.navbar-right svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2;}
-.navbar-title{font-size:17px;font-weight:700;letter-spacing:.3px;}
+.navbar-right:active{background:rgba(255,255,255,0.08);}
+.navbar-right svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2;}
 
 /* ============ PAGE WRAPPER ============ */
 .page{
@@ -50,8 +52,9 @@ img{display:block;max-width:100%;}
   display:flex;align-items:center;justify-content:center;
   margin-bottom:10px;
   box-shadow:0 6px 20px rgba(196,147,63,0.35);
+  overflow: hidden;
 }
-.user-avatar svg{width:34px;height:34px;fill:#3a2a10;}
+.user-avatar img{width:100%;height:100%;object-fit:cover;display:none;}
 .user-name{font-size:16px;font-weight:700;letter-spacing:.2px;color:#fff;}
 .user-uid{font-size:12px;color:#a6a9ae;margin-top:3px;}
 
@@ -146,7 +149,6 @@ img{display:block;max-width:100%;}
   margin:24px 0 12px;
 }
 .section-title h3{font-size:15px;font-weight:700;color:#fff;}
-.section-title a{font-size:12px;color:#a6a9ae;font-weight:500;}
 
 /* ============ TRANSACTION LIST ============ */
 .tx-list{display:flex;flex-direction:column;gap:10px;}
@@ -169,7 +171,12 @@ img{display:block;max-width:100%;}
 .tx-icon svg{width:20px;height:20px;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
 .tx-info{min-width:0;flex:1;}
 .tx-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tx-time{font-size:11px;color:#a6a9ae;}
+.tx-meta{display:flex;align-items:center;gap:6px;font-size:11px;}
+.tx-time{color:#a6a9ae;}
+.tx-status{padding:2px 6px;border-radius:4px;font-weight:600;font-size:9px;}
+.tx-status.success{background:rgba(107,190,88,0.15);color:#6abe57;}
+.tx-status.pending{background:rgba(250,171,0,0.15);color:#ffab00;}
+.tx-status.failed{background:rgba(242,65,59,0.15);color:#f2413b;}
 .tx-amt{font-size:15px;font-weight:700;flex-shrink:0;}
 .tx-amt.plus{color:#6abe57;}
 .tx-amt.minus{color:#f2413b;}
@@ -227,20 +234,6 @@ img{display:block;max-width:100%;}
   position:absolute;bottom:8px;font-size:10px;font-weight:600;color:#FAE59F;
 }
 
-/* ============ LOADING OVERLAY ============ */
-.loader-overlay{
-  position:fixed;inset:0;background:rgba(9,9,9,0.85);z-index:9998;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .2s;
-}
-.loader-overlay.show{opacity:1;pointer-events:auto;}
-.spinner{
-  width:42px;height:42px;border-radius:50%;
-  border:3px solid rgba(250,229,159,0.2);
-  border-top-color:#FAE59F;
-  animation:spin .8s linear infinite;
-}
-
 /* Responsive tweaks */
 @media (max-width:360px){
   .bc-amount{font-size:28px;}
@@ -254,9 +247,9 @@ img{display:block;max-width:100%;}
 <!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left" onclick="location.href='home.html'">
-    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    <div class="navbar-logo"></div>
+    <div class="navbar-brand">BDG LOTTERY7</div>
   </div>
-  <div class="navbar-title">Wallet</div>
   <div class="navbar-right" id="supportBtn" title="Customer Service">
     <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
   </div>
@@ -268,7 +261,7 @@ img{display:block;max-width:100%;}
   <!-- USER PROFILE -->
   <div class="user-card">
     <div class="user-avatar">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <img id="userAvatar" src="" alt="Profile">
     </div>
     <div class="user-name" id="userName">Loading...</div>
     <div class="user-uid" id="userUid">UID: ---</div>
@@ -345,11 +338,6 @@ img{display:block;max-width:100%;}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- LOADING OVERLAY -->
-<div class="loader-overlay" id="loader">
-  <div class="spinner"></div>
-</div>
-
 <!-- BOTTOM TAB BAR -->
 <div class="tabbar">
   <div class="tab" onclick="location.href='home.html'">
@@ -378,8 +366,8 @@ img{display:block;max-width:100%;}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ============ FIREBASE CONFIG ============ */
 const firebaseConfig = {
@@ -399,6 +387,15 @@ const db = getFirestore(app);
 const TG_BOT_TOKEN = "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw";
 const TG_CHAT_ID = "8167337368";
 
+/* ============ PROFILE IMAGES ============ */
+const profileImages = [
+  "3-abfcc056.png",
+  "6-7c7f5203.png",
+  "7-00479cfa.png",
+  "19-2ac9fd83.png",
+  "17-bedde42f.png"
+];
+
 /* ============ UTILITIES ============ */
 const toastEl = document.getElementById('toast');
 let toastTimer = null;
@@ -408,10 +405,6 @@ function toast(msg){
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2200);
 }
-
-const loaderEl = document.getElementById('loader');
-function showLoader(){loaderEl.classList.add('show');}
-function hideLoader(){loaderEl.classList.remove('show');}
 
 function fmt(n){
   const v = Number(n)||0;
@@ -453,8 +446,6 @@ document.getElementById('supportBtn').addEventListener('click', async ()=>{
 /* ============ AUTH STATE ============ */
 let currentUser = null;
 let currentUserData = null;
-let lastTxId = null;
-const seenTxSignatures = new Set();
 
 onAuthStateChanged(auth, async (user) => {
   if(!user){
@@ -485,15 +476,26 @@ async function loadUserData(uid){
 function renderUser(data){
   const name = data.name || data.username || data.fullName || 'User';
   document.getElementById('userName').textContent = name;
-  document.getElementById('userUid').textContent = 'UID: ' + (currentUser?.uid || '---');
+  document.getElementById('userUid').textContent = 'UID: ' + (currentUser?.uid.substring(0,8).toUpperCase() || '---');
 
   const bal = Number(data.balance ?? data.wallet ?? data.money ?? 0);
   document.getElementById('balanceVal').textContent = fmt(bal);
 
-  const dep = Number(data.totalDeposit ?? data.totalDepositAmount ?? data.totalRecharge ?? 0);
-  const wd  = Number(data.totalWithdraw ?? data.totalWithdrawAmount ?? 0);
+  const dep = Number(data.totalDeposit ?? data.totalRecharge ?? 0);
+  const wd  = Number(data.totalWithdraw ?? 0);
   document.getElementById('totalDeposit').textContent = '₹' + fmt(dep);
   document.getElementById('totalWithdraw').textContent = '₹' + fmt(wd);
+
+  // User Avatar Logic (UID ke hisaab se fixed image)
+  if(currentUser) {
+    const charCodeSum = currentUser.uid.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const imgIndex = charCodeSum % profileImages.length;
+    const selectedAvatar = profileImages[imgIndex];
+    
+    const userAvatar = document.getElementById('userAvatar');
+    userAvatar.src = './images/' + selectedAvatar;
+    userAvatar.style.display = 'block';
+  }
 }
 
 /* ============ REFRESH BUTTON ============ */
@@ -523,12 +525,12 @@ document.getElementById('transferBtn').addEventListener('click', ()=>{
   location.href = 'transfer.html';
 });
 
-/* ============ LOAD TRANSACTIONS ============ */
+/* ============ LOAD TRANSACTIONS (FULLY WORKING) ============ */
 async function loadTransactions(uid){
   const listEl = document.getElementById('txList');
   try{
     const txRef = collection(db,'transactions');
-    const q = query(txRef, where('userId','==',uid), orderBy('createdAt','desc'), limit(15));
+    const q = query(txRef, where('userId','==',uid));
     const snap = await getDocs(q);
 
     if(snap.empty){
@@ -540,9 +542,16 @@ async function loadTransactions(uid){
       return;
     }
 
+    let arr = [];
+    snap.forEach(docSnap => arr.push(docSnap.data()));
+    arr.sort((a,b) => {
+      const tA = a.createdAt?.toMillis?.() || a.time || 0;
+      const tB = b.createdAt?.toMillis?.() || b.time || 0;
+      return tB - tA;
+    });
+
     let html = '';
-    snap.forEach(docSnap=>{
-      const t = docSnap.data();
+    arr.forEach(t => {
       const type = (t.type || t.transactionType || '').toLowerCase();
       const amt = Number(t.amount ?? t.money ?? 0);
       const ts = t.createdAt || t.time || t.timestamp;
@@ -552,14 +561,19 @@ async function loadTransactions(uid){
         type.includes('bet') ? 'Bet Placed' :
         type.includes('win') ? 'Winning' : 'Transaction'
       );
+      
+      let stText = 'Success';
+      let stClass = 'success';
+      if(t.status === 'failed' || t.status === 'rejected') { stText = 'Failed'; stClass = 'failed'; }
+      else if(t.status === 'pending') { stText = 'Pending'; stClass = 'pending'; }
 
       let cls = 'bet';
       let sign = '-';
       let iconPath = '<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>';
-      if(type.includes('deposit') || type.includes('recharge') || type.includes('credit')){
+      if(type.includes('deposit') || type.includes('recharge') || type.includes('credit') || amt > 0) {
         cls = 'deposit'; sign = '+';
         iconPath = '<path d="M12 5v14M5 12h14"/>';
-      } else if(type.includes('withdraw') || type.includes('debit')){
+      } else if(type.includes('withdraw') || type.includes('debit')) {
         cls = 'withdraw'; sign = '-';
         iconPath = '<path d="M5 12h14"/>';
       }
@@ -572,95 +586,27 @@ async function loadTransactions(uid){
             </div>
             <div class="tx-info">
               <div class="tx-title">${title}</div>
-              <div class="tx-time">${fmtTime(ts)}</div>
+              <div class="tx-meta">
+                <span class="tx-time">${fmtTime(ts)}</span>
+                <span class="tx-status ${stClass}">${stText}</span>
+              </div>
             </div>
           </div>
           <div class="tx-amt ${sign==='+'?'plus':'minus'}">${sign}₹${fmt(Math.abs(amt))}</div>
         </div>`;
     });
-    listEl.innerHTML = html;
+    
+    listEl.innerHTML = html.split('</div>\n        <div class="tx-item">').slice(0, 15).join('</div>\n        <div class="tx-item">') + '</div>';
 
   }catch(err){
     console.error('loadTransactions error:', err);
-    // Fallback: try without orderBy (in case index missing)
-    try{
-      const txRef = collection(db,'transactions');
-      const q2 = query(txRef, where('userId','==',uid), limit(15));
-      const snap2 = await getDocs(q2);
-      if(snap2.empty){
-        listEl.innerHTML = `
-          <div class="empty-state">
-            <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
-            <p>No transactions yet</p>
-          </div>`;
-        return;
-      }
-      let html = '';
-      const arr = [];
-      snap2.forEach(d=>arr.push(d.data()));
-      arr.sort((a,b)=>{
-        const ta = a.createdAt?.toMillis?.() ?? 0;
-        const tb = b.createdAt?.toMillis?.() ?? 0;
-        return tb - ta;
-      });
-      arr.forEach(t=>{
-        const type = (t.type || '').toLowerCase();
-        const amt = Number(t.amount ?? t.money ?? 0);
-        const ts = t.createdAt || t.time || t.timestamp;
-        const title = t.title || t.description || (
-          type.includes('deposit') ? 'Deposit' :
-          type.includes('withdraw') ? 'Withdraw' :
-          type.includes('bet') ? 'Bet Placed' : 'Transaction'
-        );
-        let cls = 'bet', sign = '-';
-        if(type.includes('deposit') || type.includes('credit')) {cls='deposit';sign='+';}
-        else if(type.includes('withdraw') || type.includes('debit')) {cls='withdraw';sign='-';}
-        html += `
-          <div class="tx-item">
-            <div class="tx-left">
-              <div class="tx-icon ${cls}">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
-              </div>
-              <div class="tx-info">
-                <div class="tx-title">${title}</div>
-                <div class="tx-time">${fmtTime(ts)}</div>
-              </div>
-            </div>
-            <div class="tx-amt ${sign==='+'?'plus':'minus'}">${sign}₹${fmt(Math.abs(amt))}</div>
-          </div>`;
-      });
-      listEl.innerHTML = html;
-    }catch(err2){
-      listEl.innerHTML = `
-        <div class="empty-state">
-          <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
-          <p>Could not load activity</p>
-        </div>`;
-    }
+    listEl.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
+        <p>Could not load activity</p>
+      </div>`;
   }
 }
-
-/* ============ PREVENT DOUBLE-CLICK ON ALL ACTIONS ============ */
-document.querySelectorAll('.action-item, .transfer-btn').forEach(el=>{
-  el.addEventListener('click', function(e){
-    if(this.dataset.busy === '1'){ e.preventDefault(); e.stopPropagation(); return; }
-    this.dataset.busy = '1';
-    setTimeout(()=>{ this.dataset.busy=''; }, 700);
-  });
-});
-
-/* ============ REALTIME REFRESH ON TAB FOCUS ============ */
-document.addEventListener('visibilitychange', ()=>{
-  if(document.visibilityState === 'visible' && currentUser){
-    loadUserData(currentUser.uid);
-  }
-});
-
-/* ============ INITIAL FADE-IN ============ */
-document.body.style.opacity = '0';
-document.body.style.transition = 'opacity .3s';
-window.addEventListener('load', ()=>{ document.body.style.opacity = '1'; });
-
 </script>
 </body>
 </html>

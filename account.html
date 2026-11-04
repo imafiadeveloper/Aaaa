@@ -117,7 +117,8 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
   <div class="ph-bg"></div>
   <div class="ph-top">
     <div class="ph-user">
-      <div class="ph-avatar"><img src="https://ui-avatars.com/api/?name=User&background=random&color=fff" id="avatarImg" style="width:100%;height:100%;object-fit:cover;"></div>
+      <!-- Profile Image will be set by JS -->
+      <div class="ph-avatar"><img id="avatarImg" src="" style="width:100%;height:100%;object-fit:cover;display:none;"></div>
       <div class="ph-info">
         <div class="ph-name">
           <span id="userName">Member...</span>
@@ -202,6 +203,15 @@ const toastEl = document.getElementById('toast');
 window.toast = (msg) => { toastEl.textContent = msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'), 2500); }
 window.copyText = (id) => { navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>toast('Copied!')); }
 
+// Ye hain aapki 5 profile images
+const profileImages = [
+  "3-abfcc056.png",
+  "6-7c7f5203.png",
+  "7-00479cfa.png",
+  "19-2ac9fd83.png",
+  "17-bedde42f.png"
+];
+
 let currentUser = null;
 onAuthStateChanged(auth, async (user) => {
   if(!user) return location.replace('index.html');
@@ -214,17 +224,29 @@ async function loadUserData(uid){
     const snap = await getDoc(doc(db,'users',uid));
     if(!snap.exists()) return toast('User not found');
     const data = snap.data();
+    
     document.getElementById('userName').textContent = data.name || 'Member';
     document.getElementById('uidText').textContent = uid.substring(0, 8).toUpperCase();
+    
     const bal = Number(data.balance ?? data.wallet ?? 0);
     document.getElementById('totalBalance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
+    
     let lastLogin = 'Just now';
     if(data.lastLogin) {
       const d = data.lastLogin.toDate ? data.lastLogin.toDate() : new Date(data.lastLogin);
       lastLogin = d.toLocaleString('en-IN');
     }
     document.getElementById('lastLogin').textContent = 'Last login: ' + lastLogin;
-    if(data.avatar) document.getElementById('avatarImg').src = data.avatar;
+
+    // UID ke hisaab se ek fixed image select karo
+    const charCodeSum = uid.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const imgIndex = charCodeSum % profileImages.length;
+    const selectedAvatar = profileImages[imgIndex];
+    
+    const avatarImg = document.getElementById('avatarImg');
+    avatarImg.src = './images/' + selectedAvatar;
+    avatarImg.style.display = 'block';
+
   }catch(err){ toast('Failed to load profile'); }
 }
 
