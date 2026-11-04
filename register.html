@@ -3,7 +3,7 @@
 
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="shortcut icon" href="./images/bitbug_favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./index_files/h5setting_202401100608011fs2.png" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BDG LOTTERY7 - Register</title>
@@ -15,19 +15,15 @@
     <link rel="stylesheet" href="./index_files/page-main-ff2e7571.css">
     <link rel="stylesheet" href="./index_files/index-98687087.css">
     
-    <style>
-        html, body { height: 100%; width: 100%; background-color: #090909; padding: 0; margin: 0; }
-        .msg-content { animation: zoom-in 0.45s ease reverse; }
-        @keyframes zoom-in { 0% { opacity: 1; transform: scale(1, 1); } 50% { transform: scale(0.6, 0.6); } 100% { opacity: 0; transform: scale(1, 1); } }
-    </style>
+    <style> html, body { height: 100%; width: 100%; background-color: #090909; padding: 0; margin: 0; } </style>
 </head>
 <body style="font-size: 12px">
 
 <div id="app" data-v-app="" style="background: #292929">
-    <div class="resgister__C" style="--7688837a: 'Roboto', 'Inter', sans-serif;">
+    <div class="resgister__C">
         
         <!-- Navbar -->
-        <div data-v-58c5e826="" class="navbar">
+        <div class="navbar">
             <div class="navbar-fixed" style="background: rgb(63, 63, 63);">
                 <div class="navbar__content">
                     <div class="navbar__content-left" onclick="location.href='index.html'">
@@ -71,7 +67,6 @@
                             <input type="text" id="regUsername" oninput="value=value.replace(/\D/g,'')" placeholder="Please enter the phone number" required>
                         </div>
                     </div>
-                    <div class="tip"></div>
 
                     <!-- Password -->
                     <div class="passwordInput__container">
@@ -80,7 +75,7 @@
                             <span>Set password</span>
                         </div>
                         <div class="passwordInput__container-input">
-                            <input id="regPassword" type="password" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" placeholder="Please enter Set password" maxlength="32" required>
+                            <input id="regPassword" type="password" placeholder="Please enter Set password" maxlength="32" required>
                             <img id="regEyeicon" src="./index_files/eyeInvisible-2fa5c152.png" class="eye" onclick="togglePass('regPassword', 'regEyeicon')">
                         </div>
                     </div>
@@ -88,15 +83,13 @@
                     <!-- Invite Code -->
                     <div class="register__container-invitation">
                         <div class="register__container-invitation__label">
-                            <img class="register__container-invitation__label-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAL+SURBVHgB7Zg/TNNBFMffu9+PggpKUheMJHXBtcTEpIQB4mRiVAYIGzZMbhodTXRwdXFww8pGQBMG40pNUEZdXJg6ELcqSU2tkf6e71piaNq7vt+P6x/C7zPwo713v3vfu3fv3hUgJuZ0gxCB7ZXFSwoPUkqpMX5BgoBGIAKI+CcI4AdRUAzIL0wvr32HkIQSsL1ye8RTQzOINAYdAAFLf6vD76eXX5fkfYRo5we8oVtRZ1tKWBEKhHgqca3Tzmv0GJ76NSO1Fwn4tj6f4HidgC6hQ/TDy5uDEluRgJ8l7yJ0mfPnLiQldiIBAz4NQ5eRjumDM3CC4zdNAGetVgBlfuzy86vNrhoEohByJoAgeKSfkrTGNhn+axWgEBIgQJyFBBSlhrxKv8ERzlYACZ4DqssiYwr2otUAzbjbA4gc27QrtAVXuAyhnuAwC2kwyZv5CZgzUdFD9Sog2gNHOF0BTqOcXaxpNFklSoNDnK4AAu0Q4FWWYjhFsahtANztAdchxA7CC7uD7pzXnLZNrDcpjfMcnjnyXVGcPpvfN9EYbljkE7gcZpO3Xc8vubujFfR1ZrkPluzCr1pvV98cGZbrpuAe/5O0vC8P5D3OZNcK1jfZGj/l5tNcm2+x0ShIIFjle8Nnuwnd4McCiMCCRzB3PbthnBijgJ3cYgqwusVDpiAMFhEcGlN8CC9BCNjB/UE6uDKZ3dxv1W7exFh9Gtr5+ohLh7PcQBTnNVz4jZbBf2Bq980dKX2MhLdQF/G/ZB5n5yNfSRWiFv6sVZtRADt/3BOTN2jzSkTDHAktQ6gW/32GyacTf5DFAnpNLKDXnBgBppqopYAKVFoe272CLEViSwGzXHdwp74RoSw/gilLpzz0CUS0amozCggoMHbqLljIZN/mTa1GAVPZd5skvqB0hloYkzdrs7FmISR/Ts8A9ADtPBI+bHcjswqoddYzwJcU6C55nrzJTHbjTTtDcclfrwarM4Rw57C8TYmvmm3Rq0w8WfCRP+RtMR8TE9PIP8Jj6yZh+V37AAAAAElFTkSuQmxx">
+                            <img class="register__container-invitation__label-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAL+SURBVHgB7Zg/TNNBFMffu9+PggpKUheMJHXBtcTEpIQB4mRiVAYIGzZMbhodTXRwdXFww8pGQBMG40pNUEZdXJg6ELcqSU2tkf6e71piaNq7vt+P6x/C7zPwo713v3vfu3fv3hUgJuZ0gxCB7ZXFSwoPUkqpMX5BgoBGIAKI+CcI4AdRUAzIL0wvr32HkIQSsL1ye8RTQzOINAYdAAFLf6vD76eXX5fkfYRo5we8oVtRZ1tKWBEKhHgqca3Tzmv0GJ76NSO1Fwn4tj6f4HidgC6hQ/TDy5uDEluRgJ8l7yJ0mfPnLiQldiIBAz4NQ5eRjumDM3CC4zdNAGetVgBlfuzy86vNrhoEohByJoAgeKSfkrTGNhn+axWgEBIgQJyFBBSlhrxKv8ERzlYACZ4DqssiYwr2otUAzbjbA4gc27QrtAVXuAyhnuAwC2kwyZv5CZgzUdFD9Sog2gNHOF0BTqOcXaxpNFklSoNDnK4AAu0Q4FWWYjhFsahtANztAdchxA7CC7uD7pzXnLZNrDcpjfMcnjnyXVGcPpvfN9EYbljkE7gcZpO3Xc8vubujFfR1ZrkPluzCr1pvV98cGZbrpuAe/5O0vC8P5D3OZNcK1jfZGj/l5tNcm2+x0ShIIFjle8Nnuwnd4McCiMCCRzB3PbthnBijgJ3cYgqwusVDpiAMFhEcGlN8CC9BCNjB/UE6uDKZ3dxv1W7exFh9Gtr5+ohLh7PcQBTnNVz4jZbBf2Bq980dKX2MhLdQF/G/ZB5n5yNfSRWiFv6sVZtRADt/3BOTN2jzSkTDHAktQ6gW/32GyacTf5DFAnpNLKDXnBgBppqopYAKVFoe272CLEViSwGzXHdwp74RoSw/gilLpzz0CUS0amozCggoMHbqLljIZN/mTa1GAVPZd5skvqB0hloYkzdrs7FmISR/Ts8A9ADtPBI+bHcjswqoddYzwJcU6C55nrzJTHbjTTtDcclfrwarM4Rw57C8TYmvmm3Rq0w8WfCRP+RtMR8TE9PIP8Jj6yZh+V37AAAAAElFTkSuQmll">
                             <span>Invite code</span>
                         </div>
                         <div class="register__container-invitation__input">
                             <input type="text" id="regInvite" placeholder="Please enter the invitation code" maxlength="20" required>
                         </div>
                     </div>
-
-                    <div class="alert-toast" style="color:red; position:absolute; top:30%; left:50%; transform:translateX(-50%); z-index:9999;"></div>
 
                     <!-- Remember -->
                     <div class="register__container-remember">
@@ -122,100 +115,43 @@
     </div>
 </div>
 
-<!-- Loading Overlay -->
-<div class="van-overlay" style="z-index: 2003; display: none;">
-  <div class="Loading c-row c-row-middle-center" style="position: fixed;height: 100vh;width: 100vw;top: 0;left: 0;background: rgba(0,0,0,.6);z-index: 99999;">
-    <div class="van-loading van-loading--circular">
-      <span class="van-loading__spinner van-loading__spinner--circular" style="width: auto; height: auto; -webkit-animation-duration: 1s; animation-duration: 1s;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="width: 100%;height: 100%;">
-          <g transform="matrix(-0.5984085202217102,0.8011911511421204,-0.8011911511421204,-0.5984085202217102,239.9599609375,79.72173309326172)">
-            <image width="200px" height="200px" href="./index_files/loadingspinner.png"></image>
-          </g>
-        </svg>
-      </span>
-      <img src="./index_files/h5setting_202401100608011fs2.png" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 168px; height: 44px;">
-    </div>
-  </div>
-</div>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
-      authDomain: "airavattt.firebaseapp.com",
-      databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
-      projectId: "airavattt",
-      storageBucket: "airavattt.appspot.com",
-      messagingSenderId: "906559825335",
-      appId: "1:906559825335:web:0c11437318fbd2aec4b432"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0", authDomain: "airavattt.firebaseapp.com", databaseURL: "https://airavattt-default-rtdb.firebaseio.com", projectId: "airavattt", storageBucket: "airavattt.appspot.com", messagingSenderId: "906559825335", appId: "1:906559825335:web:0c11437318fbd2aec4b432" };
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Password Show/Hide
     window.togglePass = function(inputId, iconId) {
-        var x = document.getElementById(inputId);
-        var y = document.getElementById(iconId);
-        if (x.type === "password") {
-            x.type = "text"; y.src="./index_files/eyeVisible-7bc1c956.png";
-        } else {
-            x.type = "password"; y.src="./index_files/eyeInvisible-2fa5c152.png";
-        }
+        var x = document.getElementById(inputId); var y = document.getElementById(iconId);
+        if (x.type === "password") { x.type = "text"; y.src="./index_files/eyeVisible-7bc1c956.png"; } 
+        else { x.type = "password"; y.src="./index_files/eyeInvisible-2fa5c152.png"; }
     }
 
-    // Alert Message
-    function alertMess(text) {
-        let length = $('.alert-toast .msg').length;
-        if (length == 0) {
-            $('.alert-toast').append(`<div class="msg"><div class="msg-content" style="display:block; color:white; background:rgba(0,0,0,0.8); padding:10px; border-radius:5px; font-size:14px;"> ${text} </div></div>`);
-            setTimeout(() => { $('.msg').fadeOut(); setTimeout(() => { $('.alert-toast .msg').remove(); }, 100); }, 2500);
-        }
-    }
-
-    // Register Logic
     document.getElementById('registerBtn').addEventListener('click', async (e) => {
         e.preventDefault();
         let phone = document.getElementById('regUsername').value.trim();
         let password = document.getElementById('regPassword').value.trim();
         let invite = document.getElementById('regInvite').value.trim();
-
-        if (!phone || !password || !invite) { alertMess("Please fill in all fields"); return; }
+        if (!phone || !password || !invite) { alert("Please fill in all fields"); return; }
         
-        $('.van-overlay').fadeIn(10);
-        let btn = e.target;
-        btn.innerText = "Registering..."; btn.disabled = true;
+        let btn = e.target; btn.innerText = "Registering..."; btn.disabled = true;
 
         try {
             const dbRef = ref(db);
             const snapshot = await get(child(dbRef, `users/${phone}`));
             
-            if (snapshot.exists()) {
-                $('.van-overlay').fadeOut(300);
-                alertMess("Phone number already registered");
-                btn.innerText = "Register"; btn.disabled = false; return;
-            }
+            if (snapshot.exists()) { alert("Phone number already registered"); btn.innerText = "Register"; btn.disabled = false; return; }
 
             await set(ref(db, `users/${phone}`), {
-                phone: phone,
-                password: password,
-                invite_code: invite,
-                balance: 0,
-                status: "active",
-                created_at: new Date().toISOString()
+                phone: phone, password: password, invite_code: invite, balance: 0, status: "active", created_at: new Date().toISOString()
             });
 
-            $('.van-overlay').fadeOut(300);
-            alertMess("Registration successful! Please log in.");
-            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
-
+            alert("Registration successful! Please log in.");
+            window.location.href = 'index.html';
         } catch (error) {
-            console.error(error);
-            $('.van-overlay').fadeOut(300);
-            alertMess("Database error.");
-            btn.innerText = "Register"; btn.disabled = false;
+            alert("Database error."); btn.innerText = "Register"; btn.disabled = false;
         }
     });
 </script>
