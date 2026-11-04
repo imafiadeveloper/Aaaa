@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Transaction History - BDG LOTTERY7</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:#1A1A1A;color:#fff;min-height:100vh;}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+.nav-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
+.nav-title{font-size:16px;font-weight:600;}
+.filter-row{display:flex;gap:10px;padding:10px 16px 16px;}
+.filter-box{flex:1;background:#262626;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#a6a9ae;cursor:pointer;}
+.filter-box svg{width:16px;height:16px;stroke:#a6a9ae;fill:none;stroke-width:2;}
+.tx-list{padding:0 16px;}
+.tx-card{background:#333;border-radius:12px;margin-bottom:12px;overflow:hidden;}
+.tx-header{padding:16px;border-bottom:1px solid #222;font-size:15px;font-weight:600;color:#fff;}
+.tx-row{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #222;font-size:13px;}
+.tx-row:last-child{border-bottom:none;}
+.tx-label{color:#a6a9ae;}
+.tx-val{font-weight:500;color:#fff;}
+.tx-val.green{color:#6abe57;font-weight:700;font-size:15px;}
+.tx-empty{text-align:center;padding:40px;color:#666;font-size:14px;}
+.loader{text-align:center;padding:20px;font-size:14px;color:#a6a9ae;}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-title">Transaction history</div>
+  <div style="width:40px;"></div>
+</div>
+
+<div class="filter-row">
+  <div class="filter-box">All <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+  <div class="filter-box">Choose a date <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+</div>
+
+<div class="tx-list" id="txList">
+  <div class="loader">Loading...</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user) return location.replace('index.html');
+  loadHistory(user.uid);
+});
+
+async function loadHistory(uid) {
+  const listEl = document.getElementById('txList');
+  try {
+    const q = query(collection(db, 'transactions'), where('userId', '==', uid));
+    const snap = await getDocs(q);
+    
+    if(snap.empty) {
+      listEl.innerHTML = `<div class="tx-empty">No more</div>`;
+      return;
+    }
+    
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+    
+    let html = '';
+    arr.forEach(data => {
+      let dateStr = '--';
+      if(data.createdAt) {
+        const d = data.createdAt.toDate();
+        dateStr = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
+      }
+      
+      let title = data.title || data.type || 'Transaction';
+      if(title === 'signup_bonus') title = 'Sign up bonus';
+      
+      let amtClass = data.amount > 0 ? 'green' : '';
+      let amtPrefix = data.amount > 0 ? '+' : '';
+
+      html += `
+        <div class="tx-card">
+          <div class="tx-header">${title}</div>
+          <div class="tx-row"><span class="tx-label">Detail</span><span class="tx-val">${title}</span></div>
+          <div class="tx-row"><span class="tx-label">Time</span><span class="tx-val">${dateStr}</span></div>
+          <div class="tx-row"><span class="tx-label">Balance</span><span class="tx-val ${amtClass}">${amtPrefix}₹${Number(data.amount).toFixed(2)}</span></div>
+        </div>`;
+    });
+    listEl.innerHTML = html + `<div class="tx-empty">No more</div>`;
+  } catch(e) {
+    listEl.innerHTML = `<div class="tx-empty">Failed to load</div>`;
+  }
+}
+</script>
+</body>
+</html>

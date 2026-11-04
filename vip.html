@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>VIP - BDG LOTTERY7</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:#1A1A1A;color:#fff;min-height:100vh;padding-bottom:80px;}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+.nav-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
+.nav-title{font-size:16px;font-weight:600;}
+
+/* User Header */
+.user-header{display:flex;align-items:center;gap:12px;padding:0 16px 16px;}
+.uh-avatar{width:60px;height:60px;border-radius:50%;border:2px solid #FAE59F;overflow:hidden;}
+.uh-info{display:flex;flex-direction:column;gap:4px;}
+.uh-name{font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.uh-vip{background:#666;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;}
+.uh-exp{display:flex;gap:12px;margin-top:4px;}
+.uh-box{background:#262626;border-radius:8px;padding:8px 12px;text-align:center;}
+.uh-box h4{font-size:14px;color:#FAE59F;font-weight:700;}
+.uh-box p{font-size:10px;color:#a6a9ae;margin-top:2px;}
+
+.notice{margin:0 16px 16px;background:#262626;padding:10px 12px;border-radius:8px;font-size:12px;color:#a6a9ae;}
+
+/* VIP Slider */
+.vip-slider-wrap{display:flex;overflow-x:auto;gap:12px;padding:0 16px 20px;scroll-snap-type:x mandatory;}
+.vip-slider-wrap::-webkit-scrollbar{display:none;}
+.vip-card{flex:0 0 85%;scroll-snap-align:center;border-radius:16px;padding:20px;position:relative;overflow:hidden;color:#fff;}
+/* Gradients for VIP Levels */
+.vip-bg-0{background:linear-gradient(135deg,#444,#222);}
+.vip-bg-1{background:linear-gradient(135deg,#8da4c9,#516488);}
+.vip-bg-2{background:linear-gradient(135deg,#f3a957,#c47826);}
+.vip-bg-3{background:linear-gradient(135deg,#ff7a7a,#d13c3c);}
+.vip-bg-4{background:linear-gradient(135deg,#a872ff,#6b31d9);}
+.vip-bg-5{background:linear-gradient(135deg,#4fd1ff,#1b87c9);}
+.vip-bg-6{background:linear-gradient(135deg,#ff5e62,#ff9966);}
+.vip-bg-7{background:linear-gradient(135deg,#00b09b,#96c93d);}
+.vip-bg-8{background:linear-gradient(135deg,#ff0099,#493240);}
+.vip-bg-9{background:linear-gradient(135deg,#e65c00,#f9d423);}
+.vip-bg-10{background:linear-gradient(135deg,#ff0000,#000000);}
+
+.vip-card h2{font-size:22px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.vip-card h2 span{font-size:12px;background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:10px;font-weight:500;}
+.vip-card p.req{font-size:12px;opacity:0.9;margin-bottom:16px;}
+.vip-progress{height:6px;background:rgba(0,0,0,0.3);border-radius:3px;margin-bottom:8px;overflow:hidden;}
+.vip-progress-bar{height:100%;background:#FAE59F;border-radius:3px;width:0%;}
+.vip-stats{display:flex;justify-content:space-between;font-size:10px;opacity:0.8;}
+.vip-star{position:absolute;right:-10px;top:-10px;font-size:100px;opacity:0.1;}
+
+/* Benefits */
+.benefits-card{background:#262626;margin:0 16px 20px;border-radius:16px;padding:16px;}
+.benefits-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.benefits-title svg{width:20px;height:20px;stroke:#FAE59F;fill:none;stroke-width:2;}
+.b-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.b-row:last-child{margin-bottom:0;}
+.b-left{display:flex;align-items:center;gap:12px;}
+.b-icon{font-size:24px;}
+.b-info h4{font-size:14px;font-weight:600;margin-bottom:2px;}
+.b-info p{font-size:11px;color:#a6a9ae;}
+.b-right{background:#333;border:1px solid #FAE59F;color:#FAE59F;padding:6px 12px;border-radius:8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+
+/* Tabs */
+.tabs{display:flex;margin:0 16px;background:#262626;border-radius:12px;padding:4px;}
+.tab{flex:1;text-align:center;padding:10px;font-size:14px;font-weight:600;color:#a6a9ae;border-radius:8px;cursor:pointer;}
+.tab.active{background:#333;color:#FAE59F;}
+.tab-content{padding:20px 16px;}
+.empty-state{text-align:center;color:#666;padding:30px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-title">VIP</div>
+  <div style="width:40px;"></div>
+</div>
+
+<div class="user-header">
+  <div class="uh-avatar"><img src="https://ui-avatars.com/api/?name=User&background=random" style="width:100%;height:100%;object-fit:cover;"></div>
+  <div class="uh-info">
+    <div class="uh-name">Member <span class="uh-vip">VIP0</span></div>
+  </div>
+</div>
+
+<div class="uh-exp" style="padding:0 16px 16px; display:flex; gap:12px;">
+  <div class="uh-box" style="flex:1;"><h4>0 EXP</h4><p>My experience</p></div>
+  <div class="uh-box" style="flex:1;"><h4>27 Days</h4><p>Payout time</p></div>
+</div>
+
+<div class="notice">VIP level rewards are settled at 2:00 am on the 1st of every month</div>
+
+<!-- VIP Slider -->
+<div class="vip-slider-wrap" id="vipSlider">
+  <!-- Generated by JS -->
+</div>
+
+<!-- Benefits -->
+<div class="benefits-card">
+  <div class="benefits-title"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/></svg> Benefits level</div>
+  <div id="benefitsContainer">
+    <!-- Generated by JS -->
+  </div>
+</div>
+
+<!-- History/Rules Tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('history')">History</div>
+  <div class="tab" onclick="switchTab('rules')">Rules</div>
+</div>
+<div id="tab-history" class="tab-content">
+  <div class="empty-state">No data</div>
+</div>
+<div id="tab-rules" class="tab-content" style="display:none; color:#a6a9ae; font-size:13px; line-height:1.6;">
+  1. VIP level is calculated based on total bet amount.<br><br>
+  2. 1 INR bet = 1 EXP.<br><br>
+  3. Level up rewards can only be claimed once per account.<br><br>
+  4. Monthly rewards are distributed on the 1st of every month.
+</div>
+
+<script>
+// VIP Data
+const vipData = [
+  { level: 0, exp: 0, upReward: 0, monthly: 0, rebate: '0%', bgClass: 'vip-bg-0' },
+  { level: 1, exp: 3000, upReward: 60, monthly: 5, rebate: '0.05%', bgClass: 'vip-bg-1' },
+  { level: 2, exp: 30000, upReward: 180, monthly: 20, rebate: '0.05%', bgClass: 'vip-bg-2' },
+  { level: 3, exp: 400000, upReward: 690, monthly: 300, rebate: '0.1%', bgClass: 'vip-bg-3' },
+  { level: 4, exp: 1500000, upReward: 1200, monthly: 600, rebate: '0.15%', bgClass: 'vip-bg-4' },
+  { level: 5, exp: 3000000, upReward: 2500, monthly: 1000, rebate: '0.2%', bgClass: 'vip-bg-5' },
+  { level: 6, exp: 6000000, upReward: 5000, monthly: 2000, rebate: '0.25%', bgClass: 'vip-bg-6' },
+  { level: 7, exp: 10000000, upReward: 10000, monthly: 3000, rebate: '0.3%', bgClass: 'vip-bg-7' },
+  { level: 8, exp: 20000000, upReward: 20000, monthly: 5000, rebate: '0.35%', bgClass: 'vip-bg-8' },
+  { level: 9, exp: 50000000, upReward: 50000, monthly: 10000, rebate: '0.4%', bgClass: 'vip-bg-9' },
+  { level: 10, exp: 100000000, upReward: 100000, monthly: 20000, rebate: '0.5%', bgClass: 'vip-bg-10' }
+];
+
+const slider = document.getElementById('vipSlider');
+let html = '';
+vipData.forEach((v, index) => {
+  if(index === 0) return; // Don't show VIP0 in slider
+  
+  html += `
+    <div class="vip-card ${v.bgClass}">
+      <div class="vip-star">★</div>
+      <h2>VIP${v.level} <span>Not open yet</span></h2>
+      <p class="req">Upgrading VIP${v.level} requires ${v.exp.toLocaleString()}EXP</p>
+      <div style="font-size:12px;margin-bottom:16px;">Bet ₹1=1EXP</div>
+      <div class="vip-progress">
+        <div class="vip-progress-bar"></div>
+      </div>
+      <div class="vip-stats">
+        <span>0/${v.exp.toLocaleString()}</span>
+        <span>${v.exp.toLocaleString()} EXP can be leveled up</span>
+      </div>
+    </div>
+  `;
+});
+slider.innerHTML = html;
+
+// Default showing VIP1 benefits
+function updateBenefits(level) {
+  const v = vipData[level];
+  document.getElementById('benefitsContainer').innerHTML = `
+    <div class="b-row">
+      <div class="b-left"><div class="b-icon">🎁</div><div class="b-info"><h4>Level up rewards</h4><p>Each account can only receive 1 time</p></div></div>
+      <div class="b-right">₹ ${v.upReward}</div>
+    </div>
+    <div class="b-row">
+      <div class="b-left"><div class="b-icon">🪙</div><div class="b-info"><h4>Monthly reward</h4><p>Each account can only receive 1 time per month</p></div></div>
+      <div class="b-right">₹ ${v.monthly}</div>
+    </div>
+    <div class="b-row">
+      <div class="b-left"><div class="b-icon">💸</div><div class="b-info"><h4>Rebate rate</h4><p>Increase income of rebate</p></div></div>
+      <div class="b-right">${v.rebate}</div>
+    </div>
+  `;
+}
+updateBenefits(1);
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-history').style.display = tab === 'history' ? 'block' : 'none';
+  document.getElementById('tab-rules').style.display = tab === 'rules' ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
