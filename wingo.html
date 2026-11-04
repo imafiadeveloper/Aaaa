@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#1A1A1A">
-<title>BDG LOTTERY7 - WinGo 30s</title>
+<title>BDG LOTTERY7 - WinGo 1 Min</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
@@ -12,7 +12,7 @@ body{background:#1A1A1A;color:#fff;min-height:100vh;padding-bottom:20px;}
 button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
 ::-webkit-scrollbar{width:0;height:0;}
 
-/* ===== NAVBAR ===== */
+/* Navbar */
 .navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;border-bottom:1px solid rgba(255,255,255,0.05);}
 .navbar-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
 .navbar-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
@@ -21,8 +21,8 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .nav-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;}
 
-/* ===== INFO BOX (Balance) ===== */
-.info-box{background:#262626;margin:16px;border-radius:16px;padding:16px;position:relative;overflow:hidden;}
+/* Info Box */
+.info-box{background:#262626;margin:16px;border-radius:16px;padding:16px;}
 .info-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .info-left{display:flex;align-items:center;gap:10px;}
 .wallet-icon{width:40px;height:40px;background:rgba(250,229,159,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;}
@@ -35,20 +35,20 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .btn-dep{background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;}
 .btn-wd{border:1px solid #C4933F;color:#C4933F;}
 
-/* ===== NOTICE BAR ===== */
+/* Notice */
 .notice-bar{margin:0 16px 16px;background:#262626;border-radius:20px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:11px;color:#a6a9ae;}
 .notice-bar svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;flex-shrink:0;}
 .notice-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* ===== TIME TABS ===== */
+/* Tabs */
 .tabs-wrap{display:flex;margin:0 16px 16px;background:#262626;border-radius:12px;padding:4px;}
 .tab{flex:1;text-align:center;padding:10px 0;font-size:13px;font-weight:600;color:#a6a9ae;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .tab.active{background:#333;color:#FAE59F;}
 .tab.active svg{stroke:#FAE59F;}
 .tab svg{width:20px;height:20px;stroke:#a6a9ae;fill:none;stroke-width:2;}
 
-/* ===== TIMER BOX ===== */
-.timer-box{margin:0 16px 16px;background:url('./images/diban-f8c2e476.png') no-repeat center / 100% 100%;padding:20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;color:#8f5206;background-color: #262626;}
+/* Timer Box */
+.timer-box{margin:0 16px 16px;background-color:#262626;padding:20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;border: 1px solid rgba(250,229,159,0.1);}
 .tb-left h2{font-size:18px;font-weight:800;margin-bottom:4px;color:#FAE59F;}
 .tb-left p{font-size:11px;font-weight:600;color:#a6a9ae;}
 .tb-right{text-align:right;}
@@ -57,7 +57,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .tb-time span{background:#fff;color:#333;font-size:14px;font-weight:800;padding:2px 6px;border-radius:4px;}
 .tb-time span.colon{background:transparent;padding:0;color:#fff;}
 
-/* ===== BETTING AREA ===== */
+/* Betting Area */
 .bet-area{margin:0 16px;background:#262626;border-radius:16px;padding:16px;}
 .color-btns{display:flex;gap:10px;margin-bottom:16px;}
 .btn-color{flex:1;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;cursor:pointer;}
@@ -77,7 +77,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .btn-big{background:#f5a623;color:#fff;}
 .btn-small{background:#4a90e2;color:#fff;}
 
-/* ===== HISTORY TABLE ===== */
+/* History */
 .history-wrap{margin:24px 16px;}
 .history-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .history-head h3{font-size:15px;font-weight:600;}
@@ -90,7 +90,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .res-big{color:#f5a623;}
 .res-small{color:#4a90e2;}
 
-/* ===== MODAL (BET PLACE) ===== */
+/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
 .modal-content{background:#292929;width:100%;border-radius:20px 20px 0 0;padding:20px;animation:slideUp .3s ease;}
@@ -118,7 +118,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .btn-cancel{flex:1;height:48px;border-radius:12px;background:#333;color:#fff;font-size:15px;font-weight:600;}
 .btn-confirm{flex:2;height:48px;border-radius:12px;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:15px;font-weight:700;}
 
-/* ===== WIN/LOSE POPUP ===== */
+/* Result Popup */
 .result-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);background:#2a2a2a;border-radius:20px;padding:30px;z-index:9999;text-align:center;opacity:0;pointer-events:none;transition:all 0.3s ease;width:80%;max-width:300px;box-shadow:0 10px 30px rgba(0,0,0,0.7);border:1px solid rgba(250,229,159,0.2);}
 .result-popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
 .res-icon{font-size:50px;margin-bottom:10px;}
@@ -128,12 +128,11 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .res-amt{font-size:26px;font-weight:800;color:#FAE59F;margin-bottom:16px;}
 .res-detail{font-size:13px;color:#a6a9ae;}
 
-.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;display:none;text-align:center;transition:0.3s;}
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;display:none;text-align:center;}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left" onclick="location.href='home.html'">
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
@@ -149,7 +148,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- INFO BOX -->
 <div class="info-box">
   <div class="info-top">
     <div class="info-left">
@@ -166,13 +164,11 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- NOTICE -->
 <div class="notice-bar">
   <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
-  <div class="notice-text">Welcome to BDG LOTTERY7 WinGo. 30 seconds to order, 5 seconds waiting for the draw.</div>
+  <div class="notice-text">Welcome to BDG LOTTERY7 WinGo. 1 minute 1 issue, 45 seconds to order, 15 seconds waiting for the draw.</div>
 </div>
 
-<!-- TIME TABS -->
 <div class="tabs-wrap">
   <div class="tab active">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -192,7 +188,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- TIMER -->
 <div class="timer-box">
   <div class="tb-left">
     <h2 id="periodText">Loading...</h2>
@@ -208,7 +203,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- BETTING AREA -->
 <div class="bet-area">
   <div class="color-btns">
     <button class="btn-color btn-green" onclick="openBetModal('green')">Green</button>
@@ -216,9 +210,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <button class="btn-color btn-red" onclick="openBetModal('red')">Red</button>
   </div>
   
-  <div class="num-grid" id="numGrid">
-    <!-- Numbers generated by JS -->
-  </div>
+  <div class="num-grid" id="numGrid"></div>
 
   <div class="size-btns">
     <button class="btn-size btn-big" onclick="openBetModal('big')">Big</button>
@@ -226,11 +218,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- HISTORY -->
 <div class="history-wrap">
   <div class="history-head">
     <h3>Game History</h3>
-    <span style="font-size:12px;color:#a6a9ae;cursor:pointer;" onclick="toast('View All coming soon')">View All ></span>
   </div>
   <div class="history-table">
     <div class="ht-head">
@@ -239,13 +229,10 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="ht-col">Big / Small</div>
       <div class="ht-col">Color</div>
     </div>
-    <div id="historyList">
-      <!-- Rows generated by JS -->
-    </div>
+    <div id="historyList"></div>
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="betModal">
   <div class="modal-content">
     <div class="modal-head">
@@ -293,7 +280,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- WIN / LOSE POPUP -->
 <div class="result-popup" id="resultPopup">
   <div class="res-icon" id="resIcon">🎉</div>
   <div class="res-title" id="resTitle">You Win</div>
@@ -303,7 +289,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="toast" id="toast"></div>
 
-<!-- Audio Elements -->
 <audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
 <audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
 
@@ -358,11 +343,7 @@ const toastEl = document.getElementById('toast');
 window.toast = function(msg) {
   toastEl.textContent = msg;
   toastEl.style.display = 'block';
-  toastEl.style.opacity = '1';
-  setTimeout(() => {
-    toastEl.style.opacity = '0';
-    setTimeout(() => toastEl.style.display = 'none', 300);
-  }, 2000);
+  setTimeout(() => toastEl.style.display = 'none', 2500);
 }
 
 /* ==================== INIT USER ==================== */
@@ -380,7 +361,7 @@ onAuthStateChanged(auth, async (user) => {
   loadHistory();
 });
 
-/* ==================== GAME ENGINE (30 SEC) ==================== */
+/* ==================== GAME ENGINE (1 MIN) ==================== */
 function initGame() {
   const colors = ['violet','green','red','green','red','violet','red','green','red','green'];
   const grid = document.getElementById('numGrid');
@@ -399,6 +380,7 @@ function initGame() {
   runTimer();
 }
 
+// Yahan 1 minute (60s) ka calculation hai
 function runTimer() {
   if(timerInterval) clearInterval(timerInterval);
   
@@ -406,35 +388,44 @@ function runTimer() {
     const now = new Date();
     const ms = now.getMilliseconds();
     
-    // Calculate 30s Slot
+    // 1 minute = 60 seconds
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const diffSecs = Math.floor((now - startOfDay) / 1000);
-    const slot = Math.floor(diffSecs / 30);
     
-    // Period ID
+    // Har 60 second me slot change hoga
+    const slot = Math.floor(diffSecs / 60);
+    
+    // Period ID (YYYYMMDD + slot)
     const periodId = now.getFullYear().toString() + 
                     (now.getMonth()+1).toString().padStart(2,'0') + 
                     now.getDate().toString().padStart(2,'0') + 
-                    (1000 + (slot % 10000)); // Keep it 4 digits
+                    (1000 + (slot % 10000)); 
 
-    // If slot changed, trigger result check for previous period
+    // Check if period changed
     if(currentSlotId !== slot && currentSlotId !== 0) {
-       handlePeriodEnd(currentPeriod, currentSlotId);
+       handlePeriodEnd(currentPeriod);
     }
     
     currentSlotId = slot;
     currentPeriod = periodId;
     document.getElementById('periodText').textContent = currentPeriod;
 
-    // Calculate time left (30 to 0)
-    // 25s to 30s is "Waiting" phase (no bets)
-    const secInSlot = diffSecs % 30;
-    let secLeft = 30 - secInSlot;
+    // Calculate time left (60 to 0)
+    const secInSlot = diffSecs % 60;
+    let secLeft = 60 - secInSlot;
     
-    // Logic: if secLeft is 30, display 00:00 for a moment, then start
-    let displaySecs = secLeft === 30 ? 0 : secLeft;
+    // Timer Display Update (e.g. 01:00, 00:59, etc.)
+    let displaySecs = secLeft === 60 ? 0 : secLeft;
+    const mT = Math.floor(displaySecs / 60);
+    const sT = displaySecs % 60;
+    
+    document.getElementById('minTens').textContent = Math.floor(mT/10).toString();
+    document.getElementById('minOnes').textContent = (mT%10).toString();
+    document.getElementById('secTens').textContent = Math.floor(sT/10).toString();
+    document.getElementById('secOnes').textContent = (sT%10).toString();
 
-    if(secLeft <= 5) {
+    // Last 15 secs = wait for draw (stop betting)
+    if(secLeft <= 15) {
       isBettingClosed = true;
       document.getElementById('confirmBtn').disabled = true;
       document.getElementById('confirmBtn').style.opacity = '0.5';
@@ -446,15 +437,7 @@ function runTimer() {
       updateTotal();
     }
 
-    // Update UI Timer
-    const mT = Math.floor(displaySecs / 60);
-    const sT = displaySecs % 60;
-    document.getElementById('minTens').textContent = '0';
-    document.getElementById('minOnes').textContent = mT.toString();
-    document.getElementById('secTens').textContent = Math.floor(sT/10).toString();
-    document.getElementById('secOnes').textContent = (sT%10).toString();
-
-    // Sound Logic (Tick every second in last 5 sec)
+    // Sound ticks in last 5 seconds
     if(secLeft <= 5 && ms < 200) {
       if(lastPlayedSec !== displaySecs) {
         lastPlayedSec = displaySecs;
@@ -468,119 +451,81 @@ function runTimer() {
 }
 
 /* ==================== PERIOD END & RESULT LOGIC ==================== */
-async function handlePeriodEnd(periodId, slotId) {
+async function handlePeriodEnd(periodId) {
+  if(!periodId) return;
+  
   try {
-    // 1. Check if user had any bets in this period
-    const q = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), where('period', '==', periodId));
-    const snap = await getDocs(q);
+    // 1. Check result exists in DB
+    const resRef = doc(db, 'results', periodId);
+    const resSnap = await getDoc(resRef);
     
-    if(!snap.empty) {
-      // User has bets. Need to calculate result.
-      // Generate a random number 0-9
-      const resultNum = Math.floor(Math.random() * 10);
-      
-      // Determine color & size
-      let color = 'violet';
-      if([1,3,7,9].includes(resultNum)) color = 'green';
-      else if([2,4,6,8].includes(resultNum)) color = 'red';
-      
-      let size = resultNum >= 5 ? 'big' : 'small';
+    if(!resSnap.exists()) {
+        // Generate new result
+        const resultNum = Math.floor(Math.random() * 10);
+        let color = 'violet';
+        if([1,3,7,9].includes(resultNum)) color = 'green';
+        else if([2,4,6,8].includes(resultNum)) color = 'red';
+        let size = resultNum >= 5 ? 'big' : 'small';
 
-      let totalWin = 0;
-      
-      // Loop through user's bets for this period
-      const promises = [];
-      snap.forEach(betDoc => {
-        const bet = betDoc.data();
-        let isWin = false;
+        // Save result globally
+        await setDoc(resRef, {
+          period: periodId,
+          number: resultNum,
+          color: color,
+          size: size,
+          createdAt: serverTimestamp()
+        });
+
+        // 2. Process User Bets for this period
+        const q = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+        const snap = await getDocs(q);
         
-        // Logic: 
-        // Green: 1,3,7,9 -> 2x
-        // Red: 2,4,6,8 -> 2x
-        // Violet: 0,5 -> 4.5x
-        // Number: exact -> 9x
-        // Big: 5-9 -> 2x
-        // Small: 0-4 -> 2x
+        if(!snap.empty) {
+          let totalWin = 0;
+          const promises = [];
+          
+          snap.forEach(betDoc => {
+            const bet = betDoc.data();
+            let isWin = false;
 
-        if(bet.choice === 'green' && [1,3,7,9].includes(resultNum)) isWin = true;
-        if(bet.choice === 'red' && [2,4,6,8].includes(resultNum)) isWin = true;
-        if(bet.choice === 'violet' && [0,5].includes(resultNum)) isWin = true;
-        if(bet.choice === 'big' && [5,6,7,8,9].includes(resultNum)) isWin = true;
-        if(bet.choice === 'small' && [0,1,2,3,4].includes(resultNum)) isWin = true;
-        if(parseInt(bet.choice) === resultNum) isWin = true;
+            if(bet.choice === 'green' && [1,3,7,9].includes(resultNum)) isWin = true;
+            if(bet.choice === 'red' && [2,4,6,8].includes(resultNum)) isWin = true;
+            if(bet.choice === 'violet' && [0,5].includes(resultNum)) isWin = true;
+            if(bet.choice === 'big' && [5,6,7,8,9].includes(resultNum)) isWin = true;
+            if(bet.choice === 'small' && [0,1,2,3,4].includes(resultNum)) isWin = true;
+            if(parseInt(bet.choice) === resultNum) isWin = true;
 
-        let winAmt = 0;
-        if(isWin) {
-          if(parseInt(bet.choice) === resultNum) winAmt = bet.amount * 9;
-          else if(bet.choice === 'violet') winAmt = bet.amount * 4.5;
-          else winAmt = bet.amount * 2;
+            let winAmt = 0;
+            if(isWin) {
+              if(parseInt(bet.choice) === resultNum) winAmt = bet.amount * 9;
+              else if(bet.choice === 'violet') winAmt = bet.amount * 4.5;
+              else winAmt = bet.amount * 2;
+            }
+
+            totalWin += winAmt;
+            promises.push(updateDoc(doc(db, 'bets', betDoc.id), {
+              status: isWin ? 'win' : 'lose',
+              resultNum: resultNum,
+              winAmount: winAmt
+            }));
+          });
+
+          await Promise.all(promises);
+
+          if(totalWin > 0) {
+            await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(totalWin) });
+            userBalance += totalWin;
+            document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+            showResultPopup(true, totalWin, periodId, resultNum);
+          } else {
+            showResultPopup(false, 0, periodId, resultNum);
+          }
         }
-
-        totalWin += winAmt;
         
-        // Update bet record
-        promises.push(updateDoc(doc(db, 'bets', betDoc.id), {
-          status: isWin ? 'win' : 'lose',
-          resultNum: resultNum,
-          winAmount: winAmt
-        }));
-      });
-
-      await Promise.all(promises);
-
-      // Save Result to DB (for history)
-      await setDoc(doc(db, 'results', periodId), {
-        period: periodId,
-        number: resultNum,
-        color: color,
-        size: size,
-        createdAt: serverTimestamp()
-      });
-
-      // If user won, add balance
-      if(totalWin > 0) {
-        await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(totalWin) });
-        userBalance += totalWin;
-        document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
-        
-        // Show Win Popup
-        showResultPopup(true, totalWin, periodId, resultNum);
-      } else {
-        // Show Lose Popup
-        showResultPopup(false, 0, periodId, resultNum);
-      }
-      
-      loadHistory();
-
-    } else {
-      // No bet by user, but we still need to generate result for Game History?
-      // In a real app, a global server cron generates the result.
-      // For this frontend-only demo, we'll generate a random result for the history display
-      // and save it so all users see the same (if they load it).
-      
-      const resRef = doc(db, 'results', periodId);
-      const resSnap = await getDoc(resRef);
-      
-      if(!resSnap.exists()) {
-         const resultNum = Math.floor(Math.random() * 10);
-         let color = 'violet';
-         if([1,3,7,9].includes(resultNum)) color = 'green';
-         else if([2,4,6,8].includes(resultNum)) color = 'red';
-         let size = resultNum >= 5 ? 'big' : 'small';
-         
-         await setDoc(resRef, {
-           period: periodId,
-           number: resultNum,
-           color: color,
-           size: size,
-           createdAt: serverTimestamp()
-         });
-         loadHistory();
-      }
+        loadHistory(); 
     }
-
   } catch(err) {
-    console.error("Result calculation error:", err);
+    console.error("Result error:", err);
   }
 }
 
@@ -608,16 +553,12 @@ function showResultPopup(isWin, amount, period, number) {
   detail.textContent = `Period: ${period} | Result: ${number}`;
   
   popup.classList.add('show');
-  
-  setTimeout(() => {
-    popup.classList.remove('show');
-  }, 3000);
+  setTimeout(() => popup.classList.remove('show'), 3000);
 }
 
 /* ==================== BETTING LOGIC ==================== */
 window.openBetModal = function(choice) {
   if(isBettingClosed) return toast('Betting closed for this period');
-  
   selectedChoice = choice;
   document.getElementById('modalChoice').textContent = choice.toUpperCase();
   document.getElementById('betModal').classList.add('show');
@@ -678,12 +619,10 @@ window.placeBet = async function() {
   btn.innerText = 'Placing...';
 
   try {
-    // 1. Deduct Balance
     await updateDoc(doc(db, 'users', currentUser.uid), {
       balance: increment(-total)
     });
     
-    // 2. Save Bet in Firestore
     await addDoc(collection(db, 'bets'), {
       userId: currentUser.uid,
       period: currentPeriod,
