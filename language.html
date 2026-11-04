@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language</title>
+<style>
+body{background:#1A1A1A;color:#fff;font-family:'Inter',sans-serif;margin:0;}
+.navbar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;cursor:pointer;}
+.nav-title{font-size:16px;font-weight:600;}
+.list{background:#262626;margin:16px;border-radius:12px;overflow:hidden;}
+.item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid #333;font-size:15px;}
+.item:last-child{border:none;}
+.left{display:flex;align-items:center;gap:12px;}
+.flag{font-size:24px;}
+.check{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#FAE59F,#C4933F);display:flex;align-items:center;justify-content:center;}
+.check svg{width:14px;height:14px;stroke:#3a2a10;fill:none;stroke-width:3;}
+.circle{width:22px;height:22px;border-radius:50%;border:1px solid #666;}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-title">Language</div>
+  <div style="width:24px;"></div>
+</div>
+<div class="list">
+  <div class="item">
+    <div class="left"><span class="flag">🇺🇸</span> English</div>
+    <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+  </div>
+  <div class="item">
+    <div class="left"><span class="flag">🇮🇳</span> हिन्दी (Hindi)</div>
+    <div class="circle"></div>
+  </div>
+</div>
+</body>
+</html>

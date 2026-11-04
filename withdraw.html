@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Withdraw - BDG LOTTERY7</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:#1A1A1A;color:#fff;min-height:100vh;}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+.nav-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
+.nav-title{font-size:16px;font-weight:600;}
+.nav-right{font-size:13px;color:#a6a9ae;cursor:pointer;}
+.banner{margin:16px;background:linear-gradient(135deg,#d9b45b,#f5e5a3);border-radius:16px;padding:20px;color:#3a2a10;}
+.banner .label{font-size:13px;display:flex;align-items:center;gap:6px;}
+.banner .amt{font-size:28px;font-weight:800;margin-top:8px;display:flex;align-items:center;gap:8px;}
+.banner .amt svg{width:20px;height:20px;stroke:#3a2a10;fill:none;stroke-width:2.5;}
+.section-title{font-size:14px;font-weight:600;margin:0 16px 8px;color:#a6a9ae;}
+.methods{display:flex;gap:10px;margin:0 16px;}
+.method{flex:1;background:#262626;border-radius:12px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid transparent;}
+.method.active{border-color:#FAE59F;background:rgba(250,229,159,0.1);}
+.method svg{width:30px;height:30px;stroke:#FAE59F;fill:none;stroke-width:2;}
+.input-box{margin:16px;background:#262626;border-radius:16px;padding:16px;}
+.amt-input{display:flex;align-items:center;background:#1A1A1A;border-radius:10px;padding:12px 16px;margin-bottom:16px;}
+.amt-input span{font-size:18px;color:#FAE59F;margin-right:10px;font-weight:600;}
+.amt-input input{flex:1;background:transparent;border:none;color:#fff;font-size:16px;outline:none;}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;color:#a6a9ae;}
+.row span:last-child{color:#FAE59F;font-weight:600;}
+.all-btn{background:transparent;border:1px solid #FAE59F;color:#FAE59F;padding:4px 12px;border-radius:16px;font-size:12px;cursor:pointer;}
+.btn-withdraw{width:100%;height:48px;border-radius:24px;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:16px;font-weight:700;border:none;margin-top:16px;cursor:pointer;transition:0.2s;}
+.btn-withdraw:disabled{background:#444;color:#888;cursor:not-allowed;}
+.rules{margin:16px;border:1px solid #333;border-radius:12px;padding:16px;}
+.rules p{font-size:12px;color:#a6a9ae;line-height:1.8;display:flex;gap:8px;margin-bottom:6px;}
+.rules p::before{content:'🔸';font-size:10px;margin-top:3px;}
+.rules .red{color:#ff4d4f;font-weight:600;}
+.history-section{margin-top:24px;padding:0 16px;}
+.hs-title{font-size:16px;font-weight:600;margin-bottom:12px;}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,30,30,0.98);color:#fff;font-size:13px;padding:12px 22px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9999;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='wallet.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-title">Withdraw</div>
+  <div class="nav-right" onclick="location.href='withdraw-history.html'">Withdrawal history</div>
+</div>
+
+<div class="banner">
+  <div class="label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3a2a10" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Available balance</div>
+  <div class="amt"><span id="availBal">₹0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="section-title">Payment Method</div>
+<div class="methods">
+  <div class="method" onclick="toast('Bank Card coming soon')">
+    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> BANK CARD
+  </div>
+  <div class="method" onclick="toast('USDT coming soon')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9 8h6M12 8v8"/></svg> USDT
+  </div>
+  <div class="method active" onclick="toast('UPI Selected')">
+    <svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/></svg> UPI
+  </div>
+</div>
+
+<div class="input-box">
+  <div class="amt-input">
+    <span>₹</span>
+    <input type="number" id="amtInput" placeholder="Please enter the amount" oninput="checkAmt()">
+  </div>
+  <div class="row">
+    <span>Withdrawable balance ₹<span id="wdBal">0.00</span></span>
+    <button class="all-btn" onclick="setAll()">All</button>
+  </div>
+  <div class="row">
+    <span>Withdrawal amount received</span>
+    <span id="recvAmt">₹0.00</span>
+  </div>
+  <button class="btn-withdraw" id="wdBtn" disabled onclick="submitWithdraw()">Withdraw</button>
+</div>
+
+<div class="rules">
+  <p>Need to bet <span class="red">₹0.00</span> to be able to withdraw</p>
+  <p>Withdraw time <span class="red">00:00-23:59</span></p>
+  <p>Inday Remaining Withdrawal Times <span class="red">3</span></p>
+  <p>Withdrawal amount range <span class="red">₹110.00-₹50,000.00</span></p>
+  <p>Please check your registered bank information again before making a withdrawal. If your registered bank information is incorrect, our company will not be responsible for any losses you may incur.</p>
+  <p>If your registered bank information is incorrect, please contact customer service.</p>
+</div>
+
+<div class="history-section">
+  <div class="hs-title">Withdrawal history</div>
+  <!-- Placeholder for mini history -->
+  <div style="text-align:center; color:#666; font-size:13px; padding:20px;">Go to withdrawal history for details</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, addDoc, collection, serverTimestamp, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const toastEl = document.getElementById('toast');
+const showToast = (msg) => { toastEl.textContent = msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'), 2500); }
+
+let currentUser = null;
+let userBalance = 0;
+const MIN_WD = 110;
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user) return location.replace('index.html');
+  currentUser = user;
+  
+  const snap = await getDoc(doc(db,'users',user.uid));
+  if(snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('availBal').textContent = '₹' + userBalance.toFixed(2);
+    document.getElementById('wdBal').textContent = userBalance.toFixed(2);
+  }
+});
+
+window.checkAmt = function() {
+  const val = parseFloat(document.getElementById('amtInput').value) || 0;
+  const btn = document.getElementById('wdBtn');
+  
+  document.getElementById('recvAmt').textContent = '₹' + val.toFixed(2);
+  
+  if(val >= MIN_WD && val <= userBalance) {
+    btn.disabled = false;
+  } else {
+    btn.disabled = true;
+  }
+}
+
+window.setAll = function() {
+  document.getElementById('amtInput').value = userBalance;
+  checkAmt();
+}
+
+window.submitWithdraw = async function() {
+  const amt = parseFloat(document.getElementById('amtInput').value);
+  if(amt < MIN_WD) return showToast(`Minimum withdrawal is ₹${MIN_WD}`);
+  if(amt > userBalance) return showToast('Insufficient balance');
+  
+  const btn = document.getElementById('wdBtn');
+  btn.disabled = true;
+  btn.innerText = 'Processing...';
+
+  try {
+    const orderId = 'WD' + Date.now();
+    
+    // Deduct balance and create request
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(-amt)
+    });
+
+    await addDoc(collection(db, 'withdrawals'), {
+      userId: currentUser.uid,
+      orderId: orderId,
+      amount: amt,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+
+    showToast('Withdrawal request submitted!');
+    setTimeout(() => location.href = 'withdraw-history.html', 1500);
+    
+  } catch(err) {
+    console.error(err);
+    showToast('Failed to process request');
+    btn.disabled = false;
+    btn.innerText = 'Withdraw';
+  }
+}
+</script>
+</body>
+</html>

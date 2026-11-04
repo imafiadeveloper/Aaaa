@@ -5,21 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#1A1A1A">
 <title>BDG LOTTERY7 - Account</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;width:100%;background:#1A1A1A;font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;}
 a{text-decoration:none;color:inherit;}
 button{font-family:inherit;cursor:pointer;border:none;outline:none;}
-input{font-family:inherit;outline:none;border:none;}
-img{display:block;max-width:100%;}
 ::-webkit-scrollbar{width:0;height:0;}
 
 /* ============ NAVBAR ============ */
 .navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
-.navbar-left{width:40px;height:40px;display:flex;align-items:center;justify-content:flex-start;cursor:pointer;}
+.navbar-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
 .navbar-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
 
 /* ============ TOP PROFILE SECTION ============ */
@@ -60,7 +56,6 @@ img{display:block;max-width:100%;}
 .sa-info{display:flex;flex-direction:column;gap:2px;}
 .sa-title{font-size:14px;font-weight:600;color:#fff;}
 .sa-sub{font-size:11px;color:#a6a9ae;}
-/* Sub Action Colors */
 .sa-item:nth-child(1) .sa-icon{background:#1a263d;} .sa-item:nth-child(1) svg{stroke:#4a90e2;}
 .sa-item:nth-child(2) .sa-icon{background:#1a3d2b;} .sa-item:nth-child(2) svg{stroke:#2ecc71;}
 .sa-item:nth-child(3) .sa-icon{background:#3d2222;} .sa-item:nth-child(3) svg{stroke:#ff6b6b;}
@@ -90,60 +85,28 @@ img{display:block;max-width:100%;}
 .sc-label{font-size:12px;color:#a6a9ae;text-align:center;}
 
 /* ============ LOGOUT BTN ============ */
-.logout-btn{margin:30px 16px 110px;border:1px solid #C4933F;border-radius:24px;height:48px;display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:#FAE59F;font-size:15px;font-weight:600;transition:background 0.2s;}
+.logout-wrap{display: flex; justify-content: center; margin: 30px 0 110px 0;}
+.logout-btn{border:1px solid #C4933F;border-radius:24px;height:48px;padding: 0 30px; display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:#FAE59F;font-size:15px;font-weight:600;transition:background 0.2s;}
 .logout-btn:active{background:rgba(250,229,159,0.1);}
 .logout-btn svg{width:20px;height:20px;stroke:#FAE59F;fill:none;stroke-width:2;}
 
 /* ============ BOTTOM TAB BAR ============ */
-.tabbar{
-  position:fixed;bottom:0;left:0;right:0;z-index:200;
-  height:64px;
-  background:rgba(15,15,15,0.98);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-top:1px solid rgba(255,255,255,0.07);
-  display:flex;align-items:stretch;
-  padding-bottom:env(safe-area-inset-bottom);
-}
-.tab{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;color:#6b6e73;font-size:10px;font-weight:600;
-  position:relative;transition:color .2s;cursor:pointer;
-}
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:200;height:64px;background:rgba(15,15,15,0.98);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom);}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6b6e73;font-size:10px;font-weight:600;position:relative;transition:color .2s;cursor:pointer;}
 .tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .tab.active{color:#FAE59F;}
-.tab-center{
-  flex:1;display:flex;align-items:center;justify-content:center;position:relative;
-}
-.tab-center-btn{
-  position:absolute;top:-22px;
-  width:56px;height:56px;border-radius:50%;
-  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 8px 20px rgba(196,147,63,0.5),0 0 0 4px #090909;
-  transition:transform .15s;
-}
+.tab-center{flex:1;display:flex;align-items:center;justify-content:center;position:relative;}
+.tab-center-btn{position:absolute;top:-22px;width:56px;height:56px;border-radius:50%;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(196,147,63,0.5),0 0 0 4px #090909;transition:transform .15s;}
 .tab-center-btn:active{transform:scale(0.92);}
 .tab-center-btn svg{width:26px;height:26px;stroke:#3a2a10;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-.tab-center-label{
-  position:absolute;bottom:8px;font-size:10px;font-weight:600;color:#FAE59F;
-}
+.tab-center-label{position:absolute;bottom:8px;font-size:10px;font-weight:600;color:#FAE59F;}
 
-/* ============ TOAST ============ */
-.toast{
-  position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:rgba(30,30,30,0.98);border:1px solid rgba(250,229,159,0.25);
-  color:#fff;font-size:13px;font-weight:500;
-  padding:12px 22px;border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.6);
-  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
-  z-index:9999;max-width:80vw;text-align:center;
-}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,30,30,0.98);border:1px solid rgba(250,229,159,0.25);color:#fff;font-size:13px;font-weight:500;padding:12px 22px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9999;max-width:80vw;text-align:center;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left" onclick="location.href='home.html'">
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
@@ -152,17 +115,16 @@ img{display:block;max-width:100%;}
   <div style="width:40px;"></div>
 </div>
 
-<!-- PROFILE HEADER -->
 <div class="profile-header">
   <div class="ph-bg"></div>
   <div class="ph-top">
     <div class="ph-user">
       <div class="ph-avatar">
-        <img src="https://ui-avatars.com/api/?name=User&background=random&color=fff" alt="User" id="avatarImg">
+        <img src="https://ui-avatars.com/api/?name=User&background=random&color=fff" alt="User" id="avatarImg" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="ph-info">
         <div class="ph-name">
-          <span id="userName">MemberLoading...</span>
+          <span id="userName">Member...</span>
           <span class="ph-vip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3"><path d="M12 2l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/></svg> VIP0</span>
         </div>
         <div class="ph-uid">
@@ -186,7 +148,6 @@ img{display:block;max-width:100%;}
   </div>
 </div>
 
-<!-- MAIN ACTIONS (4 Icons) -->
 <div class="main-actions">
   <div class="ma-item" onclick="location.href='wallet.html'">
     <div class="ma-icon"><svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg></div>
@@ -200,153 +161,81 @@ img{display:block;max-width:100%;}
     <div class="ma-icon"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></div>
     <span class="ma-label">Withdraw</span>
   </div>
-  <div class="ma-item" onclick="toast('VIP feature coming soon')">
+  <div class="ma-item" onclick="toast('VIP coming soon')">
     <div class="ma-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/></svg></div>
     <span class="ma-label">VIP</span>
   </div>
 </div>
 
-<!-- SUB ACTIONS (2x2 Grid) -->
 <div class="sub-actions">
   <div class="sa-item" onclick="location.href='bet-history.html'">
     <div class="sa-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
-    <div class="sa-info">
-      <div class="sa-title">Game History</div>
-      <div class="sa-sub">My game history</div>
-    </div>
+    <div class="sa-info"><div class="sa-title">Game History</div><div class="sa-sub">My game history</div></div>
   </div>
   <div class="sa-item" onclick="location.href='transaction-history.html'">
     <div class="sa-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg></div>
-    <div class="sa-info">
-      <div class="sa-title">Transaction</div>
-      <div class="sa-sub">My transaction history</div>
-    </div>
+    <div class="sa-info"><div class="sa-title">Transaction</div><div class="sa-sub">My transaction history</div></div>
   </div>
   <div class="sa-item" onclick="location.href='deposit-history.html'">
     <div class="sa-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15h6M9 11h6"/></svg></div>
-    <div class="sa-info">
-      <div class="sa-title">Deposit</div>
-      <div class="sa-sub">My deposit history</div>
-    </div>
+    <div class="sa-info"><div class="sa-title">Deposit</div><div class="sa-sub">My deposit history</div></div>
   </div>
   <div class="sa-item" onclick="location.href='withdraw-history.html'">
     <div class="sa-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg></div>
-    <div class="sa-info">
-      <div class="sa-title">Withdraw</div>
-      <div class="sa-sub">My withdraw history</div>
-    </div>
+    <div class="sa-info"><div class="sa-title">Withdraw</div><div class="sa-sub">My withdraw history</div></div>
   </div>
 </div>
 
-<!-- LIST MENUS -->
 <div class="list-section">
   <div class="list-item" onclick="location.href='notification.html'">
-    <div class="li-left">
-      <div class="li-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
-      <span class="li-text">Notification</span>
-    </div>
-    <div class="li-right">
-      <span class="li-badge">1</span>
-      <svg class="li-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-    </div>
+    <div class="li-left"><div class="li-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><span class="li-text">Notification</span></div>
+    <div class="li-right"><span class="li-badge">1</span><svg class="li-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
   </div>
   <div class="list-item" onclick="location.href='gifts.html'">
-    <div class="li-left">
-      <div class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2zM12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
-      <span class="li-text">Gifts</span>
-    </div>
+    <div class="li-left"><div class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2zM12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div><span class="li-text">Gifts</span></div>
     <div class="li-right"><svg class="li-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
   </div>
   <div class="list-item" onclick="location.href='coupons.html'">
-    <div class="li-left">
-      <div class="li-icon"><svg viewBox="0 0 24 24"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 012 2v3a2 2 0 000 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a2 2 0 000-4V7a2 2 0 012-2z"/></svg></div>
-      <span class="li-text">My Top-Up Coupons</span>
-    </div>
+    <div class="li-left"><div class="li-icon"><svg viewBox="0 0 24 24"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 012 2v3a2 2 0 000 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a2 2 0 000-4V7a2 2 0 012-2z"/></svg></div><span class="li-text">My Top-Up Coupons</span></div>
     <div class="li-right"><svg class="li-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
   </div>
   <div class="list-item" onclick="location.href='game-stats.html'">
-    <div class="li-left">
-      <div class="li-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
-      <span class="li-text">Game statistics</span>
-    </div>
+    <div class="li-left"><div class="li-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div><span class="li-text">Game statistics</span></div>
     <div class="li-right"><svg class="li-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
   </div>
   <div class="list-item" onclick="location.href='language.html'">
-    <div class="li-left">
-      <div class="li-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
-      <span class="li-text">Language</span>
-    </div>
-    <div class="li-right">
-      <span class="li-val">English</span>
-      <svg class="li-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-    </div>
+    <div class="li-left"><div class="li-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><span class="li-text">Language</span></div>
+    <div class="li-right"><span class="li-val">English</span><svg class="li-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
   </div>
 </div>
 
-<!-- SERVICE CENTER -->
 <div class="service-center">
   <div class="sc-title">Service center</div>
   <div class="sc-grid">
-    <div class="sc-item" onclick="location.href='settings.html'">
-      <div class="sc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
-      <span class="sc-label">Settings</span>
-    </div>
-    <div class="sc-item" onclick="toast('Feedback feature coming soon')">
-      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
-      <span class="sc-label">Feedback</span>
-    </div>
-    <div class="sc-item" onclick="location.href='announcement.html'">
-      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
-      <span class="sc-label">Announcement</span>
-    </div>
-    <div class="sc-item" onclick="openTelegramSupport()">
-      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
-      <span class="sc-label">Customer Service</span>
-    </div>
-    <div class="sc-item" onclick="location.href='guide.html'">
-      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
-      <span class="sc-label">Beginner's Guide</span>
-    </div>
-    <div class="sc-item" onclick="location.href='about.html'">
-      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg></div>
-      <span class="sc-label">About us</span>
-    </div>
+    <div class="sc-item" onclick="location.href='settings.html'"><div class="sc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div><span class="sc-label">Settings</span></div>
+    <div class="sc-item" onclick="toast('Feedback coming soon')"><div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div><span class="sc-label">Feedback</span></div>
+    <div class="sc-item" onclick="location.href='notification.html'"><div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><span class="sc-label">Announcement</span></div>
+    <div class="sc-item" onclick="openTelegramSupport()"><div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div><span class="sc-label">Customer Service</span></div>
+    <div class="sc-item" onclick="location.href='guide.html'"><div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div><span class="sc-label">Beginner's Guide</span></div>
+    <div class="sc-item" onclick="location.href='about.html'"><div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg></div><span class="sc-label">About us</span></div>
   </div>
 </div>
 
-<!-- LOGOUT -->
-<button class="logout-btn" id="logoutBtn">
-  <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-  Log out
-</button>
+<div class="logout-wrap">
+  <button class="logout-btn" id="logoutBtn">
+    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+    Log out
+  </button>
+</div>
 
-<!-- BOTTOM TAB BAR -->
 <div class="tabbar">
-  <div class="tab" onclick="location.href='home.html'">
-    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
-    <span>Home</span>
-  </div>
-  <div class="tab" onclick="location.href='activity.html'">
-    <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-    <span>Activity</span>
-  </div>
-  <div class="tab-center">
-    <button class="tab-center-btn" onclick="location.href='promotion.html'">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-    </button>
-    <span class="tab-center-label">Promotion</span>
-  </div>
-  <div class="tab" onclick="location.href='wallet.html'">
-    <svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg>
-    <span>Wallet</span>
-  </div>
-  <div class="tab active" onclick="location.href='account.html'">
-    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    <span>Account</span>
-  </div>
+  <div class="tab" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg><span>Home</span></div>
+  <div class="tab" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>Activity</span></div>
+  <div class="tab-center"><button class="tab-center-btn" onclick="location.href='promotion.html'"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></button><span class="tab-center-label">Promotion</span></div>
+  <div class="tab" onclick="location.href='wallet.html'"><svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg><span>Wallet</span></div>
+  <div class="tab active" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Account</span></div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -354,76 +243,32 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ============ FIREBASE CONFIG ============ */
-const firebaseConfig = {
-  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
-  authDomain: "bdglottery7.firebaseapp.com",
-  projectId: "bdglottery7",
-  storageBucket: "bdglottery7.firebasestorage.app",
-  messagingSenderId: "568771943906",
-  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
-};
-
+const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ============ TELEGRAM CONFIG ============ */
 const TG_BOT_TOKEN = "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw";
 const TG_CHAT_ID = "8167337368";
 
-/* ============ TOAST ============ */
 const toastEl = document.getElementById('toast');
-let toastTimer = null;
-window.toast = function(msg){
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2500);
-}
+window.toast = (msg) => { toastEl.textContent = msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'), 2500); }
 
-/* ============ COPY FUNCTION ============ */
-window.copyText = function(elemId) {
-  const text = document.getElementById(elemId).innerText;
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(() => toast('Copied!'));
-  } else {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "absolute";
-    textArea.style.left = "-999999px";
-    document.body.prepend(textArea);
-    textArea.select();
-    try { document.execCommand('copy'); toast('Copied!'); } catch (error) { console.error(error); }
-    textArea.remove();
-  }
-}
+window.copyText = (id) => { navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>toast('Copied!')); }
 
-/* ============ TELEGRAM SUPPORT ============ */
-window.openTelegramSupport = async function() {
+window.openTelegramSupport = async () => {
   try {
     await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        chat_id: TG_CHAT_ID,
-        text: `📩 Account Support Request\nUser UID: ${currentUser?.uid || 'Unknown'}\nTime: ${new Date().toLocaleString('en-IN')}`
-      })
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ chat_id: TG_CHAT_ID, text: `📩 Account Support Request\nUser UID: ${currentUser?.uid || 'Unknown'}` })
     });
-    toast('Support notified. We will contact you soon.');
-  } catch(err) {
-    console.warn('Telegram error:', err);
-    toast('Support request sent.');
-  }
+    toast('Support notified.');
+  } catch(err) { toast('Support request sent.'); }
 }
 
-/* ============ AUTH STATE ============ */
 let currentUser = null;
 onAuthStateChanged(auth, async (user) => {
-  if(!user){
-    location.replace('index.html');
-    return;
-  }
+  if(!user) return location.replace('index.html');
   currentUser = user;
   loadUserData(user.uid);
 });
@@ -431,20 +276,15 @@ onAuthStateChanged(auth, async (user) => {
 async function loadUserData(uid){
   try{
     const snap = await getDoc(doc(db,'users',uid));
-    if(!snap.exists()){
-      toast('User profile not found');
-      return;
-    }
+    if(!snap.exists()) return toast('User not found');
     const data = snap.data();
     
-    // Update UI
-    document.getElementById('userName').textContent = data.name || data.username || 'Member';
+    document.getElementById('userName').textContent = data.name || 'Member';
     document.getElementById('uidText').textContent = uid.substring(0, 8).toUpperCase();
     
     const bal = Number(data.balance ?? data.wallet ?? data.money ?? 0);
-    document.getElementById('totalBalance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('totalBalance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
     
-    // Format date
     let lastLogin = 'Just now';
     if(data.lastLogin) {
       const d = data.lastLogin.toDate ? data.lastLogin.toDate() : new Date(data.lastLogin);
@@ -452,30 +292,15 @@ async function loadUserData(uid){
     }
     document.getElementById('lastLogin').textContent = 'Last login: ' + lastLogin;
     
-    // Optional Avatar
-    if(data.avatar) {
-      document.getElementById('avatarImg').src = data.avatar;
-    }
-  }catch(err){
-    console.error('loadUserData error:',err);
-    toast('Failed to load profile');
-  }
+    if(data.avatar) document.getElementById('avatarImg').src = data.avatar;
+  }catch(err){ toast('Failed to load profile'); }
 }
 
-document.getElementById('refreshBalBtn').addEventListener('click', () => {
-  if(currentUser) loadUserData(currentUser.uid);
-});
+document.getElementById('refreshBalBtn').addEventListener('click', () => { if(currentUser) loadUserData(currentUser.uid); });
 
-/* ============ LOGOUT ============ */
 document.getElementById('logoutBtn').addEventListener('click', async () => {
   if(!confirm('Are you sure you want to log out?')) return;
-  try {
-    await signOut(auth);
-    localStorage.clear();
-    location.replace('index.html');
-  } catch(err) {
-    toast('Logout failed');
-  }
+  await signOut(auth); localStorage.clear(); location.replace('index.html');
 });
 </script>
 </body>

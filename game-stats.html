@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Statistics</title>
+<style>
+body{background:#1A1A1A;color:#fff;font-family:'Inter',sans-serif;margin:0;}
+.navbar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;cursor:pointer;}
+.nav-title{font-size:16px;font-weight:600;}
+.tabs{display:flex;padding:16px;gap:10px;overflow-x:auto;}
+.tab{background:#262626;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;color:#a6a9ae;white-space:nowrap;}
+.tab.active{background:linear-gradient(90deg,#FAE59F,#C4933F);color:#3a2a10;}
+.stats-card{background:#262626;margin:0 16px 16px;border-radius:12px;padding:16px;text-align:center;}
+.stats-card h2{font-size:20px;color:#FAE59F;margin-bottom:4px;}
+.stats-card p{font-size:12px;color:#a6a9ae;}
+.game-list{background:#262626;margin:0 16px;border-radius:12px;padding:16px;}
+.game-item{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.game-icon{width:40px;height:40px;background:#333;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.game-details{flex:1;}
+.gd-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;color:#a6a9ae;}
+.gd-row span:last-child{color:#fff;font-weight:500;}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-title">Game statistics</div>
+  <div style="width:24px;"></div>
+</div>
+<div class="tabs">
+  <div class="tab active">Today</div>
+  <div class="tab">Yesterday</div>
+  <div class="tab">This week</div>
+  <div class="tab">This month</div>
+</div>
+<div class="stats-card">
+  <h2>₹0.00</h2>
+  <p>Total bet</p>
+</div>
+<div class="game-list">
+  <div class="game-item">
+    <div class="game-icon">🎰</div>
+    <div class="game-details">
+      <div style="font-size:14px;font-weight:600;margin-bottom:8px;">lottery</div>
+      <div class="gd-row"><span>Total bet</span><span>₹0.00</span></div>
+      <div class="gd-row"><span>Number of bets</span><span>0</span></div>
+      <div class="gd-row"><span>Winning amount</span><span>₹0.00</span></div>
+    </div>
+  </div>
+  <div class="game-item">
+    <div class="game-icon">📺</div>
+    <div class="game-details">
+      <div style="font-size:14px;font-weight:600;margin-bottom:8px;">video</div>
+      <div class="gd-row"><span>Total bet</span><span>₹0.00</span></div>
+      <div class="gd-row"><span>Number of bets</span><span>0</span></div>
+      <div class="gd-row"><span>Winning amount</span><span>₹0.00</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notification</title>
+<style>
+body{background:#1A1A1A;color:#fff;font-family:'Inter',sans-serif;margin:0;}
+.navbar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;cursor:pointer;}
+.nav-title{font-size:16px;font-weight:600;}
+.tabs{display:flex;padding:10px 16px;gap:10px;}
+.tab{flex:1;text-align:center;padding:12px;background:#262626;border-radius:8px;font-size:14px;font-weight:600;color:#a6a9ae;cursor:pointer;}
+.tab.active{background:linear-gradient(90deg,#FAE59F,#C4933F);color:#3a2a10;}
+.notice-card{background:#262626;margin:0 16px 16px;border-radius:12px;padding:16px;}
+.notice-title{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.notice-title svg{width:20px;height:20px;stroke:#FAE59F;fill:none;stroke-width:2;}
+.notice-body{font-size:13px;color:#a6a9ae;line-height:1.5;}
+.notice-time{font-size:11px;color:#666;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-title">Notification</div>
+  <div style="width:24px;"></div>
+</div>
+<div class="tabs">
+  <div class="tab active">Notification</div>
+  <div class="tab">Information</div>
+</div>
+<div class="notice-card">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> About Withdrawal - BDGGame Notify</div>
+  <div class="notice-body">Please Fill In The Correct Bank Card Information. The Platform Will Process Withdrawals Within 1-24 Hours Or More. The Withdrawal Status Is "Completed" And The Transaction Has Been Approved By The Platform.</div>
+  <div class="notice-time">2024-01-18 12:13:09</div>
+</div>
+<div class="notice-card">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> About Recharge - BDGGame Notify</div>
+  <div class="notice-body">Please Remember The Upi Id Of Your Payment And Fill In The Correct Utr Number And Amount To Submit. When You Need To Continue Recharging, Please Be Sure To Go To BDGGame To Get A New Upi Account Again!</div>
+  <div class="notice-time">2024-01-18 12:13:30</div>
+</div>
+</body>
+</html>

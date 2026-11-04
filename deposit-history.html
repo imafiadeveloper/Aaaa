@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Deposit History - BDG LOTTERY7</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:#1A1A1A;color:#fff;min-height:100vh;}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+.nav-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
+.nav-title{font-size:16px;font-weight:600;}
+.tabs-wrap{display:flex;overflow-x:auto;padding:10px 16px;gap:10px;white-space:nowrap;}
+.tabs-wrap::-webkit-scrollbar{display:none;}
+.tab-item{background:#262626;color:#a6a9ae;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.tab-item.active{background:linear-gradient(90deg,#FAE59F,#C4933F);color:#3a2a10;font-weight:700;}
+.filter-row{display:flex;gap:10px;padding:0 16px 16px;}
+.filter-box{flex:1;background:#262626;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#a6a9ae;cursor:pointer;}
+.filter-box svg{width:16px;height:16px;stroke:#a6a9ae;fill:none;stroke-width:2;}
+.tx-list{padding:0 16px;}
+.tx-card{background:#262626;border-radius:12px;padding:16px;margin-bottom:12px;position:relative;}
+.tx-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.tx-row:last-child{margin-bottom:0;}
+.tx-label{font-size:12px;color:#a6a9ae;}
+.tx-val{font-size:14px;font-weight:500;}
+.tx-amt{font-size:16px;font-weight:700;color:#6abe57;}
+.tx-status{padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600;}
+.st-pending{background:rgba(250,171,0,0.15);color:#ffab00;}
+.st-success{background:rgba(107,190,88,0.15);color:#6abe57;}
+.st-failed{background:rgba(242,65,59,0.15);color:#f2413b;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 0;color:#666;}
+.empty-state svg{width:100px;height:100px;margin-bottom:16px;opacity:0.5;}
+.loader{text-align:center;padding:20px;font-size:14px;color:#a6a9ae;}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='wallet.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-title">Deposit history</div>
+  <div style="width:40px;"></div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tab-item active">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All
+  </div>
+  <div class="tab-item">ArUpi Pay</div>
+  <div class="tab-item">UPI-QRpay</div>
+  <div class="tab-item">Wake UP-APP</div>
+</div>
+
+<div class="filter-row">
+  <div class="filter-box">All <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+  <div class="filter-box">Choose a date <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+</div>
+
+<div class="tx-list" id="txList">
+  <div class="loader">Loading history...</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user) return location.replace('index.html');
+  loadHistory(user.uid);
+});
+
+async function loadHistory(uid) {
+  const listEl = document.getElementById('txList');
+  try {
+    const q = query(collection(db, 'deposits'), where('userId', '==', uid));
+    const snap = await getDocs(q);
+    
+    if(snap.empty) {
+      listEl.innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>No data</span>
+        </div>`;
+      return;
+    }
+    
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+    
+    let html = '';
+    arr.forEach(data => {
+      let stClass = 'st-pending', stText = 'Pending';
+      if(data.status === 'success' || data.status === 'completed') { stClass = 'st-success'; stText = 'Success'; }
+      if(data.status === 'failed' || data.status === 'rejected' || data.status === 'cancelled') { stClass = 'st-failed'; stText = 'Failed'; }
+      
+      let dateStr = '--';
+      if(data.createdAt) {
+        const d = data.createdAt.toDate();
+        dateStr = `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+      }
+
+      html += `
+        <div class="tx-card">
+          <div class="tx-row">
+            <span class="tx-label">Order ID</span>
+            <span class="tx-val">${data.orderId || 'N/A'}</span>
+          </div>
+          <div class="tx-row">
+            <span class="tx-label">Amount</span>
+            <span class="tx-amt">₹${Number(data.amount).toFixed(2)}</span>
+          </div>
+          <div class="tx-row">
+            <span class="tx-label">UTR / Ref</span>
+            <span class="tx-val">${data.utr || 'N/A'}</span>
+          </div>
+          <div class="tx-row">
+            <span class="tx-label">Time</span>
+            <span class="tx-val">${dateStr}</span>
+          </div>
+          <div class="tx-row" style="margin-top:12px; padding-top:12px; border-top:1px solid #333;">
+            <span class="tx-label">Status</span>
+            <span class="tx-status ${stClass}">${stText}</span>
+          </div>
+        </div>`;
+    });
+    listEl.innerHTML = html;
+  } catch(e) {
+    listEl.innerHTML = `<div class="empty-state">Failed to load</div>`;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+Hi, I am building a lottery/gaming website (BDG LOTTERY7) and hosting it on GitHub Pages. I need you to act as an expert frontend developer (HTML, CSS, vanilla JS) and help me build the remaining pages.
+
+Here are the strict rules for our project:
+
+1. NO BACKEND: We are using pure HTML/CSS/JS hosted on GitHub Pages. No Node.js, no PHP.
+2. FIREBASE: We use Firebase for Auth and Firestore as the database. The config is:
+   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+   authDomain: "bdglottery7.firebaseapp.com",
+   projectId: "bdglottery7",
+   storageBucket: "bdglottery7.firebasestorage.app",
+   messagingSenderId: "568771943906",
+   appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+3. SINGLE FILE: For every page, give me the full code in a SINGLE HTML file (including CSS in <style> and JS in <script type="module">).
+4. UI DESIGN: 
+   - Background: Dark (#090909 or #1A1A1A).
+   - Primary Color: Golden gradient `linear-gradient(180deg, #FAE59F 0%, #C4933F 100%)`.
+   - Text: White and Grey (#a6a9ae).
+   - Font: 'Inter', 'Roboto', or system sans-serif.
+   - Bottom Tab Bar: Must have Home, Activity, Promotion (highlighted center), Wallet, Account. Use SVG icons.
+   - Mobile-first design.
+5. FIREBASE LOGIC: Always check if user is logged in (`onAuthStateChange`). If not, redirect to `index.html`. Fetch real user data from the `users` collection.
+6. NO GLITCHES: The code should be 100% working with no bugs. Make sure to handle errors, network latency, and prevent double-clicks.
+
+Project Structure currently completed:
+- `index.html` (Login/Register with Invite Code referral system).
+- `home.html` (Dashboard with banners, games, winners list, ranking, and Telegram customer service modal).
+- `promotion.html` (Data, My Team, History, Tutorial tabs).
+- `activity.html` (7 Days check-in rewards with rules and history).
+
+The Telegram Bot Config is:
+Bot Token: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw"
+Chat ID: "8167337368"
+
+I need you to build the remaining pages. 
+Next pages to build:
+1. `wallet.html` (Deposit / Withdraw UI)
+2. `account.html` (User Profile, Logout, History)
+3. `wingo.html` (The main 30s lottery game page)
+
+Please acknowledge these instructions. If you understand, just say "Ready to build. Which page do you want first?" and wait for my command. Do not generate any HTML code until I ask.
