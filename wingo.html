@@ -48,14 +48,14 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .tab svg{width:20px;height:20px;stroke:#a6a9ae;fill:none;stroke-width:2;}
 
 /* ===== TIMER BOX ===== */
-.timer-box{margin:0 16px 16px;background:url('./images/diban-f8c2e476.png') no-repeat center / 100% 100%;padding:20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;color:#8f5206;}
-.tb-left h2{font-size:16px;font-weight:800;margin-bottom:4px;}
-.tb-left p{font-size:11px;font-weight:600;}
+.timer-box{margin:0 16px 16px;background:url('./images/diban-f8c2e476.png') no-repeat center / 100% 100%;padding:20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;color:#8f5206;background-color: #262626;}
+.tb-left h2{font-size:18px;font-weight:800;margin-bottom:4px;color:#FAE59F;}
+.tb-left p{font-size:11px;font-weight:600;color:#a6a9ae;}
 .tb-right{text-align:right;}
-.tb-right p{font-size:11px;font-weight:600;margin-bottom:4px;}
+.tb-right p{font-size:11px;font-weight:600;margin-bottom:4px;color:#FAE59F;}
 .tb-time{display:flex;align-items:center;gap:2px;justify-content:flex-end;}
 .tb-time span{background:#fff;color:#333;font-size:14px;font-weight:800;padding:2px 6px;border-radius:4px;}
-.tb-time span.colon{background:transparent;padding:0;}
+.tb-time span.colon{background:transparent;padding:0;color:#fff;}
 
 /* ===== BETTING AREA ===== */
 .bet-area{margin:0 16px;background:#262626;border-radius:16px;padding:16px;}
@@ -66,10 +66,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .btn-red{background:#fd565c;}
 
 .num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;}
-.num-btn{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;cursor:pointer;}
-.num-btn small{font-size:8px;font-weight:400;opacity:0.8;position:absolute;bottom:4px;}
-.n0{background:#b659fe;}
-.n5{background:#b659fe;}
+.num-btn{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;position:relative;cursor:pointer;}
+.num-btn small{font-size:9px;font-weight:400;opacity:0.9;position:absolute;bottom:4px;text-transform: capitalize;}
+.n0, .n5{background:#b659fe;}
 .n1,.n3,.n7,.n9{background:#40ad72;}
 .n2,.n4,.n6,.n8{background:#fd565c;}
 
@@ -119,8 +118,17 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .btn-cancel{flex:1;height:48px;border-radius:12px;background:#333;color:#fff;font-size:15px;font-weight:600;}
 .btn-confirm{flex:2;height:48px;border-radius:12px;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:15px;font-weight:700;}
 
-/* ===== TOAST ===== */
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;display:none;text-align:center;}
+/* ===== WIN/LOSE POPUP ===== */
+.result-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);background:#2a2a2a;border-radius:20px;padding:30px;z-index:9999;text-align:center;opacity:0;pointer-events:none;transition:all 0.3s ease;width:80%;max-width:300px;box-shadow:0 10px 30px rgba(0,0,0,0.7);border:1px solid rgba(250,229,159,0.2);}
+.result-popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
+.res-icon{font-size:50px;margin-bottom:10px;}
+.res-title{font-size:22px;font-weight:800;margin-bottom:8px;}
+.res-win{color:#6abe57;}
+.res-lose{color:#f2413b;}
+.res-amt{font-size:26px;font-weight:800;color:#FAE59F;margin-bottom:16px;}
+.res-detail{font-size:13px;color:#a6a9ae;}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;display:none;text-align:center;transition:0.3s;}
 </style>
 </head>
 <body>
@@ -132,8 +140,8 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
   <div class="navbar-logo"></div>
   <div class="navbar-right">
-    <div class="nav-icon" onclick="toast('Sound On/Off')">
-      <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+    <div class="nav-icon" id="soundBtn">
+      <svg viewBox="0 0 24 24" id="soundIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
     </div>
     <div class="nav-icon" onclick="location.href='account.html'">
       <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
@@ -161,7 +169,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <!-- NOTICE -->
 <div class="notice-bar">
   <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
-  <div class="notice-text">Welcome to BDG LOTTERY7 WinGo. 1 minute 1 issue, 45 seconds to order, 15 seconds waiting for the draw.</div>
+  <div class="notice-text">Welcome to BDG LOTTERY7 WinGo. 30 seconds to order, 5 seconds waiting for the draw.</div>
 </div>
 
 <!-- TIME TABS -->
@@ -285,6 +293,14 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
+<!-- WIN / LOSE POPUP -->
+<div class="result-popup" id="resultPopup">
+  <div class="res-icon" id="resIcon">🎉</div>
+  <div class="res-title" id="resTitle">You Win</div>
+  <div class="res-amt" id="resAmt">₹0.00</div>
+  <div class="res-detail" id="resDetail">Period: 20231101</div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <!-- Audio Elements -->
@@ -294,7 +310,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs, where, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
 const app = initializeApp(firebaseConfig);
@@ -305,29 +321,48 @@ const db = getFirestore(app);
 let currentUser = null;
 let userBalance = 0;
 let currentPeriod = '';
-let timeLeft = 30; // 30 Seconds game
+let currentSlotId = 0;
 let timerInterval = null;
 let selectedChoice = '';
 let betAmount = 1;
 let betMulti = 1;
 let isBettingClosed = false;
+let isSoundOn = true;
+let lastPlayedSec = -1;
 
 /* ==================== AUDIO ==================== */
 const snd1 = document.getElementById('soundDi1');
 const snd2 = document.getElementById('soundDi2');
-function playTick(isLast5Sec) {
+function playTick(isLast3Sec) {
+  if(!isSoundOn) return;
   try {
-    if(isLast5Sec) { snd2.currentTime = 0; snd2.play(); }
+    if(isLast3Sec) { snd2.currentTime = 0; snd2.play(); }
     else { snd1.currentTime = 0; snd1.play(); }
   } catch(e) {}
 }
+
+document.getElementById('soundBtn').addEventListener('click', () => {
+  isSoundOn = !isSoundOn;
+  const icon = document.getElementById('soundIcon');
+  if(isSoundOn) {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
+    icon.style.stroke = '#fff';
+  } else {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    icon.style.stroke = '#666';
+  }
+});
 
 /* ==================== TOAST ==================== */
 const toastEl = document.getElementById('toast');
 window.toast = function(msg) {
   toastEl.textContent = msg;
   toastEl.style.display = 'block';
-  setTimeout(() => toastEl.style.display = 'none', 2500);
+  toastEl.style.opacity = '1';
+  setTimeout(() => {
+    toastEl.style.opacity = '0';
+    setTimeout(() => toastEl.style.display = 'none', 300);
+  }, 2000);
 }
 
 /* ==================== INIT USER ==================== */
@@ -347,21 +382,20 @@ onAuthStateChanged(auth, async (user) => {
 
 /* ==================== GAME ENGINE (30 SEC) ==================== */
 function initGame() {
-  // Generate Numbers 0-9
   const colors = ['violet','green','red','green','red','violet','red','green','red','green'];
   const grid = document.getElementById('numGrid');
   let html = '';
   for(let i=0; i<=9; i++) {
+    let textCol = colors[i] === 'violet' ? 'Voilet' : colors[i];
     html += `
       <div class="num-btn n${i}" onclick="openBetModal('${i}')">
         <span>${i}</span>
-        <small>${colors[i] === 'violet' ? 'Voilet' : colors[i]}</small>
+        <small>${textCol}</small>
       </div>
     `;
   }
   grid.innerHTML = html;
 
-  // Start Timer Logic
   runTimer();
 }
 
@@ -370,30 +404,36 @@ function runTimer() {
   
   function tick() {
     const now = new Date();
-    const seconds = now.getSeconds();
     const ms = now.getMilliseconds();
     
-    // 30 Second game
-    // Period changes every 30 seconds
-    // 00-29 = one period, 30-59 = next period
-    const periodIndex = Math.floor(seconds / 30);
-    
-    // Format Period ID: YYYYMMDD + (Total 30s slots since midnight)
+    // Calculate 30s Slot
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const diffSecs = Math.floor((now - startOfDay) / 1000);
     const slot = Math.floor(diffSecs / 30);
-    currentPeriod = now.getFullYear().toString() + 
+    
+    // Period ID
+    const periodId = now.getFullYear().toString() + 
                     (now.getMonth()+1).toString().padStart(2,'0') + 
                     now.getDate().toString().padStart(2,'0') + 
-                    (1000 + slot); // Just an ID
-                    
+                    (1000 + (slot % 10000)); // Keep it 4 digits
+
+    // If slot changed, trigger result check for previous period
+    if(currentSlotId !== slot && currentSlotId !== 0) {
+       handlePeriodEnd(currentPeriod, currentSlotId);
+    }
+    
+    currentSlotId = slot;
+    currentPeriod = periodId;
     document.getElementById('periodText').textContent = currentPeriod;
 
-    // Calculate time left
-    let secLeft = 30 - (seconds % 30);
-    if(secLeft === 30 && ms < 500) secLeft = 30; // Just logic
+    // Calculate time left (30 to 0)
+    // 25s to 30s is "Waiting" phase (no bets)
+    const secInSlot = diffSecs % 30;
+    let secLeft = 30 - secInSlot;
     
-    // The last 5 seconds (25 to 30) is waiting phase
+    // Logic: if secLeft is 30, display 00:00 for a moment, then start
+    let displaySecs = secLeft === 30 ? 0 : secLeft;
+
     if(secLeft <= 5) {
       isBettingClosed = true;
       document.getElementById('confirmBtn').disabled = true;
@@ -406,8 +446,7 @@ function runTimer() {
       updateTotal();
     }
 
-    // Update UI
-    const displaySecs = secLeft === 30 ? 0 : secLeft; // Reset display at exact 30
+    // Update UI Timer
     const mT = Math.floor(displaySecs / 60);
     const sT = displaySecs % 60;
     document.getElementById('minTens').textContent = '0';
@@ -415,19 +454,164 @@ function runTimer() {
     document.getElementById('secTens').textContent = Math.floor(sT/10).toString();
     document.getElementById('secOnes').textContent = (sT%10).toString();
 
-    // Play sound in last 5 sec
-    if(secLeft <= 5 && ms < 100) {
-      playTick(secLeft < 3);
-    }
-
-    // When timer hits 0, refresh history
-    if(secLeft === 30 && ms < 100) {
-       loadHistory();
+    // Sound Logic (Tick every second in last 5 sec)
+    if(secLeft <= 5 && ms < 200) {
+      if(lastPlayedSec !== displaySecs) {
+        lastPlayedSec = displaySecs;
+        playTick(displaySecs <= 3);
+      }
     }
   }
 
   tick();
   timerInterval = setInterval(tick, 100);
+}
+
+/* ==================== PERIOD END & RESULT LOGIC ==================== */
+async function handlePeriodEnd(periodId, slotId) {
+  try {
+    // 1. Check if user had any bets in this period
+    const q = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+    const snap = await getDocs(q);
+    
+    if(!snap.empty) {
+      // User has bets. Need to calculate result.
+      // Generate a random number 0-9
+      const resultNum = Math.floor(Math.random() * 10);
+      
+      // Determine color & size
+      let color = 'violet';
+      if([1,3,7,9].includes(resultNum)) color = 'green';
+      else if([2,4,6,8].includes(resultNum)) color = 'red';
+      
+      let size = resultNum >= 5 ? 'big' : 'small';
+
+      let totalWin = 0;
+      
+      // Loop through user's bets for this period
+      const promises = [];
+      snap.forEach(betDoc => {
+        const bet = betDoc.data();
+        let isWin = false;
+        
+        // Logic: 
+        // Green: 1,3,7,9 -> 2x
+        // Red: 2,4,6,8 -> 2x
+        // Violet: 0,5 -> 4.5x
+        // Number: exact -> 9x
+        // Big: 5-9 -> 2x
+        // Small: 0-4 -> 2x
+
+        if(bet.choice === 'green' && [1,3,7,9].includes(resultNum)) isWin = true;
+        if(bet.choice === 'red' && [2,4,6,8].includes(resultNum)) isWin = true;
+        if(bet.choice === 'violet' && [0,5].includes(resultNum)) isWin = true;
+        if(bet.choice === 'big' && [5,6,7,8,9].includes(resultNum)) isWin = true;
+        if(bet.choice === 'small' && [0,1,2,3,4].includes(resultNum)) isWin = true;
+        if(parseInt(bet.choice) === resultNum) isWin = true;
+
+        let winAmt = 0;
+        if(isWin) {
+          if(parseInt(bet.choice) === resultNum) winAmt = bet.amount * 9;
+          else if(bet.choice === 'violet') winAmt = bet.amount * 4.5;
+          else winAmt = bet.amount * 2;
+        }
+
+        totalWin += winAmt;
+        
+        // Update bet record
+        promises.push(updateDoc(doc(db, 'bets', betDoc.id), {
+          status: isWin ? 'win' : 'lose',
+          resultNum: resultNum,
+          winAmount: winAmt
+        }));
+      });
+
+      await Promise.all(promises);
+
+      // Save Result to DB (for history)
+      await setDoc(doc(db, 'results', periodId), {
+        period: periodId,
+        number: resultNum,
+        color: color,
+        size: size,
+        createdAt: serverTimestamp()
+      });
+
+      // If user won, add balance
+      if(totalWin > 0) {
+        await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(totalWin) });
+        userBalance += totalWin;
+        document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+        
+        // Show Win Popup
+        showResultPopup(true, totalWin, periodId, resultNum);
+      } else {
+        // Show Lose Popup
+        showResultPopup(false, 0, periodId, resultNum);
+      }
+      
+      loadHistory();
+
+    } else {
+      // No bet by user, but we still need to generate result for Game History?
+      // In a real app, a global server cron generates the result.
+      // For this frontend-only demo, we'll generate a random result for the history display
+      // and save it so all users see the same (if they load it).
+      
+      const resRef = doc(db, 'results', periodId);
+      const resSnap = await getDoc(resRef);
+      
+      if(!resSnap.exists()) {
+         const resultNum = Math.floor(Math.random() * 10);
+         let color = 'violet';
+         if([1,3,7,9].includes(resultNum)) color = 'green';
+         else if([2,4,6,8].includes(resultNum)) color = 'red';
+         let size = resultNum >= 5 ? 'big' : 'small';
+         
+         await setDoc(resRef, {
+           period: periodId,
+           number: resultNum,
+           color: color,
+           size: size,
+           createdAt: serverTimestamp()
+         });
+         loadHistory();
+      }
+    }
+
+  } catch(err) {
+    console.error("Result calculation error:", err);
+  }
+}
+
+/* ==================== POPUP LOGIC ==================== */
+function showResultPopup(isWin, amount, period, number) {
+  const popup = document.getElementById('resultPopup');
+  const icon = document.getElementById('resIcon');
+  const title = document.getElementById('resTitle');
+  const amt = document.getElementById('resAmt');
+  const detail = document.getElementById('resDetail');
+
+  if(isWin) {
+    icon.textContent = '🎉';
+    title.textContent = 'You Win!';
+    title.className = 'res-title res-win';
+    amt.textContent = '₹' + amount.toFixed(2);
+    amt.style.color = '#6abe57';
+  } else {
+    icon.textContent = '😞';
+    title.textContent = 'You Lose';
+    title.className = 'res-title res-lose';
+    amt.textContent = '-';
+    amt.style.color = '#f2413b';
+  }
+  detail.textContent = `Period: ${period} | Result: ${number}`;
+  
+  popup.classList.add('show');
+  
+  setTimeout(() => {
+    popup.classList.remove('show');
+  }, 3000);
 }
 
 /* ==================== BETTING LOGIC ==================== */
@@ -526,31 +710,37 @@ window.placeBet = async function() {
 
 /* ==================== LOAD HISTORY ==================== */
 async function loadHistory() {
+  const listEl = document.getElementById('historyList');
   try {
-    // In real app, you fetch from a 'results' collection. 
-    // Here we'll mock some old results for UI, and actual DB for this period.
-    const q = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(5));
+    const q = query(collection(db, 'results'), orderBy('createdAt', 'desc'), limit(5));
     const snap = await getDocs(q);
     
-    let html = '';
     if(snap.empty) {
-      html = `<div class="ht-row" style="justify-content:center;color:#666;">No bets yet</div>`;
-    } else {
-      snap.forEach(doc => {
-        const d = doc.data();
-        html += `
-          <div class="ht-row">
-            <div class="ht-col">${d.period}</div>
-            <div class="ht-col">-</div>
-            <div class="ht-col">-</div>
-            <div class="ht-col" style="color:#FAE59F;">${d.choice}</div>
-          </div>
-        `;
-      });
+      listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">No data</div>`;
+      return;
     }
-    document.getElementById('historyList').innerHTML = html;
+
+    let html = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      let colorHtml = '';
+      if(d.color === 'violet') colorHtml = `<span class="res-num" style="background:#b659fe">${d.number}</span>`;
+      else if(d.color === 'green') colorHtml = `<span class="res-num" style="background:#40ad72">${d.number}</span>`;
+      else colorHtml = `<span class="res-num" style="background:#fd565c">${d.number}</span>`;
+
+      html += `
+        <div class="ht-row">
+          <div class="ht-col">${d.period}</div>
+          <div class="ht-col">${colorHtml}</div>
+          <div class="ht-col ${d.size === 'big' ? 'res-big' : 'res-small'}">${d.size === 'big' ? 'Big' : 'Small'}</div>
+          <div class="ht-col" style="color:${d.color === 'violet' ? '#b659fe' : (d.color === 'green' ? '#40ad72' : '#fd565c')}">${d.color}</div>
+        </div>
+      `;
+    });
+    listEl.innerHTML = html;
   } catch(e) {
     console.log(e);
+    listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">Failed to load</div>`;
   }
 }
 </script>
