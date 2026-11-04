@@ -15,7 +15,7 @@
         .navbar-left { display: flex; align-items: center; gap: 10px; }
         .navbar-logo { width: 35px; height: 25px; background: url('./images/indiaFlag.png') no-repeat center / contain; border-radius: 3px; }
         .navbar-right { display: flex; align-items: center; gap: 12px; }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #fff; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #fff; text-decoration: none; }
         .nav-btn svg { width: 26px; height: 26px; }
         .lang-box { display: flex; align-items: center; gap: 4px; font-size: 12px; background: #292929; padding: 4px 8px; border-radius: 20px; }
         .lang-box img { width: 14px; height: 14px; border-radius: 50%; }
@@ -40,7 +40,7 @@
         .games-title { display: flex; align-items: center; font-size: 16px; font-weight: 600; margin-bottom: 10px; gap: 6px; }
         .games-title::before { content: ''; display: block; width: 4px; height: 16px; background: linear-gradient(180deg, #F6DC88 0%, #DAAD51 100%); border-radius: 2px; }
         .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .game-item { background: #3F3F3F; border-radius: 10px; padding: 8px; text-align: center; text-decoration: none; color: #fff; }
+        .game-item { background: #3F3F3F; border-radius: 10px; padding: 8px; text-align: center; text-decoration: none; color: #fff; display: block; }
         .game-item img { width: 100%; border-radius: 8px; display: block; margin-bottom: 5px; }
         .game-item span { font-size: 12px; font-weight: 500; }
 
@@ -52,22 +52,21 @@
         .winners-box { background: #3F3F3F; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 10px; height: 180px; overflow: hidden; position: relative; }
         .winner-item { display: flex; align-items: center; justify-content: space-between; background: #292929; padding: 8px 10px; border-radius: 8px; }
         
-        /* Auto Scroll Animation */
-        .winner-scroll-container { animation: scrollWinners 20s linear infinite; display: flex; flex-direction: column; gap: 10px; }
+        /* SLOW SCROLL ANIMATION (30s) */
+        .winner-scroll-container { animation: scrollWinners 30s linear infinite; display: flex; flex-direction: column; gap: 10px; }
         @keyframes scrollWinners {
             0% { transform: translateY(0); }
             100% { transform: translateY(-50%); }
         }
-        /* Pause on hover (desktop) */
         .winners-box:hover .winner-scroll-container { animation-play-state: paused; }
 
         .winner-left { display: flex; align-items: center; gap: 10px; width: 40%; }
         .winner-left img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #444; object-fit: cover; }
         .winner-name { font-size: 11px; color: #a6a9ae; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* WinGo Icon Fix */
+        /* WinGo Icon Fix (CP.png) */
         .winner-type { display: flex; align-items: center; gap: 2px; }
-        .winner-type img { height: 18px; width: auto; object-fit: contain; }
+        .winner-type img.cp-icon { height: 18px; width: auto; object-fit: contain; }
         .winner-type .balls { display: flex; margin-left: 2px; }
         .winner-type .balls span { display: inline-block; width: 14px; height: 14px; border-radius: 50%; font-size: 9px; text-align: center; line-height: 14px; color: #fff; font-weight: bold; margin-left: -4px; border: 1px solid #292929; }
         .ball-red { background: #fd565c; }
@@ -85,9 +84,9 @@
         .ranking-top { display: flex; justify-content: center; align-items: flex-end; height: 160px; margin-bottom: 10px; position: relative; }
         .rank-item { display: flex; flex-direction: column; align-items: center; width: 33%; position: relative; z-index: 1; }
         
-        .rank-item:nth-child(1) { order: 2; top: -20px; z-index: 2; } /* Rank 1 */
-        .rank-item:nth-child(2) { order: 1; top: -10px; } /* Rank 2 */
-        .rank-item:nth-child(3) { order: 3; top: -10px; } /* Rank 3 */
+        .rank-item:nth-child(1) { order: 2; top: -20px; z-index: 2; }
+        .rank-item:nth-child(2) { order: 1; top: -10px; }
+        .rank-item:nth-child(3) { order: 3; top: -10px; }
         
         .rank-avatar { width: 55px; height: 55px; border-radius: 50%; position: relative; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; }
         .rank-avatar img.avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
@@ -109,17 +108,13 @@
         .tab-item.active { color: #D9AC4F; }
         .tab-item.active svg { fill: url(#gold-grad); }
         
-        /* Center highlight tab (Promotion) */
         .tab-item.center-tab { top: -15px; }
         .tab-item.center-tab svg { width: 55px; height: 55px; }
         .tab-item.center-tab span { margin-top: -5px; }
 
         /* ================= FLOATING CUSTOMER SERVICE ================= */
         .customer-fab { position: fixed; bottom: 80px; right: 15px; width: 50px; height: 50px; border-radius: 50%; z-index: 99; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .customer-fab img { width: 100%; height: 100%; border-radius: 50%; }
-
-        /* ================= FIXED SVG GRADIENTS ================= */
-        .svg-defs { position: absolute; width: 0; height: 0; }
+        .customer-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
         /* ================= MODAL (Telegram Support) ================= */
         .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; padding: 20px; }
@@ -129,7 +124,8 @@
         .modal-body { padding: 18px; }
         .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
         .cs-logo { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f5c542, #ff9d2e); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-        .cs-logo img { width: 50px; height: 50px; border-radius: 50%; }
+        /* FIXED ICON (SVG) */
+        .cs-logo svg { width: 45px; height: 45px; stroke: #1a1a1a; fill: none; stroke-width: 2; }
         .cs-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
         .cs-sub { font-size: 13px; color: #a6a9ae; text-align: center; line-height: 1.5; margin-bottom: 16px; }
         .cs-warn { display: flex; gap: 8px; align-items: flex-start; background: rgba(217,172,79,.12); border: 1px solid rgba(217,172,79,.4); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #fae59f; line-height: 1.5; margin-bottom: 14px; }
@@ -139,14 +135,16 @@
         .modal-textarea { width: 100%; min-height: 100px; border-radius: 10px; background: #484848; color: #fff; padding: 12px 14px; font-size: 15px; border: none; margin-bottom: 12px; resize: vertical; line-height: 1.5; outline: none; }
         .modal-textarea::placeholder { color: #aaa; }
         .cs-chat-btn { width: 100%; height: 50px; border-radius: 25px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        /* FIXED BUTTON ICON (SVG) */
+        .cs-chat-btn svg { width: 20px; height: 20px; stroke: #8f5206; fill: none; stroke-width: 2; }
         .cs-chat-btn:active { transform: scale(.98); }
         .modal-close-btn { display: block; width: 100%; text-align: center; padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent; }
     </style>
 </head>
 <body>
 
-<!-- SVG Gradients for Tab Bar Icons -->
-<svg class="svg-defs">
+<!-- SVG Gradients -->
+<svg style="position: absolute; width: 0; height: 0;">
     <defs>
         <linearGradient id="gold-grad" x1="0" y1="1" x2="0" y2="0">
             <stop stop-color="#C4933F"></stop>
@@ -158,7 +156,6 @@
 <!-- NAVBAR -->
 <header class="navbar">
     <div class="navbar-left">
-        <!-- INDIA FLAG YAHAN LAGA HAI -->
         <div class="navbar-logo"></div>
         <span style="font-weight:bold; font-size:14px; color:#fff;">BDG LOTTERY7</span>
     </div>
@@ -167,7 +164,6 @@
             <img src="./images/en-4b649537.png" alt="EN">
             <span>EN</span>
         </div>
-        <!-- FAKE APP LINK -->
         <button class="nav-btn" onclick="showToast('App coming soon!')">
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4"/></svg>
             <span>APP</span>
@@ -182,7 +178,6 @@
 <!-- BANNER SLIDER -->
 <div class="banner-wrapper">
     <div class="slideshow-container">
-        <!-- Yahan aapke banner images aayenge -->
         <div class="mySlides fade"><img src="./images/Banner_20240110082959xdnc.png"></div>
         <div class="mySlides fade"><img src="./images/Banner_20231125140847kw1d.png"></div>
         <div class="mySlides fade"><img src="./images/Banner_20231104194139qiih.png"></div>
@@ -203,19 +198,19 @@
     </button>
 </div>
 
-<!-- GAMES LIST -->
+<!-- GAMES LIST (Working Links Added) -->
 <div class="games-list" id="gameList">
     <div class="games-title">Lottery</div>
     <div class="games-grid">
-        <a href="#" class="game-item" onclick="showToast('Coming soon...')">
+        <a href="wingo.html" class="game-item">
             <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go">
             <span>Win Go</span>
         </a>
-        <a href="#" class="game-item" onclick="showToast('Coming soon...')">
+        <a href="5d.html" class="game-item">
             <img src="./images/lotterycategory_20240110062118e9kt.png" alt="5D">
             <span>5D</span>
         </a>
-        <a href="#" class="game-item" onclick="showToast('Coming soon...')">
+        <a href="k3.html" class="game-item">
             <img src="./images/lotterycategory_20240110062111bt8e.png" alt="K3">
             <span>K3</span>
         </a>
@@ -240,7 +235,7 @@
         <!-- Rank 2 -->
         <div class="rank-item">
             <div class="rank-avatar">
-                <img src="./images/3-abfcc056.png" class="avatar"> <!-- Avatar changed -->
+                <img src="./images/3-abfcc056.png" class="avatar">
                 <img src="./images/crown2-8b009e96.png" class="crown">
                 <img src="./images/place2-2e2fac0d.png" class="rank-place">
             </div>
@@ -250,7 +245,7 @@
         <!-- Rank 1 -->
         <div class="rank-item">
             <div class="rank-avatar" style="width:65px; height:65px;">
-                <img src="./images/6-7c7f5203.png" class="avatar"> <!-- Avatar changed -->
+                <img src="./images/6-7c7f5203.png" class="avatar">
                 <img src="./images/crown1-7e4e2fd9.png" class="crown" style="width:30px; top:-18px;">
                 <img src="./images/place1-c2ee5099.png" class="rank-place" style="width:25px; bottom:-8px;">
             </div>
@@ -260,7 +255,7 @@
         <!-- Rank 3 -->
         <div class="rank-item">
             <div class="rank-avatar">
-                <img src="./images/17-bedde42f.png" class="avatar"> <!-- Avatar changed -->
+                <img src="./images/17-bedde42f.png" class="avatar">
                 <img src="./images/crown3-2ca02146.png" class="crown">
                 <img src="./images/place3-d9b0be38.png" class="rank-place">
             </div>
@@ -271,13 +266,13 @@
 
     <div class="rank-list-item">
         <div class="num">4</div>
-        <img src="./images/19-2ac9fd83.png"> <!-- Avatar changed -->
+        <img src="./images/19-2ac9fd83.png">
         <div class="name">Mem***JHT</div>
         <div class="amt">₹30,825,449</div>
     </div>
     <div class="rank-list-item">
         <div class="num">5</div>
-        <img src="./images/7-00479cfa.png"> <!-- Avatar changed -->
+        <img src="./images/7-00479cfa.png">
         <div class="name">Mem***AGB</div>
         <div class="amt">₹12,679,114</div>
     </div>
@@ -285,32 +280,32 @@
 
 <!-- FLOATING CUSTOMER SERVICE -->
 <div class="customer-fab" onclick="openService()">
+    <!-- Icon image remains here, ensure it's correct in your folder -->
     <img src="./images/icon_sevice-1ca64bcf.png" alt="Service">
 </div>
 
-<!-- BOTTOM TAB BAR -->
+<!-- BOTTOM TAB BAR (Working Links Added) -->
 <div class="bottom-tabbar">
     <a href="home.html" class="tab-item active">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span>Home</span>
     </a>
-    <a href="#" class="tab-item" onclick="showToast('Activity page coming soon...')">
+    <a href="activity.html" class="tab-item">
         <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         <span>Activity</span>
     </a>
-    <a href="#" class="tab-item center-tab" onclick="showToast('Promotion page coming soon...')">
-        <!-- Big Center Icon -->
+    <a href="promotion.html" class="tab-item center-tab">
         <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M112.494 16C115.5 16 118.181 17.5313 119.725 20.1104L133.863 44.1284C135.569 47.1105 135.325 57.1851 133.213 59.8448L79.8313 119.325C75.525 124.645 67.6438 125.531 62.2 121.26C61.4688 120.696 60.8188 120.051 60.25 119.325L6.78751 59.8448C4.59376 57.1851 4.35001 47.0299 6.13751 44.1284L20.275 20.1104C21.8188 17.5313 24.5813 16 27.5063 16H112.494Z" fill="#3B3B3B"></path>
             <path fill-rule="evenodd" clip-rule="evenodd" d="M103.637 31.3135C105.994 31.3135 108.106 32.4418 109.244 34.3762L120.294 52.2687C121.675 54.4448 121.431 57.2657 119.725 59.2L77.9625 106.833C74.55 110.782 68.4562 111.427 64.2312 108.284C63.6625 107.881 63.175 107.397 62.6875 106.833L21.0875 59.2C19.3813 57.1851 19.2188 54.4448 20.5188 52.2687L31.5688 34.3762C32.7063 32.5224 34.9 31.3135 37.175 31.3135H103.637ZM82.7562 68.6299L72.6 83.1374C72.1125 83.8627 70.2437 84.0239 69.5125 83.4597C69.35 83.3791 69.2687 83.218 69.1062 83.1374L58.1375 68.6299C56.5938 66.5344 53.5062 66.0508 51.3125 67.5821C49.1187 69.0329 48.6312 71.9344 50.175 74.0299L61.1437 88.5374C65.3687 93.6956 68.05 95.7911 70.8937 95.7911C74.0625 95.7911 76.7437 92.2448 79.75 88.5374L90.7187 74.0299C92.2625 71.9344 91.775 69.0329 89.5812 67.5821C87.3875 66.0508 84.3 66.5344 82.7562 68.6299Z" fill="url(#gold-grad)"></path>
         </svg>
         <span>Promotion</span>
     </a>
-    <a href="#" class="tab-item" onclick="showToast('Wallet page coming soon...')">
+    <a href="wallet.html" class="tab-item">
         <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         <span>Wallet</span>
     </a>
-    <a href="#" class="tab-item" onclick="doLogout()">
+    <a href="account.html" class="tab-item">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span>Account</span>
     </a>
@@ -326,7 +321,8 @@
     <div class="modal-body">
       <div class="cs-logo-wrap">
         <div class="cs-logo">
-          <img src="./images/icon_sevice-1ca64bcf.png" alt="Logo">
+          <!-- SVG Icon Fixed -->
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         </div>
         <div class="cs-title">BDG LOTTERY7</div>
         <div class="cs-sub">Our support team will reach you on Telegram within a few minutes.</div>
@@ -338,7 +334,8 @@
       <input id="csPhone" class="modal-input" type="tel" inputmode="numeric" maxlength="12" placeholder="Your phone number" />
       <textarea id="csDesc" class="modal-textarea" maxlength="600" placeholder="Describe your problem in detail..."></textarea>
       <button id="csSendBtn" class="cs-chat-btn" onclick="sendSupport()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#8f5206" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+        <!-- SVG Icon Fixed -->
+        <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
         Send to Support
       </button>
       <button class="modal-close-btn" onclick="closeModal('modal-service')">Close</button>
@@ -365,10 +362,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Check Login
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    // window.location.href = "index.html"; // Uncomment if you want to force login
+    // window.location.href = "index.html"; // Uncomment to enforce login
   } else {
       try {
           const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
@@ -377,18 +373,14 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// Logout function
 window.doLogout = async () => {
   try {
     await signOut(auth);
     localStorage.removeItem('bdg7_session');
     window.location.href = "index.html";
-  } catch (e) {
-    console.error(e);
-  }
+  } catch (e) { console.error(e); }
 };
 
-// Toast function
 window.showToast = (msg) => {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -396,39 +388,26 @@ window.showToast = (msg) => {
   setTimeout(() => t.style.display = 'none', 2000);
 };
 
-// Customer Service function
-window.openService = () => {
-  document.getElementById('modal-service').classList.add('show');
-};
-window.closeModal = (id) => {
-  document.getElementById(id).classList.remove('show');
-};
+window.openService = () => { document.getElementById('modal-service').classList.add('show'); };
+window.closeModal = (id) => { document.getElementById(id).classList.remove('show'); };
 
-// Telegram Send Support
-const TG_CONFIG = {
-  BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw",
-  CHAT_ID:   "8167337368"
-};
+const TG_CONFIG = { BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw", CHAT_ID: "8167337368" };
 
 window.sendSupport = async () => {
   const phone = document.getElementById('csPhone').value.trim();
   const desc  = document.getElementById('csDesc').value.trim();
-
-  if (!phone) { showToast('Please enter phone number'); return; }
-  if (!desc || desc.length < 5) { showToast('Please describe your problem'); return; }
+  if (!phone || !desc || desc.length < 5) { showToast('Please fill details'); return; }
 
   const btn = document.getElementById('csSendBtn');
   btn.disabled = true;
-  btn.textContent = "Sending...";
+  btn.innerHTML = 'Sending...';
 
   const user = auth.currentUser;
   if (user) {
     try {
       const supportRef = doc(db, "support", `t_${Date.now()}_${user.uid.slice(0,6)}`);
-      await setDoc(supportRef, {
-        uid: user.uid, phone, description: desc, status: 'new', createdAt: serverTimestamp()
-      });
-    } catch (e) { console.warn('Firestore support save failed:', e); }
+      await setDoc(supportRef, { uid: user.uid, phone, description: desc, status: 'new', createdAt: serverTimestamp() });
+    } catch (e) { console.warn(e); }
   }
 
   const msg = `🔔 *BDG LOTTERY7 — Support Request*\n\n📱 Phone: \`${phone}\`\n📝 Problem:\n${desc}\n\n🕒 ${new Date().toLocaleString()}`;
@@ -446,9 +425,7 @@ window.sendSupport = async () => {
       showToast('Sent! We will contact you.');
       document.getElementById('csDesc').value = '';
       closeModal('modal-service');
-    } else {
-      showToast('Failed: ' + (data.description || 'Try again'));
-    }
+    } else { showToast('Failed: ' + (data.description || 'Try again')); }
   } catch (err) {
     btn.disabled = false;
     btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#8f5206" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg> Send to Support`;
@@ -459,14 +436,15 @@ window.sendSupport = async () => {
 
 <!-- JS LOGIC: 50+ Winners Generate -->
 <script>
-    // Saare avatars ki list
     const avatars = [
         "19-2ac9fd83.png", "3-abfcc056.png", "17-bedde42f.png",
         "7-00479cfa.png", "6-7c7f5203.png", "1-c7e4efc8.png",
-        "8-ea087ede.png" // Extra in case
+        "8-ea087ede.png"
     ];
     
-    // WinGo Balls generate karne ka function
+    // FIXED ICON (CP.png)
+    const cpIcon = "CP.png";
+    
     function getBalls() {
         const num = Math.floor(Math.random() * 10);
         let colorClass = "ball-green";
@@ -481,11 +459,9 @@ window.sendSupport = async () => {
         </div>`;
     }
 
-    // Winners DOM generate karo
     const container = document.getElementById('winnersContainer');
     let html = '';
     
-    // 50 log generate kar rahe hain
     for (let i = 0; i < 50; i++) {
         const avatar = avatars[i % avatars.length];
         const name = `Mem***${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}`;
@@ -498,7 +474,7 @@ window.sendSupport = async () => {
                 <div class="winner-name">${name}</div>
             </div>
             <div class="winner-type">
-                <img src="./images/logo-wingo.webp" alt="WinGo">
+                <img src="./images/${cpIcon}" class="cp-icon" alt="Icon">
                 ${getBalls()}
             </div>
             <div class="winner-amount">
@@ -509,10 +485,8 @@ window.sendSupport = async () => {
         `;
     }
     
-    // 50 log ko double karo taaki scroll infinite chale
     container.innerHTML = html + html; 
 
-    // Slider Script
     let slideIndex = 0;
     showSlides();
     function showSlides() {
