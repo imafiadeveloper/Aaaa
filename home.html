@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>98 Lottery — Home</title>
+    <title>BDG LOTTERY7 — Home</title>
     <style>
         /* ================= GLOBAL ================= */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Roboto', system-ui, sans-serif; }
@@ -13,12 +13,12 @@
         /* ================= NAVBAR ================= */
         .navbar { position: sticky; top: 0; z-index: 100; background: #3F3F3F; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; height: 60px; }
         .navbar-left { display: flex; align-items: center; gap: 10px; }
-        .navbar-logo { width: 110px; height: 40px; background: url('./images/h5setting_202401100608011fs2.png') no-repeat center / contain; }
-        .navbar-right { display: flex; align-items: center; gap: 10px; }
+        .navbar-logo { width: 35px; height: 25px; background: url('./images/indiaFlag.png') no-repeat center / contain; border-radius: 3px; }
+        .navbar-right { display: flex; align-items: center; gap: 12px; }
         .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #fff; }
-        .nav-btn svg { width: 28px; height: 28px; }
+        .nav-btn svg { width: 26px; height: 26px; }
         .lang-box { display: flex; align-items: center; gap: 4px; font-size: 12px; background: #292929; padding: 4px 8px; border-radius: 20px; }
-        .lang-box img { width: 16px; height: 16px; border-radius: 50%; }
+        .lang-box img { width: 14px; height: 14px; border-radius: 50%; }
 
         /* ================= BANNER (SLIDER) ================= */
         .banner-wrapper { width: 100%; padding: 10px; overflow: hidden; }
@@ -50,37 +50,55 @@
         .section-title::before { content: ''; display: block; width: 4px; height: 16px; background: linear-gradient(180deg, #F6DC88 0%, #DAAD51 100%); border-radius: 2px; }
         
         .winners-box { background: #3F3F3F; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 10px; height: 180px; overflow: hidden; position: relative; }
-        .winner-item { display: flex; align-items: center; justify-content: space-between; background: #292929; padding: 8px 10px; border-radius: 8px; animation: scrollWinners 10s linear infinite; }
+        .winner-item { display: flex; align-items: center; justify-content: space-between; background: #292929; padding: 8px 10px; border-radius: 8px; }
+        
+        /* Auto Scroll Animation */
+        .winner-scroll-container { animation: scrollWinners 20s linear infinite; display: flex; flex-direction: column; gap: 10px; }
         @keyframes scrollWinners {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-100%); }
+            100% { transform: translateY(-50%); }
         }
+        /* Pause on hover (desktop) */
+        .winners-box:hover .winner-scroll-container { animation-play-state: paused; }
+
         .winner-left { display: flex; align-items: center; gap: 10px; width: 40%; }
-        .winner-left img { width: 30px; height: 30px; border-radius: 50%; }
+        .winner-left img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #444; object-fit: cover; }
         .winner-name { font-size: 11px; color: #a6a9ae; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .winner-type { width: 50px; }
+        
+        /* WinGo Icon Fix */
+        .winner-type { display: flex; align-items: center; gap: 2px; }
+        .winner-type img { height: 18px; width: auto; object-fit: contain; }
+        .winner-type .balls { display: flex; margin-left: 2px; }
+        .winner-type .balls span { display: inline-block; width: 14px; height: 14px; border-radius: 50%; font-size: 9px; text-align: center; line-height: 14px; color: #fff; font-weight: bold; margin-left: -4px; border: 1px solid #292929; }
+        .ball-red { background: #fd565c; }
+        .ball-green { background: #40ad72; }
+        .ball-purple { background: #b659fe; }
+        .ball-orange { background: #ffa82e; }
+        .ball-blue { background: #6da7f4; }
+
         .winner-amount { text-align: right; }
-        .winner-amount h4 { color: #fae59f; font-size: 12px; margin-bottom: 2px; }
-        .winner-amount span { font-size: 9px; color: #aeb0c6; }
+        .winner-amount h4 { color: #fae59f; font-size: 13px; margin-bottom: 2px; font-weight: 600; }
+        .winner-amount span { font-size: 10px; color: #aeb0c6; }
 
         /* ================= RANKING ================= */
         .ranking-section { padding: 0 10px; margin-bottom: 20px; }
         .ranking-top { display: flex; justify-content: center; align-items: flex-end; height: 160px; margin-bottom: 10px; position: relative; }
         .rank-item { display: flex; flex-direction: column; align-items: center; width: 33%; position: relative; z-index: 1; }
+        
         .rank-item:nth-child(1) { order: 2; top: -20px; z-index: 2; } /* Rank 1 */
         .rank-item:nth-child(2) { order: 1; top: -10px; } /* Rank 2 */
         .rank-item:nth-child(3) { order: 3; top: -10px; } /* Rank 3 */
         
-        .rank-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #D9AC4F; position: relative; margin-bottom: 5px; }
-        .rank-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .crown { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 25px; }
-        .rank-place { position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 20px; }
-        .rank-name { font-size: 10px; color: #fff; margin-bottom: 3px; }
-        .rank-amt { font-size: 10px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+        .rank-avatar { width: 55px; height: 55px; border-radius: 50%; position: relative; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; }
+        .rank-avatar img.avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .crown { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 25px; z-index: 3; }
+        .rank-place { position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 20px; z-index: 3;}
+        .rank-name { font-size: 11px; color: #fff; margin-bottom: 3px; }
+        .rank-amt { font-size: 11px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; padding: 2px 10px; border-radius: 10px; font-weight: bold; }
 
         .rank-list-item { display: flex; align-items: center; background: #3A3A3A; padding: 10px; border-radius: 8px; margin-bottom: 8px; }
         .rank-list-item .num { font-size: 16px; color: #fae59f; width: 25px; font-weight: bold; }
-        .rank-list-item img { width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; }
+        .rank-list-item img { width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; object-fit: cover;}
         .rank-list-item .name { font-size: 12px; color: #a6a9ae; flex: 1; }
         .rank-list-item .amt { font-size: 11px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; padding: 4px 10px; border-radius: 10px; font-weight: bold; }
 
@@ -93,8 +111,8 @@
         
         /* Center highlight tab (Promotion) */
         .tab-item.center-tab { top: -15px; }
-        .tab-item.center-tab svg { width: 50px; height: 50px; }
-        .tab-item.center-tab span { margin-top: -8px; }
+        .tab-item.center-tab svg { width: 55px; height: 55px; }
+        .tab-item.center-tab span { margin-top: -5px; }
 
         /* ================= FLOATING CUSTOMER SERVICE ================= */
         .customer-fab { position: fixed; bottom: 80px; right: 15px; width: 50px; height: 50px; border-radius: 50%; z-index: 99; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
@@ -102,6 +120,27 @@
 
         /* ================= FIXED SVG GRADIENTS ================= */
         .svg-defs { position: absolute; width: 0; height: 0; }
+
+        /* ================= MODAL (Telegram Support) ================= */
+        .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { width: 100%; max-width: 400px; background: #292929; border-radius: 14px; overflow: hidden; }
+        .modal-head { background: linear-gradient(180deg, #6F6F6F 0%, #404040 100%); padding: 14px; text-align: center; font-size: 15px; font-weight: 600; color: #fff; }
+        .modal-body { padding: 18px; }
+        .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
+        .cs-logo { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f5c542, #ff9d2e); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+        .cs-logo img { width: 50px; height: 50px; border-radius: 50%; }
+        .cs-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .cs-sub { font-size: 13px; color: #a6a9ae; text-align: center; line-height: 1.5; margin-bottom: 16px; }
+        .cs-warn { display: flex; gap: 8px; align-items: flex-start; background: rgba(217,172,79,.12); border: 1px solid rgba(217,172,79,.4); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #fae59f; line-height: 1.5; margin-bottom: 14px; }
+        .cs-warn svg { width: 16px; height: 16px; flex: none; stroke: #d9ac4f; fill: none; stroke-width: 2; margin-top: 1px; }
+        .modal-input { width: 100%; height: 46px; border-radius: 10px; background: #484848; color: #fff; padding: 0 14px; font-size: 15px; border: none; margin-bottom: 12px; outline: none; }
+        .modal-input::placeholder { color: #aaa; }
+        .modal-textarea { width: 100%; min-height: 100px; border-radius: 10px; background: #484848; color: #fff; padding: 12px 14px; font-size: 15px; border: none; margin-bottom: 12px; resize: vertical; line-height: 1.5; outline: none; }
+        .modal-textarea::placeholder { color: #aaa; }
+        .cs-chat-btn { width: 100%; height: 50px; border-radius: 25px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .cs-chat-btn:active { transform: scale(.98); }
+        .modal-close-btn { display: block; width: 100%; text-align: center; padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent; }
     </style>
 </head>
 <body>
@@ -119,14 +158,17 @@
 <!-- NAVBAR -->
 <header class="navbar">
     <div class="navbar-left">
+        <!-- INDIA FLAG YAHAN LAGA HAI -->
         <div class="navbar-logo"></div>
+        <span style="font-weight:bold; font-size:14px; color:#fff;">BDG LOTTERY7</span>
     </div>
     <div class="navbar-right">
         <div class="lang-box">
             <img src="./images/en-4b649537.png" alt="EN">
             <span>EN</span>
         </div>
-        <button class="nav-btn" onclick="window.location='app.apk'">
+        <!-- FAKE APP LINK -->
+        <button class="nav-btn" onclick="showToast('App coming soon!')">
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4"/></svg>
             <span>APP</span>
         </button>
@@ -140,6 +182,7 @@
 <!-- BANNER SLIDER -->
 <div class="banner-wrapper">
     <div class="slideshow-container">
+        <!-- Yahan aapke banner images aayenge -->
         <div class="mySlides fade"><img src="./images/Banner_20240110082959xdnc.png"></div>
         <div class="mySlides fade"><img src="./images/Banner_20231125140847kw1d.png"></div>
         <div class="mySlides fade"><img src="./images/Banner_20231104194139qiih.png"></div>
@@ -153,7 +196,7 @@
 <!-- NOTICE BAR -->
 <div class="notice-bar">
     <svg viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
-    <div class="notice-text">Welcome To 98 Lottery! 🎉</div>
+    <div class="notice-text">Welcome To BDG LOTTERY7! 🎉</div>
     <button class="notice-btn">
         Detail 
         <svg viewBox="0 0 24 24" fill="none" stroke="#292929" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -183,21 +226,8 @@
 <div class="winning-section">
     <div class="section-title">Winning information</div>
     <div class="winners-box">
-        <!-- Dummy data for scrolling effect -->
-        <div class="winner-item">
-            <div class="winner-left"><img src="./images/8-ea087ede.png"><div class="winner-name">Mem***DAU</div></div>
-            <img src="./images/WinGo-f48e5435.png" class="winner-type">
-            <div class="winner-amount"><h4>Receive ₹160.00</h4><span>Winning amount</span></div>
-        </div>
-        <div class="winner-item">
-            <div class="winner-left"><img src="./images/1-c7e4efc8.png"><div class="winner-name">Mem***YAB</div></div>
-            <img src="./images/WinGo-f48e5435.png" class="winner-type">
-            <div class="winner-amount"><h4>Receive ₹510.00</h4><span>Winning amount</span></div>
-        </div>
-        <div class="winner-item">
-            <div class="winner-left"><img src="./images/6-7c7f5203.png"><div class="winner-name">Mem***DZP</div></div>
-            <img src="./images/WinGo-f48e5435.png" class="winner-type">
-            <div class="winner-amount"><h4>Receive ₹3,020.00</h4><span>Winning amount</span></div>
+        <div class="winner-scroll-container" id="winnersContainer">
+            <!-- JS se yahan 50+ entries aayengi -->
         </div>
     </div>
 </div>
@@ -210,7 +240,7 @@
         <!-- Rank 2 -->
         <div class="rank-item">
             <div class="rank-avatar">
-                <img src="./images/17-bedde42f.png">
+                <img src="./images/3-abfcc056.png" class="avatar"> <!-- Avatar changed -->
                 <img src="./images/crown2-8b009e96.png" class="crown">
                 <img src="./images/place2-2e2fac0d.png" class="rank-place">
             </div>
@@ -219,8 +249,8 @@
         </div>
         <!-- Rank 1 -->
         <div class="rank-item">
-            <div class="rank-avatar" style="width:60px; height:60px;">
-                <img src="./images/6-7c7f5203.png">
+            <div class="rank-avatar" style="width:65px; height:65px;">
+                <img src="./images/6-7c7f5203.png" class="avatar"> <!-- Avatar changed -->
                 <img src="./images/crown1-7e4e2fd9.png" class="crown" style="width:30px; top:-18px;">
                 <img src="./images/place1-c2ee5099.png" class="rank-place" style="width:25px; bottom:-8px;">
             </div>
@@ -230,7 +260,7 @@
         <!-- Rank 3 -->
         <div class="rank-item">
             <div class="rank-avatar">
-                <img src="./images/3-abfcc056.png">
+                <img src="./images/17-bedde42f.png" class="avatar"> <!-- Avatar changed -->
                 <img src="./images/crown3-2ca02146.png" class="crown">
                 <img src="./images/place3-d9b0be38.png" class="rank-place">
             </div>
@@ -241,13 +271,13 @@
 
     <div class="rank-list-item">
         <div class="num">4</div>
-        <img src="./images/19-2ac9fd83.png">
+        <img src="./images/19-2ac9fd83.png"> <!-- Avatar changed -->
         <div class="name">Mem***JHT</div>
         <div class="amt">₹30,825,449</div>
     </div>
     <div class="rank-list-item">
         <div class="num">5</div>
-        <img src="./images/7-00479cfa.png">
+        <img src="./images/7-00479cfa.png"> <!-- Avatar changed -->
         <div class="name">Mem***AGB</div>
         <div class="amt">₹12,679,114</div>
     </div>
@@ -264,11 +294,11 @@
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span>Home</span>
     </a>
-    <a href="#" class="tab-item" onclick="showToast('Coming soon...')">
+    <a href="#" class="tab-item" onclick="showToast('Activity page coming soon...')">
         <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         <span>Activity</span>
     </a>
-    <a href="#" class="tab-item center-tab" onclick="showToast('Coming soon...')">
+    <a href="#" class="tab-item center-tab" onclick="showToast('Promotion page coming soon...')">
         <!-- Big Center Icon -->
         <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M112.494 16C115.5 16 118.181 17.5313 119.725 20.1104L133.863 44.1284C135.569 47.1105 135.325 57.1851 133.213 59.8448L79.8313 119.325C75.525 124.645 67.6438 125.531 62.2 121.26C61.4688 120.696 60.8188 120.051 60.25 119.325L6.78751 59.8448C4.59376 57.1851 4.35001 47.0299 6.13751 44.1284L20.275 20.1104C21.8188 17.5313 24.5813 16 27.5063 16H112.494Z" fill="#3B3B3B"></path>
@@ -276,7 +306,7 @@
         </svg>
         <span>Promotion</span>
     </a>
-    <a href="#" class="tab-item" onclick="showToast('Coming soon...')">
+    <a href="#" class="tab-item" onclick="showToast('Wallet page coming soon...')">
         <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         <span>Wallet</span>
     </a>
@@ -287,11 +317,39 @@
 </div>
 
 <!-- TOAST NOTIFICATION -->
-<div id="toast" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.8); color:#fff; padding:10px 20px; border-radius:8px; display:none; z-index:9999; font-size:14px;"></div>
+<div id="toast" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.8); color:#fff; padding:10px 20px; border-radius:8px; display:none; z-index:9999; font-size:14px; text-align:center;"></div>
+
+<!-- MODAL: CUSTOMER SERVICE (Telegram) -->
+<div id="modal-service" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Customer Service</div>
+    <div class="modal-body">
+      <div class="cs-logo-wrap">
+        <div class="cs-logo">
+          <img src="./images/icon_sevice-1ca64bcf.png" alt="Logo">
+        </div>
+        <div class="cs-title">BDG LOTTERY7</div>
+        <div class="cs-sub">Our support team will reach you on Telegram within a few minutes.</div>
+      </div>
+      <div class="cs-warn">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Please enter your phone number and describe your problem. It will be sent directly to our Telegram support.</span>
+      </div>
+      <input id="csPhone" class="modal-input" type="tel" inputmode="numeric" maxlength="12" placeholder="Your phone number" />
+      <textarea id="csDesc" class="modal-textarea" maxlength="600" placeholder="Describe your problem in detail..."></textarea>
+      <button id="csSendBtn" class="cs-chat-btn" onclick="sendSupport()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8f5206" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+        Send to Support
+      </button>
+      <button class="modal-close-btn" onclick="closeModal('modal-service')">Close</button>
+    </div>
+  </div>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -305,12 +363,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 // Check Login
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    // Agar login nahi hai, to index.html par bhej do
-    window.location.href = "index.html";
+    // window.location.href = "index.html"; // Uncomment if you want to force login
+  } else {
+      try {
+          const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
+          if(s.phone) document.getElementById('csPhone').value = s.phone;
+      } catch(e){}
   }
 });
 
@@ -335,26 +398,131 @@ window.showToast = (msg) => {
 
 // Customer Service function
 window.openService = () => {
-  showToast('Customer service opening...');
-  // window.location.href = 'service.html'; // Future me
+  document.getElementById('modal-service').classList.add('show');
+};
+window.closeModal = (id) => {
+  document.getElementById(id).classList.remove('show');
+};
+
+// Telegram Send Support
+const TG_CONFIG = {
+  BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw",
+  CHAT_ID:   "8167337368"
+};
+
+window.sendSupport = async () => {
+  const phone = document.getElementById('csPhone').value.trim();
+  const desc  = document.getElementById('csDesc').value.trim();
+
+  if (!phone) { showToast('Please enter phone number'); return; }
+  if (!desc || desc.length < 5) { showToast('Please describe your problem'); return; }
+
+  const btn = document.getElementById('csSendBtn');
+  btn.disabled = true;
+  btn.textContent = "Sending...";
+
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      const supportRef = doc(db, "support", `t_${Date.now()}_${user.uid.slice(0,6)}`);
+      await setDoc(supportRef, {
+        uid: user.uid, phone, description: desc, status: 'new', createdAt: serverTimestamp()
+      });
+    } catch (e) { console.warn('Firestore support save failed:', e); }
+  }
+
+  const msg = `🔔 *BDG LOTTERY7 — Support Request*\n\n📱 Phone: \`${phone}\`\n📝 Problem:\n${desc}\n\n🕒 ${new Date().toLocaleString()}`;
+
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${TG_CONFIG.BOT_TOKEN}/sendMessage`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TG_CONFIG.CHAT_ID, text: msg, parse_mode: 'Markdown' })
+    });
+    const data = await res.json();
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#8f5206" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg> Send to Support`;
+    
+    if (data.ok) {
+      showToast('Sent! We will contact you.');
+      document.getElementById('csDesc').value = '';
+      closeModal('modal-service');
+    } else {
+      showToast('Failed: ' + (data.description || 'Try again'));
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#8f5206" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg> Send to Support`;
+    showToast('Network error. Please try again.');
+  }
 };
 </script>
 
-<!-- SLIDER SCRIPT -->
+<!-- JS LOGIC: 50+ Winners Generate -->
 <script>
+    // Saare avatars ki list
+    const avatars = [
+        "19-2ac9fd83.png", "3-abfcc056.png", "17-bedde42f.png",
+        "7-00479cfa.png", "6-7c7f5203.png", "1-c7e4efc8.png",
+        "8-ea087ede.png" // Extra in case
+    ];
+    
+    // WinGo Balls generate karne ka function
+    function getBalls() {
+        const num = Math.floor(Math.random() * 10);
+        let colorClass = "ball-green";
+        if ([2,4,6,8].includes(num)) colorClass = "ball-red";
+        if ([0].includes(num)) colorClass = "ball-purple";
+        if ([5].includes(num)) colorClass = "ball-orange";
+        
+        return `<div class="balls">
+            <span class="${colorClass}">${num}</span>
+            <span class="ball-green">${Math.floor(Math.random() * 10)}</span>
+            <span class="ball-purple">${Math.floor(Math.random() * 10)}</span>
+        </div>`;
+    }
+
+    // Winners DOM generate karo
+    const container = document.getElementById('winnersContainer');
+    let html = '';
+    
+    // 50 log generate kar rahe hain
+    for (let i = 0; i < 50; i++) {
+        const avatar = avatars[i % avatars.length];
+        const name = `Mem***${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}`;
+        const amount = (Math.random() * 5000 + 100).toFixed(2);
+        
+        html += `
+        <div class="winner-item">
+            <div class="winner-left">
+                <img src="./images/${avatar}" alt="avatar">
+                <div class="winner-name">${name}</div>
+            </div>
+            <div class="winner-type">
+                <img src="./images/logo-wingo.webp" alt="WinGo">
+                ${getBalls()}
+            </div>
+            <div class="winner-amount">
+                <h4>Receive ₹${amount}</h4>
+                <span>Winning amount</span>
+            </div>
+        </div>
+        `;
+    }
+    
+    // 50 log ko double karo taaki scroll infinite chale
+    container.innerHTML = html + html; 
+
+    // Slider Script
     let slideIndex = 0;
     showSlides();
-
     function showSlides() {
         let i;
         let slides = document.getElementsByClassName("mySlides");
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";  
-        }
+        for (i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
         slideIndex++;
         if (slideIndex > slides.length) {slideIndex = 1}    
         slides[slideIndex-1].style.display = "block";  
-        setTimeout(showSlides, 4000); // Change image every 4 seconds
+        setTimeout(showSlides, 4000);
     }
 </script>
 
