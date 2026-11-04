@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDG LOTTERY7 - Dashboard</title>
+    <style>
+        body { background: #292929; color: white; font-family: Arial, sans-serif; text-align: center; padding: 50px 20px; margin: 0; }
+        .card { background: #3F3F3F; padding: 30px 20px; border-radius: 12px; max-width: 400px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        h1 { color: #D9AC4F; margin-bottom: 20px; }
+        h2 { color: #fff; font-size: 18px; font-weight: normal; }
+        .balance-box { background: #292929; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .balance { color: #D9AC4F; font-size: 32px; font-weight: bold; }
+        button { padding: 12px 20px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>BDG LOTTERY7</h1>
+        <h2>Phone: <span id="userPhone" style="color:#D9AC4F;">Loading...</span></h2>
+        <div class="balance-box">
+            <div style="font-size: 14px; color: #aaa;">Total Balance</div>
+            <div class="balance">₹<span id="userBalance">0</span></div>
+        </div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
+          authDomain: "airavattt.firebaseapp.com",
+          databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
+          projectId: "airavattt",
+          storageBucket: "airavattt.appspot.com",
+          messagingSenderId: "906559825335",
+          appId: "1:906559825335:web:0c11437318fbd2aec4b432"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let phone = localStorage.getItem('bdg_user');
+        if (!phone) { window.location.href = 'index.html'; }
+
+        document.getElementById('userPhone').innerText = phone;
+
+        const userRef = ref(db, 'users/' + phone);
+        get(userRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                let data = snapshot.val();
+                document.getElementById('userBalance').innerText = data.balance;
+            }
+        });
+
+        window.logout = function() {
+            localStorage.removeItem('bdg_user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BDG LOTTERY7 - Register</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/index-96409872.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/modules-96c1e775.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/page-login-ef3d1f88.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/page-login-b5988105.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/page-main-ff2e7571.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/index-98687087.css">
+    <style> body { background-color: #292929; margin: 0; padding: 0; font-size: 40px; } </style>
+</head>
+<body style="font-size: 12px">
+<div id="app" data-v-app="" style="background:#292929">
+  <div class="login__container">
+    
+    <div class="navbar">
+      <div class="navbar-fixed" style="background: rgb(63,63,63);">
+        <div class="navbar__content">
+          <div class="navbar__content-center">
+            <div class="headLogo" style="background-image:url(https://www.bigdaddygame2.com/index_files/h5setting_202401100608011fs2.png);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login__container-heading">
+      <h1 class="login__container-heading__title">Register</h1>
+      <div class="login__container-heading__subTitle">
+        <div>Please register with your phone number</div>
+      </div>
+    </div>
+
+    <div class="login__container-form">
+      <div class="tab-content activecontent">
+        <div class="signIn__container">
+          
+          <div class="phoneInput__container">
+            <div class="phoneInput__container-label"><span>Phone number</span></div>
+            <div class="phoneInput__container-input">
+              <input id="username" type="text" placeholder="Please enter the phone number" required>
+            </div>
+          </div>
+
+          <div class="passwordInput__container">
+            <div class="passwordInput__container-label"><span>Set Password</span></div>
+            <div class="passwordInput__container-input">
+              <input id="password" type="password" placeholder="Please enter Password" required>
+            </div>
+          </div>
+
+          <div class="passwordInput__container">
+            <div class="passwordInput__container-label"><span>Invite Code</span></div>
+            <div class="passwordInput__container-input">
+              <input id="invite" type="text" placeholder="Enter Invite Code (e.g. ADMIN001)" required>
+            </div>
+          </div>
+
+          <div class="signIn__container-button">
+            <button class="active" id="registerBtn">Register</button>
+            <button class="register" onclick="window.location='index.html'">Back to Login</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
+      authDomain: "airavattt.firebaseapp.com",
+      databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
+      projectId: "airavattt",
+      storageBucket: "airavattt.appspot.com",
+      messagingSenderId: "906559825335",
+      appId: "1:906559825335:web:0c11437318fbd2aec4b432"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById('registerBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        let phone = document.getElementById('username').value.trim();
+        let password = document.getElementById('password').value.trim();
+        let invite = document.getElementById('invite').value.trim();
+
+        if (!phone || !password || !invite) { alert("Please fill all fields"); return; }
+
+        let btn = e.target;
+        btn.innerText = "Registering...";
+        btn.disabled = true;
+
+        try {
+            const dbRef = ref(db);
+            const snapshot = await get(child(dbRef, `users/${phone}`));
+            
+            if (snapshot.exists()) {
+                alert("Phone number already registered");
+                btn.innerText = "Register"; btn.disabled = false; return;
+            }
+
+            // Save new user
+            await set(ref(db, `users/${phone}`), {
+                phone: phone,
+                password: password,
+                invite_code: invite,
+                balance: 0,
+                status: "active",
+                created_at: new Date().toISOString()
+            });
+
+            alert("Registration successful! Please log in.");
+            window.location.href = 'index.html';
+
+        } catch (error) {
+            console.error(error);
+            alert("Database error. Check Firebase rules.");
+            btn.innerText = "Register"; btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

