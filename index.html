@@ -1,288 +1,780 @@
 <!DOCTYPE html>
-<html lang="en" translate="no" data-dpr="1" style="font-size: 40px;">
-
+<html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="shortcut icon" href="./images/bitbug_favicon.ico" type="image/x-icon">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="google" content="notranslate">
-    <meta name="robots" content="noindex,nofollow">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BDG LOTTERY7</title>
-    
-    <!-- Tere index_files wale exact paths -->
-    <link rel="stylesheet" href="./index_files/index-96409872.css">
-    <link rel="stylesheet" href="./index_files/modules-96c1e775.css">
-    <link rel="stylesheet" href="./index_files/page-activity-d48e62db.css">
-    <link rel="stylesheet" href="./index_files/page-home-58543d87.css">
-    <link rel="stylesheet" href="./index_files/page-login-ef3d1f88.css">
-    <link rel="stylesheet" href="./index_files/page-main-ff2e7571.css">
-    <link rel="stylesheet" href="./index_files/index-98687087.css">
-    
-    <style>
-        html, body {
-            height: 100%;
-            width: 100%;
-            background-color: #090909;
-            padding: 0;
-            margin: 0;
-        }
-        .msg-content {
-            animation: zoom-in 0.45s ease reverse;
-        }
-        @keyframes zoom-in {
-            0% { opacity: 1; transform: scale(1, 1); }
-            50% { transform: scale(0.6, 0.6); }
-            100% { opacity: 0; transform: scale(1, 1); }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="robots" content="noindex,nofollow" />
+<title>BDG LOTTERY7 — Login</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #090909;
+    font-family: 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
+    color: #eaeaea;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, input, select, textarea { font-family: inherit; outline: none; }
+  button { cursor: pointer; border: none; }
+
+  .navbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; padding: 0 14px;
+    background: linear-gradient(90deg, #6F7381 0%, #A9AAB5 100%);
+    border-bottom: 1px solid #2a2a32;
+  }
+  .navbar-back {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    background: transparent; color: #fff; font-size: 22px; border-radius: 8px;
+  }
+  .navbar-back:active { background: rgba(255,255,255,0.1); }
+  .navbar-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 800; font-size: 17px; letter-spacing: .5px; color: #fff;
+  }
+  .navbar-brand svg { width: 22px; height: 22px; }
+  .navbar-lang { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #fff; }
+
+  .heading-banner {
+    min-height: 110px;
+    background: linear-gradient(90deg, #6F7381 0%, #A9AAB5 100%);
+    padding: 18px 22px 14px;
+  }
+  .heading-banner h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .heading-banner p { font-size: 13px; color: #fff; line-height: 1.5; }
+
+  .login-tabs { display: flex; padding: 0 22px; background: #f7f8ff; }
+  .login-tab {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 14px 0; min-height: 78px;
+    border-bottom: 2px solid #ddd;
+    background: transparent; color: #888;
+  }
+  .login-tab.active { border-bottom: 4px solid #D9AC4F; }
+  .login-tab.active .login-tab-text { color: #d9ac4f; }
+  .login-tab-icon { width: 30px; height: 30px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .login-tab-text { font-size: 15px; font-weight: 500; color: #888; }
+
+  .form-wrap {
+    background: #090909; padding: 22px;
+    min-height: calc(100vh - 56px - 110px - 78px);
+  }
+  .form-panel { display: none; }
+  .form-panel.active { display: block; }
+
+  .input-block { margin-bottom: 20px; }
+  .input-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 14px; color: #fff; margin-bottom: 8px;
+  }
+  .input-label svg { width: 16px; height: 16px; stroke: #d9ac4f; fill: none; stroke-width: 2; }
+  .input-box {
+    display: flex; align-items: center;
+    background: #484848; border-radius: 10px; padding: 0 14px;
+    transition: box-shadow .2s;
+  }
+  .input-box:focus-within { box-shadow: 0 0 0 2px #d9ac4f; }
+  .input-box select {
+    background: transparent; border: none; color: #fff;
+    font-size: 14px; padding: 6px 4px; max-width: 100px;
+    border-right: 1px solid #666; margin-right: 8px;
+  }
+  .input-box select option { background: #292929; }
+  .input-box input {
+    flex: 1; background: transparent; border: none; color: #fff;
+    font-size: 15px; padding: 14px 6px; min-width: 0;
+  }
+  .input-box input::placeholder { color: #aaa; }
+  .eye-btn { background: transparent; padding: 8px; display: flex; opacity: .7; }
+  .eye-btn svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; }
+  .eye-btn:active { opacity: 1; }
+
+  .remember-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: #90929e; margin-bottom: 18px; cursor: pointer;
+  }
+  .remember-row input { accent-color: #d9ac4f; width: 16px; height: 16px; }
+  .tip-row {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 13px; color: #d9ac4f; margin-bottom: 20px; line-height: 1.5;
+  }
+  .tip-row svg { width: 18px; height: 18px; flex: none; margin-top: 1px; }
+
+  .btn-stack { display: flex; flex-direction: column; gap: 12px; }
+  .btn-lg {
+    width: 100%; height: 48px; border-radius: 24px;
+    font-size: 16px; font-weight: 700; letter-spacing: .5px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform .1s, opacity .2s;
+  }
+  .btn-lg:active { transform: scale(.98); }
+  .btn-primary { background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; }
+  .btn-primary:active { background: linear-gradient(180deg, #A9AAB5 0%, #6F7381 100%); color: #fff; }
+  .btn-ghost { background: transparent; border: 1px solid #C4933F; color: #c4933f; }
+  .btn-ghost:active { background: linear-gradient(180deg, #A9AAB5 0%, #6F7381 100%); color: #fff; border-color: #6F7381; }
+
+  .helper-footer { display: flex; justify-content: space-around; margin-top: 32px; }
+  .helper-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: transparent; color: #a6a9ae; font-size: 12px;
+  }
+  .helper-icon {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: #1f1f26;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .helper-icon svg { width: 20px; height: 20px; stroke: #d9ac4f; fill: none; stroke-width: 2; }
+  .helper-item:active .helper-icon { background: #2a2a32; }
+
+  #toast {
+    position: fixed; left: 50%; top: 40%; transform: translateX(-50%);
+    background: rgba(0,0,0,.9); color: #fff;
+    padding: 12px 20px; border-radius: 10px;
+    font-size: 14px; z-index: 9999;
+    display: none; max-width: 80%; text-align: center;
+  }
+  #toast.show { display: block; animation: toastIn .2s ease; }
+  @keyframes toastIn { from { opacity:0; transform: translate(-50%,-6px);} to {opacity:1; transform: translate(-50%,0);} }
+
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.8);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; overflow-y: auto;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    width: 100%; max-width: 400px;
+    background: #292929; border-radius: 14px;
+    overflow: hidden;
+    animation: modalIn .2s ease;
+    margin: auto;
+  }
+  @keyframes modalIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-head {
+    background: linear-gradient(180deg, #6F6F6F 0%, #404040 100%);
+    padding: 14px; text-align: center;
+    font-size: 15px; font-weight: 600; color: #fff;
+  }
+  .modal-body { padding: 18px; }
+
+  .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
+  .cs-logo {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: linear-gradient(135deg, #f5c542, #ff9d2e);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px; box-shadow: 0 6px 18px rgba(245,197,66,.35);
+  }
+  .cs-logo svg { width: 50px; height: 50px; stroke: #1a1a1a; fill: none; stroke-width: 2; }
+  .cs-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .cs-sub { font-size: 13px; color: #a6a9ae; text-align: center; line-height: 1.5; margin-bottom: 16px; }
+  .cs-warn {
+    display: flex; gap: 8px; align-items: flex-start;
+    background: rgba(217,172,79,.12); border: 1px solid rgba(217,172,79,.4);
+    border-radius: 10px; padding: 10px 12px;
+    font-size: 12px; color: #fae59f; line-height: 1.5; margin-bottom: 14px;
+  }
+  .cs-warn svg { width: 16px; height: 16px; flex: none; stroke: #d9ac4f; fill: none; stroke-width: 2; margin-top: 1px; }
+  .cs-chat-btn {
+    width: 100%; height: 50px; border-radius: 25px;
+    background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%);
+    color: #8f5206; font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 4px;
+  }
+  .cs-chat-btn:active { transform: scale(.98); }
+  .cs-chat-btn:disabled { opacity: .6; cursor: not-allowed; }
+  .cs-chat-btn svg { width: 20px; height: 20px; stroke: #8f5206; fill: none; stroke-width: 2; }
+
+  .modal-close-btn {
+    display: block; width: 100%; text-align: center;
+    padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent;
+  }
+
+  .modal-input {
+    width: 100%; height: 46px; border-radius: 10px;
+    background: #484848; color: #fff;
+    padding: 0 14px; font-size: 15px; border: none;
+    margin-bottom: 12px;
+  }
+  .modal-input::placeholder { color: #aaa; }
+  .modal-textarea {
+    width: 100%; min-height: 100px; border-radius: 10px;
+    background: #484848; color: #fff;
+    padding: 12px 14px; font-size: 15px; border: none;
+    margin-bottom: 12px; resize: vertical; line-height: 1.5;
+  }
+  .modal-textarea::placeholder { color: #aaa; }
+  .field-hint { font-size: 12px; color: #8a8a95; margin: -6px 0 12px 4px; }
+
+  #loader {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,.75);
+    display: none; align-items: center; justify-content: center;
+  }
+  #loader.show { display: flex; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 4px solid rgba(245,197,66,.25);
+    border-top-color: #f5c542; border-radius: 50%;
+    animation: spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 380px) {
+    .heading-banner { padding: 14px 16px 10px; }
+    .form-wrap { padding: 16px; }
+    .login-tabs { padding: 0 16px; }
+  }
+</style>
 </head>
+<body>
 
-<body style="font-size: 12px">
+<header class="navbar">
+  <button class="navbar-back" onclick="history.back()" aria-label="Back">&#8592;</button>
+  <div class="navbar-brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="3"/>
+      <circle cx="8" cy="8" r="1" fill="#fff"/>
+      <circle cx="16" cy="8" r="1" fill="#fff"/>
+      <circle cx="8" cy="16" r="1" fill="#fff"/>
+      <circle cx="16" cy="16" r="1" fill="#fff"/>
+      <circle cx="12" cy="12" r="1" fill="#fff"/>
+    </svg>
+    BDG LOTTERY7
+  </div>
+  <div class="navbar-lang"><span>🇬🇧</span><span>EN</span></div>
+</header>
 
-    <div id="app" data-v-app="" style="background: #292929">
-        <div data-v-8752c961="" class="login__container" style="--7688837a: 'Roboto', 'Inter', sans-serif;">
-            
-            <!-- Navbar -->
-            <div data-v-58c5e826="" data-v-8752c961="" class="navbar">
-                <div data-v-58c5e826="" class="navbar-fixed" style="background: rgb(63, 63, 63);">
-                    <div data-v-58c5e826="" class="navbar__content">
-                        <div data-v-58c5e826="" class="navbar__content-left" onclick="location.href='/home'">
-                            <i data-v-58c5e826="" class="van-badge__wrapper van-icon van-icon-arrow-left"></i>
-                        </div>
-                        <div data-v-58c5e826="" class="navbar__content-center">
-                            <div data-v-58c5e826="" class="headLogo" style="background-image: url(./index_files/h5setting_202401100608011fs2.png);"></div>
-                            <div data-v-58c5e826="" class="navbar__content-title"></div>
-                        </div>
-                        <div data-v-58c5e826="" class="navbar__content-right">
-                            <div data-v-187d09fa="" data-v-8752c961="">
-                                <div data-v-187d09fa="" class="right">
-                                    <div data-v-187d09fa="" class="img">
-                                        <img data-v-187d09fa="" class="" src="./index_files/en-4b649537.png">
-                                    </div>
-                                    <span data-v-187d09fa="" class="lang-text">EN</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="heading-banner">
+  <h1>Login</h1>
+  <p>Please log in with your phone number or email.<br/>Forgot password? Contact customer service.</p>
+</div>
 
-            <!-- Heading -->
-            <div data-v-8752c961="" class="login__container-heading">
-                <h1 data-v-8752c961="" class="login__container-heading__title">Log in</h1>
-                <div data-v-8752c961="" class="login__container-heading__subTitle">
-                    <div data-v-8752c961="">Please log in with your phone number or email</div>
-                    <div data-v-8752c961="">If you forget your password, please contact customer service</div>
-                </div>
-            </div>
+<div class="login-tabs">
+  <button class="login-tab active" data-tab="phone" onclick="switchTab('phone')">
+    <div class="login-tab-icon">📱</div>
+    <div class="login-tab-text">Phone Login</div>
+  </button>
+  <button class="login-tab" data-tab="email" onclick="switchTab('email')">
+    <div class="login-tab-icon">✉️</div>
+    <div class="login-tab-text">Email Login</div>
+  </button>
+</div>
 
-            <!-- Tabs -->
-            <div data-v-8752c961="" class="login_container-tab">
-                <div data-v-8752c961="" class="tab active">
-                    <div data-v-8752c961="" class="phonebg phoneactive"></div>
-                    <div data-v-8752c961="" class="font30 phonefont30active">Log in with phone</div>
-                </div>
-            </div>
+<div class="form-wrap">
 
-            <!-- Form -->
-            <div data-v-8752c961="" class="login__container-form">
-                <div data-v-8752c961="" class="tab-content activecontent">
-                    <div data-v-0ce8d964="" data-v-8752c961="" class="signIn__container">
-                        
-                        <div data-v-93f53084="" data-v-0ce8d964="" class="phoneInput__container">
-                            <div data-v-93f53084="" class="phoneInput__container-label">
-                                <img data-v-93f53084="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGDSURBVHgB7ZnNTcNAEIXfOOGeEuiAcEFEuVBCJILELXEF0EGcDqAChxtS0gO+QMTNVID7IHgY83Mju4uyzghpPsmnfWvN8/5YmgcYxk5QqPAxv+h3iCcM9NEiUlDJ3L0dpPdVoN7P8914VjMy7BNCNpis5n6ZB5Xifwgw4TSwzi8PQZtXKNJhOj5Jl+W28cQ1mfF2DWU2qKeucacBIjqCMr4anAb+A2ZAGzOgjRnQxgxoYwa0MQPamAFtzIA2ZsDYEWdb5Sk/HxGSHlThapCuim2jXcfMpiNwJS84gy7F9/Mrdoi16SIuhWy8yiWQ7naPwCNEIpoBAi1Op8s0RLvOxwuZMEEEom2hmvklVCurUCIS8VZAbiz5st7CEnCv/rrdEIOIZ4ClFY8Hn6r+/PXEKb7BrlFt3AHHHw5mW/hq8CQ0yQLKEA5uXONOA8Mmm2J4k8K2kHBx7otbg2JWuR4zUc6wR5rih+kq8+mCg+4msSQJ/bjl3Ixkz7/L1h06kknDiMgH3mlqrSokw/4AAAAASUVORK5CYII=" class="phoneInput__container-label__icon">
-                                <span data-v-93f53084="">Phone number</span>
-                            </div>
-                            <div data-v-93f53084="" class="phoneInput__container-input">
-                                <div data-v-6f85c91a="" data-v-93f53084="" class="dropdown">
-                                    <div data-v-6f85c91a="" class="dropdown__value">
-                                        <span data-v-6f85c91a="">+91</span>
-                                        <i data-v-6f85c91a="" class="van-badge__wrapper van-icon van-icon-arrow-down"></i>
-                                    </div>
-                                </div>
-                                <input data-v-93f53084="" type="text" id="username" placeholder="Please enter the phone number" autocomplete="on" required>
-                            </div>
-                        </div>
-                        
-                        <div data-v-57d49070="" data-v-0ce8d964="" class="passwordInput__container">
-                            <div data-v-57d49070="" class="passwordInput__container-label">
-                                <img data-v-57d49070="" class="passwordInput__container-label__icon" src="./index_files/password-b827c2b3.png">
-                                <span data-v-57d49070="">Password</span>
-                            </div>
-                            <div data-v-57d49070="" class="passwordInput__container-input">
-                                <input data-v-57d49070="" id="passwordfield" type="password" placeholder="Please enterPassword" maxlength="32" autocomplete="on" required>
-                                <img data-v-57d49070="" id="eyeicon" src="./index_files/eyeInvisible-2fa5c152.png" class="eye" onclick="showPass()">
-                            </div>
-                        </div>
-
-                        <div data-v-0ce8d964="" class="signIn__container-remember">
-                            <div data-v-0ce8d964="" role="checkbox" class="van-checkbox" tabindex="0" aria-checked="true">
-                                <div class="van-checkbox__icon van-checkbox__icon--round van-checkbox__icon--checked">
-                                    <i class="van-badge__wrapper van-icon van-icon-success" style="border-color: rgb(199, 160, 84); background-color: rgb(199, 160, 84);"></i>
-                                </div>
-                                <span class="van-checkbox__label">Remember password</span>
-                            </div>
-                        </div>
-
-                        <div class="alert-toast" style="color:red"></div>
-
-                        <div data-v-0ce8d964="" class="signIn__container-button">
-                            <button data-v-0ce8d964="" class="active" id="loginBtn">Log in</button>
-                            <button data-v-0ce8d964="" class="register" onclick="window.location='register.html'">Register</button>
-                        </div>
-
-                        <div data-v-0ce8d964="" class="signIn_footer">
-                            <div data-v-0ce8d964="" class="forgetcon" onclick="window.location='forgot.html'">
-                                <div data-v-0ce8d964="" class="forgetbg"></div>
-                                <div data-v-0ce8d964="" class="font24">Forgot password</div>
-                            </div>
-                            <div data-v-0ce8d964="" class="customcon" onclick="window.location='forgot.html'">
-                                <div data-v-0ce8d964="" class="custombg"></div>
-                                <div data-v-0ce8d964="" class="font24">Customer Service</div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            
-            <div class="customer" id="customerId" style="--7688837a: 'Roboto', 'Inter', sans-serif; --17a7a9f6: bahnschrift;" onclick="window.location='forgot.html'">
-                <img class="" src="./index_files/icon_sevice-1ca64bcf.png">
-            </div>
-        </div>
-    </div>
-    
-    <!-- Loading Overlay -->
-    <div class="van-overlay" style="z-index: 2003; display: none;">
-      <div data-v-7692a079="" data-v-42f27458="" class="Loading c-row c-row-middle-center" style="position: fixed;height: 100vh;width: 100vw;top: 0;left: 0;background: rgba(0,0,0,.6);z-index: 99999;">
-        <div data-v-7692a079="" class="van-loading van-loading--circular">
-          <span data-v-7692a079="" class="van-loading__spinner van-loading__spinner--circular" style="width: auto; height: auto; -webkit-animation-duration: 1s; animation-duration: 1s;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" preserveAspectRatio="xMidYMid meet" style="width: 100%;height: 100%;transform: translate3d(0px, 0px, 0px);content-visibility: visible;">
-              <g transform="matrix(-0.5984085202217102,0.8011911511421204,-0.8011911511421204,-0.5984085202217102,239.9599609375,79.72173309326172)" style="display: block;">
-                <image width="200px" height="200px" preserveAspectRatio="xMidYMid slice" href="./index_files/loadingspinner.png"></image>
-              </g>
-            </svg>
-          </span>
-          <img src="./index_files/h5setting_202401100608011fs2.png" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 168px; height: 44px;">
-        </div>
+  <div id="panel-phone" class="form-panel active">
+    <div class="input-block">
+      <div class="input-label">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Phone number
+      </div>
+      <div class="input-box">
+        <select id="phoneCountry">
+          <option value="+91" selected>+91</option>
+          <option value="+880">+880</option>
+          <option value="+977">+977</option>
+          <option value="+92">+92</option>
+          <option value="+94">+94</option>
+          <option value="+971">+971</option>
+          <option value="+1">+1</option>
+          <option value="+44">+44</option>
+        </select>
+        <input id="phoneInput" type="tel" placeholder="Please enter the phone number" maxlength="12" inputmode="numeric" />
       </div>
     </div>
+    <div class="input-block">
+      <div class="input-label">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Password
+      </div>
+      <div class="input-box">
+        <input id="phonePwd" type="password" placeholder="Please enter the password" maxlength="32" />
+        <button class="eye-btn" onclick="togglePwd('phonePwd', this)" aria-label="Show">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <label class="remember-row">
+      <input type="checkbox" id="rememberPhone" />
+      <span>Remember password</span>
+    </label>
+    <div class="btn-stack">
+      <button class="btn-lg btn-primary" onclick="doLogin('phone')">Log in</button>
+      <button class="btn-lg btn-ghost" onclick="openRegister()">Register</button>
+    </div>
+  </div>
 
-    <script>
-        $(window).on('load', function() {
-          $('.van-overlay').fadeIn(10);
-          setTimeout(function() {
-            $('.van-overlay').fadeOut(300);
-          }, 600);
-        });
-    </script>
+  <div id="panel-email" class="form-panel">
+    <div class="input-block">
+      <div class="input-label">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+        Email / Account
+      </div>
+      <div class="input-box">
+        <input id="emailInput" type="text" placeholder="Please enter the email" maxlength="120" />
+      </div>
+    </div>
+    <div class="input-block">
+      <div class="input-label">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Password
+      </div>
+      <div class="input-box">
+        <input id="emailPwd" type="password" placeholder="Please enter the password" maxlength="32" />
+        <button class="eye-btn" onclick="togglePwd('emailPwd', this)" aria-label="Show">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <label class="remember-row">
+      <input type="checkbox" id="rememberEmail" />
+      <span>Remember password</span>
+    </label>
+    <div class="btn-stack">
+      <button class="btn-lg btn-primary" onclick="doLogin('email')">Log in</button>
+      <button class="btn-lg btn-ghost" onclick="openRegister()">Register</button>
+    </div>
+  </div>
 
-    <!-- Firebase Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <div class="helper-footer">
+    <button class="helper-item" onclick="openForgot()">
+      <div class="helper-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <span>Forgot Password</span>
+    </button>
+    <button class="helper-item" onclick="openService()">
+      <div class="helper-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <span>Customer Service</span>
+    </button>
+  </div>
+</div>
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
-          authDomain: "airavattt.firebaseapp.com",
-          databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
-          projectId: "airavattt",
-          storageBucket: "airavattt.appspot.com",
-          messagingSenderId: "906559825335",
-          appId: "1:906559825335:web:0c11437318fbd2aec4b432"
-        };
+<!-- MODAL: REGISTER -->
+<div id="modal-register" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Create Account</div>
+    <div class="modal-body">
+      <div style="display:flex;gap:6px;">
+        <select id="regCountry" style="width:88px;height:46px;border-radius:10px;background:#484848;border:none;color:#fff;font-size:14px;padding:0 8px;">
+          <option value="+91" selected>+91</option>
+          <option value="+880">+880</option>
+          <option value="+977">+977</option>
+          <option value="+92">+92</option>
+          <option value="+94">+94</option>
+          <option value="+971">+971</option>
+          <option value="+1">+1</option>
+          <option value="+44">+44</option>
+        </select>
+        <input id="regPhone" class="modal-input" style="margin-bottom:12px;flex:1;" type="tel" inputmode="numeric" maxlength="12" placeholder="Phone number" />
+      </div>
+      <input id="regName" class="modal-input" type="text" maxlength="40" placeholder="Your name (optional)" />
+      <input id="regEmail" class="modal-input" type="email" maxlength="120" placeholder="Email (required for login)" />
+      <input id="regPwd" class="modal-input" type="password" maxlength="32" placeholder="Set password (min 6)" />
+      <input id="regPwd2" class="modal-input" type="password" maxlength="32" placeholder="Confirm password" />
+      <div class="tip-row">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Email required — it is used for login &amp; password recovery.</span>
+      </div>
+      <button class="btn-lg btn-primary" style="margin-bottom:10px;" onclick="doRegister()">Create Account</button>
+      <button class="modal-close-btn" onclick="closeModal('modal-register')">Cancel</button>
+    </div>
+  </div>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+<!-- MODAL: FORGOT -->
+<div id="modal-forgot" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Forgot Password</div>
+    <div class="modal-body">
+      <input id="fpEmail" class="modal-input" type="email" maxlength="120" placeholder="Registered email address" />
+      <div class="tip-row">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>We will send a password reset link to your email.</span>
+      </div>
+      <button class="btn-lg btn-primary" style="margin-bottom:10px;" onclick="doForgot()">Send Reset Link</button>
+      <button class="modal-close-btn" onclick="closeModal('modal-forgot')">Cancel</button>
+    </div>
+  </div>
+</div>
 
-        document.getElementById('loginBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            let phone = document.getElementById('username').value.trim();
-            let password = document.getElementById('passwordfield').value.trim();
-            
-            if (!phone || !password) {
-                alertMess("Please fill in the required section");
-                return;
-            }
+<!-- MODAL: CUSTOMER SERVICE -->
+<div id="modal-service" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Customer Service</div>
+    <div class="modal-body">
+      <div class="cs-logo-wrap">
+        <div class="cs-logo">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <circle cx="8" cy="8" r="1" fill="#1a1a1a"/>
+            <circle cx="16" cy="8" r="1" fill="#1a1a1a"/>
+            <circle cx="8" cy="16" r="1" fill="#1a1a1a"/>
+            <circle cx="16" cy="16" r="1" fill="#1a1a1a"/>
+            <circle cx="12" cy="12" r="1" fill="#1a1a1a"/>
+          </svg>
+        </div>
+        <div class="cs-title">BDG LOTTERY7</div>
+        <div class="cs-sub">Our support team will reach you on Telegram within a few minutes.</div>
+      </div>
+      <div class="cs-warn">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Please enter your phone number and describe your problem. It will be sent directly to our Telegram support.</span>
+      </div>
+      <input id="csPhone" class="modal-input" type="tel" inputmode="numeric" maxlength="12" placeholder="Your phone number (e.g. 9876543210)" />
+      <div class="field-hint">Enter the phone number linked to your account</div>
+      <textarea id="csDesc" class="modal-textarea" maxlength="600" placeholder="Describe your problem in detail (e.g. deposit issue, withdrawal, login problem...)"></textarea>
+      <div class="field-hint">Minimum 5 characters, maximum 600</div>
+      <button id="csSendBtn" class="cs-chat-btn" onclick="sendSupport()">
+        <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+        Send to Support
+      </button>
+      <button class="modal-close-btn" onclick="closeModal('modal-service')">Close</button>
+    </div>
+  </div>
+</div>
 
-            $('.van-overlay').fadeIn(10);
-            let btn = e.target;
-            let originalText = btn.innerText;
-            btn.innerText = "Loading...";
-            btn.disabled = true;
+<div id="toast"></div>
+<div id="loader"><div class="spinner"></div></div>
 
-            try {
-                const dbRef = ref(db);
-                const snapshot = await get(child(dbRef, `users/${phone}`));
-                
-                if (!snapshot.exists()) {
-                    $('.van-overlay').fadeOut(300);
-                    alertMess("Account does not exist");
-                    btn.innerText = originalText; btn.disabled = false; return;
-                }
-                
-                const userData = snapshot.val();
-                if (userData.password !== password) {
-                    $('.van-overlay').fadeOut(300);
-                    alertMess("Wrong password");
-                    btn.innerText = originalText; btn.disabled = false; return;
-                }
-                if (userData.status === "blocked") {
-                    $('.van-overlay').fadeOut(300);
-                    alertMess("Account blocked. Contact customer service.");
-                    btn.innerText = originalText; btn.disabled = false; return;
-                }
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-                // Success
-                $('.van-overlay').fadeOut(300);
-                $('.Loading').fadeIn(10);
-                localStorage.setItem('bdg_user', phone);
-                
-                setTimeout(() => {
-                    location.href = 'user.html';
-                }, 500);
+/* ================= FIREBASE CONFIG ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyADbcwPjDhg2ATFc9nMhstV8o1gD18WMw0",
+  authDomain: "airavattt.firebaseapp.com",
+  databaseURL: "https://airavattt-default-rtdb.firebaseio.com",
+  projectId: "airavattt",
+  storageBucket: "airavattt.appspot.com",
+  messagingSenderId: "906559825335",
+  appId: "1:906559825335:web:0c11437318fbd2aec4b432",
+  measurementId: "G-S56VT2DJ9H"
+};
 
-            } catch (error) {
-                console.error(error);
-                $('.van-overlay').fadeOut(300);
-                alertMess("Database error. Please try again.");
-                btn.innerText = originalText; btn.disabled = false;
-            }
-        });
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        function alertMess(text) {
-            let length = $('.alert-toast .msg').length;
-            if (length == 0) {
-                $('.alert-toast').append(
-                    `
-                    <div data-v-1dcba851="" class="msg">
-                        <div data-v-1dcba851="" class="msg-content" style="display:block; color:white; background:rgba(0,0,0,0.8); padding:10px; border-radius:5px; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:99999; font-size:14px;"> ${text} </div>
-                    </div>
-                    `
-                );
-                setTimeout(() => {
-                    $('.msg').fadeOut();
-                    setTimeout(() => {
-                        $('.alert-toast .msg').remove();
-                    }, 100);
-                }, 2000);
-            }
-        }
+/* ================= TELEGRAM ================= */
+const TG_CONFIG = {
+  BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw",
+  CHAT_ID:   "8167337368"
+};
 
-        function showPass() {
-          var x = document.getElementById("passwordfield");
-          var y = document.getElementById("eyeicon");
-          if (x.type === "password") {
-            x.type = "text";
-            y.src="./index_files/eyeVisible-7bc1c956.png";
-          } else {
-            x.type = "password";
-            y.src="./index_files/eyeInvisible-2fa5c152.png";
-          }
-        }
-    </script>
+/* ================= HELPERS ================= */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function showLoader() { document.getElementById('loader').classList.add('show'); }
+function hideLoader() { document.getElementById('loader').classList.remove('show'); }
+
+function switchTab(tab) {
+  document.querySelectorAll('.login-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+window.switchTab = switchTab;
+
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  const hidden = inp.type === 'password';
+  inp.type = hidden ? 'text' : 'password';
+  btn.innerHTML = hidden
+    ? `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+    : `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+}
+window.togglePwd = togglePwd;
+
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+window.openModal = openModal;
+window.closeModal = closeModal;
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('show'); });
+});
+
+/* ================= AUTH STATE ================= */
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // already logged in — go home
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) {
+        window.location.href = "home.html";
+      }
+    } catch (e) { console.warn(e); }
+  }
+});
+
+/* ================= LOGIN ================= */
+async function doLogin(mode) {
+  const isPhone = mode === 'phone';
+  const country = isPhone ? document.getElementById('phoneCountry').value : '';
+  const username = isPhone
+    ? document.getElementById('phoneInput').value.trim()
+    : document.getElementById('emailInput').value.trim();
+  const pwd = isPhone
+    ? document.getElementById('phonePwd').value
+    : document.getElementById('emailPwd').value;
+
+  if (!username) { showToast(isPhone ? 'Please enter phone number' : 'Please enter email'); return; }
+  if (!pwd) { showToast('Please enter password'); return; }
+
+  // Firebase Auth needs email. For phone login, we use internal email
+  let email;
+  if (isPhone) {
+    email = `${country.replace('+','')}${username}@bdg7.local`;
+  } else {
+    email = username;
+  }
+
+  showLoader();
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, pwd);
+    const snap = await getDoc(doc(db, "users", cred.user.uid));
+    hideLoader();
+    if (!snap.exists()) {
+      showToast('Account data missing. Contact support.');
+      return;
+    }
+    const userData = snap.data();
+    localStorage.setItem('bdg7_session', JSON.stringify({
+      uid: cred.user.uid,
+      ...userData
+    }));
+    showToast('Login successful! Redirecting…');
+    setTimeout(() => { window.location.href = 'home.html'; }, 800);
+  } catch (err) {
+    hideLoader();
+    const code = err.code || '';
+    if (code.includes('user-not-found') || code.includes('invalid-credential') || code.includes('wrong-password')) {
+      showToast('Invalid credentials. Please check and try again.');
+    } else if (code.includes('too-many-requests')) {
+      showToast('Too many attempts. Try again later.');
+    } else if (code.includes('invalid-email')) {
+      showToast('Invalid email format.');
+    } else {
+      showToast('Login failed: ' + (err.message || 'Try again'));
+    }
+    console.error(err);
+  }
+}
+window.doLogin = doLogin;
+
+/* ================= REGISTER ================= */
+function openRegister() {
+  ['regPhone','regName','regEmail','regPwd','regPwd2'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  openModal('modal-register');
+}
+window.openRegister = openRegister;
+
+async function doRegister() {
+  const country = document.getElementById('regCountry').value;
+  const phone = document.getElementById('regPhone').value.trim();
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pwd = document.getElementById('regPwd').value;
+  const pwd2 = document.getElementById('regPwd2').value;
+
+  if (!phone) { showToast('Please enter phone number'); return; }
+  if (phone.length < 6) { showToast('Phone number too short'); return; }
+  if (!email) { showToast('Please enter email'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Invalid email format'); return; }
+  if (pwd.length < 6) { showToast('Password must be at least 6 characters'); return; }
+  if (pwd !== pwd2) { showToast('Passwords do not match'); return; }
+
+  showLoader();
+  try {
+    // Firebase Auth: create with real email (for email login + password reset)
+    const cred = await createUserWithEmailAndPassword(auth, email, pwd);
+
+    // Save profile to Firestore
+    await setDoc(doc(db, "users", cred.user.uid), {
+      uid: cred.user.uid,
+      country, phone, name, email,
+      createdAt: serverTimestamp()
+    });
+
+    hideLoader();
+    showToast('Account created! Please log in.');
+    closeModal('modal-register');
+    document.getElementById('emailInput').value = email;
+    switchTab('email');
+  } catch (err) {
+    hideLoader();
+    const code = err.code || '';
+    if (code.includes('email-already-in-use')) {
+      showToast('This email is already registered.');
+    } else if (code.includes('invalid-email')) {
+      showToast('Invalid email format.');
+    } else if (code.includes('weak-password')) {
+      showToast('Password too weak (min 6).');
+    } else {
+      showToast('Registration failed: ' + (err.message || 'Try again'));
+    }
+    console.error(err);
+  }
+}
+window.doRegister = doRegister;
+
+/* ================= FORGOT PASSWORD ================= */
+function openForgot() {
+  document.getElementById('fpEmail').value = '';
+  openModal('modal-forgot');
+}
+window.openForgot = openForgot;
+
+async function doForgot() {
+  const email = document.getElementById('fpEmail').value.trim();
+  if (!email) { showToast('Please enter your email'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Invalid email format'); return; }
+
+  showLoader();
+  try {
+    await sendPasswordResetEmail(auth, email);
+    hideLoader();
+    showToast('Reset link sent to your email!');
+    closeModal('modal-forgot');
+  } catch (err) {
+    hideLoader();
+    if ((err.code || '').includes('user-not-found')) {
+      showToast('No account with this email.');
+    } else {
+      showToast('Failed: ' + (err.message || 'Try again'));
+    }
+    console.error(err);
+  }
+}
+window.doForgot = doForgot;
+
+/* ================= CUSTOMER SERVICE ================= */
+function openService() {
+  try {
+    const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
+    if (s.phone) {
+      document.getElementById('csPhone').value = s.phone;
+    } else if (auth.currentUser) {
+      // if logged in but session empty, still let them fill
+    }
+  } catch {}
+  openModal('modal-service');
+}
+window.openService = openService;
+
+async function sendSupport() {
+  const phone = document.getElementById('csPhone').value.trim();
+  const desc  = document.getElementById('csDesc').value.trim();
+
+  if (!phone) { showToast('Please enter your phone number'); return; }
+  if (phone.length < 6) { showToast('Please enter a valid phone number'); return; }
+  if (!desc) { showToast('Please describe your problem'); return; }
+  if (desc.length < 5) { showToast('Description must be at least 5 characters'); return; }
+
+  const btn = document.getElementById('csSendBtn');
+  btn.disabled = true;
+  showLoader();
+
+  const user = auth.currentUser;
+
+  // Save to Firestore (support collection) if logged in
+  if (user) {
+    try {
+      const supportRef = doc(db, "support", `t_${Date.now()}_${user.uid.slice(0,6)}`);
+      await setDoc(supportRef, {
+        uid: user.uid,
+        email: user.email || '',
+        phone,
+        description: desc,
+        status: 'new',
+        createdAt: serverTimestamp()
+      });
+    } catch (e) { console.warn('Firestore support save failed:', e); }
+  }
+
+  // Send to Telegram
+  const msg =
+    `🔔 *BDG LOTTERY7 — Support Request*\n\n` +
+    `📱 Phone: \`${phone}\`\n` +
+    `📝 Problem:\n${desc}\n\n` +
+    `🕒 ${new Date().toLocaleString()}`;
+
+  try {
+    const res = await fetch(
+      `https://api.telegram.org/bot${TG_CONFIG.BOT_TOKEN}/sendMessage`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TG_CONFIG.CHAT_ID,
+          text: msg,
+          parse_mode: 'Markdown'
+        })
+      }
+    );
+    const data = await res.json();
+    hideLoader();
+    btn.disabled = false;
+
+    if (data.ok) {
+      showToast('Sent! Our team will contact you on Telegram.');
+      document.getElementById('csDesc').value = '';
+      closeModal('modal-service');
+    } else {
+      showToast('Failed: ' + (data.description || 'Try again'));
+      console.error('Telegram error:', data);
+    }
+  } catch (err) {
+    hideLoader();
+    btn.disabled = false;
+    showToast('Network error. Please try again.');
+    console.error(err);
+  }
+}
+window.sendSupport = sendSupport;
+
+/* ================= AUTOFILL ================= */
+window.addEventListener('DOMContentLoaded', () => {
+  const last = localStorage.getItem('bdg7_last');
+  if (last) {
+    try {
+      const o = JSON.parse(last);
+      if (o.mode === 'email') {
+        switchTab('email');
+        document.getElementById('emailInput').value = o.username;
+      }
+    } catch {}
+  }
+});
+</script>
 </body>
-
 </html>
