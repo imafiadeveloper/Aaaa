@@ -81,6 +81,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .history-wrap{margin:24px 16px;}
 .history-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .history-head h3{font-size:15px;font-weight:600;}
+.view-all-btn{font-size:12px;color:#a6a9ae;cursor:pointer;}
 .history-table{width:100%;background:#262626;border-radius:12px;overflow:hidden;}
 .ht-head{display:flex;background:#333;padding:10px 0;font-size:12px;color:#a6a9ae;font-weight:600;}
 .ht-row{display:flex;padding:12px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;}
@@ -118,17 +119,29 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .btn-cancel{flex:1;height:48px;border-radius:12px;background:#333;color:#fff;font-size:15px;font-weight:600;}
 .btn-confirm{flex:2;height:48px;border-radius:12px;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:15px;font-weight:700;}
 
-/* Result Popup */
-.result-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);background:#2a2a2a;border-radius:20px;padding:30px;z-index:9999;text-align:center;opacity:0;pointer-events:none;transition:all 0.3s ease;width:80%;max-width:300px;box-shadow:0 10px 30px rgba(0,0,0,0.7);border:1px solid rgba(250,229,159,0.2);}
-.result-popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
-.res-icon{font-size:50px;margin-bottom:10px;}
-.res-title{font-size:22px;font-weight:800;margin-bottom:8px;}
-.res-win{color:#6abe57;}
-.res-lose{color:#f2413b;}
-.res-amt{font-size:26px;font-weight:800;color:#FAE59F;margin-bottom:16px;}
-.res-detail{font-size:13px;color:#a6a9ae;}
+/* New Result Popup Design */
+.result-popup-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+.result-popup-wrap.show{display:flex;}
+.result-card{width:100%;max-width:320px;background:url('./images/missningBg-9deda6ac.png') no-repeat center top / 100% 100%;position:relative;padding-bottom:20px;}
+/* Fallback if image fails */
+.result-card{background-color: #ff6b6b;}
+.res-close{position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);width:32px;height:32px;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;cursor:pointer;border:1px solid #fff;}
+.res-content{text-align:center;padding:100px 20px 10px;}
+.res-status{font-size:24px;font-weight:800;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.5);margin-bottom:12px;}
+.res-tags{display:flex;justify-content:center;gap:8px;margin-bottom:16px;}
+.res-tag{background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;color:#fff;}
+.res-tag.red{background:#ff4d4f;}
+.res-tag.small{background:#4a90e2;}
+.res-tag.big{background:#f5a623;}
+.res-paper{background:#fff8ef;padding:16px;border-radius:8px;margin:0 10px 16px;box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+.res-paper-label{font-size:12px;color:#ff6b6b;margin-bottom:4px;font-weight:600;}
+.res-paper-amt{font-size:26px;font-weight:800;color:#ff4d4f;margin-bottom:4px;}
+.res-paper-period{font-size:10px;color:#666;}
+.res-timer{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#fff;opacity:0.9;}
+.res-timer-circle{width:14px;height:14px;border:2px solid #fff;border-radius:50%;border-top-color:transparent;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;display:none;text-align:center;}
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:10000;display:none;text-align:center;}
 </style>
 </head>
 <body>
@@ -221,6 +234,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="history-wrap">
   <div class="history-head">
     <h3>Game History</h3>
+    <div class="view-all-btn" onclick="location.href='wingo-history.html'">View All ></div>
   </div>
   <div class="history-table">
     <div class="ht-head">
@@ -233,6 +247,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
+<!-- BET MODAL -->
 <div class="modal-overlay" id="betModal">
   <div class="modal-content">
     <div class="modal-head">
@@ -280,11 +295,28 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<div class="result-popup" id="resultPopup">
-  <div class="res-icon" id="resIcon">🎉</div>
-  <div class="res-title" id="resTitle">You Win</div>
-  <div class="res-amt" id="resAmt">₹0.00</div>
-  <div class="res-detail" id="resDetail">Period: 20231101</div>
+<!-- NEW RESULT POPUP -->
+<div class="result-popup-wrap" id="resultPopup">
+  <div class="result-card">
+    <div class="res-close" onclick="document.getElementById('resultPopup').classList.remove('show')">×</div>
+    <div class="res-content">
+      <div class="res-status" id="resTitle">Congratulations</div>
+      <div class="res-tags">
+        <div class="res-tag" id="resColor">Red</div>
+        <div class="res-tag red" id="resNum">2</div>
+        <div class="res-tag small" id="resSize">Small</div>
+      </div>
+      <div class="res-paper">
+        <div class="res-paper-label" id="resStatusLabel">Win Amount</div>
+        <div class="res-paper-amt" id="resAmt">₹0.00</div>
+        <div class="res-paper-period" id="resDetail">Period: 20231101</div>
+      </div>
+      <div class="res-timer">
+        <div class="res-timer-circle"></div>
+        <span>3 seconds auto close</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -314,6 +346,7 @@ let betMulti = 1;
 let isBettingClosed = false;
 let isSoundOn = true;
 let lastPlayedSec = -1;
+let popupTimer = null;
 
 /* ==================== AUDIO ==================== */
 const snd1 = document.getElementById('soundDi1');
@@ -380,7 +413,6 @@ function initGame() {
   runTimer();
 }
 
-// Yahan 1 minute (60s) ka calculation hai
 function runTimer() {
   if(timerInterval) clearInterval(timerInterval);
   
@@ -388,17 +420,17 @@ function runTimer() {
     const now = new Date();
     const ms = now.getMilliseconds();
     
-    // 1 minute = 60 seconds
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const diffSecs = Math.floor((now - startOfDay) / 1000);
+    // 1 minute = 60 seconds calculation based on UTC
+    const startOfDay = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+    const diffSecs = Math.floor((now.getTime() - startOfDay) / 1000);
     
     // Har 60 second me slot change hoga
     const slot = Math.floor(diffSecs / 60);
     
     // Period ID (YYYYMMDD + slot)
-    const periodId = now.getFullYear().toString() + 
-                    (now.getMonth()+1).toString().padStart(2,'0') + 
-                    now.getDate().toString().padStart(2,'0') + 
+    const periodId = now.getUTCFullYear().toString() + 
+                    (now.getUTCMonth()+1).toString().padStart(2,'0') + 
+                    now.getUTCDate().toString().padStart(2,'0') + 
                     (1000 + (slot % 10000)); 
 
     // Check if period changed
@@ -414,7 +446,7 @@ function runTimer() {
     const secInSlot = diffSecs % 60;
     let secLeft = 60 - secInSlot;
     
-    // Timer Display Update (e.g. 01:00, 00:59, etc.)
+    // Timer Display Update
     let displaySecs = secLeft === 60 ? 0 : secLeft;
     const mT = Math.floor(displaySecs / 60);
     const sT = displaySecs % 60;
@@ -455,28 +487,34 @@ async function handlePeriodEnd(periodId) {
   if(!periodId) return;
   
   try {
-    // 1. Check result exists in DB
+    // Check last saved period to fill gaps (If user closed website)
+    const qLast = query(collection(db, 'results'), orderBy('createdAt', 'desc'), limit(1));
+    const snapLast = await getDocs(qLast);
+    let lastSavedPeriod = null;
+    if(!snapLast.empty) {
+      lastSavedPeriod = snapLast.docs[0].data().period;
+    }
+
+    // If there's a gap, fill it (Simplified for frontend, generate 2 missing max)
+    if(lastSavedPeriod && lastSavedPeriod !== periodId) {
+       let lastNum = parseInt(lastSavedPeriod);
+       let currentNum = parseInt(periodId);
+       // If gap is too big, just generate the current one to avoid freezing
+       if(currentNum - lastNum > 1 && currentNum - lastNum < 5) {
+          for(let i = lastNum + 1; i < currentNum; i++) {
+             await generateAndSaveResult(i.toString());
+          }
+       }
+    }
+
+    // Generate current period result
     const resRef = doc(db, 'results', periodId);
     const resSnap = await getDoc(resRef);
     
     if(!resSnap.exists()) {
-        // Generate new result
-        const resultNum = Math.floor(Math.random() * 10);
-        let color = 'violet';
-        if([1,3,7,9].includes(resultNum)) color = 'green';
-        else if([2,4,6,8].includes(resultNum)) color = 'red';
-        let size = resultNum >= 5 ? 'big' : 'small';
-
-        // Save result globally
-        await setDoc(resRef, {
-          period: periodId,
-          number: resultNum,
-          color: color,
-          size: size,
-          createdAt: serverTimestamp()
-        });
-
-        // 2. Process User Bets for this period
+        const resultData = await generateAndSaveResult(periodId);
+        
+        // Process User Bets
         const q = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), where('period', '==', periodId));
         const snap = await getDocs(q);
         
@@ -487,17 +525,18 @@ async function handlePeriodEnd(periodId) {
           snap.forEach(betDoc => {
             const bet = betDoc.data();
             let isWin = false;
+            const rNum = resultData.number;
 
-            if(bet.choice === 'green' && [1,3,7,9].includes(resultNum)) isWin = true;
-            if(bet.choice === 'red' && [2,4,6,8].includes(resultNum)) isWin = true;
-            if(bet.choice === 'violet' && [0,5].includes(resultNum)) isWin = true;
-            if(bet.choice === 'big' && [5,6,7,8,9].includes(resultNum)) isWin = true;
-            if(bet.choice === 'small' && [0,1,2,3,4].includes(resultNum)) isWin = true;
-            if(parseInt(bet.choice) === resultNum) isWin = true;
+            if(bet.choice === 'green' && [1,3,7,9].includes(rNum)) isWin = true;
+            if(bet.choice === 'red' && [2,4,6,8].includes(rNum)) isWin = true;
+            if(bet.choice === 'violet' && [0,5].includes(rNum)) isWin = true;
+            if(bet.choice === 'big' && [5,6,7,8,9].includes(rNum)) isWin = true;
+            if(bet.choice === 'small' && [0,1,2,3,4].includes(rNum)) isWin = true;
+            if(parseInt(bet.choice) === rNum) isWin = true;
 
             let winAmt = 0;
             if(isWin) {
-              if(parseInt(bet.choice) === resultNum) winAmt = bet.amount * 9;
+              if(parseInt(bet.choice) === rNum) winAmt = bet.amount * 9;
               else if(bet.choice === 'violet') winAmt = bet.amount * 4.5;
               else winAmt = bet.amount * 2;
             }
@@ -505,7 +544,7 @@ async function handlePeriodEnd(periodId) {
             totalWin += winAmt;
             promises.push(updateDoc(doc(db, 'bets', betDoc.id), {
               status: isWin ? 'win' : 'lose',
-              resultNum: resultNum,
+              resultNum: rNum,
               winAmount: winAmt
             }));
           });
@@ -516,12 +555,11 @@ async function handlePeriodEnd(periodId) {
             await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(totalWin) });
             userBalance += totalWin;
             document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
-            showResultPopup(true, totalWin, periodId, resultNum);
+            showResultPopup(true, totalWin, periodId, resultData);
           } else {
-            showResultPopup(false, 0, periodId, resultNum);
+            showResultPopup(false, 0, periodId, resultData);
           }
         }
-        
         loadHistory(); 
     }
   } catch(err) {
@@ -529,31 +567,40 @@ async function handlePeriodEnd(periodId) {
   }
 }
 
-/* ==================== POPUP LOGIC ==================== */
-function showResultPopup(isWin, amount, period, number) {
-  const popup = document.getElementById('resultPopup');
-  const icon = document.getElementById('resIcon');
-  const title = document.getElementById('resTitle');
-  const amt = document.getElementById('resAmt');
-  const detail = document.getElementById('resDetail');
+async function generateAndSaveResult(periodId) {
+   const resultNum = Math.floor(Math.random() * 10);
+   let color = 'violet';
+   if([1,3,7,9].includes(resultNum)) color = 'green';
+   else if([2,4,6,8].includes(resultNum)) color = 'red';
+   let size = resultNum >= 5 ? 'big' : 'small';
+   
+   const data = { period: periodId, number: resultNum, color: color, size: size, createdAt: serverTimestamp() };
+   await setDoc(doc(db, 'results', periodId), data);
+   return data;
+}
 
-  if(isWin) {
-    icon.textContent = '🎉';
-    title.textContent = 'You Win!';
-    title.className = 'res-title res-win';
-    amt.textContent = '₹' + amount.toFixed(2);
-    amt.style.color = '#6abe57';
-  } else {
-    icon.textContent = '😞';
-    title.textContent = 'You Lose';
-    title.className = 'res-title res-lose';
-    amt.textContent = '-';
-    amt.style.color = '#f2413b';
-  }
-  detail.textContent = `Period: ${period} | Result: ${number}`;
+/* ==================== NEW POPUP LOGIC ==================== */
+function showResultPopup(isWin, amount, period, resData) {
+  const popup = document.getElementById('resultPopup');
+  
+  document.getElementById('resTitle').textContent = isWin ? 'Congratulations' : 'Better luck next time';
+  document.getElementById('resColor').textContent = resData.color.toUpperCase();
+  document.getElementById('resColor').className = 'res-tag';
+  
+  document.getElementById('resNum').textContent = resData.number;
+  document.getElementById('resNum').className = 'res-tag ' + (resData.color === 'violet' ? '' : resData.color);
+  
+  document.getElementById('resSize').textContent = resData.size.toUpperCase();
+  document.getElementById('resSize').className = 'res-tag ' + resData.size;
+  
+  document.getElementById('resStatusLabel').textContent = isWin ? 'Bonus' : 'No Win';
+  document.getElementById('resAmt').textContent = '₹' + amount.toFixed(2);
+  document.getElementById('resDetail').textContent = `Period:Win 1 minute ${period}`;
   
   popup.classList.add('show');
-  setTimeout(() => popup.classList.remove('show'), 3000);
+  
+  if(popupTimer) clearTimeout(popupTimer);
+  popupTimer = setTimeout(() => popup.classList.remove('show'), 3000);
 }
 
 /* ==================== BETTING LOGIC ==================== */
