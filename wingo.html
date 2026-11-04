@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1A1A1A">
+<title>BDG LOTTERY7 - WinGo 30s</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:#1A1A1A;color:#fff;min-height:100vh;padding-bottom:20px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+/* ===== NAVBAR ===== */
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;border-bottom:1px solid rgba(255,255,255,0.05);}
+.navbar-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
+.navbar-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
+.navbar-logo{height:28px;background:url('./images/h5setting_202401100608011fs2.png') no-repeat center / contain;}
+.navbar-right{display:flex;align-items:center;gap:12px;}
+.nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;}
+
+/* ===== INFO BOX (Balance) ===== */
+.info-box{background:#262626;margin:16px;border-radius:16px;padding:16px;position:relative;overflow:hidden;}
+.info-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.info-left{display:flex;align-items:center;gap:10px;}
+.wallet-icon{width:40px;height:40px;background:rgba(250,229,159,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.wallet-icon svg{width:24px;height:24px;stroke:#FAE59F;fill:none;stroke-width:2;}
+.bal-title{font-size:12px;color:#a6a9ae;margin-bottom:4px;}
+.bal-amt{font-size:20px;font-weight:700;color:#FAE59F;display:flex;align-items:center;gap:6px;}
+.bal-amt svg{width:14px;height:14px;stroke:#a6a9ae;fill:none;stroke-width:2;cursor:pointer;}
+.info-btns{display:flex;gap:10px;}
+.btn-info{flex:1;height:36px;border-radius:8px;font-size:13px;font-weight:600;text-align:center;line-height:36px;cursor:pointer;}
+.btn-dep{background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;}
+.btn-wd{border:1px solid #C4933F;color:#C4933F;}
+
+/* ===== NOTICE BAR ===== */
+.notice-bar{margin:0 16px 16px;background:#262626;border-radius:20px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:11px;color:#a6a9ae;}
+.notice-bar svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;flex-shrink:0;}
+.notice-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ===== TIME TABS ===== */
+.tabs-wrap{display:flex;margin:0 16px 16px;background:#262626;border-radius:12px;padding:4px;}
+.tab{flex:1;text-align:center;padding:10px 0;font-size:13px;font-weight:600;color:#a6a9ae;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.tab.active{background:#333;color:#FAE59F;}
+.tab.active svg{stroke:#FAE59F;}
+.tab svg{width:20px;height:20px;stroke:#a6a9ae;fill:none;stroke-width:2;}
+
+/* ===== TIMER BOX ===== */
+.timer-box{margin:0 16px 16px;background:url('./images/diban-f8c2e476.png') no-repeat center / 100% 100%;padding:20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;color:#8f5206;}
+.tb-left h2{font-size:16px;font-weight:800;margin-bottom:4px;}
+.tb-left p{font-size:11px;font-weight:600;}
+.tb-right{text-align:right;}
+.tb-right p{font-size:11px;font-weight:600;margin-bottom:4px;}
+.tb-time{display:flex;align-items:center;gap:2px;justify-content:flex-end;}
+.tb-time span{background:#fff;color:#333;font-size:14px;font-weight:800;padding:2px 6px;border-radius:4px;}
+.tb-time span.colon{background:transparent;padding:0;}
+
+/* ===== BETTING AREA ===== */
+.bet-area{margin:0 16px;background:#262626;border-radius:16px;padding:16px;}
+.color-btns{display:flex;gap:10px;margin-bottom:16px;}
+.btn-color{flex:1;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;cursor:pointer;}
+.btn-green{background:#40ad72;}
+.btn-violet{background:#b659fe;}
+.btn-red{background:#fd565c;}
+
+.num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;}
+.num-btn{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;cursor:pointer;}
+.num-btn small{font-size:8px;font-weight:400;opacity:0.8;position:absolute;bottom:4px;}
+.n0{background:#b659fe;}
+.n5{background:#b659fe;}
+.n1,.n3,.n7,.n9{background:#40ad72;}
+.n2,.n4,.n6,.n8{background:#fd565c;}
+
+.size-btns{display:flex;gap:10px;}
+.btn-size{flex:1;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-big{background:#f5a623;color:#fff;}
+.btn-small{background:#4a90e2;color:#fff;}
+
+/* ===== HISTORY TABLE ===== */
+.history-wrap{margin:24px 16px;}
+.history-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.history-head h3{font-size:15px;font-weight:600;}
+.history-table{width:100%;background:#262626;border-radius:12px;overflow:hidden;}
+.ht-head{display:flex;background:#333;padding:10px 0;font-size:12px;color:#a6a9ae;font-weight:600;}
+.ht-row{display:flex;padding:12px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;}
+.ht-row:last-child{border-bottom:none;}
+.ht-col{flex:1;text-align:center;}
+.res-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;color:#fff;font-size:12px;font-weight:700;}
+.res-big{color:#f5a623;}
+.res-small{color:#4a90e2;}
+
+/* ===== MODAL (BET PLACE) ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;display:none;align-items:flex-end;}
+.modal-overlay.show{display:flex;}
+.modal-content{background:#292929;width:100%;border-radius:20px 20px 0 0;padding:20px;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mh-left h2{font-size:16px;font-weight:700;}
+.mh-left p{font-size:12px;color:#a6a9ae;margin-top:2px;}
+.mh-right{font-size:24px;cursor:pointer;color:#a6a9ae;}
+
+.modal-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.mr-label{font-size:14px;color:#a6a9ae;}
+.mr-amounts{display:flex;gap:8px;}
+.amt-btn{background:#1A1A1A;color:#a6a9ae;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;}
+.amt-btn.active{background:rgba(250,229,159,0.1);border-color:#FAE59F;color:#FAE59F;}
+
+.qty-box{display:flex;align-items:center;background:#1A1A1A;border-radius:8px;padding:4px;}
+.qty-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:#a6a9ae;cursor:pointer;}
+.qty-input{width:50px;background:transparent;text-align:center;font-size:15px;font-weight:600;color:#fff;border:none;outline:none;}
+
+.multipliers{display:flex;gap:8px;}
+.multi-btn{background:#1A1A1A;color:#a6a9ae;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;}
+.multi-btn.active{background:#FAE59F;color:#3a2a10;}
+
+.modal-foot{display:flex;gap:10px;margin-top:24px;}
+.btn-cancel{flex:1;height:48px;border-radius:12px;background:#333;color:#fff;font-size:15px;font-weight:600;}
+.btn-confirm{flex:2;height:48px;border-radius:12px;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:15px;font-weight:700;}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="navbar-left" onclick="location.href='home.html'">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
+  <div class="navbar-logo"></div>
+  <div class="navbar-right">
+    <div class="nav-icon" onclick="toast('Sound On/Off')">
+      <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+    </div>
+    <div class="nav-icon" onclick="location.href='account.html'">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- INFO BOX -->
+<div class="info-box">
+  <div class="info-top">
+    <div class="info-left">
+      <div class="wallet-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+      <div>
+        <div class="bal-title">Total Balance</div>
+        <div class="bal-amt">₹<span id="balanceVal">0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-btns">
+    <div class="btn-info btn-dep" onclick="location.href='deposit.html'">Recharge</div>
+    <div class="btn-info btn-wd" onclick="location.href='withdraw.html'">Withdraw</div>
+  </div>
+</div>
+
+<!-- NOTICE -->
+<div class="notice-bar">
+  <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+  <div class="notice-text">Welcome to BDG LOTTERY7 WinGo. 1 minute 1 issue, 45 seconds to order, 15 seconds waiting for the draw.</div>
+</div>
+
+<!-- TIME TABS -->
+<div class="tabs-wrap">
+  <div class="tab active">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <span>1 Min</span>
+  </div>
+  <div class="tab" onclick="toast('3 Min coming soon')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <span>3 Min</span>
+  </div>
+  <div class="tab" onclick="toast('5 Min coming soon')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <span>5 Min</span>
+  </div>
+  <div class="tab" onclick="toast('10 Min coming soon')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <span>10 Min</span>
+  </div>
+</div>
+
+<!-- TIMER -->
+<div class="timer-box">
+  <div class="tb-left">
+    <h2 id="periodText">Loading...</h2>
+    <p>1 Minute</p>
+  </div>
+  <div class="tb-right">
+    <p>Time remaining</p>
+    <div class="tb-time">
+      <span id="minTens">0</span><span id="minOnes">0</span>
+      <span class="colon">:</span>
+      <span id="secTens">0</span><span id="secOnes">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- BETTING AREA -->
+<div class="bet-area">
+  <div class="color-btns">
+    <button class="btn-color btn-green" onclick="openBetModal('green')">Green</button>
+    <button class="btn-color btn-violet" onclick="openBetModal('violet')">Violet</button>
+    <button class="btn-color btn-red" onclick="openBetModal('red')">Red</button>
+  </div>
+  
+  <div class="num-grid" id="numGrid">
+    <!-- Numbers generated by JS -->
+  </div>
+
+  <div class="size-btns">
+    <button class="btn-size btn-big" onclick="openBetModal('big')">Big</button>
+    <button class="btn-size btn-small" onclick="openBetModal('small')">Small</button>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="history-wrap">
+  <div class="history-head">
+    <h3>Game History</h3>
+    <span style="font-size:12px;color:#a6a9ae;cursor:pointer;" onclick="toast('View All coming soon')">View All ></span>
+  </div>
+  <div class="history-table">
+    <div class="ht-head">
+      <div class="ht-col">Period</div>
+      <div class="ht-col">Number</div>
+      <div class="ht-col">Big / Small</div>
+      <div class="ht-col">Color</div>
+    </div>
+    <div id="historyList">
+      <!-- Rows generated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="betModal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <div class="mh-left">
+        <h2>1 Minute</h2>
+        <p>Choose <span id="modalChoice" style="color:#FAE59F;">Red</span></p>
+      </div>
+      <div class="mh-right" onclick="closeBetModal()">×</div>
+    </div>
+    
+    <div class="modal-row">
+      <div class="mr-label">Amount</div>
+      <div class="mr-amounts">
+        <div class="amt-btn active" onclick="selectAmt(this, 1)">1</div>
+        <div class="amt-btn" onclick="selectAmt(this, 10)">10</div>
+        <div class="amt-btn" onclick="selectAmt(this, 100)">100</div>
+        <div class="amt-btn" onclick="selectAmt(this, 1000)">1000</div>
+      </div>
+    </div>
+    
+    <div class="modal-row">
+      <div class="mr-label">Quantity</div>
+      <div class="qty-box">
+        <div class="qty-btn" onclick="changeQty(-1)">-</div>
+        <input type="number" id="qtyInput" class="qty-input" value="1" min="1" onchange="updateTotal()">
+        <div class="qty-btn" onclick="changeQty(1)">+</div>
+      </div>
+    </div>
+
+    <div class="modal-row">
+      <div class="mr-label">Multiplier</div>
+      <div class="multipliers">
+        <div class="multi-btn active" onclick="selectMulti(this, 1)">X1</div>
+        <div class="multi-btn" onclick="selectMulti(this, 5)">X5</div>
+        <div class="multi-btn" onclick="selectMulti(this, 10)">X10</div>
+        <div class="multi-btn" onclick="selectMulti(this, 20)">X20</div>
+        <div class="multi-btn" onclick="selectMulti(this, 50)">X50</div>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeBetModal()">Cancel</button>
+      <button class="btn-confirm" id="confirmBtn" onclick="placeBet()">Total Amount ₹<span id="totalAmt">1</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Audio Elements -->
+<audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
+<audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ==================== VARIABLES ==================== */
+let currentUser = null;
+let userBalance = 0;
+let currentPeriod = '';
+let timeLeft = 30; // 30 Seconds game
+let timerInterval = null;
+let selectedChoice = '';
+let betAmount = 1;
+let betMulti = 1;
+let isBettingClosed = false;
+
+/* ==================== AUDIO ==================== */
+const snd1 = document.getElementById('soundDi1');
+const snd2 = document.getElementById('soundDi2');
+function playTick(isLast5Sec) {
+  try {
+    if(isLast5Sec) { snd2.currentTime = 0; snd2.play(); }
+    else { snd1.currentTime = 0; snd1.play(); }
+  } catch(e) {}
+}
+
+/* ==================== TOAST ==================== */
+const toastEl = document.getElementById('toast');
+window.toast = function(msg) {
+  toastEl.textContent = msg;
+  toastEl.style.display = 'block';
+  setTimeout(() => toastEl.style.display = 'none', 2500);
+}
+
+/* ==================== INIT USER ==================== */
+onAuthStateChanged(auth, async (user) => {
+  if(!user) return location.replace('index.html');
+  currentUser = user;
+  
+  const snap = await getDoc(doc(db,'users',user.uid));
+  if(snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+  
+  initGame();
+  loadHistory();
+});
+
+/* ==================== GAME ENGINE (30 SEC) ==================== */
+function initGame() {
+  // Generate Numbers 0-9
+  const colors = ['violet','green','red','green','red','violet','red','green','red','green'];
+  const grid = document.getElementById('numGrid');
+  let html = '';
+  for(let i=0; i<=9; i++) {
+    html += `
+      <div class="num-btn n${i}" onclick="openBetModal('${i}')">
+        <span>${i}</span>
+        <small>${colors[i] === 'violet' ? 'Voilet' : colors[i]}</small>
+      </div>
+    `;
+  }
+  grid.innerHTML = html;
+
+  // Start Timer Logic
+  runTimer();
+}
+
+function runTimer() {
+  if(timerInterval) clearInterval(timerInterval);
+  
+  function tick() {
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const ms = now.getMilliseconds();
+    
+    // 30 Second game
+    // Period changes every 30 seconds
+    // 00-29 = one period, 30-59 = next period
+    const periodIndex = Math.floor(seconds / 30);
+    
+    // Format Period ID: YYYYMMDD + (Total 30s slots since midnight)
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diffSecs = Math.floor((now - startOfDay) / 1000);
+    const slot = Math.floor(diffSecs / 30);
+    currentPeriod = now.getFullYear().toString() + 
+                    (now.getMonth()+1).toString().padStart(2,'0') + 
+                    now.getDate().toString().padStart(2,'0') + 
+                    (1000 + slot); // Just an ID
+                    
+    document.getElementById('periodText').textContent = currentPeriod;
+
+    // Calculate time left
+    let secLeft = 30 - (seconds % 30);
+    if(secLeft === 30 && ms < 500) secLeft = 30; // Just logic
+    
+    // The last 5 seconds (25 to 30) is waiting phase
+    if(secLeft <= 5) {
+      isBettingClosed = true;
+      document.getElementById('confirmBtn').disabled = true;
+      document.getElementById('confirmBtn').style.opacity = '0.5';
+      document.getElementById('confirmBtn').innerText = 'Waiting for Draw...';
+    } else {
+      isBettingClosed = false;
+      document.getElementById('confirmBtn').disabled = false;
+      document.getElementById('confirmBtn').style.opacity = '1';
+      updateTotal();
+    }
+
+    // Update UI
+    const displaySecs = secLeft === 30 ? 0 : secLeft; // Reset display at exact 30
+    const mT = Math.floor(displaySecs / 60);
+    const sT = displaySecs % 60;
+    document.getElementById('minTens').textContent = '0';
+    document.getElementById('minOnes').textContent = mT.toString();
+    document.getElementById('secTens').textContent = Math.floor(sT/10).toString();
+    document.getElementById('secOnes').textContent = (sT%10).toString();
+
+    // Play sound in last 5 sec
+    if(secLeft <= 5 && ms < 100) {
+      playTick(secLeft < 3);
+    }
+
+    // When timer hits 0, refresh history
+    if(secLeft === 30 && ms < 100) {
+       loadHistory();
+    }
+  }
+
+  tick();
+  timerInterval = setInterval(tick, 100);
+}
+
+/* ==================== BETTING LOGIC ==================== */
+window.openBetModal = function(choice) {
+  if(isBettingClosed) return toast('Betting closed for this period');
+  
+  selectedChoice = choice;
+  document.getElementById('modalChoice').textContent = choice.toUpperCase();
+  document.getElementById('betModal').classList.add('show');
+  updateTotal();
+}
+
+window.closeBetModal = function() {
+  document.getElementById('betModal').classList.remove('show');
+}
+
+window.selectAmt = function(el, amt) {
+  document.querySelectorAll('.amt-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  betAmount = amt;
+  updateTotal();
+}
+
+window.changeQty = function(change) {
+  const input = document.getElementById('qtyInput');
+  let val = parseInt(input.value) || 1;
+  val = Math.max(1, val + change);
+  input.value = val;
+  updateTotal();
+}
+
+window.selectMulti = function(el, multi) {
+  document.querySelectorAll('.multi-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  betMulti = multi;
+  updateTotal();
+}
+
+function updateTotal() {
+  const qty = parseInt(document.getElementById('qtyInput').value) || 1;
+  const total = betAmount * qty * betMulti;
+  document.getElementById('totalAmt').textContent = total;
+  
+  if(total > userBalance) {
+    document.getElementById('confirmBtn').style.background = '#666';
+    document.getElementById('confirmBtn').style.color = '#ccc';
+  } else {
+    document.getElementById('confirmBtn').style.background = 'linear-gradient(180deg,#FAE59F 0%,#C4933F 100%)';
+    document.getElementById('confirmBtn').style.color = '#3a2a10';
+  }
+}
+
+window.placeBet = async function() {
+  if(isBettingClosed) return toast('Betting is closed');
+  
+  const qty = parseInt(document.getElementById('qtyInput').value) || 1;
+  const total = betAmount * qty * betMulti;
+
+  if(total > userBalance) return toast('Insufficient balance');
+  if(total < 1) return toast('Minimum bet is 1');
+  
+  const btn = document.getElementById('confirmBtn');
+  btn.disabled = true;
+  btn.innerText = 'Placing...';
+
+  try {
+    // 1. Deduct Balance
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(-total)
+    });
+    
+    // 2. Save Bet in Firestore
+    await addDoc(collection(db, 'bets'), {
+      userId: currentUser.uid,
+      period: currentPeriod,
+      choice: selectedChoice,
+      amount: total,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+
+    userBalance -= total;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+    
+    toast(`Bet placed on ${selectedChoice} for ₹${total}`);
+    closeBetModal();
+
+  } catch(err) {
+    console.error(err);
+    toast('Failed to place bet. Try again.');
+  } finally {
+    btn.disabled = false;
+    updateTotal();
+  }
+}
+
+/* ==================== LOAD HISTORY ==================== */
+async function loadHistory() {
+  try {
+    // In real app, you fetch from a 'results' collection. 
+    // Here we'll mock some old results for UI, and actual DB for this period.
+    const q = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(5));
+    const snap = await getDocs(q);
+    
+    let html = '';
+    if(snap.empty) {
+      html = `<div class="ht-row" style="justify-content:center;color:#666;">No bets yet</div>`;
+    } else {
+      snap.forEach(doc => {
+        const d = doc.data();
+        html += `
+          <div class="ht-row">
+            <div class="ht-col">${d.period}</div>
+            <div class="ht-col">-</div>
+            <div class="ht-col">-</div>
+            <div class="ht-col" style="color:#FAE59F;">${d.choice}</div>
+          </div>
+        `;
+      });
+    }
+    document.getElementById('historyList').innerHTML = html;
+  } catch(e) {
+    console.log(e);
+  }
+}
+</script>
+</body>
+</html>
