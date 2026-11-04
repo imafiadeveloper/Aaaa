@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html translate="no" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>BDG LOTTERY7 — Promotion</title>
+    <style>
+        /* ================= GLOBAL STYLES ================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Roboto', sans-serif; }
+        body { background-color: #090909; color: #fff; padding-bottom: 70px; -webkit-tap-highlight-color: transparent; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; border: none; outline: none; }
+
+        /* ================= NAVBAR ================= */
+        .navbar { position: sticky; top: 0; z-index: 100; background: #3F3F3F; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; height: 60px; }
+        .navbar-left { width: 40px; }
+        .navbar-left i { font-size: 20px; }
+        .navbar-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; }
+        .navbar-right { width: 40px; text-align: right; }
+        .navbar-right i { font-size: 20px; cursor: pointer; }
+
+        /* ================= TABS ================= */
+        .promotion { padding: 15px; }
+        .tab { margin-bottom: 20px; }
+        .tab ul { display: flex; justify-content: space-between; list-style: none; background: #292929; padding: 5px; border-radius: 8px; }
+        .tab li { flex: 1; text-align: center; padding: 10px 0; font-size: 14px; color: #a6a9ae; font-weight: 500; cursor: pointer; border-radius: 6px; transition: 0.2s; }
+        .tab li.action { background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; font-weight: 700; }
+
+        /* ================= COMMON BOX ================= */
+        .box { background: #3F3F3F; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+        .tit { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+
+        /* ================= DATA TAB ================= */
+        .info-data { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .info-data .left { width: 55%; }
+        .info-data .left h5 { font-size: 13px; color: #a6a9ae; margin-bottom: 5px; }
+        .info-data .left .num { font-size: 26px; font-weight: 700; color: #FAE59F; margin-bottom: 5px; }
+        .info-data .left .txt { font-size: 12px; color: #a6a9ae; margin-bottom: 2px; }
+        
+        .info-data .right { width: 45%; border-left: 1px solid #555; padding-left: 15px; }
+        .info-data .right .txt { font-size: 12px; color: #a6a9ae; margin-bottom: 6px; display: flex; justify-content: space-between; }
+        .info-data .right .txt .num { color: #fff; font-weight: 600; }
+
+        .info-img { display: flex; justify-content: space-between; align-items: center; background: #292929; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .info-img .img { text-align: center; }
+        .info-img .img #qrcode { background: #fff; padding: 5px; border-radius: 5px; width: 110px; height: 110px; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center;}
+        .info-img .img .c-tc { font-size: 11px; color: #a6a9ae; }
+        
+        .btn-list .btn-box .btn { background: #3F3F3F; border: 1px solid #D9AC4F; color: #D9AC4F; padding: 10px 15px; font-size: 13px; border-radius: 20px; margin-bottom: 10px; font-weight: 500; width: 140px; text-align: center; transition: 0.2s; }
+        .btn-list .btn-box .btn:active { background: #D9AC4F; color: #000; }
+
+        .invite-link-box { margin-top: 15px; }
+        .invite-link-box p { text-align: center; font-size: 15px; margin-bottom: 8px; }
+        .invite-link-box span { display: block; border: 1px solid #D9AC4F; border-radius: 8px; padding: 10px; font-size: 12px; text-align: center; color: #FAE59F; overflow-x: auto; white-space: nowrap; margin-bottom: 10px; }
+        .invite-link-box button { background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; padding: 10px 30px; border-radius: 20px; font-weight: 700; display: block; margin: 0 auto; }
+
+        /* ================= TABLE STYLES ================= */
+        .table { width: 100%; overflow-x: auto; }
+        .table .hd, .table .bd { display: flex; padding: 10px 0; font-size: 13px; }
+        .table .hd { color: #a6a9ae; font-weight: 600; border-bottom: 1px solid #555; }
+        .table .bd { color: #fff; border-bottom: 1px solid #333; align-items: center; }
+        .table .bd:last-child { border-bottom: none; }
+        .van-col--4 { width: 20%; text-align: center; }
+        .van-col--5 { width: 25%; text-align: center; }
+        .van-col--6 { width: 25%; text-align: center; }
+        .c-tc { text-align: center; }
+        .c-ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .red { color: #F95959; }
+
+        /* My Team Expandable Styles */
+        .item { background: #292929; border-radius: 8px; margin-bottom: 10px; padding: 10px; }
+        .details-button { color: #D9AC4F; cursor: pointer; font-weight: 600; }
+        .bdshow { display: none; background: #1A1A1A; padding: 10px; border-radius: 6px; margin-top: 10px; font-size: 12px; color: #a6a9ae; }
+        .bdshow .c-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .bdshow.open { display: block; }
+
+        /* Filter Styles */
+        .filter-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .filter-row input, .filter-row select { flex: 1; padding: 10px; border-radius: 8px; background: #292929; border: 1px solid #555; color: #fff; outline: none; font-size: 13px; }
+
+        /* ================= BOTTOM TAB BAR ================= */
+        .bottom-tabbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: #1A1A1A; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid #333; }
+        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6F7381; text-decoration: none; font-size: 10px; gap: 3px; width: 20%; position: relative; }
+        .tab-item svg { width: 24px; height: 24px; fill: #6F7381; }
+        .tab-item.active { color: #D9AC4F; }
+        .tab-item.active svg { fill: url(#gold-grad); }
+        .tab-item.center-tab { top: -15px; }
+        .tab-item.center-tab svg { width: 55px; height: 55px; }
+        .tab-item.center-tab span { margin-top: -5px; }
+
+        /* Utilities */
+        .hide { display: none !important; }
+        #loader { text-align: center; padding: 20px; color: #D9AC4F; }
+    </style>
+    <!-- FontAwesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- SVG Gradients for Tab Bar -->
+<svg style="position: absolute; width: 0; height: 0;">
+    <defs>
+        <linearGradient id="gold-grad" x1="0" y1="1" x2="0" y2="0">
+            <stop stop-color="#C4933F"></stop>
+            <stop offset="1" stop-color="#FAE59F"></stop>
+        </linearGradient>
+    </defs>
+</svg>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left" onclick="window.location.href='home.html'">
+        <i class="fa-solid fa-angle-left" style="color: #FFF"></i>
+    </div>
+    <div class="navbar-title" id="pageTitle">Promotion</div>
+    <div class="navbar-right" onclick="showTab('history')">
+        <i class="fa-regular fa-calendar-days" style="color: #FFF"></i>
+    </div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="promotion">
+    
+    <!-- TABS MENU -->
+    <div class="tab">
+        <ul>
+            <li id="tab-data" class="action" onclick="showTab('data')">Data</li>
+            <li id="tab-team" onclick="showTab('team')">My Team</li>
+            <li id="tab-history" onclick="showTab('history')">History</li>
+            <li id="tab-tutorial" onclick="showTab('tutorial')">Tutorial</li>
+        </ul>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: DATA (Promotion) -->
+    <!-- ========================================== -->
+    <div id="content-data">
+        <div class="box">
+            <div class="tit">My Reward</div>
+            <div class="info">
+                <div class="info-data">
+                    <div class="left">
+                        <h5>Today's Total Commission</h5>
+                        <p class="num" id="roses_today">₹0.00</p>
+                        <p class="txt" id="roses_f1">Direct Commission: ₹0.00</p>
+                        <p class="txt" id="roses_f">Team Commission: ₹0.00</p>
+                    </div>
+                    <div class="right">
+                        <p class="txt">Total Referrals: <span class="num" id="f1">0</span></p>
+                        <p class="txt">Total Members: <span class="num" id="f_total">0</span></p>
+                        <p class="txt">New Members Today: <span class="num" id="f1_today">0</span></p>
+                        <p class="txt">Total Commission: <span class="num" id="roses_all">₹0.00</span></p>
+                    </div>
+                </div>
+
+                <div class="info-img">
+                    <div class="img">
+                        <div id="qrcode"></div>
+                        <div class="c-tc" style="margin-top: 5px;">Scan to Register</div>
+                    </div>
+                    <div class="btn-list">
+                        <div class="btn-box">
+                            <div class="btn" onclick="copyText('inviteCodeText')">Copy Invitation Code</div>
+                            <div class="btn" onclick="copyText('inviteLinkText')">Copy Link</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invite-link-box">
+                    <p>Invite Link:</p>
+                    <span id="inviteLinkText" contenteditable="true"></span>
+                    <button onclick="copyText('inviteLinkText')">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tit">Referral Condition For Level Commission</div>
+        <div class="table">
+            <div class="hd">
+                <div class="van-col--6">Total Levels</div>
+                <div class="van-col--6">Referrals</div>
+                <div class="van-col--6">Commission</div>
+                <div class="van-col--6">Recharge</div>
+            </div>
+            <!-- Static Data from Original -->
+            <div class="bd"><div class="van-col--6">Level 1</div><div class="van-col--6">2</div><div class="van-col--6">1%</div><div class="van-col--6">600</div></div>
+            <div class="bd"><div class="van-col--6">Level 2</div><div class="van-col--6">5</div><div class="van-col--6">0.25%</div><div class="van-col--6">1500</div></div>
+            <div class="bd"><div class="van-col--6">Level 3</div><div class="van-col--6">8</div><div class="van-col--6">0.25%</div><div class="van-col--6">2400</div></div>
+            <div class="bd"><div class="van-col--6">Level 4</div><div class="van-col--6">11</div><div class="van-col--6">0.25%</div><div class="van-col--6">3300</div></div>
+            <div class="bd"><div class="van-col--6">Level 5</div><div class="van-col--6">14</div><div class="van-col--6">0.25%</div><div class="van-col--6">4200</div></div>
+            <!-- Add more levels if needed -->
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: MY TEAM -->
+    <!-- ========================================== -->
+    <div id="content-team" class="hide">
+        <div class="box">
+            <div class="tit" style="justify-content: center;" id="total-mem">Team (0 People)</div>
+            
+            <div class="filter-row">
+                <input type="text" id="searchUID" placeholder="Search UID" oninput="filterTeam()">
+                <select id="levelSelect" onchange="filterTeam()">
+                    <option value="">All Levels</option>
+                    <option value="1">Level 1</option>
+                    <option value="2">Level 2</option>
+                </select>
+            </div>
+
+            <div class="table">
+                <div class="hd">
+                    <div class="van-col--5">UID</div>
+                    <div class="van-col--6">Nick Name</div>
+                    <div class="van-col--4">Level</div>
+                    <div class="van-col--5">Action</div>
+                </div>
+                <div id="teamListContainer">
+                    <!-- Team data will load here via JS -->
+                    <div id="loader">Loading Team Data...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: HISTORY -->
+    <!-- ========================================== -->
+    <div id="content-history" class="hide">
+        <div class="box">
+            <div class="table">
+                <div class="hd">
+                    <div class="van-col--6">Time</div>
+                    <div class="van-col--6">Phone</div>
+                    <div class="van-col--6">Amount</div>
+                    <div class="van-col--6">Invite Code</div>
+                </div>
+                <div id="historyListContainer">
+                    <div style="text-align: center; padding: 30px 0; color: #a6a9ae; font-size: 13px;">
+                        <i class="fa-regular fa-folder-open" style="font-size: 30px; margin-bottom: 10px;"></i><br>
+                        No History Available
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: TUTORIAL (Static Data) -->
+    <!-- ========================================== -->
+    <div id="content-tutorial" class="hide">
+        <div class="tit">Referral Condition For Level Commission</div>
+        <div class="table">
+            <div class="hd">
+                <div class="van-col--6">Total Levels</div>
+                <div class="van-col--6">Referrals</div>
+                <div class="van-col--6">Commission</div>
+                <div class="van-col--6">Recharge</div>
+            </div>
+            <div class="bd"><div class="van-col--6">Level 1</div><div class="van-col--6">2</div><div class="van-col--6">1%</div><div class="van-col--6">600</div></div>
+            <div class="bd"><div class="van-col--6">Level 2</div><div class="van-col--6">5</div><div class="van-col--6">0.25%</div><div class="van-col--6">1500</div></div>
+            <div class="bd"><div class="van-col--6">Level 3</div><div class="van-col--6">8</div><div class="van-col--6">0.25%</div><div class="van-col--6">2400</div></div>
+            <div class="bd"><div class="van-col--6">Level 4</div><div class="van-col--6">11</div><div class="van-col--6">0.25%</div><div class="van-col--6">3300</div></div>
+            <div class="bd"><div class="van-col--6">Level 5</div><div class="van-col--6">14</div><div class="van-col--6">0.25%</div><div class="van-col--6">4200</div></div>
+            <div class="bd"><div class="van-col--6">Level 6</div><div class="van-col--6">17</div><div class="van-col--6">0.25%</div><div class="van-col--6">5100</div></div>
+            <div class="bd"><div class="van-col--6">Level 7</div><div class="van-col--6">20</div><div class="van-col--6">0.25%</div><div class="van-col--6">6000</div></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- BOTTOM TAB BAR -->
+<div class="bottom-tabbar">
+    <a href="home.html" class="tab-item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+    </a>
+    <a href="activity.html" class="tab-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span>Activity</span>
+    </a>
+    <a href="promotion.html" class="tab-item center-tab active">
+        <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M112.494 16C115.5 16 118.181 17.5313 119.725 20.1104L133.863 44.1284C135.569 47.1105 135.325 57.1851 133.213 59.8448L79.8313 119.325C75.525 124.645 67.6438 125.531 62.2 121.26C61.4688 120.696 60.8188 120.051 60.25 119.325L6.78751 59.8448C4.59376 57.1851 4.35001 47.0299 6.13751 44.1284L20.275 20.1104C21.8188 17.5313 24.5813 16 27.5063 16H112.494Z" fill="#3B3B3B"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.637 31.3135C105.994 31.3135 108.106 32.4418 109.244 34.3762L120.294 52.2687C121.675 54.4448 121.431 57.2657 119.725 59.2L77.9625 106.833C74.55 110.782 68.4562 111.427 64.2312 108.284C63.6625 107.881 63.175 107.397 62.6875 106.833L21.0875 59.2C19.3813 57.1851 19.2188 54.4448 20.5188 52.2687L31.5688 34.3762C32.7063 32.5224 34.9 31.3135 37.175 31.3135H103.637ZM82.7562 68.6299L72.6 83.1374C72.1125 83.8627 70.2437 84.0239 69.5125 83.4597C69.35 83.3791 69.2687 83.218 69.1062 83.1374L58.1375 68.6299C56.5938 66.5344 53.5062 66.0508 51.3125 67.5821C49.1187 69.0329 48.6312 71.9344 50.175 74.0299L61.1437 88.5374C65.3687 93.6956 68.05 95.7911 70.8937 95.7911C74.0625 95.7911 76.7437 92.2448 79.75 88.5374L90.7187 74.0299C92.2625 71.9344 91.775 69.0329 89.5812 67.5821C87.3875 66.0508 84.3 66.5344 82.7562 68.6299Z" fill="url(#gold-grad)"></path>
+        </svg>
+        <span>Promotion</span>
+    </a>
+    <a href="wallet.html" class="tab-item">
+        <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span>Wallet</span>
+    </a>
+    <a href="account.html" class="tab-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Account</span>
+    </a>
+</div>
+
+<!-- QR Code Library -->
+<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@master/qrcode.js"></script>
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb",
+  measurementId: "G-VRYNMCS0EZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUserData = null;
+let teamData = [];
+
+// Check Auth & Load Data
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // Fetch User Data
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+    
+    if (userSnap.exists()) {
+      currentUserData = userSnap.data();
+      
+      // Set Invite Code (using UID as code for now)
+      const inviteCode = currentUserData.uid.substring(0, 8).toUpperCase(); 
+      const inviteLink = window.location.hostname + "/index.html?ref=" + inviteCode;
+      
+      document.getElementById('inviteLinkText').innerText = inviteLink;
+      
+      // Generate QR Code
+      document.getElementById('qrcode').innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+          text: inviteLink,
+          width: 100,
+          height: 100,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+      });
+
+      // Load Team Data
+      await loadTeamData(user.uid);
+    }
+  } else {
+    window.location.href = "index.html";
+  }
+});
+
+// Function to Load Team
+async function loadTeamData(uid) {
+    try {
+        const q = query(collection(db, "users"), where("referredBy", "==", uid));
+        const querySnapshot = await getDocs(q);
+        
+        teamData = [];
+        querySnapshot.forEach((doc) => {
+            teamData.push(doc.data());
+        });
+        
+        document.getElementById('total-mem').innerText = `Team (${teamData.length} People)`;
+        document.getElementById('f1').innerText = teamData.length;
+        document.getElementById('f_total').innerText = teamData.length;
+        
+        renderTeam(teamData);
+    } catch (error) {
+        console.error("Error loading team:", error);
+        document.getElementById('teamListContainer').innerHTML = "<div style='text-align:center;padding:20px;'>Error loading team data.</div>";
+    }
+}
+
+// Function to Render Team
+function renderTeam(data) {
+    const container = document.getElementById('teamListContainer');
+    if(data.length === 0) {
+        container.innerHTML = "<div style='text-align:center;padding:20px;color:#a6a9ae;'>No Team Members Yet</div>";
+        return;
+    }
+    
+    let html = '';
+    data.forEach((user, index) => {
+        // Fallbacks if data missing
+        const uname = user.name || "User";
+        const uphone = user.phone || "No Phone";
+        const uphoneMasked = uphone.substring(0, 2) + "****" + uphone.substring(uphone.length - 4);
+        const ulevel = user.level || 1;
+        const uid = user.uid ? user.uid.substring(0,8).toUpperCase() : "UID";
+        
+        html += `
+        <div class="item">
+            <div class="bd" style="border-bottom:none; padding:0;">
+                <div class="van-col--5 c-ellipsis">${uid}</div>
+                <div class="van-col--6 c-ellipsis">${uname}</div>
+                <div class="van-col--4 red">Lvl ${ulevel}</div>
+                <div class="van-col--5"><span class="details-button" onclick="toggleDetails(this)">Details</span></div>
+            </div>
+            <div class="bdshow">
+                <div class="c-row"><span>Phone:</span><span>${uphoneMasked}</span></div>
+                <div class="c-row"><span>Registered:</span><span>${user.createdAt ? new Date(user.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown'}</span></div>
+                <div class="c-row"><span>Level:</span><span>Level ${ulevel}</span></div>
+            </div>
+        </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+// Search & Filter
+window.filterTeam = function() {
+    const searchVal = document.getElementById('searchUID').value.toLowerCase();
+    const levelVal = document.getElementById('levelSelect').value;
+    
+    const filtered = teamData.filter(u => {
+        const uidMatch = u.uid ? u.uid.toLowerCase().includes(searchVal) : false;
+        const levelMatch = levelVal === "" || (u.level && u.level.toString() === levelVal);
+        return uidMatch && levelMatch;
+    });
+    
+    renderTeam(filtered);
+};
+
+// Toggle Details
+window.toggleDetails = function(btn) {
+    const item = btn.closest('.item');
+    const bdshow = item.querySelector('.bdshow');
+    if(bdshow.style.display === 'block') {
+        bdshow.style.display = 'none';
+        btn.innerText = 'Details';
+    } else {
+        bdshow.style.display = 'block';
+        btn.innerText = 'Hide';
+    }
+};
+
+// Copy Function
+window.copyText = function(elementId) {
+    const text = document.getElementById(elementId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Copied successfully!");
+    }).catch(err => {
+        alert("Failed to copy: " + err);
+    });
+};
+
+// Tab Switching Logic
+window.showTab = function(tabName) {
+    // Update Menu active state
+    document.querySelectorAll('.tab li').forEach(li => li.classList.remove('action'));
+    document.getElementById(`tab-${tabName}`).classList.add('action');
+    
+    // Hide all contents
+    document.getElementById('content-data').classList.add('hide');
+    document.getElementById('content-team').classList.add('hide');
+    document.getElementById('content-history').classList.add('hide');
+    document.getElementById('content-tutorial').classList.add('hide');
+    
+    // Show selected content
+    document.getElementById(`content-${tabName}`).classList.remove('hide');
+    
+    // Update Navbar Title
+    const titles = {
+        data: 'Promotion',
+        team: 'My Team',
+        history: 'History',
+        tutorial: 'Tutorial'
+    };
+    document.getElementById('pageTitle').innerText = titles[tabName];
+};
+</script>
+
+</body>
+</html>

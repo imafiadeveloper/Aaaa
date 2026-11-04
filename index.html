@@ -265,7 +265,6 @@
 
 <div class="form-wrap">
 
-  <!-- PHONE LOGIN -->
   <div id="panel-phone" class="form-panel active">
     <div class="input-block">
       <div class="input-label">
@@ -308,7 +307,6 @@
     </div>
   </div>
 
-  <!-- EMAIL LOGIN -->
   <div id="panel-email" class="form-panel">
     <div class="input-block">
       <div class="input-label">
@@ -341,7 +339,6 @@
     </div>
   </div>
 
-  <!-- HELPER -->
   <div class="helper-footer">
     <button class="helper-item" onclick="openForgot()">
       <div class="helper-icon">
@@ -358,7 +355,7 @@
   </div>
 </div>
 
-<!-- MODAL: REGISTER -->
+<!-- MODAL: REGISTER (Added Invite Code) -->
 <div id="modal-register" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-head">Create Account</div>
@@ -377,11 +374,18 @@
         <input id="regPhone" class="modal-input" style="margin-bottom:12px;flex:1;" type="tel" inputmode="numeric" maxlength="12" placeholder="Phone number" />
       </div>
       <input id="regName" class="modal-input" type="text" maxlength="40" placeholder="Your name (optional)" />
-      <input id="regEmail" class="modal-input" type="email" maxlength="120" placeholder="Email (for backup/recovery)" />
+      <input id="regEmail" class="modal-input" type="email" maxlength="120" placeholder="Email (required for login)" />
       <input id="regPwd" class="modal-input" type="password" maxlength="32" placeholder="Set password (min 6)" />
       <input id="regPwd2" class="modal-input" type="password" maxlength="32" placeholder="Confirm password" />
       
-      <button class="btn-lg btn-primary" style="margin-bottom:10px; margin-top:12px;" onclick="doRegister()">Create Account</button>
+      <!-- NAYA: INVITE CODE INPUT -->
+      <input id="regInviteCode" class="modal-input" type="text" maxlength="20" placeholder="Invite Code (Optional)" />
+      
+      <div class="tip-row">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Email required — it is used for login &amp; password recovery.</span>
+      </div>
+      <button class="btn-lg btn-primary" style="margin-bottom:10px;" onclick="doRegister()">Create Account</button>
       <button class="modal-close-btn" onclick="closeModal('modal-register')">Cancel</button>
     </div>
   </div>
@@ -456,7 +460,11 @@ import {
   doc,
   setDoc,
   getDoc,
-  serverTimestamp
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ================= FIREBASE CONFIG ================= */
@@ -547,7 +555,6 @@ async function doLogin(mode) {
 
   let emailToLogin = username;
 
-  // 🚀 MAGIC FIX: Agar Phone se login kar raha hai, to internal email banao
   if (isPhone) {
     emailToLogin = `${country.replace('+','')}${username}@bdg7.com`;
   }
@@ -589,9 +596,17 @@ window.doLogin = doLogin;
 
 /* ================= REGISTER ================= */
 function openRegister() {
-  ['regPhone','regName','regEmail','regPwd','regPwd2'].forEach(id => {
+  ['regPhone','regName','regEmail','regPwd','regPwd2','regInviteCode'].forEach(id => {
     document.getElementById(id).value = '';
   });
+  
+  // URL se ref code nikalo (agar hai to)
+  const urlParams = new URLSearchParams(window.location.search);
+  const refCode = urlParams.get('ref');
+  if (refCode) {
+      document.getElementById('regInviteCode').value = refCode;
+  }
+  
   openModal('modal-register');
 }
 window.openRegister = openRegister;
@@ -603,6 +618,7 @@ async function doRegister() {
   const realEmail = document.getElementById('regEmail').value.trim();
   const pwd = document.getElementById('regPwd').value;
   const pwd2 = document.getElementById('regPwd2').value;
+  const inviteCode = document.getElementById('regInviteCode').value.trim();
 
   if (!phone) { showToast('Please enter phone number'); return; }
   if (phone.length < 10) { showToast('Phone number must be 10 digits'); return; }
@@ -612,13 +628,25 @@ async function doRegister() {
 
   showLoader();
   try {
-    // 🚀 MAGIC FIX: Firebase Auth me login ke liye email banayenge phone number se
     const authEmail = `${country.replace('+','')}${phone}@bdg7.com`;
 
     // 1. Firebase Auth me account create karo
     const cred = await createUserWithEmailAndPassword(auth, authEmail, pwd);
 
-    // 2. Firestore me data save karo
+    // 2. ReferredBy check karo (Agar invite code daala hai)
+    let referredBy = null;
+    if (inviteCode) {
+        // Invite code se search karo ki ye kis user ka hai
+        const q = query(collection(db, "users"), where("inviteCode", "==", inviteCode.toUpperCase()));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            referredBy = querySnapshot.docs[0].id; // Us user ka UID
+        } else {
+            showToast('Invalid Invite Code, but account created.');
+        }
+    }
+
+    // 3. Firestore me data save karo
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       country, 
@@ -626,6 +654,8 @@ async function doRegister() {
       name, 
       realEmail: realEmail, 
       authEmail: authEmail,
+      inviteCode: cred.user.uid.substring(0, 8).toUpperCase(), // Naya Invite Code
+      referredBy: referredBy, // Team link
       createdAt: serverTimestamp()
     });
 
@@ -761,18 +791,27 @@ window.sendSupport = sendSupport;
 
 /* ================= AUTOFILL ================= */
 window.addEventListener('DOMContentLoaded', () => {
-  const last = localStorage.getItem('bdg7_last');
-  if (last) {
-    try {
-      const o = JSON.parse(last);
-      if (o.mode === 'phone') {
-        switchTab('phone');
-        document.getElementById('phoneInput').value = o.username;
-      } else {
-        switchTab('email');
-        document.getElementById('emailInput').value = o.username;
+  // Check for ref code in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const refCode = urlParams.get('ref');
+  
+  if (refCode) {
+      // Agar URL me ref code hai, to direct Register form kholo
+      openRegister();
+  } else {
+      const last = localStorage.getItem('bdg7_last');
+      if (last) {
+        try {
+          const o = JSON.parse(last);
+          if (o.mode === 'phone') {
+            switchTab('phone');
+            document.getElementById('phoneInput').value = o.username;
+          } else {
+            switchTab('email');
+            document.getElementById('emailInput').value = o.username;
+          }
+        } catch {}
       }
-    } catch {}
   }
 });
 </script>
