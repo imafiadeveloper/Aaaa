@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#090909">
+<title>BDG LOTTERY7 - Wallet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;width:100%;background:#090909;font-family:'Inter','Roboto',-apple-system,BlinkMacSystemFont,sans-serif;color:#fff;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;}
+input{font-family:inherit;outline:none;border:none;}
+img{display:block;max-width:100%;}
+::-webkit-scrollbar{width:0;height:0;}
+
+/* ============ NAVBAR ============ */
+.navbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;padding:0 16px;
+  background:#090909;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.navbar-left,.navbar-right{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;cursor:pointer;transition:background .2s;
+}
+.navbar-left:active,.navbar-right:active{background:rgba(255,255,255,0.08);}
+.navbar-left svg,.navbar-right svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2;}
+.navbar-title{font-size:17px;font-weight:700;letter-spacing:.3px;}
+
+/* ============ PAGE WRAPPER ============ */
+.page{
+  padding:16px 16px 110px;
+  min-height:calc(100vh - 56px);
+}
+
+/* ============ USER PROFILE ============ */
+.user-card{
+  display:flex;flex-direction:column;align-items:center;
+  padding:20px 16px 24px;
+}
+.user-avatar{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:10px;
+  box-shadow:0 6px 20px rgba(196,147,63,0.35);
+}
+.user-avatar svg{width:34px;height:34px;fill:#3a2a10;}
+.user-name{font-size:16px;font-weight:700;letter-spacing:.2px;color:#fff;}
+.user-uid{font-size:12px;color:#a6a9ae;margin-top:3px;}
+
+/* ============ BALANCE CARD ============ */
+.balance-card{
+  position:relative;overflow:hidden;
+  background:#1A1A1A;
+  border:1px solid rgba(250,229,159,0.15);
+  border-radius:20px;
+  padding:22px 18px 20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+.balance-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(250,229,159,0.15),transparent 70%);
+  pointer-events:none;
+}
+.bc-label{font-size:13px;color:#a6a9ae;margin-bottom:6px;font-weight:500;}
+.bc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.bc-amount{
+  font-size:32px;font-weight:800;letter-spacing:.5px;
+  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1.1;
+}
+.bc-amount .cur{font-size:22px;font-weight:700;}
+.refresh-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(250,229,159,0.1);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .5s;
+}
+.refresh-btn:active{background:rgba(250,229,159,0.2);}
+.refresh-btn.spin{animation:spin .8s linear;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.refresh-btn svg{width:18px;height:18px;stroke:#FAE59F;fill:none;stroke-width:2.2;}
+
+.bc-stats{
+  display:flex;gap:10px;margin-top:18px;
+  padding-top:16px;border-top:1px dashed rgba(255,255,255,0.08);
+}
+.bc-stat{
+  flex:1;background:#222;border-radius:12px;
+  padding:10px 8px;text-align:center;
+}
+.bc-stat-label{font-size:11px;color:#a6a9ae;margin-bottom:4px;}
+.bc-stat-val{font-size:14px;font-weight:700;color:#FAE59F;}
+
+/* ============ MAIN WALLET TRANSFER BTN ============ */
+.transfer-btn{
+  width:100%;height:50px;margin-top:16px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
+  color:#3a2a10;font-size:15px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 8px 20px rgba(196,147,63,0.3);
+  transition:transform .15s,box-shadow .15s;
+}
+.transfer-btn:active{transform:scale(0.97);box-shadow:0 4px 10px rgba(196,147,63,0.3);}
+.transfer-btn svg{width:20px;height:20px;stroke:#3a2a10;fill:none;stroke-width:2.2;}
+
+/* ============ ACTION GRID ============ */
+.action-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:12px;margin-top:20px;
+}
+.action-item{
+  background:#1A1A1A;border:1px solid rgba(255,255,255,0.06);
+  border-radius:16px;padding:18px 10px 14px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:transform .15s,background .15s;cursor:pointer;
+}
+.action-item:active{transform:scale(0.97);background:#222;}
+.action-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(250,229,159,0.1);
+}
+.action-icon svg{width:24px;height:24px;stroke:#FAE59F;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.action-icon.green{background:rgba(107,190,88,0.12);}
+.action-icon.green svg{stroke:#6abe57;}
+.action-icon.blue{background:rgba(84,150,255,0.12);}
+.action-icon.blue svg{stroke:#5496ff;}
+.action-icon.red{background:rgba(242,65,59,0.12);}
+.action-icon.red svg{stroke:#f2413b;}
+.action-label{font-size:13px;font-weight:600;color:#fff;}
+
+/* ============ SECTION TITLE ============ */
+.section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:24px 0 12px;
+}
+.section-title h3{font-size:15px;font-weight:700;color:#fff;}
+.section-title a{font-size:12px;color:#a6a9ae;font-weight:500;}
+
+/* ============ TRANSACTION LIST ============ */
+.tx-list{display:flex;flex-direction:column;gap:10px;}
+.tx-item{
+  background:#1A1A1A;border:1px solid rgba(255,255,255,0.05);
+  border-radius:14px;padding:14px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.tx-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1;}
+.tx-icon{
+  width:40px;height:40px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.tx-icon.deposit{background:rgba(107,190,88,0.12);}
+.tx-icon.deposit svg{stroke:#6abe57;}
+.tx-icon.withdraw{background:rgba(242,65,59,0.12);}
+.tx-icon.withdraw svg{stroke:#f2413b;}
+.tx-icon.bet{background:rgba(250,229,159,0.1);}
+.tx-icon.bet svg{stroke:#FAE59F;}
+.tx-icon svg{width:20px;height:20px;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.tx-info{min-width:0;flex:1;}
+.tx-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-time{font-size:11px;color:#a6a9ae;}
+.tx-amt{font-size:15px;font-weight:700;flex-shrink:0;}
+.tx-amt.plus{color:#6abe57;}
+.tx-amt.minus{color:#f2413b;}
+
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:36px 20px;color:#a6a9ae;
+}
+.empty-state svg{width:56px;height:56px;stroke:#444;fill:none;stroke-width:1.5;}
+.empty-state p{font-size:13px;}
+
+/* ============ TOAST ============ */
+.toast{
+  position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(30,30,30,0.98);border:1px solid rgba(250,229,159,0.25);
+  color:#fff;font-size:13px;font-weight:500;
+  padding:12px 22px;border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.6);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+  z-index:9999;max-width:80vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ============ BOTTOM TAB BAR ============ */
+.tabbar{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  height:64px;
+  background:rgba(15,15,15,0.98);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:stretch;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;color:#6b6e73;font-size:10px;font-weight:600;
+  position:relative;transition:color .2s;cursor:pointer;
+}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.tab.active{color:#FAE59F;}
+.tab-center{
+  flex:1;display:flex;align-items:center;justify-content:center;position:relative;
+}
+.tab-center-btn{
+  position:absolute;top:-22px;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 20px rgba(196,147,63,0.5),0 0 0 4px #090909;
+  transition:transform .15s;
+}
+.tab-center-btn:active{transform:scale(0.92);}
+.tab-center-btn svg{width:26px;height:26px;stroke:#3a2a10;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.tab-center-label{
+  position:absolute;bottom:8px;font-size:10px;font-weight:600;color:#FAE59F;
+}
+
+/* ============ LOADING OVERLAY ============ */
+.loader-overlay{
+  position:fixed;inset:0;background:rgba(9,9,9,0.85);z-index:9998;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.loader-overlay.show{opacity:1;pointer-events:auto;}
+.spinner{
+  width:42px;height:42px;border-radius:50%;
+  border:3px solid rgba(250,229,159,0.2);
+  border-top-color:#FAE59F;
+  animation:spin .8s linear infinite;
+}
+
+/* Responsive tweaks */
+@media (max-width:360px){
+  .bc-amount{font-size:28px;}
+  .action-item{padding:16px 8px 12px;}
+  .action-icon{width:44px;height:44px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="navbar-left" onclick="location.href='home.html'">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
+  <div class="navbar-title">Wallet</div>
+  <div class="navbar-right" id="supportBtn" title="Customer Service">
+    <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- USER PROFILE -->
+  <div class="user-card">
+    <div class="user-avatar">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+    <div class="user-name" id="userName">Loading...</div>
+    <div class="user-uid" id="userUid">UID: ---</div>
+  </div>
+
+  <!-- BALANCE CARD -->
+  <div class="balance-card">
+    <div class="bc-label">Total Balance</div>
+    <div class="bc-row">
+      <div class="bc-amount"><span class="cur">₹</span><span id="balanceVal">0.00</span></div>
+      <div class="refresh-btn" id="refreshBtn">
+        <svg viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      </div>
+    </div>
+    <div class="bc-stats">
+      <div class="bc-stat">
+        <div class="bc-stat-label">Total Deposit</div>
+        <div class="bc-stat-val" id="totalDeposit">₹0.00</div>
+      </div>
+      <div class="bc-stat">
+        <div class="bc-stat-label">Total Withdraw</div>
+        <div class="bc-stat-val" id="totalWithdraw">₹0.00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN WALLET TRANSFER BUTTON -->
+  <button class="transfer-btn" id="transferBtn">
+    <svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+    Main Wallet Transfer
+  </button>
+
+  <!-- ACTION GRID -->
+  <div class="action-grid">
+    <div class="action-item" onclick="location.href='deposit.html'">
+      <div class="action-icon green">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+      <div class="action-label">Deposit</div>
+    </div>
+    <div class="action-item" onclick="location.href='withdraw.html'">
+      <div class="action-icon red">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
+      </div>
+      <div class="action-label">Withdraw</div>
+    </div>
+    <div class="action-item" onclick="location.href='deposit-history.html'">
+      <div class="action-icon blue">
+        <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+      </div>
+      <div class="action-label">Deposit History</div>
+    </div>
+    <div class="action-item" onclick="location.href='withdraw-history.html'">
+      <div class="action-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      </div>
+      <div class="action-label">Withdraw History</div>
+    </div>
+  </div>
+
+  <!-- RECENT TRANSACTIONS -->
+  <div class="section-title">
+    <h3>Recent Activity</h3>
+  </div>
+  <div class="tx-list" id="txList">
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
+      <p>Loading transactions...</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- LOADING OVERLAY -->
+<div class="loader-overlay" id="loader">
+  <div class="spinner"></div>
+</div>
+
+<!-- BOTTOM TAB BAR -->
+<div class="tabbar">
+  <div class="tab" onclick="location.href='home.html'">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+    <span>Home</span>
+  </div>
+  <div class="tab" onclick="location.href='activity.html'">
+    <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    <span>Activity</span>
+  </div>
+  <div class="tab-center">
+    <button class="tab-center-btn" onclick="location.href='promotion.html'">
+      <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2zM12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+    </button>
+    <span class="tab-center-label">Promotion</span>
+  </div>
+  <div class="tab active" onclick="location.href='wallet.html'">
+    <svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg>
+    <span>Wallet</span>
+  </div>
+  <div class="tab" onclick="location.href='account.html'">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Account</span>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ============ FIREBASE CONFIG ============ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ============ TELEGRAM CONFIG ============ */
+const TG_BOT_TOKEN = "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw";
+const TG_CHAT_ID = "8167337368";
+
+/* ============ UTILITIES ============ */
+const toastEl = document.getElementById('toast');
+let toastTimer = null;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2200);
+}
+
+const loaderEl = document.getElementById('loader');
+function showLoader(){loaderEl.classList.add('show');}
+function hideLoader(){loaderEl.classList.remove('show');}
+
+function fmt(n){
+  const v = Number(n)||0;
+  return v.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function fmtTime(ts){
+  try{
+    let d;
+    if(ts && typeof ts.toDate === 'function') d = ts.toDate();
+    else if(ts instanceof Date) d = ts;
+    else if(typeof ts === 'number') d = new Date(ts);
+    else if(typeof ts === 'string') d = new Date(ts);
+    else return '--';
+    if(isNaN(d.getTime())) return '--';
+    const pad = x=>String(x).padStart(2,'0');
+    return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }catch(e){return '--';}
+}
+
+/* ============ TELEGRAM SUPPORT ============ */
+document.getElementById('supportBtn').addEventListener('click', async ()=>{
+  try{
+    await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        chat_id: TG_CHAT_ID,
+        text: `📩 Wallet Support Request\nUser: ${currentUserData?.name || currentUserData?.username || 'Unknown'}\nUID: ${currentUser?.uid || '-'}\nTime: ${new Date().toLocaleString('en-IN')}`
+      })
+    });
+    toast('Support notified. We will contact you soon.');
+  }catch(err){
+    console.warn('Telegram error:', err);
+    toast('Support request sent.');
+  }
+});
+
+/* ============ AUTH STATE ============ */
+let currentUser = null;
+let currentUserData = null;
+let lastTxId = null;
+const seenTxSignatures = new Set();
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    location.replace('index.html');
+    return;
+  }
+  currentUser = user;
+  loadUserData(user.uid);
+  loadTransactions(user.uid);
+});
+
+/* ============ LOAD USER DATA ============ */
+async function loadUserData(uid){
+  try{
+    const snap = await getDoc(doc(db,'users',uid));
+    if(!snap.exists()){
+      toast('User profile not found');
+      return;
+    }
+    currentUserData = snap.data();
+    renderUser(currentUserData);
+  }catch(err){
+    console.error('loadUserData error:',err);
+    toast('Failed to load profile');
+  }
+}
+
+function renderUser(data){
+  const name = data.name || data.username || data.fullName || 'User';
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userUid').textContent = 'UID: ' + (currentUser?.uid || '---');
+
+  const bal = Number(data.balance ?? data.wallet ?? data.money ?? 0);
+  document.getElementById('balanceVal').textContent = fmt(bal);
+
+  const dep = Number(data.totalDeposit ?? data.totalDepositAmount ?? data.totalRecharge ?? 0);
+  const wd  = Number(data.totalWithdraw ?? data.totalWithdrawAmount ?? 0);
+  document.getElementById('totalDeposit').textContent = '₹' + fmt(dep);
+  document.getElementById('totalWithdraw').textContent = '₹' + fmt(wd);
+}
+
+/* ============ REFRESH BUTTON ============ */
+document.getElementById('refreshBtn').addEventListener('click', async (e)=>{
+  if(e.currentTarget.classList.contains('spin')) return;
+  e.currentTarget.classList.add('spin');
+  try{
+    if(currentUser){
+      const snap = await getDoc(doc(db,'users',currentUser.uid));
+      if(snap.exists()){
+        currentUserData = snap.data();
+        renderUser(currentUserData);
+        toast('Balance updated');
+      }
+      loadTransactions(currentUser.uid);
+    }
+  }catch(err){
+    console.error(err);
+    toast('Refresh failed');
+  }finally{
+    setTimeout(()=>e.currentTarget.classList.remove('spin'), 800);
+  }
+});
+
+/* ============ MAIN WALLET TRANSFER ============ */
+document.getElementById('transferBtn').addEventListener('click', ()=>{
+  location.href = 'transfer.html';
+});
+
+/* ============ LOAD TRANSACTIONS ============ */
+async function loadTransactions(uid){
+  const listEl = document.getElementById('txList');
+  try{
+    const txRef = collection(db,'transactions');
+    const q = query(txRef, where('userId','==',uid), orderBy('createdAt','desc'), limit(15));
+    const snap = await getDocs(q);
+
+    if(snap.empty){
+      listEl.innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
+          <p>No transactions yet</p>
+        </div>`;
+      return;
+    }
+
+    let html = '';
+    snap.forEach(docSnap=>{
+      const t = docSnap.data();
+      const type = (t.type || t.transactionType || '').toLowerCase();
+      const amt = Number(t.amount ?? t.money ?? 0);
+      const ts = t.createdAt || t.time || t.timestamp;
+      const title = t.title || t.description || (
+        type.includes('deposit') ? 'Deposit' :
+        type.includes('withdraw') ? 'Withdraw' :
+        type.includes('bet') ? 'Bet Placed' :
+        type.includes('win') ? 'Winning' : 'Transaction'
+      );
+
+      let cls = 'bet';
+      let sign = '-';
+      let iconPath = '<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>';
+      if(type.includes('deposit') || type.includes('recharge') || type.includes('credit')){
+        cls = 'deposit'; sign = '+';
+        iconPath = '<path d="M12 5v14M5 12h14"/>';
+      } else if(type.includes('withdraw') || type.includes('debit')){
+        cls = 'withdraw'; sign = '-';
+        iconPath = '<path d="M5 12h14"/>';
+      }
+
+      html += `
+        <div class="tx-item">
+          <div class="tx-left">
+            <div class="tx-icon ${cls}">
+              <svg viewBox="0 0 24 24">${iconPath}</svg>
+            </div>
+            <div class="tx-info">
+              <div class="tx-title">${title}</div>
+              <div class="tx-time">${fmtTime(ts)}</div>
+            </div>
+          </div>
+          <div class="tx-amt ${sign==='+'?'plus':'minus'}">${sign}₹${fmt(Math.abs(amt))}</div>
+        </div>`;
+    });
+    listEl.innerHTML = html;
+
+  }catch(err){
+    console.error('loadTransactions error:', err);
+    // Fallback: try without orderBy (in case index missing)
+    try{
+      const txRef = collection(db,'transactions');
+      const q2 = query(txRef, where('userId','==',uid), limit(15));
+      const snap2 = await getDocs(q2);
+      if(snap2.empty){
+        listEl.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
+            <p>No transactions yet</p>
+          </div>`;
+        return;
+      }
+      let html = '';
+      const arr = [];
+      snap2.forEach(d=>arr.push(d.data()));
+      arr.sort((a,b)=>{
+        const ta = a.createdAt?.toMillis?.() ?? 0;
+        const tb = b.createdAt?.toMillis?.() ?? 0;
+        return tb - ta;
+      });
+      arr.forEach(t=>{
+        const type = (t.type || '').toLowerCase();
+        const amt = Number(t.amount ?? t.money ?? 0);
+        const ts = t.createdAt || t.time || t.timestamp;
+        const title = t.title || t.description || (
+          type.includes('deposit') ? 'Deposit' :
+          type.includes('withdraw') ? 'Withdraw' :
+          type.includes('bet') ? 'Bet Placed' : 'Transaction'
+        );
+        let cls = 'bet', sign = '-';
+        if(type.includes('deposit') || type.includes('credit')) {cls='deposit';sign='+';}
+        else if(type.includes('withdraw') || type.includes('debit')) {cls='withdraw';sign='-';}
+        html += `
+          <div class="tx-item">
+            <div class="tx-left">
+              <div class="tx-icon ${cls}">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+              </div>
+              <div class="tx-info">
+                <div class="tx-title">${title}</div>
+                <div class="tx-time">${fmtTime(ts)}</div>
+              </div>
+            </div>
+            <div class="tx-amt ${sign==='+'?'plus':'minus'}">${sign}₹${fmt(Math.abs(amt))}</div>
+          </div>`;
+      });
+      listEl.innerHTML = html;
+    }catch(err2){
+      listEl.innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
+          <p>Could not load activity</p>
+        </div>`;
+    }
+  }
+}
+
+/* ============ PREVENT DOUBLE-CLICK ON ALL ACTIONS ============ */
+document.querySelectorAll('.action-item, .transfer-btn').forEach(el=>{
+  el.addEventListener('click', function(e){
+    if(this.dataset.busy === '1'){ e.preventDefault(); e.stopPropagation(); return; }
+    this.dataset.busy = '1';
+    setTimeout(()=>{ this.dataset.busy=''; }, 700);
+  });
+});
+
+/* ============ REALTIME REFRESH ON TAB FOCUS ============ */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible' && currentUser){
+    loadUserData(currentUser.uid);
+  }
+});
+
+/* ============ INITIAL FADE-IN ============ */
+document.body.style.opacity = '0';
+document.body.style.transition = 'opacity .3s';
+window.addEventListener('load', ()=>{ document.body.style.opacity = '1'; });
+
+</script>
+</body>
+</html>
