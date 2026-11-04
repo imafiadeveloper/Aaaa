@@ -456,10 +456,14 @@ import {
   doc,
   setDoc,
   getDoc,
-  serverTimestamp
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ================= FIREBASE CONFIG (NEW) ================= */
+/* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
   authDomain: "bdglottery7.firebaseapp.com",
@@ -547,6 +551,7 @@ async function doLogin(mode) {
 
   let email;
   if (isPhone) {
+    // Phone se internal email banao
     email = `${country.replace('+','')}${username}@bdg7.local`;
   } else {
     email = username;
@@ -571,7 +576,11 @@ async function doLogin(mode) {
   } catch (err) {
     hideLoader();
     const code = err.code || '';
-    if (code.includes('user-not-found') || code.includes('invalid-credential') || code.includes('wrong-password')) {
+    
+    // AGAR PHONE SE LOGIN FAIL HO, TO CHECK KARO KI USER NE EMAIL SE ACCOUNT BANAYA THA KYA
+    if (isPhone && (code.includes('user-not-found') || code.includes('invalid-credential'))) {
+      showToast('Account not found. Did you register with Email? Try Email Login.');
+    } else if (code.includes('user-not-found') || code.includes('invalid-credential') || code.includes('wrong-password')) {
       showToast('Invalid credentials. Please check and try again.');
     } else if (code.includes('too-many-requests')) {
       showToast('Too many attempts. Try again later.');
@@ -611,17 +620,24 @@ async function doRegister() {
 
   showLoader();
   try {
+    // 1. Original Email aur Password se Firebase Auth account banega
     const cred = await createUserWithEmailAndPassword(auth, email, pwd);
 
+    // 2. Firestore me data save hoga (Saath me internal phone email bhi save karenge)
+    const internalEmail = `${country.replace('+','')}${phone}@bdg7.local`;
+    
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       country, phone, name, email,
+      internalEmail: internalEmail, 
       createdAt: serverTimestamp()
     });
 
     hideLoader();
     showToast('Account created! Please log in.');
     closeModal('modal-register');
+    
+    // Auto fill email login tab
     document.getElementById('emailInput').value = email;
     switchTab('email');
     
