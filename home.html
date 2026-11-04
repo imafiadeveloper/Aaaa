@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>BDG LOTTERY7 — Home</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%; background: #090909;
+    font-family: 'Inter','Roboto',system-ui,sans-serif;
+    color: #eaeaea; -webkit-tap-highlight-color: transparent;
+  }
+  button { cursor: pointer; border: none; font-family: inherit; }
+
+  /* NAVBAR */
+  .navbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; padding: 0 14px;
+    background: linear-gradient(90deg, #6F7381 0%, #A9AAB5 100%);
+    border-bottom: 1px solid #2a2a32;
+  }
+  .navbar-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 800; font-size: 17px; color: #fff;
+  }
+  .navbar-brand svg { width: 22px; height: 22px; }
+  .logout-btn {
+    background: rgba(255,255,255,0.12); color: #fff;
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+  }
+  .logout-btn:active { background: rgba(255,255,255,0.25); }
+
+  /* HEADER */
+  .heading-banner {
+    min-height: 110px;
+    background: linear-gradient(90deg, #6F7381 0%, #A9AAB5 100%);
+    padding: 18px 22px 14px;
+  }
+  .heading-banner h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .heading-banner p { font-size: 13px; color: #fff; line-height: 1.5; }
+
+  .wrap { padding: 22px; }
+
+  /* PROFILE CARD */
+  .profile-card {
+    background: linear-gradient(135deg, #2a2a32 0%, #1a1a1f 100%);
+    border: 1px solid #3a3a44;
+    border-radius: 14px;
+    padding: 22px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .avatar {
+    width: 68px; height: 68px; border-radius: 50%;
+    background: linear-gradient(135deg, #f5c542, #ff9d2e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; font-weight: 800; color: #1a1a1a;
+    margin-bottom: 12px;
+    box-shadow: 0 6px 16px rgba(245,197,66,.35);
+  }
+  .profile-name { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .profile-email { font-size: 13px; color: #a6a9ae; margin-bottom: 12px; }
+  .profile-phone {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; color: #d9ac4f;
+    background: rgba(217,172,79,.1);
+    padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(217,172,79,.25);
+    width: fit-content;
+  }
+  .profile-phone svg { width: 16px; height: 16px; stroke: #d9ac4f; fill: none; stroke-width: 2; }
+
+  /* ACTIONS */
+  .section-title {
+    font-size: 15px; font-weight: 600; color: #d9ac4f;
+    margin: 20px 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title svg { width: 18px; height: 18px; stroke: #d9ac4f; fill: none; stroke-width: 2; }
+
+  .action-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  }
+  .action-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; padding: 22px 12px;
+    background: #15151a;
+    border: 1px solid #2a2a32;
+    border-radius: 12px;
+    color: #eaeaea; font-size: 14px; font-weight: 600;
+    transition: transform .1s, border-color .2s;
+  }
+  .action-btn:active { transform: scale(.97); border-color: #f5c542; }
+  .action-btn-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #f5c542, #ff9d2e);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(245,197,66,.3);
+  }
+  .action-btn-icon svg { width: 22px; height: 22px; stroke: #1a1a1a; fill: none; stroke-width: 2; }
+
+  /* TOAST & LOADER */
+  #toast {
+    position: fixed; left: 50%; top: 40%; transform: translateX(-50%);
+    background: rgba(0,0,0,.9); color: #fff;
+    padding: 12px 20px; border-radius: 10px;
+    font-size: 14px; z-index: 9999;
+    display: none; max-width: 80%; text-align: center;
+  }
+  #toast.show { display: block; animation: toastIn .2s ease; }
+  @keyframes toastIn { from { opacity:0; transform: translate(-50%,-6px);} to {opacity:1; transform: translate(-50%,0);} }
+
+  #loader {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,.75);
+    display: none; align-items: center; justify-content: center;
+  }
+  #loader.show { display: flex; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 4px solid rgba(245,197,66,.25);
+    border-top-color: #f5c542; border-radius: 50%;
+    animation: spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* UNAUTHORIZED SCREEN */
+  .not-logged {
+    position: fixed; inset: 0;
+    background: #090909;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; padding: 24px;
+    z-index: 100;
+  }
+  .not-logged h2 { color: #fff; font-size: 18px; }
+  .not-logged p { color: #a6a9ae; font-size: 13px; text-align: center; }
+  .not-logged a {
+    color: #8f5206; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%);
+    padding: 12px 28px; border-radius: 24px;
+    font-weight: 700; text-decoration: none;
+    font-size: 15px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Error screen if not logged in -->
+<div id="notLogged" class="not-logged" style="display:none;">
+  <h2>Not Logged In</h2>
+  <p>Please log in to access the home page.</p>
+  <a href="index.html">Go to Login</a>
+</div>
+
+<!-- Main Home Screen -->
+<div id="main" style="display:none;">
+
+  <header class="navbar">
+    <div class="navbar-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="3"/>
+        <circle cx="8" cy="8" r="1" fill="#fff"/>
+        <circle cx="16" cy="8" r="1" fill="#fff"/>
+        <circle cx="8" cy="16" r="1" fill="#fff"/>
+        <circle cx="16" cy="16" r="1" fill="#fff"/>
+        <circle cx="12" cy="12" r="1" fill="#fff"/>
+      </svg>
+      BDG LOTTERY7
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </header>
+
+  <div class="heading-banner">
+    <h1>Welcome</h1>
+    <p>You are logged in. Explore your account below.</p>
+  </div>
+
+  <div class="wrap">
+
+    <!-- Profile Details -->
+    <div class="profile-card">
+      <div class="avatar" id="avatar">U</div>
+      <div class="profile-name" id="profName">User</div>
+      <div class="profile-email" id="profEmail">—</div>
+      <div class="profile-phone">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span id="profPhone">—</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="section-title">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Quick Actions
+    </div>
+
+    <div class="action-grid">
+      <button class="action-btn" onclick="showToast('Coming soon...')">
+        <div class="action-btn-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        Play Game
+      </button>
+      
+      <button class="action-btn" onclick="showToast('Coming soon...')">
+        <div class="action-btn-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        Account
+      </button>
+      
+      <button class="action-btn" onclick="showToast('Coming soon...')">
+        <div class="action-btn-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        Support (Soon)
+      </button>
+      
+      <button class="action-btn" onclick="showToast('Coming soon...')">
+        <div class="action-btn-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        History
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="loader"><div class="spinner"></div></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ================= FIREBASE CONFIG (NEW) ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb",
+  measurementId: "G-VRYNMCS0EZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ================= HELPERS ================= */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+window.showToast = showToast;
+
+function showLoader() { document.getElementById('loader').classList.add('show'); }
+function hideLoader() { document.getElementById('loader').classList.remove('show'); }
+
+/* ================= AUTH GUARD & DATA LOAD ================= */
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    // Not logged in
+    document.getElementById('notLogged').style.display = 'flex';
+    document.getElementById('main').style.display = 'none';
+    return;
+  }
+
+  showLoader();
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    let data = {};
+    if (snap.exists()) {
+      data = snap.data();
+    } else {
+      data = { uid: user.uid, email: user.email, phone: '—', name: 'User', country: '' };
+    }
+
+    // Show data on screen
+    const displayName = data.name || (data.email || 'User').split('@')[0];
+    document.getElementById('profName').textContent = displayName;
+    document.getElementById('profEmail').textContent = data.email || user.email || '—';
+    document.getElementById('profPhone').textContent = (data.country || '') + ' ' + (data.phone || '—');
+    document.getElementById('avatar').textContent = (displayName[0] || 'U').toUpperCase();
+
+    // Save to session for quick access
+    localStorage.setItem('bdg7_session', JSON.stringify({
+      uid: user.uid,
+      ...data
+    }));
+
+    // Show Home Page
+    document.getElementById('main').style.display = 'block';
+    document.getElementById('notLogged').style.display = 'none';
+  } catch (e) {
+    console.error(e);
+    showToast('Failed to load profile.');
+  } finally {
+    hideLoader();
+  }
+});
+
+/* ================= LOGOUT ================= */
+async function doLogout() {
+  showLoader();
+  try {
+    await signOut(auth);
+    localStorage.removeItem('bdg7_session');
+    showToast('Logged out');
+    setTimeout(() => window.location.href = 'index.html', 600);
+  } catch (e) {
+    hideLoader();
+    showToast('Logout failed');
+  }
+}
+window.doLogout = doLogout;
+</script>
+</body>
+</html>
