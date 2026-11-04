@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>BDG LOTTERY7 — Activity</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+    <style>
+        /* ================= GLOBAL ================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Roboto', sans-serif; }
+        html, body { height: 100%; background-color: #090909; color: #fff; padding-bottom: 70px; -webkit-tap-highlight-color: transparent; }
+        button { cursor: pointer; border: none; outline: none; background: transparent; }
+
+        /* ================= NAVBAR ================= */
+        .navbar { position: sticky; top: 0; z-index: 100; background: #3F3F3F; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; height: 60px; }
+        .navbar-left { width: 40px; cursor: pointer; }
+        .navbar-left i { font-size: 20px; color: #fff; }
+        .navbar-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; }
+        .navbar-right { width: 40px; text-align: right; cursor: pointer; }
+        .navbar-right img { width: 24px; height: 24px; }
+
+        /* ================= CHECK-IN UI ================= */
+        .check-box { padding: 20px 15px; }
+        .check-header { text-align: center; margin-bottom: 20px; }
+        .check-header h4 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #FAE59F; }
+        
+        .action-links { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+        .action-links p { font-size: 13px; color: #a6a9ae; text-decoration: underline; cursor: pointer; }
+        .action-links p:active { color: #D9AC4F; }
+
+        /* 7 Days Grid */
+        .list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .item { 
+            background: #3F3F3F; 
+            border: 1px solid #555; 
+            border-radius: 10px; 
+            padding: 15px 10px; 
+            text-align: center; 
+            position: relative;
+            transition: 0.2s;
+        }
+        .item.action { cursor: pointer; }
+        .item.action:active { transform: scale(0.95); }
+        .item.disabled { opacity: 0.6; pointer-events: none; }
+        
+        .item .num { font-size: 18px; font-weight: 700; color: #FAE59F; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; }
+        .item .num span { font-size: 22px; }
+        .item .img { width: 40px; height: 40px; object-fit: contain; margin-bottom: 5px; }
+        .item .txt { font-size: 12px; color: #8f5206; background: #FAE59F; padding: 4px 8px; border-radius: 10px; font-weight: 600; display: inline-block; }
+        
+        /* If received */
+        .item.received { background: #1f1f1f; border-color: #333; }
+        .item.received .num { color: #666; }
+        .item.received .img { filter: grayscale(100%); opacity: 0.5; }
+        .item.received .txt { background: #444; color: #888; }
+
+        /* Day 7 special */
+        .item:nth-child(7) { grid-column: span 3; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 20px; background: linear-gradient(90deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; }
+        .item:nth-child(7) .num { color: #8f5206; font-size: 24px; margin-bottom: 0; }
+        .item:nth-child(7) .num span { font-size: 30px; }
+        .item:nth-child(7) .img { width: 60px; height: 60px; margin: 0; }
+        .item:nth-child(7) .txt { background: #8f5206; color: #FAE59F; font-size: 14px; padding: 8px 15px; }
+        .item:nth-child(7).received { background: #333; color: #666; }
+        .item:nth-child(7).received .num { color: #666; }
+        .item:nth-child(7).received .txt { background: #444; color: #888; }
+
+        /* ================= SUB-PAGES (Rules / Record) ================= */
+        .sub-page { display: none; padding: 20px 15px; }
+        .sub-page.active { display: block; }
+
+        /* Rules Table */
+        .rule-table { width: 100%; margin-bottom: 20px; border-collapse: collapse; }
+        .rule-table th, .rule-table td { border: 1px solid #FAE59F; padding: 10px; text-align: center; font-size: 13px; }
+        .rule-table th { background: #FAE59F; color: #8f5206; font-weight: bold; }
+        .rule-table td { color: #fff; }
+        
+        .rule-notes { margin-top: 20px; }
+        .rule-notes .con { font-size: 13px; color: #a6a9ae; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px; }
+        .rule-notes .yuan { display: inline-block; width: 6px; height: 6px; background: #f3c300; border-radius: 50%; margin-top: 6px; flex: none; }
+
+        /* Record List */
+        .record-list { display: flex; flex-direction: column; gap: 10px; }
+        .record-item { background: #3F3F3F; border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .record-item .left h4 { font-size: 15px; color: #fff; margin-bottom: 4px; }
+        .record-item .left p { font-size: 12px; color: #a6a9ae; }
+        .record-item .right { font-size: 16px; font-weight: bold; color: #6bbe58; }
+        
+        .no-data { text-align: center; padding: 40px 0; color: #a6a9ae; font-size: 14px; }
+        .no-data img { width: 120px; opacity: 0.5; margin-bottom: 10px; }
+
+        /* ================= BOTTOM TAB BAR ================= */
+        .bottom-tabbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: #1A1A1A; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid #333; }
+        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6F7381; text-decoration: none; font-size: 10px; gap: 3px; width: 20%; position: relative; }
+        .tab-item svg { width: 24px; height: 24px; fill: #6F7381; }
+        .tab-item.active { color: #D9AC4F; }
+        .tab-item.active svg { fill: url(#gold-grad); }
+        .tab-item.center-tab { top: -15px; }
+        .tab-item.center-tab svg { width: 55px; height: 55px; }
+        .tab-item.center-tab span { margin-top: -5px; }
+
+        /* Toast */
+        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: #fff; padding: 12px 20px; border-radius: 8px; display: none; z-index: 9999; font-size: 14px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<!-- SVG Gradients for Tab Bar -->
+<svg style="position: absolute; width: 0; height: 0;">
+    <defs>
+        <linearGradient id="gold-grad" x1="0" y1="1" x2="0" y2="0">
+            <stop stop-color="#C4933F"></stop>
+            <stop offset="1" stop-color="#FAE59F"></stop>
+        </linearGradient>
+    </defs>
+</svg>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left" id="navBackBtn">
+        <i class="fa-light fa-angle-left fa-xl"></i>
+    </div>
+    <div class="navbar-title" id="navTitle">Rewards</div>
+    <div class="navbar-right" onclick="openService()">
+        <img src="./images/audio.webp" alt="Service">
+    </div>
+</div>
+
+<!-- ================= PAGE 1: CHECK-IN (MAIN) ================= -->
+<div id="page-checkin" class="check-box">
+    <div class="check-header">
+        <h4>7 Days Recharge Rewards</h4>
+        <div class="action-links">
+            <p onclick="switchPage('rule')">Rule</p>
+            <p onclick="switchPage('record')">Registration Profile</p>
+        </div>
+    </div>
+
+    <div class="list" id="checkinList">
+        <!-- Day 1 -->
+        <div class="item action" data-day="1" onclick="claimBonus(1, 5)">
+            <div class="num">₹ <span>5</span></div>
+            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <span class="txt">Get it now</span>
+        </div>
+        <!-- Day 2 -->
+        <div class="item action" data-day="2" onclick="claimBonus(2, 10)">
+            <div class="num">₹ <span>10</span></div>
+            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <span class="txt">Get it now</span>
+        </div>
+        <!-- Day 3 -->
+        <div class="item action" data-day="3" onclick="claimBonus(3, 15)">
+            <div class="num">₹ <span>15</span></div>
+            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <span class="txt">Get it now</span>
+        </div>
+        <!-- Day 4 -->
+        <div class="item action" data-day="4" onclick="claimBonus(4, 20)">
+            <div class="num">₹ <span>20</span></div>
+            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <span class="txt">Get it now</span>
+        </div>
+        <!-- Day 5 -->
+        <div class="item action" data-day="5" onclick="claimBonus(5, 25)">
+            <div class="num">₹ <span>25</span></div>
+            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <span class="txt">Get it now</span>
+        </div>
+        <!-- Day 6 -->
+        <div class="item action" data-day="6" onclick="claimBonus(6, 30)">
+            <div class="num">₹ <span>30</span></div>
+            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <span class="txt">Get it now</span>
+        </div>
+        <!-- Day 7 -->
+        <div class="item action" data-day="7" onclick="claimBonus(7, 35)">
+            <div class="num">₹ <span>35</span></div>
+            <img src="./images/tu.webp" class="img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1086/1086741.png'">
+            <span class="txt">Get it now</span>
+        </div>
+    </div>
+</div>
+
+<!-- ================= PAGE 2: RULES ================= -->
+<div id="page-rule" class="sub-page">
+    <table class="rule-table">
+        <thead>
+            <tr>
+                <th>Target</th>
+                <th>Accumulated amount</th>
+                <th>Attendance Rewards</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Total charge</td><td>100000</td><td>2888</td></tr>
+            <tr><td>Total charge</td><td>200000</td><td>4888</td></tr>
+            <tr><td>Total charge</td><td>500000</td><td>8888</td></tr>
+            <tr><td>Total charge</td><td>2000000</td><td>28888</td></tr>
+            <tr><td>Total charge</td><td>5000000</td><td>48888</td></tr>
+            <tr><td>Total charge</td><td>10000000</td><td>68888</td></tr>
+            <tr><td>Total charge</td><td>20000000</td><td>88888</td></tr>
+        </tbody>
+    </table>
+    <div class="rule-notes">
+        <div class="con"><span class="yuan"></span>During the operation period, please check once a day.</div>
+        <div class="con"><span class="yuan"></span>Players with no deposit history will not be able to claim the bonus.</div>
+        <div class="con"><span class="yuan"></span>From day 1 onwards, the deposit requirements must be met.</div>
+        <div class="con"><span class="yuan"></span>The platform has Final rights to explain this operation. If you have any related questions, please contact customer service.</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 3: RECORD ================= -->
+<div id="page-record" class="sub-page">
+    <div class="record-list" id="recordList">
+        <div class="no-data">
+            <img src="./images/empty-image-default.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4076/4076432.png'">
+            <p>No Registration Profile Data</p>
+        </div>
+    </div>
+</div>
+
+<!-- BOTTOM TAB BAR -->
+<div class="bottom-tabbar">
+    <a href="home.html" class="tab-item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+    </a>
+    <a href="activity.html" class="tab-item active">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span>Activity</span>
+    </a>
+    <a href="promotion.html" class="tab-item center-tab">
+        <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M112.494 16C115.5 16 118.181 17.5313 119.725 20.1104L133.863 44.1284C135.569 47.1105 135.325 57.1851 133.213 59.8448L79.8313 119.325C75.525 124.645 67.6438 125.531 62.2 121.26C61.4688 120.696 60.8188 120.051 60.25 119.325L6.78751 59.8448C4.59376 57.1851 4.35001 47.0299 6.13751 44.1284L20.275 20.1104C21.8188 17.5313 24.5813 16 27.5063 16H112.494Z" fill="#3B3B3B"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.637 31.3135C105.994 31.3135 108.106 32.4418 109.244 34.3762L120.294 52.2687C121.675 54.4448 121.431 57.2657 119.725 59.2L77.9625 106.833C74.55 110.782 68.4562 111.427 64.2312 108.284C63.6625 107.881 63.175 107.397 62.6875 106.833L21.0875 59.2C19.3813 57.1851 19.2188 54.4448 20.5188 52.2687L31.5688 34.3762C32.7063 32.5224 34.9 31.3135 37.175 31.3135H103.637ZM82.7562 68.6299L72.6 83.1374C72.1125 83.8627 70.2437 84.0239 69.5125 83.4597C69.35 83.3791 69.2687 83.218 69.1062 83.1374L58.1375 68.6299C56.5938 66.5344 53.5062 66.0508 51.3125 67.5821C49.1187 69.0329 48.6312 71.9344 50.175 74.0299L61.1437 88.5374C65.3687 93.6956 68.05 95.7911 70.8937 95.7911C74.0625 95.7911 76.7437 92.2448 79.75 88.5374L90.7187 74.0299C92.2625 71.9344 91.775 69.0329 89.5812 67.5821C87.3875 66.0508 84.3 66.5344 82.7562 68.6299Z" fill="url(#gold-grad)"></path>
+        </svg>
+        <span>Promotion</span>
+    </a>
+    <a href="wallet.html" class="tab-item">
+        <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span>Wallet</span>
+    </a>
+    <a href="account.html" class="tab-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Account</span>
+    </a>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- Firebase Logic -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb",
+  measurementId: "G-VRYNMCS0EZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+
+// Custom Toast
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 2500);
+}
+window.showToast = showToast;
+
+// Check Login & Load Data
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    await loadUserData();
+  } else {
+    window.location.href = "index.html";
+  }
+});
+
+async function loadUserData() {
+    const userRef = doc(db, "users", currentUser.uid);
+    const snap = await getDoc(userRef);
+    
+    if (snap.exists()) {
+        const data = snap.data();
+        
+        // 1. Disable claimed days
+        const claimedDays = data.claimedDays || [];
+        claimedDays.forEach(day => {
+            const el = document.querySelector(`.item[data-day="${day}"]`);
+            if(el) {
+                el.classList.remove('action');
+                el.classList.add('received');
+                el.querySelector('.txt').textContent = 'Received';
+            }
+        });
+
+        // 2. Check if claimed today
+        const lastClaim = data.lastClaimDate ? new Date(data.lastClaimDate.seconds * 1000) : null;
+        const today = new Date();
+        
+        if (lastClaim && lastClaim.toDateString() === today.toDateString()) {
+            // Already claimed today
+            document.querySelectorAll('.item.action').forEach(el => {
+                el.classList.remove('action');
+                el.classList.add('disabled');
+                el.querySelector('.txt').textContent = 'Come back tomorrow';
+            });
+        }
+    }
+}
+
+// Claim Bonus Logic
+window.claimBonus = async (day, amount) => {
+    if(!currentUser) return;
+    
+    const el = document.querySelector(`.item[data-day="${day}"]`);
+    if(!el.classList.contains('action')) return; // Prevent double click
+    
+    try {
+        showToast("Processing...");
+        const userRef = doc(db, "users", currentUser.uid);
+        
+        // Update Firebase
+        await updateDoc(userRef, {
+            balance: increment(amount),
+            claimedDays: arrayUnion(day),
+            lastClaimDate: new Date()
+        });
+        
+        // Update UI
+        el.classList.remove('action');
+        el.classList.add('received');
+        el.querySelector('.txt').textContent = 'Received';
+        
+        // Disable all other buttons for today
+        document.querySelectorAll('.item.action').forEach(item => {
+            item.classList.remove('action');
+            item.classList.add('disabled');
+            item.querySelector('.txt').textContent = 'Come back tomorrow';
+        });
+        
+        showToast(`🎉 Received ₹${amount} successfully!`);
+        
+    } catch (error) {
+        console.error(error);
+        showToast("Error claiming bonus.");
+    }
+};
+
+// Navigation (CheckIn / Rule / Record)
+window.switchPage = (page) => {
+    // Hide all
+    document.getElementById('page-checkin').style.display = 'none';
+    document.getElementById('page-rule').classList.remove('active');
+    document.getElementById('page-record').classList.remove('active');
+    
+    // Show selected
+    if(page === 'checkin') {
+        document.getElementById('page-checkin').style.display = 'block';
+        document.getElementById('navTitle').innerText = 'Rewards';
+    } else if(page === 'rule') {
+        document.getElementById('page-rule').classList.add('active');
+        document.getElementById('navTitle').innerText = 'Rule';
+    } else if(page === 'record') {
+        document.getElementById('page-record').classList.add('active');
+        document.getElementById('navTitle').innerText = 'Registration Profile';
+    }
+};
+
+// Back Button Logic
+window.handleBack = () => {
+    const ruleActive = document.getElementById('page-rule').classList.contains('active');
+    const recordActive = document.getElementById('page-record').classList.contains('active');
+    
+    if(ruleActive || recordActive) {
+        switchPage('checkin');
+    } else {
+        window.location.href = 'home.html';
+    }
+};
+document.getElementById('navBackBtn').onclick = handleBack;
+
+// Customer Service
+window.openService = () => {
+    window.location.href = 'home.html'; // Or open modal if you have it
+};
+</script>
+
+</body>
+</html>
