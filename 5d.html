@@ -77,12 +77,12 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .type-btn.odd{border-left:4px solid #40ad72;}
 .type-btn.even{border-left:4px solid #fd565c;}
 
-/* Number Grid */
+/* Number Grid with Images */
 .num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;}
-.num-btn{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;cursor:pointer;transition:transform .15s;background:#333;border:2px solid transparent;position:relative;}
+.num-btn{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s;position:relative;}
 .num-btn:active{transform:scale(0.9);}
-.num-btn span{font-size:10px;color:#a6a9ae;position:absolute;bottom:4px;font-weight:400;}
-.num-btn:hover{border-color:#d9ac4f;}
+.num-btn img{width:100%;height:100%;object-fit:contain;}
+.num-btn:hover{filter: brightness(1.2);}
 
 /* Result Popup */
 .result-popup{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
@@ -494,7 +494,6 @@ function hideDrawOverlay() {
 /* Generate Result for 5D */
 function generate5DResult(slot) {
   const seed = slot * 9301 + 49297;
-  // Generate 5 digits
   const digits = [];
   let tempSeed = seed + Math.floor(Math.random() * 1000);
   for (let i = 0; i < 5; i++) {
@@ -575,7 +574,6 @@ async function resolveUserBetsForPeriod(periodId, resultData) {
       const bet = betDoc.data();
       if (bet.status !== 'pending') return;
       
-      // Logic to check win for 5D
       let isWin = false;
       let targetDigit = null;
       let targetTotal = resultData.total;
@@ -586,14 +584,12 @@ async function resolveUserBetsForPeriod(periodId, resultData) {
       else if (bet.tab === 'D') targetDigit = resultData.digits[3];
       else if (bet.tab === 'E') targetDigit = resultData.digits[4];
 
-      // Check by Choice
       if (bet.tab === 'SUM') {
         if (bet.choice === 'big' && targetTotal >= 23) isWin = true;
         if (bet.choice === 'small' && targetTotal <= 22) isWin = true;
         if (bet.choice === 'odd' && targetTotal % 2 !== 0) isWin = true;
         if (bet.choice === 'even' && targetTotal % 2 === 0) isWin = true;
       } else {
-        // Individual A, B, C, D, E
         if (bet.choice === 'big' && targetDigit >= 5) isWin = true;
         if (bet.choice === 'small' && targetDigit <= 4) isWin = true;
         if (bet.choice === 'odd' && targetDigit % 2 !== 0) isWin = true;
@@ -660,8 +656,17 @@ onAuthStateChanged(auth, async (user) => {
 function initGame() {
   const grid = document.getElementById('numGrid');
   let html = '';
+  
+  // 🔥 Number Images added here
+  const numImages = [
+    'n0-30bd92d1.png', 'n1-dfccbff5.png', 'n2-c2913607.png', 'n3-f92c313f.png', 'n4-cb84933b.png',
+    'n5-49d0e9c5.png', 'n6-a56e0b9a.png', 'n7-5961a17f.png', 'n8-d4d951a4.png', 'n9-a20f6f42.png'
+  ];
+
   for (let i = 0; i <= 9; i++) {
-    html += `<div class="num-btn" onclick="openBetModal('${i}')"><span>${i}</span></div>`;
+    html += `<div class="num-btn" onclick="openBetModal('${i}')">
+               <img src="./images/${numImages[i]}" alt="${i}">
+             </div>`;
   }
   grid.innerHTML = html;
   runTimer();
@@ -845,7 +850,6 @@ async function loadHistory() {
       let sizeText = d.total >= 23 ? 'Big' : 'Small';
       let sizeColor = d.total >= 23 ? '#f5a623' : '#4a90e2';
       
-      // Update Top Slots on latest result
       if (doc.id === snap.docs[0].id) {
         document.getElementById('slotA').textContent = d.digits[0];
         document.getElementById('slotB').textContent = d.digits[1];
