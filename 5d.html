@@ -327,7 +327,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, orderBy, limit, getDocs,
+  addDoc, serverTimestamp, query, limit, getDocs,
   where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -507,7 +507,7 @@ function generate5DResult(slot) {
 /* Backfill */
 async function backfillMissingPeriods() {
   try {
-    const latestQ = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(1));
+    const latestQ = query(collection(db, RESULT_COLLECTION), limit(1));
     const latestSnap = await getDocs(latestQ);
     const currentSlot = getSlotFromTime(Date.now());
 
@@ -515,8 +515,11 @@ async function backfillMissingPeriods() {
     if (latestSnap.empty) {
       startSlot = currentSlot - 10; 
     } else {
-      const lastPeriod = latestSnap.docs[0].data().period;
-      const lastSlot = getSlotFromPeriodId(lastPeriod);
+      let lastSlot = null;
+      latestSnap.forEach(doc => {
+        const p = doc.data().period;
+        if(p) lastSlot = getSlotFromPeriodId(p);
+      });
       startSlot = (lastSlot === null) ? (currentSlot - 10) : (lastSlot + 1);
     }
     if (startSlot >= currentSlot) return;
@@ -834,31 +837,36 @@ window.switchHistoryTab = function(tab, el) {
   }
 };
 
-/* LOAD GAME HISTORY */
+/* LOAD GAME HISTORY (FIXED) */
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(10));
+    const q = query(collection(db, RESULT_COLLECTION), limit(50));
     const snap = await getDocs(q);
     if (snap.empty) {
       listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">No data</div>`;
       return;
     }
+    let results = [];
+    snap.forEach(doc => results.push({ id: doc.id, ...doc.data() }));
+    results.sort((a,b) => (b.period || '').localeCompare(a.period || ''));
+    
+    // Populate latest slots
+    if (results.length > 0) {
+      const d = results[0];
+      document.getElementById('slotA').textContent = d.digits[0];
+      document.getElementById('slotB').textContent = d.digits[1];
+      document.getElementById('slotC').textContent = d.digits[2];
+      document.getElementById('slotD').textContent = d.digits[3];
+      document.getElementById('slotE').textContent = d.digits[4];
+      document.getElementById('slotTotal').textContent = d.total;
+    }
+    
+    results = results.slice(0, 10);
     let html = '';
-    snap.forEach((doc) => {
-      const d = doc.data();
+    results.forEach((d) => {
       let sizeText = d.total >= 23 ? 'Big' : 'Small';
       let sizeColor = d.total >= 23 ? '#f5a623' : '#4a90e2';
-      
-      if (doc.id === snap.docs[0].id) {
-        document.getElementById('slotA').textContent = d.digits[0];
-        document.getElementById('slotB').textContent = d.digits[1];
-        document.getElementById('slotC').textContent = d.digits[2];
-        document.getElementById('slotD').textContent = d.digits[3];
-        document.getElementById('slotE').textContent = d.digits[4];
-        document.getElementById('slotTotal').textContent = d.total;
-      }
-
       html += `
         <div class="ht-row">
           <div class="ht-col">${d.period}</div>
@@ -873,48 +881,26 @@ async function loadHistory() {
   }
 }
 
-/* LOAD MY HISTORY */
 async function loadMyHistory() {
   if (!currentUser) return;
   const listEl = document.getElementById('myHistoryList');
-  
   try {
-    const q = query(
-      collection(db, BET_COLLECTION), 
-      where('userId', '==', currentUser.uid), 
-      limit(30) 
-    );
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(30));
     const snap = await getDocs(q);
-    
     if (snap.empty) {
       listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">No bets found</div>`;
       return;
     }
-    
     let betsData = [];
-    snap.forEach((doc) => {
-      betsData.push({ id: doc.id, ...doc.data() });
-    });
-
-    betsData.sort((a, b) => {
-      const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
-      const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
-      return timeB - timeA;
-    });
-
+    snap.forEach((doc) => betsData.push({ id: doc.id, ...doc.data() }));
+    betsData.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
     betsData = betsData.slice(0, 20);
-    
     let html = '';
     betsData.forEach((d) => {
       let resHtml = '';
-      if (d.status === 'win') {
-        resHtml = `<span style="color:#40ad72;font-weight:700;">+₹${(d.winAmount||0).toFixed(2)}</span>`;
-      } else if (d.status === 'lose') {
-        resHtml = `<span style="color:#fd565c;font-weight:700;">-₹${d.amount}</span>`;
-      } else {
-        resHtml = `<span style="color:#f5a623;font-weight:700;">Pending</span>`;
-      }
-
+      if (d.status === 'win') resHtml = `<span style="color:#40ad72;font-weight:700;">+₹${(d.winAmount||0).toFixed(2)}</span>`;
+      else if (d.status === 'lose') resHtml = `<span style="color:#fd565c;font-weight:700;">-₹${d.amount}</span>`;
+      else resHtml = `<span style="color:#f5a623;font-weight:700;">Pending</span>`;
       html += `
         <div class="ht-row">
           <div class="ht-col" style="font-size:11px;">${d.period.slice(-6)}</div>

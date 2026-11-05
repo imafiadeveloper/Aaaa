@@ -279,7 +279,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 </div>
 
 <div class="history-container">
-  <!-- Game History -->
   <div id="gameHistoryView" class="history-table">
     <div class="ht-head">
       <div class="ht-col">Period</div>
@@ -290,17 +289,13 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div id="historyList"></div>
   </div>
   
-  <!-- Chart View -->
   <div id="chartView" class="history-table" style="display:none;">
     <div class="ht-head">
       <div class="ht-col">Recent 30 Results Trend</div>
     </div>
-    <div class="chart-grid" id="chartGrid">
-      <!-- Chart populated here -->
-    </div>
+    <div class="chart-grid" id="chartGrid"></div>
   </div>
   
-  <!-- My History View -->
   <div id="myHistoryView" class="history-table" style="display:none;">
     <div class="ht-head">
       <div class="ht-col">Period</div>
@@ -308,9 +303,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="ht-col">Bet</div>
       <div class="ht-col">Result</div>
     </div>
-    <div id="myHistoryList">
-      <!-- My bets populated here -->
-    </div>
+    <div id="myHistoryList"></div>
   </div>
 </div>
 
@@ -362,9 +355,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="result-popup" id="resultPopup">
   <div class="res-box" id="resBox">
     <div class="res-header">
-      <div class="res-icon-wrap" id="resIconWrap">
-        <!-- icon injected by JS -->
-      </div>
+      <div class="res-icon-wrap" id="resIconWrap"></div>
       <div class="res-title" id="resTitle">You Won!</div>
       <div class="res-subtitle" id="resSubtitle">Congratulations 🎉</div>
     </div>
@@ -406,7 +397,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, orderBy, limit, getDocs,
+  addDoc, serverTimestamp, query, limit, getDocs,
   where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -589,16 +580,19 @@ function hideDrawOverlay() {
 /* Backfill */
 async function backfillMissingPeriods() {
   try {
-    const latestQ = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(1));
+    const latestQ = query(collection(db, RESULT_COLLECTION), limit(1));
     const latestSnap = await getDocs(latestQ);
     const currentSlot = getSlotFromTime(Date.now());
 
     let startSlot;
     if (latestSnap.empty) {
-      startSlot = currentSlot - 10; // Seed last 10 for 10min
+      startSlot = currentSlot - 10;
     } else {
-      const lastPeriod = latestSnap.docs[0].data().period;
-      const lastSlot = getSlotFromPeriodId(lastPeriod);
+      let lastSlot = null;
+      latestSnap.forEach(doc => {
+        const p = doc.data().period;
+        if(p) lastSlot = getSlotFromPeriodId(p);
+      });
       startSlot = (lastSlot === null) ? (currentSlot - 10) : (lastSlot + 1);
     }
     if (startSlot >= currentSlot) return;
@@ -774,7 +768,6 @@ function runTimer() {
 
     const betArea = document.getElementById('betArea');
 
-    // Close betting only on last 5 seconds
     if (secLeft <= 5) {
       isBettingClosed = true;
       betArea.classList.add('disabled');
@@ -912,19 +905,23 @@ window.switchHistoryTab = function(tab, el) {
   }
 };
 
-/* LOAD GAME HISTORY */
+/* LOAD GAME HISTORY (FIXED) */
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(10));
+    const q = query(collection(db, RESULT_COLLECTION), limit(50));
     const snap = await getDocs(q);
     if (snap.empty) {
       listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">No data</div>`;
       return;
     }
+    let results = [];
+    snap.forEach(doc => results.push(doc.data()));
+    results.sort((a,b) => (b.period || '').localeCompare(a.period || ''));
+    results = results.slice(0, 10);
+
     let html = '';
-    snap.forEach((doc) => {
-      const d = doc.data();
+    results.forEach((d) => {
       let colorHtml = '';
       if (d.color === 'violet') colorHtml = `<span class="res-num" style="background:#b659fe">${d.number}</span>`;
       else if (d.color === 'green') colorHtml = `<span class="res-num" style="background:#40ad72">${d.number}</span>`;
@@ -939,41 +936,36 @@ async function loadHistory() {
     });
     listEl.innerHTML = html;
   } catch (e) {
-    listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">Failed to load</div>`;
+    console.error(e);
+    listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">Failed to load history</div>`;
   }
 }
 
-/* LOAD CHART (Big/Small & Color) */
+/* LOAD CHART (FIXED) */
 async function loadChart() {
   const chartGrid = document.getElementById('chartGrid');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(30));
+    const q = query(collection(db, RESULT_COLLECTION), limit(30));
     const snap = await getDocs(q);
-    
     if (snap.empty) {
       chartGrid.innerHTML = `<div style="grid-column:span 10;text-align:center;color:#666;padding:20px;">No data</div>`;
       return;
     }
-
-    let html = '';
     let resultsArr = [];
     snap.forEach(doc => resultsArr.push(doc.data()));
-    
-    resultsArr.forEach((d, i) => {
-      let cClass = 'c-small';
-      let sizeTxt = 'S';
+    resultsArr.sort((a,b) => (b.period || '').localeCompare(a.period || ''));
+
+    let html = '';
+    resultsArr.forEach((d) => {
+      let cClass = 'c-small'; let sizeTxt = 'S';
       if (d.size === 'big') { cClass = 'c-big'; sizeTxt = 'B'; }
-      
       let colClass = d.color === 'green' ? 'c-green' : (d.color === 'red' ? 'c-red' : 'c-violet');
-      
       html += `
         <div class="chart-item">
           <div class="chart-circle ${cClass}">${sizeTxt}</div>
           <div class="chart-circle ${colClass}" style="width:20px;height:20px;font-size:10px;margin:2px auto 0;">${d.number}</div>
-        </div>
-      `;
+        </div>`;
     });
-    
     chartGrid.innerHTML = html;
   } catch (e) {
     console.error(e);
@@ -981,48 +973,28 @@ async function loadChart() {
   }
 }
 
-/* LOAD MY HISTORY */
+/* LOAD MY HISTORY (FIXED) */
 async function loadMyHistory() {
   if (!currentUser) return;
   const listEl = document.getElementById('myHistoryList');
-  
   try {
-    const q = query(
-      collection(db, BET_COLLECTION), 
-      where('userId', '==', currentUser.uid), 
-      limit(30) 
-    );
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(30));
     const snap = await getDocs(q);
-    
     if (snap.empty) {
       listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">No bets found</div>`;
       return;
     }
-    
     let betsData = [];
-    snap.forEach((doc) => {
-      betsData.push({ id: doc.id, ...doc.data() });
-    });
-
-    betsData.sort((a, b) => {
-      const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
-      const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
-      return timeB - timeA;
-    });
-
+    snap.forEach((doc) => betsData.push({ id: doc.id, ...doc.data() }));
+    betsData.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
     betsData = betsData.slice(0, 20);
     
     let html = '';
     betsData.forEach((d) => {
       let resHtml = '';
-      if (d.status === 'win') {
-        resHtml = `<span style="color:#40ad72;font-weight:700;">+₹${(d.winAmount||0).toFixed(2)}</span>`;
-      } else if (d.status === 'lose') {
-        resHtml = `<span style="color:#fd565c;font-weight:700;">-₹${d.amount}</span>`;
-      } else {
-        resHtml = `<span style="color:#f5a623;font-weight:700;">Pending</span>`;
-      }
-
+      if (d.status === 'win') resHtml = `<span style="color:#40ad72;font-weight:700;">+₹${(d.winAmount||0).toFixed(2)}</span>`;
+      else if (d.status === 'lose') resHtml = `<span style="color:#fd565c;font-weight:700;">-₹${d.amount}</span>`;
+      else resHtml = `<span style="color:#f5a623;font-weight:700;">Pending</span>`;
       html += `
         <div class="ht-row">
           <div class="ht-col" style="font-size:11px;">${d.period.slice(-6)}</div>
