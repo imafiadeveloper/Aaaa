@@ -3,57 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#141416">
 <title>Withdrawal History - BDG LOTTERY7</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#1A1A1A;color:#fff;min-height:100vh;}
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
-.nav-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
-.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
-.nav-title{font-size:16px;font-weight:600;}
-.tabs-wrap{display:flex;overflow-x:auto;padding:10px 16px;gap:10px;white-space:nowrap;}
+body{background:#141416;color:#fff;min-height:100vh;padding-bottom:30px;}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);border-bottom:1px solid rgba(255,255,255,0.06);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.nav-title{font-size:16px;font-weight:700;}
+
+.tabs-wrap{display:flex;overflow-x:auto;padding:12px 16px;gap:8px;white-space:nowrap;}
 .tabs-wrap::-webkit-scrollbar{display:none;}
-.tab-item{background:#262626;color:#a6a9ae;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;}
-.tab-item.active{background:linear-gradient(90deg,#FAE59F,#C4933F);color:#3a2a10;font-weight:700;}
-.filter-row{display:flex;gap:10px;padding:0 16px 16px;}
-.filter-box{flex:1;background:#262626;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#a6a9ae;cursor:pointer;}
-.filter-box svg{width:16px;height:16px;stroke:#a6a9ae;fill:none;stroke-width:2;}
+.tab-item{background:#202024;color:#8f929b;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;}
+.tab-item.active{background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;}
+
 .tx-list{padding:0 16px;}
-.tx-card{background:#262626;border-radius:12px;padding:16px;margin-bottom:12px;position:relative;}
+.tx-card{background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px;margin-bottom:10px;}
 .tx-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .tx-row:last-child{margin-bottom:0;}
-.tx-label{font-size:12px;color:#a6a9ae;}
-.tx-val{font-size:14px;font-weight:500;}
-.tx-amt{font-size:16px;font-weight:700;color:#FAE59F;}
-.tx-status{padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600;}
+.tx-label{font-size:12px;color:#8f929b;}
+.tx-val{font-size:13px;font-weight:600;}
+.tx-amt{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:800;color:#ff4d4f;}
+.tx-status{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;}
 .st-pending{background:rgba(250,171,0,0.15);color:#ffab00;}
-.st-success{background:rgba(107,190,88,0.15);color:#6abe57;}
-.st-failed{background:rgba(242,65,59,0.15);color:#f2413b;}
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 0;color:#666;}
-.empty-state svg{width:100px;height:100px;margin-bottom:16px;opacity:0.5;}
-.loader{text-align:center;padding:20px;font-size:14px;color:#a6a9ae;}
+.st-success{background:rgba(0,230,118,0.15);color:#00e676;}
+.st-failed{background:rgba(255,77,79,0.15);color:#ff4d4f;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 0;color:#6b6e78;}
+.empty-state svg{width:60px;height:60px;margin-bottom:12px;stroke:#3e3e44;fill:none;stroke-width:1.5;}
+.loader{text-align:center;padding:30px;font-size:13px;color:#8f929b;}
 </style>
 </head>
 <body>
 <div class="navbar">
   <div class="nav-left" onclick="location.href='wallet.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
-  <div class="nav-title">Withdrawal history</div>
-  <div style="width:40px;"></div>
+  <div class="nav-title">Withdrawal History</div>
+  <div style="width:36px;"></div>
 </div>
 
 <div class="tabs-wrap">
-  <div class="tab-item active">
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All
-  </div>
-  <div class="tab-item">ARPay</div>
-  <div class="tab-item">BANK CARD</div>
-  <div class="tab-item">UPI</div>
-</div>
-
-<div class="filter-row">
-  <div class="filter-box">All <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-  <div class="filter-box">Choose a date <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+  <div class="tab-item active">All Withdrawals</div>
+  <div class="tab-item">UPI Payout</div>
 </div>
 
 <div class="tx-list" id="txList">
@@ -63,9 +54,16 @@ body{background:#1A1A1A;color:#fff;min-height:100vh;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -78,14 +76,14 @@ onAuthStateChanged(auth, async (user) => {
 async function loadHistory(uid) {
   const listEl = document.getElementById('txList');
   try {
-    const q = query(collection(db, 'withdrawals'), where('userId', '==', uid));
+    const q = query(collection(db, 'withdrawals'), where('userId', '==', uid), limit(40));
     const snap = await getDocs(q);
     
     if(snap.empty) {
       listEl.innerHTML = `
         <div class="empty-state">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-          <span>No data</span>
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>No withdrawal records found</span>
         </div>`;
       return;
     }
@@ -96,35 +94,36 @@ async function loadHistory(uid) {
     
     let html = '';
     arr.forEach(data => {
-      let stClass = 'st-pending', stText = 'Pending';
-      if(data.status === 'success' || data.status === 'completed') { stClass = 'st-success'; stText = 'Success'; }
-      if(data.status === 'failed' || data.status === 'rejected') { stClass = 'st-failed'; stText = 'Failed'; }
+      let stClass = 'st-pending', stText = 'Pending Review';
+      if(data.status === 'success' || data.status === 'completed') { stClass = 'st-success'; stText = 'Transferred'; }
+      if(data.status === 'failed' || data.status === 'rejected') { stClass = 'st-failed'; stText = 'Rejected'; }
       
       let dateStr = '--';
       if(data.createdAt) {
         const d = data.createdAt.toDate();
-        dateStr = `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+        const pad = (x) => String(x).padStart(2, '0');
+        dateStr = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
       }
 
       html += `
         <div class="tx-card">
           <div class="tx-row">
             <span class="tx-label">Order ID</span>
-            <span class="tx-val">${data.orderId || 'N/A'}</span>
+            <span class="tx-val" style="font-family:'Orbitron',sans-serif;font-size:11px;">${data.orderId || 'N/A'}</span>
           </div>
           <div class="tx-row">
-            <span class="tx-label">Amount</span>
-            <span class="tx-amt">₹${Number(data.amount).toFixed(2)}</span>
+            <span class="tx-label">Payout Amount</span>
+            <span class="tx-amt">-₹${Number(data.amount).toFixed(2)}</span>
           </div>
           <div class="tx-row">
-            <span class="tx-label">UPI / Bank</span>
-            <span class="tx-val">${data.upiId || data.bankDetails || 'N/A'}</span>
+            <span class="tx-label">Target UPI</span>
+            <span class="tx-val" style="color:#FAE59F;">${data.upiId || 'N/A'}</span>
           </div>
           <div class="tx-row">
             <span class="tx-label">Time</span>
-            <span class="tx-val">${dateStr}</span>
+            <span class="tx-val" style="color:#8f929b;">${dateStr}</span>
           </div>
-          <div class="tx-row" style="margin-top:12px; padding-top:12px; border-top:1px solid #333;">
+          <div class="tx-row" style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
             <span class="tx-label">Status</span>
             <span class="tx-status ${stClass}">${stText}</span>
           </div>
@@ -132,7 +131,7 @@ async function loadHistory(uid) {
     });
     listEl.innerHTML = html;
   } catch(e) {
-    listEl.innerHTML = `<div class="empty-state">Failed to load</div>`;
+    listEl.innerHTML = `<div class="empty-state">Failed to load data</div>`;
   }
 }
 </script>

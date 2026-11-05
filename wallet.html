@@ -232,7 +232,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
   </div>
   <div class="navbar-title">Wallet</div>
-  <div class="navbar-right" id="supportBtn" title="Support">
+  <div class="navbar-right" id="supportBtn" onclick="toast('Connecting Support...')">
     <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
   </div>
 </div>
@@ -270,8 +270,8 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
     </div>
   </div>
 
-  <!-- MAIN WALLET TRANSFER BUTTON -->
-  <button class="transfer-btn" onclick="location.href='transfer.html'">
+  <!-- MAIN WALLET TRANSFER BUTTON (Directly redirects to withdraw.html) -->
+  <button class="transfer-btn" onclick="location.href='withdraw.html'">
     <svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
     Main Wallet Transfer
   </button>
@@ -374,12 +374,12 @@ const profileImages = [
 
 const toastEl = document.getElementById('toast');
 let toastTimer = null;
-function toast(msg){
+window.toast = function(msg){
   toastEl.textContent = msg;
   toastEl.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2200);
-}
+};
 
 function fmt(n){
   const v = Number(n)||0;
@@ -432,7 +432,6 @@ async function loadUserData(uid){
     document.getElementById('totalDeposit').textContent = '₹' + fmt(dep);
     document.getElementById('totalWithdraw').textContent = '₹' + fmt(wd);
 
-    // Profile Avatar
     const charSum = uid.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
     const imgIndex = charSum % profileImages.length;
     const userAvatar = document.getElementById('userAvatar');
@@ -441,7 +440,6 @@ async function loadUserData(uid){
 
   }catch(err){
     console.error('loadUserData error:',err);
-    toast('Failed to load profile');
   }
 }
 
@@ -463,7 +461,7 @@ document.getElementById('refreshBtn').addEventListener('click', async (e)=>{
   }
 });
 
-// Load Transactions (Safe, No-Index Query)
+// Load Transactions
 async function loadTransactions(uid){
   const listEl = document.getElementById('txList');
   try{
@@ -538,11 +536,11 @@ async function loadTransactions(uid){
     listEl.innerHTML = html;
 
   }catch(err){
-    console.error('loadTransactions error:', err);
+    console.warn('loadTransactions notice:', err);
     listEl.innerHTML = `
       <div class="empty-state">
         <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
-        <p>No activity found</p>
+        <p>No activity records</p>
       </div>`;
   }
 }

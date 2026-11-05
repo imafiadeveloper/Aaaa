@@ -1,327 +1,152 @@
 <!DOCTYPE html>
-<html lang="en" translate="no">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>BDG LOTTERY7 — Rewards</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+    <title>BDG LOTTERY7 — Activity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        /* ================= GLOBAL ================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Roboto', sans-serif; }
-        html, body { height: 100%; background-color: #090909; color: #fff; padding-bottom: 70px; -webkit-tap-highlight-color: transparent; }
-        button { cursor: pointer; border: none; outline: none; background: transparent; }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+        body{background-color:#141416;color:#fff;padding-bottom:80px;-webkit-tap-highlight-color:transparent;}
+        button{cursor:pointer;border:none;outline:none;background:transparent;}
 
-        /* ================= NAVBAR ================= */
-        .navbar { position: sticky; top: 0; z-index: 100; background: #1A1A1A; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; height: 60px; border-bottom: 1px solid #333; }
-        .navbar-left { width: 40px; cursor: pointer; color: #fff; }
-        .navbar-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
-        .navbar-right { width: 40px; text-align: right; cursor: pointer; display: flex; justify-content: flex-end; align-items: center; }
-        /* Service Icon Fix */
-        .navbar-right svg { width: 24px; height: 24px; fill: none; stroke: #fff; stroke-width: 2; }
+        .navbar{position:sticky;top:0;z-index:100;background:rgba(20,20,22,0.95);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:54px;border-bottom:1px solid rgba(255,255,255,0.06);}
+        .navbar-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+        .navbar-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+        .navbar-title{font-size:16px;font-weight:700;}
+        .navbar-right svg{width:22px;height:22px;fill:none;stroke:#FAE59F;stroke-width:2;}
 
-        /* ================= CHECK-IN UI ================= */
-        .check-box { padding: 20px 15px; }
-        .check-header { text-align: center; margin-bottom: 25px; }
-        .check-header h4 { font-size: 22px; font-weight: 700; margin-bottom: 12px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .check-box{padding:16px;}
+        .check-header{text-align:center;margin-bottom:20px;}
+        .check-header h4{font-size:20px;font-weight:800;margin-bottom:10px;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
         
-        .action-links { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
-        .action-links p { font-size: 13px; color: #a6a9ae; cursor: pointer; border-bottom: 1px solid #a6a9ae; padding-bottom: 2px; transition: 0.2s; }
-        .action-links p:active { color: #FAE59F; border-color: #FAE59F; }
+        .action-links{display:flex;justify-content:center;gap:20px;}
+        .action-links p{font-size:13px;color:#8f929b;cursor:pointer;font-weight:600;}
+        .action-links p.active{color:#FAE59F;border-bottom:2px solid #FAE59F;padding-bottom:2px;}
 
-        /* 7 Days Grid */
-        .list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        
-        .item { 
-            background: #2A2A2A; 
-            border: 1px solid #3F3F3F; 
-            border-radius: 12px; 
-            padding: 15px 10px; 
-            text-align: center; 
-            position: relative;
-            transition: 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        .list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+        .item{ 
+            background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px 10px;
+            text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;
+            box-shadow:0 6px 16px rgba(0,0,0,0.3);
         }
-        .item.action { cursor: pointer; }
-        .item.action:active { transform: scale(0.95); border-color: #FAE59F; }
-        .item.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        .item.action{cursor:pointer;border-color:rgba(250,229,159,0.3);}
+        .item.action:active{transform:scale(0.96);border-color:#FAE59F;}
+        .item.disabled{opacity:0.4;pointer-events:none;}
         
-        .item .num { font-size: 22px; font-weight: 800; color: #FAE59F; margin-bottom: 8px; display: flex; align-items: center; justify-content: center;}
+        .item .num{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:800;color:#FAE59F;margin-bottom:6px;}
+        .item .gift-icon{width:42px;height:42px;margin-bottom:8px;}
+        .item .txt{font-size:11px;color:#291a03;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);padding:5px 10px;border-radius:20px;font-weight:800;display:inline-block;width:100%;}
         
-        /* SVG Gift Icon */
-        .item .gift-icon { width: 45px; height: 45px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); }
-        
-        .item .txt { font-size: 12px; color: #8f5206; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); padding: 6px 12px; border-radius: 20px; font-weight: 700; display: inline-block; width: 100%; }
-        
-        /* If received */
-        .item.received { background: #1A1A1A; border-color: #2A2A2A; }
-        .item.received .num { color: #666; }
-        .item.received .gift-icon { filter: grayscale(100%); opacity: 0.5; }
-        .item.received .txt { background: #333; color: #888; }
+        .item.received{background:#18181a;border-color:rgba(255,255,255,0.03);}
+        .item.received .num{color:#555;}
+        .item.received .gift-icon{filter:grayscale(100%);opacity:0.4;}
+        .item.received .txt{background:#2a2a2e;color:#777;}
 
-        /* Day 7 Special */
-        .item:nth-child(7) { 
-            grid-column: span 3; 
-            flex-direction: row; 
-            justify-content: space-between; 
-            padding: 20px; 
-            background: linear-gradient(135deg, #C4933F 0%, #FAE59F 100%); 
-            border: none;
-            box-shadow: 0 6px 15px rgba(196, 147, 63, 0.4);
+        .item:nth-child(7){ 
+            grid-column:span 3;flex-direction:row;justify-content:space-between;padding:16px 20px;
+            background:linear-gradient(135deg,#C48E2F 0%,#FFE793 100%);border:none;
         }
-        .item:nth-child(7) .num { color: #8f5206; font-size: 26px; margin-bottom: 0; }
-        .item:nth-child(7) .gift-icon { width: 60px; height: 60px; margin: 0 10px; }
-        .item:nth-child(7) .txt { background: #8f5206; color: #FAE59F; font-size: 14px; width: auto; padding: 8px 18px; }
-        
-        .item:nth-child(7).received { background: #1A1A1A; box-shadow: none; }
-        .item:nth-child(7).received .num { color: #666; }
-        .item:nth-child(7).received .txt { background: #333; color: #888; }
+        .item:nth-child(7) .num{color:#291a03;font-size:24px;margin-bottom:0;}
+        .item:nth-child(7) .gift-icon{width:50px;height:50px;margin:0;}
+        .item:nth-child(7) .txt{background:#291a03;color:#FAE59F;font-size:13px;width:auto;padding:8px 18px;}
+        .item:nth-child(7).received{background:#18181a;}
+        .item:nth-child(7).received .num{color:#555;}
+        .item:nth-child(7).received .txt{background:#2a2a2e;color:#777;}
 
-        /* ================= SUB-PAGES (Rules / Record) ================= */
-        .sub-page { display: none; padding: 20px 15px; }
-        .sub-page.active { display: block; }
+        .sub-page{display:none;padding:16px;}
+        .sub-page.active{display:block;}
 
-        /* Rules Table */
-        .rule-table { width: 100%; margin-bottom: 20px; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
-        .rule-table th, .rule-table td { border: 1px solid #333; padding: 12px 8px; text-align: center; font-size: 13px; }
-        .rule-table th { background: #2A2A2A; color: #FAE59F; font-weight: bold; }
-        .rule-table td { color: #fff; background: #1A1A1A; }
-        
-        .rule-notes { margin-top: 20px; }
-        .rule-notes .con { font-size: 13px; color: #a6a9ae; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
-        .rule-notes .yuan { display: inline-block; width: 6px; height: 6px; background: #FAE59F; border-radius: 50%; margin-top: 6px; flex: none; }
+        .rule-card{background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;color:#8f929b;font-size:12px;line-height:1.7;}
+        .rule-card strong{color:#FAE59F;}
 
-        /* Record List */
-        .record-list { display: flex; flex-direction: column; gap: 10px; }
-        .record-item { background: #2A2A2A; border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .record-item .left h4 { font-size: 15px; color: #fff; margin-bottom: 4px; }
-        .record-item .left p { font-size: 12px; color: #a6a9ae; }
-        .record-item .right { font-size: 16px; font-weight: bold; color: #6bbe58; }
-        
-        .no-data { text-align: center; padding: 40px 0; color: #a6a9ae; font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px;}
-        .no-data i { font-size: 50px; color: #333; }
+        .record-item{background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+        .record-item h4{font-size:13px;color:#fff;margin-bottom:2px;}
+        .record-item p{font-size:11px;color:#777;}
+        .record-item .amt{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:800;color:#00e676;}
 
-        /* ================= BOTTOM TAB BAR ================= */
-        .bottom-tabbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: #1A1A1A; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid #333; }
-        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6F7381; text-decoration: none; font-size: 10px; gap: 3px; width: 20%; position: relative; }
-        .tab-item svg { width: 24px; height: 24px; fill: #6F7381; }
-        .tab-item.active { color: #D9AC4F; }
-        .tab-item.active svg { fill: url(#gold-grad); }
-        .tab-item.center-tab { top: -15px; }
-        .tab-item.center-tab svg { width: 55px; height: 55px; }
-        .tab-item.center-tab span { margin-top: -5px; }
-
-        /* Toast */
-        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); color: #fff; padding: 14px 24px; border-radius: 10px; display: none; z-index: 9999; font-size: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #333; }
+        .toast{position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(20,20,22,0.96);border:1px solid rgba(250,229,159,0.3);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
     </style>
 </head>
 <body>
 
-<!-- SVG Gradients for Tab Bar -->
-<svg style="position: absolute; width: 0; height: 0;">
-    <defs>
-        <linearGradient id="gold-grad" x1="0" y1="1" x2="0" y2="0">
-            <stop stop-color="#C4933F"></stop>
-            <stop offset="1" stop-color="#FAE59F"></stop>
-        </linearGradient>
-    </defs>
-</svg>
-
-<!-- NAVBAR -->
 <div class="navbar">
-    <div class="navbar-left" id="navBackBtn">
-        <i class="fa-solid fa-chevron-left"></i>
+    <div class="navbar-left" onclick="handleBack()">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
     </div>
     <div class="navbar-title" id="navTitle">Rewards</div>
-    <div class="navbar-right" onclick="openService()">
-        <!-- SVG Service Icon Fix -->
+    <div class="navbar-right" onclick="location.href='home.html'">
         <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
     </div>
 </div>
 
-<!-- ================= PAGE 1: CHECK-IN (MAIN) ================= -->
 <div id="page-checkin" class="check-box">
     <div class="check-header">
-        <h4>7 Days Recharge Rewards</h4>
+        <h4>7 Days Attendance Bonus</h4>
         <div class="action-links">
-            <p onclick="switchPage('rule')">Rule</p>
-            <p onclick="switchPage('record')">Registration Profile</p>
+            <p onclick="switchPage('rule')">Rules</p>
+            <p onclick="switchPage('record')">My Records</p>
         </div>
     </div>
 
     <div class="list" id="checkinList">
-        <!-- Day 1 -->
         <div class="item action" data-day="1" onclick="claimBonus(1, 5)">
             <div class="num">₹5</div>
-            <!-- Premium SVG Gift Box -->
-            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
-                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
-                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
-                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
-                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
-                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
-            </svg>
-            <span class="txt">Get it now</span>
+            <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            <span class="txt">Claim</span>
         </div>
-        <!-- Day 2 -->
         <div class="item action" data-day="2" onclick="claimBonus(2, 10)">
             <div class="num">₹10</div>
-            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
-                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
-                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
-                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
-                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
-                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
-            </svg>
-            <span class="txt">Get it now</span>
+            <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            <span class="txt">Claim</span>
         </div>
-        <!-- Day 3 -->
         <div class="item action" data-day="3" onclick="claimBonus(3, 15)">
             <div class="num">₹15</div>
-            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
-                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
-                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
-                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
-                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
-                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
-            </svg>
-            <span class="txt">Get it now</span>
+            <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            <span class="txt">Claim</span>
         </div>
-        <!-- Day 4 -->
         <div class="item action" data-day="4" onclick="claimBonus(4, 20)">
             <div class="num">₹20</div>
-            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
-                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
-                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
-                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
-                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
-                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
-            </svg>
-            <span class="txt">Get it now</span>
+            <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            <span class="txt">Claim</span>
         </div>
-        <!-- Day 5 -->
         <div class="item action" data-day="5" onclick="claimBonus(5, 25)">
             <div class="num">₹25</div>
-            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
-                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
-                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
-                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
-                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
-                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
-            </svg>
-            <span class="txt">Get it now</span>
+            <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            <span class="txt">Claim</span>
         </div>
-        <!-- Day 6 -->
         <div class="item action" data-day="6" onclick="claimBonus(6, 30)">
             <div class="num">₹30</div>
-            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M32 18V56" stroke="#F3C300" stroke-width="4" stroke-linecap="round"/>
-                <rect x="8" y="18" width="48" height="38" rx="4" fill="#E85D04"/>
-                <rect x="4" y="12" width="56" height="12" rx="4" fill="#FAA307"/>
-                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#F3C300"/>
-                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#F3C300"/>
-                <rect x="28" y="12" width="8" height="44" fill="#F3C300"/>
-            </svg>
-            <span class="txt">Get it now</span>
+            <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            <span class="txt">Claim</span>
         </div>
-        <!-- Day 7 -->
         <div class="item action" data-day="7" onclick="claimBonus(7, 35)">
             <div class="num">₹35</div>
-            <svg class="gift-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M32 18V56" stroke="#FFF" stroke-width="4" stroke-linecap="round"/>
-                <rect x="8" y="18" width="48" height="38" rx="4" fill="#8F5206"/>
-                <rect x="4" y="12" width="56" height="12" rx="4" fill="#6F3F02"/>
-                <path d="M32 12C32 12 24 4 16 8C12 10 14 16 20 18C26 20 32 18 32 18" fill="#FFF"/>
-                <path d="M32 12C32 12 40 4 48 8C52 10 50 16 44 18C38 20 32 18 32 18" fill="#FFF"/>
-                <rect x="28" y="12" width="8" height="44" fill="#FFF"/>
-            </svg>
-            <span class="txt">Get it now</span>
+            <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#291a03" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            <span class="txt">Claim Grand Bonus</span>
         </div>
     </div>
 </div>
 
-<!-- ================= PAGE 2: RULES ================= -->
 <div id="page-rule" class="sub-page">
-    <table class="rule-table">
-        <thead>
-            <tr>
-                <th>Target</th>
-                <th>Accumulated amount</th>
-                <th>Attendance Rewards</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>Total charge</td><td>100000</td><td>2888</td></tr>
-            <tr><td>Total charge</td><td>200000</td><td>4888</td></tr>
-            <tr><td>Total charge</td><td>500000</td><td>8888</td></tr>
-            <tr><td>Total charge</td><td>2000000</td><td>28888</td></tr>
-            <tr><td>Total charge</td><td>5000000</td><td>48888</td></tr>
-            <tr><td>Total charge</td><td>10000000</td><td>68888</td></tr>
-            <tr><td>Total charge</td><td>20000000</td><td>88888</td></tr>
-        </tbody>
-    </table>
-    <div class="rule-notes">
-        <div class="con"><span class="yuan"></span>During the operation period, please check once a day.</div>
-        <div class="con"><span class="yuan"></span>Players with no deposit history will not be able to claim the bonus.</div>
-        <div class="con"><span class="yuan"></span>From day 1 onwards, the deposit requirements must be met.</div>
-        <div class="con"><span class="yuan"></span>The platform has Final rights to explain this operation. If you have any related questions, please contact customer service.</div>
+    <div class="rule-card">
+        <p>1. Check in <strong>once a day</strong> to claim consecutive bonuses.</p>
+        <p>2. Bonus adds directly to your wallet with 1x rollover requirement.</p>
+        <p>3. Complete 7 consecutive days to receive the final Grand Box reward.</p>
     </div>
 </div>
 
-<!-- ================= PAGE 3: RECORD ================= -->
 <div id="page-record" class="sub-page">
-    <div class="record-list" id="recordList">
-        <div class="no-data">
-            <i class="fa-light fa-folder-open"></i>
-            <p>No Registration Profile Data</p>
-        </div>
-    </div>
+    <div id="recordList"><div style="text-align:center;padding:30px;color:#777;">Loading records...</div></div>
 </div>
 
-<!-- BOTTOM TAB BAR -->
-<div class="bottom-tabbar">
-    <a href="home.html" class="tab-item">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Home</span>
-    </a>
-    <a href="activity.html" class="tab-item active">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <span>Activity</span>
-    </a>
-    <a href="promotion.html" class="tab-item center-tab">
-        <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M112.494 16C115.5 16 118.181 17.5313 119.725 20.1104L133.863 44.1284C135.569 47.1105 135.325 57.1851 133.213 59.8448L79.8313 119.325C75.525 124.645 67.6438 125.531 62.2 121.26C61.4688 120.696 60.8188 120.051 60.25 119.325L6.78751 59.8448C4.59376 57.1851 4.35001 47.0299 6.13751 44.1284L20.275 20.1104C21.8188 17.5313 24.5813 16 27.5063 16H112.494Z" fill="#3B3B3B"></path>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.637 31.3135C105.994 31.3135 108.106 32.4418 109.244 34.3762L120.294 52.2687C121.675 54.4448 121.431 57.2657 119.725 59.2L77.9625 106.833C74.55 110.782 68.4562 111.427 64.2312 108.284C63.6625 107.881 63.175 107.397 62.6875 106.833L21.0875 59.2C19.3813 57.1851 19.2188 54.4448 20.5188 52.2687L31.5688 34.3762C32.7063 32.5224 34.9 31.3135 37.175 31.3135H103.637ZM82.7562 68.6299L72.6 83.1374C72.1125 83.8627 70.2437 84.0239 69.5125 83.4597C69.35 83.3791 69.2687 83.218 69.1062 83.1374L58.1375 68.6299C56.5938 66.5344 53.5062 66.0508 51.3125 67.5821C49.1187 69.0329 48.6312 71.9344 50.175 74.0299L61.1437 88.5374C65.3687 93.6956 68.05 95.7911 70.8937 95.7911C74.0625 95.7911 76.7437 92.2448 79.75 88.5374L90.7187 74.0299C92.2625 71.9344 91.775 69.0329 89.5812 67.5821C87.3875 66.0508 84.3 66.5344 82.7562 68.6299Z" fill="url(#gold-grad)"></path>
-        </svg>
-        <span>Promotion</span>
-    </a>
-    <a href="wallet.html" class="tab-item">
-        <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        <span>Wallet</span>
-    </a>
-    <a href="account.html" class="tab-item">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>Account</span>
-    </a>
-</div>
+<div class="toast" id="toast"></div>
 
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- Firebase Logic -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, arrayUnion, collection, addDoc, serverTimestamp, getDocs, query, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -329,8 +154,7 @@ const firebaseConfig = {
   projectId: "bdglottery7",
   storageBucket: "bdglottery7.firebasestorage.app",
   messagingSenderId: "568771943906",
-  appId: "1:568771943906:web:5b78078d9c0d67427dedbb",
-  measurementId: "G-VRYNMCS0EZ"
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -339,134 +163,144 @@ const db = getFirestore(app);
 
 let currentUser = null;
 
-// Custom Toast
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 2500);
-}
-window.showToast = showToast;
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
+};
 
-// Check Login & Load Data
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
     await loadUserData();
   } else {
-    window.location.href = "index.html";
+    location.replace("index.html");
   }
 });
 
 async function loadUserData() {
-    const userRef = doc(db, "users", currentUser.uid);
-    const snap = await getDoc(userRef);
-    
-    if (snap.exists()) {
-        const data = snap.data();
-        
-        // 1. Disable claimed days
-        const claimedDays = data.claimedDays || [];
-        claimedDays.forEach(day => {
-            const el = document.querySelector(`.item[data-day="${day}"]`);
-            if(el) {
-                el.classList.remove('action');
-                el.classList.add('received');
-                el.querySelector('.txt').textContent = 'Received';
-            }
-        });
+    try {
+      const snap = await getDoc(doc(db, "users", currentUser.uid));
+      if (!snap.exists()) return;
+      const data = snap.data();
+      
+      const claimedDays = data.claimedAttendanceDays || [];
+      claimedDays.forEach(day => {
+          const el = document.querySelector(`.item[data-day="${day}"]`);
+          if(el) {
+              el.classList.remove('action');
+              el.classList.add('received');
+              el.querySelector('.txt').textContent = 'Claimed ✓';
+          }
+      });
 
-        // 2. Check if claimed today
-        const lastClaim = data.lastClaimDate ? new Date(data.lastClaimDate.seconds * 1000) : null;
-        const today = new Date();
-        
-        if (lastClaim && lastClaim.toDateString() === today.toDateString()) {
-            // Already claimed today
-            document.querySelectorAll('.item.action').forEach(el => {
-                el.classList.remove('action');
-                el.classList.add('disabled');
-                el.querySelector('.txt').textContent = 'Come back tomorrow';
-            });
-        }
-    }
+      const todayStr = new Date().toDateString();
+      const lastClaimStr = data.lastAttendanceDate ? new Date(data.lastAttendanceDate.toDate ? data.lastAttendanceDate.toDate() : data.lastAttendanceDate).toDateString() : null;
+      
+      if (lastClaimStr === todayStr) {
+          document.querySelectorAll('.item.action').forEach(el => {
+              el.classList.remove('action');
+              el.classList.add('disabled');
+              el.querySelector('.txt').textContent = 'Come Back Tomorrow';
+          });
+      }
+    } catch(e) {}
 }
 
-// Claim Bonus Logic
 window.claimBonus = async (day, amount) => {
     if(!currentUser) return;
-    
     const el = document.querySelector(`.item[data-day="${day}"]`);
-    if(!el.classList.contains('action')) return; // Prevent double click
+    if(!el || !el.classList.contains('action')) return;
     
     try {
-        showToast("Processing...");
-        const userRef = doc(db, "users", currentUser.uid);
-        
-        // Update Firebase
-        await updateDoc(userRef, {
-            balance: increment(amount),
-            claimedDays: arrayUnion(day),
-            lastClaimDate: new Date()
-        });
-        
-        // Update UI
+        toast("Claiming bonus...");
         el.classList.remove('action');
+        el.classList.add('disabled');
+
+        await updateDoc(doc(db, "users", currentUser.uid), {
+            balance: increment(amount),
+            claimedAttendanceDays: arrayUnion(day),
+            lastAttendanceDate: serverTimestamp()
+        });
+
+        await addDoc(collection(db, "transactions"), {
+            userId: currentUser.uid,
+            type: "bonus",
+            title: `Attendance Day ${day} Bonus`,
+            amount: amount,
+            status: "success",
+            createdAt: serverTimestamp()
+        });
+
         el.classList.add('received');
-        el.querySelector('.txt').textContent = 'Received';
+        el.querySelector('.txt').textContent = 'Claimed ✓';
         
-        // Disable all other buttons for today
         document.querySelectorAll('.item.action').forEach(item => {
             item.classList.remove('action');
             item.classList.add('disabled');
-            item.querySelector('.txt').textContent = 'Come back tomorrow';
+            item.querySelector('.txt').textContent = 'Come Back Tomorrow';
         });
         
-        showToast(`🎉 Received ₹${amount} successfully!`);
-        
+        toast(`₹${amount} added to your balance!`);
     } catch (error) {
-        console.error(error);
-        showToast("Error claiming bonus.");
+        toast("Claim failed. Please try again.");
     }
 };
 
-// Navigation (CheckIn / Rule / Record)
 window.switchPage = (page) => {
-    // Hide all
     document.getElementById('page-checkin').style.display = 'none';
     document.getElementById('page-rule').classList.remove('active');
     document.getElementById('page-record').classList.remove('active');
     
-    // Show selected
     if(page === 'checkin') {
         document.getElementById('page-checkin').style.display = 'block';
         document.getElementById('navTitle').innerText = 'Rewards';
     } else if(page === 'rule') {
         document.getElementById('page-rule').classList.add('active');
-        document.getElementById('navTitle').innerText = 'Rule';
+        document.getElementById('navTitle').innerText = 'Attendance Rules';
     } else if(page === 'record') {
         document.getElementById('page-record').classList.add('active');
-        document.getElementById('navTitle').innerText = 'Registration Profile';
+        document.getElementById('navTitle').innerText = 'Claim History';
+        loadAttendanceHistory();
     }
 };
 
-// Back Button Logic
+async function loadAttendanceHistory() {
+  const container = document.getElementById('recordList');
+  try {
+    const q = query(collection(db, 'transactions'), where('userId', '==', currentUser.uid), where('type', '==', 'bonus'), limit(20));
+    const snap = await getDocs(q);
+    if(snap.empty) {
+      container.innerHTML = `<div style="text-align:center;padding:30px;color:#777;">No claim records yet</div>`;
+      return;
+    }
+    let html = '';
+    snap.forEach(d => {
+      const data = d.data();
+      const dateStr = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'Today';
+      html += `
+        <div class="record-item">
+          <div>
+            <h4>${data.title}</h4>
+            <p>${dateStr}</p>
+          </div>
+          <div class="amt">+₹${Number(data.amount).toFixed(2)}</div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = `<div style="text-align:center;padding:30px;color:#777;">Error loading history</div>`;
+  }
+}
+
 window.handleBack = () => {
     const ruleActive = document.getElementById('page-rule').classList.contains('active');
     const recordActive = document.getElementById('page-record').classList.contains('active');
-    
-    if(ruleActive || recordActive) {
-        switchPage('checkin');
-    } else {
-        window.location.href = 'home.html';
-    }
-};
-document.getElementById('navBackBtn').onclick = handleBack;
-
-// Customer Service (Redirect to Home to open modal)
-window.openService = () => {
-    window.location.href = 'home.html'; 
+    if(ruleActive || recordActive) switchPage('checkin');
+    else location.href = 'home.html';
 };
 </script>
-
 </body>
 </html>

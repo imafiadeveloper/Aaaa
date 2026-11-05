@@ -3,129 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#1A1A1A">
+<meta name="theme-color" content="#181818">
 <title>BDG LOTTERY7 - Deposit</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;width:100%;background:#1A1A1A;font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;}
+html,body{height:100%;width:100%;background:#141416;font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;}
 a{text-decoration:none;color:inherit;}
 button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 input{font-family:inherit;outline:none;border:none;background:transparent;color:#fff;}
 ::-webkit-scrollbar{width:0;height:0;}
 
-/* ============ NAVBAR ============ */
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;border-bottom:1px solid rgba(255,255,255,0.05);}
-.navbar-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
-.navbar-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
-.navbar-title{font-size:17px;font-weight:700;}
-.navbar-right{font-size:13px;color:#a6a9ae;cursor:pointer;}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.06);}
+.navbar-left{width:38px;height:38px;display:flex;align-items:center;cursor:pointer;}
+.navbar-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;}
+.navbar-right{font-size:12px;font-weight:700;color:#FAE59F;cursor:pointer;}
 
-/* ============ TOP BANNER ============ */
-.gold-banner{margin:16px;background:linear-gradient(135deg,#C4933F,#FAE59F);border-radius:16px;padding:20px;color:#3a2a10;position:relative;overflow:hidden;}
-.gb-title{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.gb-bal{font-size:28px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:16px;}
-.gb-bal svg{width:20px;height:20px;fill:none;stroke:#3a2a10;stroke-width:2;}
-.gb-card-number{font-size:16px;letter-spacing:2px;font-weight:600;opacity:0.6;margin-top:20px;}
+.gold-banner{margin:14px 16px;background:linear-gradient(135deg,#FFE793 0%,#E5B24E 50%,#C48E2F 100%);border-radius:18px;padding:20px;color:#291a03;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.45);}
+.gb-title{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.gb-bal{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;display:flex;align-items:center;gap:10px;}
+.gb-bal svg{width:18px;height:18px;fill:none;stroke:#291a03;stroke-width:2.4;cursor:pointer;}
 
-/* ============ PAYMENT METHODS ============ */
-.section-title{font-size:14px;font-weight:600;color:#a6a9ae;margin:16px 16px 10px;}
+.section-title{font-size:13px;font-weight:700;color:#8f929b;margin:16px 16px 8px;text-transform:uppercase;letter-spacing:0.5px;}
 .methods-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 16px;}
-.method-item{background:#262626;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:0.2s;}
-.method-item.active{border-color:#FAE59F;background:rgba(250,229,159,0.05);}
-.method-item img{width:40px;height:40px;object-fit:contain;}
-.method-item span{font-size:11px;font-weight:500;color:#d1d1d1;}
+.method-item{background:#202024;border:1.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+.method-item.active{border-color:#FAE59F;background:rgba(250,229,159,0.08);}
+.method-item svg{width:26px;height:26px;stroke:#FAE59F;}
+.method-item span{font-size:11px;font-weight:700;color:#e8e8e8;}
 
-/* ============ AMOUNT SECTION ============ */
-.amount-box{margin:16px;background:#262626;border-radius:16px;padding:16px;}
-.amount-input-wrap{display:flex;align-items:center;background:#1A1A1A;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;margin-bottom:16px;}
-.amount-input-wrap span{font-size:18px;font-weight:700;color:#FAE59F;margin-right:12px;}
-.amount-input-wrap input{font-size:16px;font-weight:600;flex:1;}
-.quick-amounts{display:flex;gap:8px;flex-wrap:wrap;}
-.qa-btn{background:#1A1A1A;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 0;flex:1;min-width:60px;text-align:center;font-size:13px;font-weight:600;color:#d1d1d1;}
-.qa-btn.active{border-color:#FAE59F;color:#FAE59F;}
+.amount-box{margin:14px 16px;background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:16px;}
+.amount-input-wrap{display:flex;align-items:center;background:#141416;border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;margin-bottom:14px;}
+.amount-input-wrap span{font-size:18px;font-weight:900;color:#FAE59F;margin-right:10px;}
+.amount-input-wrap input{font-size:16px;font-weight:700;flex:1;}
+.quick-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.qa-btn{background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 0;text-align:center;font-size:13px;font-weight:700;color:#d1d1d1;cursor:pointer;}
+.qa-btn.active{border-color:#FAE59F;color:#FAE59F;background:rgba(250,229,159,0.05);}
 
-/* ============ INSTRUCTIONS ============ */
-.instructions{margin:16px;background:#262626;border-radius:16px;padding:16px;}
-.ins-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin-bottom:12px;color:#fff;}
-.ins-title svg{width:18px;height:18px;stroke:#FAE59F;fill:none;stroke-width:2;}
-.ins-list{font-size:12px;color:#a6a9ae;line-height:1.6;padding-left:16px;list-style-type:disc;}
-.ins-list li{margin-bottom:6px;}
+.instructions{margin:14px 16px 90px;background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:16px;}
+.ins-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;margin-bottom:10px;color:#fff;}
+.ins-title svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;}
+.ins-list{font-size:11px;color:#8f929b;line-height:1.6;padding-left:14px;}
 
-/* ============ BOTTOM BAR ============ */
-.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#1A1A1A;border-top:1px solid rgba(255,255,255,0.05);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100;}
-.bb-info{font-size:12px;color:#a6a9ae;}
-.bb-info span{display:block;font-size:14px;font-weight:700;color:#fff;}
-.btn-deposit{background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:15px;font-weight:700;padding:12px 24px;border-radius:12px;box-shadow:0 4px 10px rgba(196,147,63,0.3);}
-.btn-deposit:disabled{background:#333;color:#666;box-shadow:none;}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#111113;border-top:1px solid rgba(255,255,255,0.06);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100;}
+.bb-info{font-size:11px;color:#858892;}
+.bb-info span{display:block;font-size:14px;font-weight:800;color:#fff;}
+.btn-deposit{background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;font-size:14px;font-weight:900;padding:12px 28px;border-radius:24px;box-shadow:0 4px 15px rgba(196,147,63,0.3);}
+.btn-deposit:disabled{background:#383838;color:#777;box-shadow:none;}
 
-/* ============ MODAL (Payment / Pending) ============ */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;display:none;align-items:center;justify-content:center;padding:16px;}
+/* Modals */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:16px;}
 .modal-overlay.show{display:flex;}
-.modal-content{background:#2a2a2a;border-radius:16px;width:100%;max-width:400px;overflow:hidden;animation:slideUp 0.3s ease;}
-@keyframes slideUp{from{transform:translateY(50px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-.modal-header{background:#FAE59F;padding:16px;color:#3a2a10;text-align:center;font-weight:700;font-size:16px;position:relative;}
-.modal-close{position:absolute;right:16px;top:16px;cursor:pointer;}
-.modal-close svg{width:20px;height:20px;stroke:#3a2a10;fill:none;stroke-width:2;}
-.modal-body{padding:20px 16px;}
-.modal-body p{font-size:14px;color:#d1d1d1;line-height:1.5;margin-bottom:16px;text-align:center;}
-.order-box{background:#1A1A1A;border-radius:8px;padding:12px;margin-bottom:16px;}
-.order-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;}
+.modal-content{background:#202024;border:1px solid rgba(255,255,255,0.1);border-radius:20px;width:100%;max-width:360px;overflow:hidden;animation:pop .25s ease;}
+@keyframes pop{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-header{background:#2a2a30;padding:14px 16px;color:#fff;text-align:center;font-weight:800;font-size:14px;position:relative;border-bottom:1px solid rgba(255,255,255,0.06);}
+.modal-close{position:absolute;right:14px;top:12px;cursor:pointer;color:#aaa;}
+.modal-body{padding:16px;}
+.order-box{background:#141416;border-radius:12px;padding:12px;margin-bottom:14px;}
+.order-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;}
 .order-row:last-child{margin-bottom:0;}
-.order-label{color:#a6a9ae;}
-.order-val{font-weight:600;color:#fff;}
-.order-val.red{color:#ff4d4f;}
-.btn-primary{width:100%;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:14px;font-weight:700;padding:14px;border-radius:10px;margin-bottom:10px;}
-.btn-outline{width:100%;background:transparent;border:1px solid #C4933F;color:#C4933F;font-size:14px;font-weight:700;padding:14px;border-radius:10px;margin-bottom:16px;}
-.cancel-link{text-align:center;font-size:12px;color:#a6a9ae;}
-.cancel-link a{color:#FAE59F;font-weight:600;cursor:pointer;}
+.order-label{color:#8f929b;}
+.order-val{font-weight:700;color:#fff;}
+.btn-primary{width:100%;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;font-size:14px;font-weight:900;padding:12px;border-radius:24px;margin-bottom:8px;}
+.btn-outline{width:100%;background:transparent;border:1px solid #C48E2F;color:#FAE59F;font-size:13px;font-weight:700;padding:12px;border-radius:24px;margin-bottom:12px;}
 
-/* Payment Modal Specific */
-.payment-amt-box{display:flex;justify-content:space-between;align-items:center;background:#333;padding:12px;border-radius:8px;margin-bottom:16px;}
-.pa-amount{font-size:20px;font-weight:800;color:#fff;}
-.pa-copy svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;}
-.timer{color:#ff4d4f;font-weight:600;font-size:14px;}
-.upi-apps{display:flex;gap:10px;margin-bottom:16px;}
-.upi-app-btn{flex:1;background:#333;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600;cursor:pointer;}
-.upi-app-btn img{width:20px;height:20px;}
-.qr-container{text-align:center;background:#fff;padding:16px;border-radius:12px;margin-bottom:16px;display:inline-block;}
-.qr-container canvas, .qr-container img{display:block;margin:0 auto;}
-.pay-instructions{font-size:12px;color:#a6a9ae;text-align:center;margin-bottom:16px;line-height:1.4;}
-.utr-input-box{background:#1A1A1A;border-radius:8px;padding:12px;border:1px solid #444;margin-bottom:8px;}
-.utr-input-box input{width:100%;font-size:14px;color:#fff;}
-.utr-warning{color:#ff4d4f;font-size:12px;text-align:center;margin-bottom:16px;}
+.payment-amt-box{display:flex;justify-content:space-between;align-items:center;background:#141416;padding:12px 14px;border-radius:12px;margin-bottom:14px;}
+.pa-amount{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:#FAE59F;}
+.timer{color:#ff4d4f;font-weight:800;font-size:13px;}
+.upi-apps{display:flex;gap:10px;margin-bottom:14px;}
+.upi-app-btn{flex:1;background:#2a2a30;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:700;cursor:pointer;}
+.qr-container{text-align:center;background:#fff;padding:12px;border-radius:12px;margin:0 auto 12px;display:inline-block;}
+.utr-input-box{background:#141416;border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.1);margin-bottom:8px;}
+.utr-input-box input{width:100%;font-size:14px;color:#fff;font-weight:700;}
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(20,20,22,0.96);border:1px solid rgba(250,229,159,0.3);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left" onclick="location.href='wallet.html'">
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
   </div>
   <div class="navbar-title">Deposit</div>
-  <div class="navbar-right" onclick="location.href='deposit-history.html'">Deposit history</div>
+  <div class="navbar-right" onclick="location.href='deposit-history.html'">History</div>
 </div>
 
-<!-- GOLD BANNER -->
 <div class="gold-banner">
-  <div class="gb-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3a2a10" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Balance</div>
+  <div class="gb-title">Available Balance</div>
   <div class="gb-bal"><span id="headerBal">₹0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
-  <div class="gb-card-number">**** **** **** ****</div>
 </div>
 
-<!-- PAYMENT METHODS -->
-<div class="section-title">Select channel</div>
+<div class="section-title">Select Channel</div>
 <div class="methods-grid">
-  <div class="method-item active" data-method="upi">
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
-    <span>UPI-QR</span>
+  <div class="method-item active">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
+    <span>UPI Fast QR</span>
   </div>
-  <!-- Add other methods here if needed -->
 </div>
 
-<!-- AMOUNT INPUT -->
 <div class="amount-box">
   <div class="amount-input-wrap">
     <span>₹</span>
@@ -133,150 +110,86 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
   </div>
   <div class="quick-amounts">
     <div class="qa-btn" data-amt="100">100</div>
-    <div class="qa-btn" data-amt="200">200</div>
     <div class="qa-btn" data-amt="300">300</div>
     <div class="qa-btn" data-amt="500">500</div>
     <div class="qa-btn" data-amt="1000">1K</div>
     <div class="qa-btn" data-amt="2000">2K</div>
+    <div class="qa-btn" data-amt="5000">5K</div>
   </div>
 </div>
 
-<!-- INSTRUCTIONS -->
 <div class="instructions">
-  <div class="ins-title"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/></svg> Recharge instructions</div>
+  <div class="ins-title">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    Recharge Instructions
+  </div>
   <ul class="ins-list">
-    <li>If the transfer time is up, please fill out the deposit form again.</li>
-    <li>The transfer amount must match the order you created, otherwise the money cannot be credited successfully.</li>
-    <li>If you transfer the wrong amount, our company will not be responsible for the lost amount!</li>
-    <li>Note: do not cancel the deposit order after the money has been transferred.</li>
+    <li>Scan QR or pay directly using PhonePe or Paytm.</li>
+    <li>Input the exact 12-digit UTR number after transferring funds.</li>
+    <li>Do not reuse expired QR codes or previous orders.</li>
   </ul>
 </div>
 
-<div style="height:80px;"></div> <!-- Spacer -->
-
-<!-- BOTTOM BAR -->
 <div class="bottom-bar">
-  <div class="bb-info">Recharge Method: <span>UPI-QR</span></div>
+  <div class="bb-info">Recharge Method: <span>UPI QR</span></div>
   <button class="btn-deposit" id="btnDeposit" disabled>Deposit</button>
 </div>
-
-<!-- ================= MODALS ================= -->
 
 <!-- Modal 1: Pending Order -->
 <div class="modal-overlay" id="pendingModal">
   <div class="modal-content">
-    <div class="modal-header" style="background:#f5a623;color:#fff;">Order not completed</div>
+    <div class="modal-header">Pending Order Exists</div>
     <div class="modal-body">
-      <div style="font-size:13px;color:#a6a9ae;margin-bottom:4px;">Order number:</div>
-      <div class="order-row" style="margin-bottom:12px;background:#1A1A1A;padding:8px;border-radius:6px;">
-        <span class="order-val" id="pendingOrderId" style="word-break:break-all;">...</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2" onclick="copyText('pendingOrderId')"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-      </div>
-      <p>You still have an order that has not been completed. Please complete it first!</p>
       <div class="order-box">
-        <div class="order-row"><span class="order-label">Deposit amount:</span><span class="order-val" id="pendingAmt">₹0.00</span></div>
-        <div class="order-row"><span class="order-label">Time left:</span><span class="order-val red" id="pendingTimer">15:00</span></div>
+        <div class="order-row"><span class="order-label">Order ID:</span><span class="order-val" id="pendingOrderId">...</span></div>
+        <div class="order-row"><span class="order-label">Amount:</span><span class="order-val" id="pendingAmt" style="color:#FAE59F;">₹0.00</span></div>
+        <div class="order-row"><span class="order-label">Time left:</span><span class="order-val" id="pendingTimer" style="color:#ff4d4f;">15:00</span></div>
       </div>
-      <button class="btn-primary" id="continueBtn">Continue to Purchase<br><span style="font-size:10px;font-weight:400;">I want to continue to complete this purchase</span></button>
-      <button class="btn-outline" onclick="showPaymentModal()">Fill in UTR<br><span style="font-size:10px;font-weight:400;">I have transferred money to this order</span></button>
-      <div class="cancel-link">I want to cancel this order. Click <a id="cancelOrderBtn">Cancel order</a></div>
+      <button class="btn-primary" id="continueBtn">Continue Payment</button>
+      <button class="btn-outline" onclick="showPaymentModal()">Fill in UTR</button>
+      <div style="text-align:center;font-size:12px;color:#8f929b;">
+        <span onclick="cancelCurrentOrder()" style="color:#ff4d4f;cursor:pointer;font-weight:700;">Cancel this order</span>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Modal 2: Payment & QR -->
 <div class="modal-overlay" id="paymentModal">
-  <div class="modal-content" style="background:#222;">
-    <div class="modal-header" style="background:#333;color:#fff;border-bottom:1px solid #444;">
-      <span style="color:#FAE59F;">ArUpiPay</span>
-      <div class="modal-close" onclick="closeModal('paymentModal')"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
-    </div>
-    <div class="modal-body" style="padding:16px;">
-      <!-- Amount Box -->
-      <div class="payment-amt-box">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span class="pa-amount">₹<span id="payModalAmt">0</span>.00</span>
-          <div class="pa-copy" onclick="copyText('payModalAmt')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div>
-        </div>
-        <div class="timer" id="paymentTimer">15:00</div>
-      </div>
-
-      <div style="font-size:13px;color:#a6a9ae;margin-bottom:8px;">Choose a payment method to pay</div>
-      <div class="upi-apps">
-        <!-- Deep Links will be injected by JS -->
-        <div class="upi-app-btn" id="paytmBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg"> Paytm</div>
-        <div class="upi-app-btn" id="phonepeBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg"> PhonePe</div>
-      </div>
-
-      <div style="font-size:13px;color:#a6a9ae;margin-bottom:8px;">Use Mobile Scan code to pay</div>
-      <div style="text-align:center;margin-bottom:16px;">
-        <div class="qr-container" id="qrcode"></div>
-      </div>
-      
-      <div class="pay-instructions">
-        1. Please use another device to scan the QR code with your payment app<br>
-        2. If you scan the QR code from this device's gallery, the payment amount may be limited (≤2000).
-      </div>
-
-      <div style="font-size:13px;color:#a6a9ae;margin-bottom:8px;">Input UTR / Paste UTR</div>
-      <div class="utr-warning">If you do not back fill UTR/ paste UTR, 100% will fail.</div>
-      <div class="utr-input-box">
-        <input type="number" id="utrInput" placeholder="Input 12 digits here" maxlength="12">
-      </div>
-      <div style="font-size:12px;color:#a6a9ae;margin-bottom:16px;line-height:1.4;">
-        <b>Important reminder:</b><br>
-        1. Do not pay for the same link repeatedly!<br>
-        2. Paytm is wake up support!
-      </div>
-
-      <button class="btn-primary" id="submitUtrBtn">Submit (UTR not entered)</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 3: Cancel Confirmation -->
-<div class="modal-overlay" id="cancelModal">
   <div class="modal-content">
-    <div class="modal-header" style="background:#333;color:#fff;">Order Cancellation</div>
-    <div class="modal-body">
-      <p style="font-size:14px;color:#fff;font-weight:600;margin-bottom:16px;text-align:left;">If you have successfully transferred funds, please do not cancel the transaction!</p>
+    <div class="modal-header">
+      <span>UPI Scan & Pay</span>
+      <span class="modal-close" onclick="closeModal('paymentModal')">×</span>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div class="payment-amt-box">
+        <span class="pa-amount">₹<span id="payModalAmt">0</span>.00</span>
+        <span class="timer" id="paymentTimer">15:00</span>
+      </div>
+
+      <div class="upi-apps">
+        <div class="upi-app-btn" id="paytmBtn">Paytm</div>
+        <div class="upi-app-btn" id="phonepeBtn">PhonePe</div>
+      </div>
+
+      <div class="qr-container" id="qrcode"></div>
       
-      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#d1d1d1;cursor:pointer;">
-          <input type="radio" name="cancelReason" value="I don't want to continue payment" style="width:16px;height:16px;"> I don't want to continue payment
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#d1d1d1;cursor:pointer;">
-          <input type="radio" name="cancelReason" value="Want to use another payment method" style="width:16px;height:16px;"> Want to use another payment method
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#d1d1d1;cursor:pointer;">
-          <input type="radio" name="cancelReason" value="Bank system is under maintenance" style="width:16px;height:16px;"> Bank system is under maintenance
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#d1d1d1;cursor:pointer;">
-          <input type="radio" name="cancelReason" value="UPI payment error" style="width:16px;height:16px;"> UPI payment error
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#d1d1d1;cursor:pointer;">
-          <input type="radio" name="cancelReason" value="Other reasons" style="width:16px;height:16px;"> Other reasons
-        </label>
+      <div class="utr-input-box">
+        <input type="number" id="utrInput" placeholder="Input 12-digit UTR here" maxlength="12">
       </div>
 
-      <div style="background:#1A1A1A;border-radius:8px;padding:12px;margin-bottom:20px;">
-        <input type="text" id="otherReasonInput" placeholder="Please fill in other reasons" style="width:100%;font-size:13px;">
-      </div>
-
-      <div style="display:flex;gap:12px;">
-        <button class="btn-outline" style="margin-bottom:0;flex:1;" onclick="closeModal('cancelModal')">I have paid</button>
-        <button class="btn-primary" style="margin-bottom:0;flex:1;" id="confirmCancelBtn">Confirm Cancellation</button>
-      </div>
+      <button class="btn-primary" id="submitUtrBtn">Submit UTR</button>
     </div>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, serverTimestamp, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, serverTimestamp, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ============ FIREBASE CONFIG ============ */
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
   authDomain: "bdglottery7.firebaseapp.com",
@@ -290,44 +203,30 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ============ YOUR UPI DETAILS ============ */
-// Replace this with your actual UPI ID linked to the QR you uploaded
-const YOUR_UPI_ID = "aman.1930@superyes"; 
+const YOUR_UPI_ID = "aman.1930@superyes";
 const YOUR_NAME = "BDG LOTTERY7";
 
 let currentUser = null;
 let pendingOrderDocId = null;
-let currentAmount = 0;
 let timerInterval = null;
 let paymentTimerInterval = null;
 
-/* ============ UI HELPERS ============ */
-const toast = (msg) => {
-  // Simple alert fallback for this snippet
-  alert(msg); 
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
 };
 
-window.closeModal = (id) => {
-  document.getElementById(id).classList.remove('show');
-};
+window.closeModal = (id) => document.getElementById(id).classList.remove('show');
 
-window.copyText = function(elemId) {
-  const text = document.getElementById(elemId).innerText;
-  navigator.clipboard.writeText(text).then(()=>alert('Copied!'));
-};
-
-/* ============ AMOUNT SELECTION ============ */
 const amountInput = document.getElementById('amountInput');
 const btnDeposit = document.getElementById('btnDeposit');
 const qaBtns = document.querySelectorAll('.qa-btn');
 
 function checkAmount() {
   const val = parseFloat(amountInput.value);
-  if(val >= 100 && val <= 50000) {
-    btnDeposit.disabled = false;
-  } else {
-    btnDeposit.disabled = true;
-  }
+  btnDeposit.disabled = !(val >= 100 && val <= 50000);
 }
 
 amountInput.addEventListener('input', () => {
@@ -344,75 +243,68 @@ qaBtns.forEach(btn => {
   });
 });
 
-/* ============ INIT USER ============ */
 onAuthStateChanged(auth, async (user) => {
   if(!user) return location.replace('index.html');
   currentUser = user;
   
-  // Fetch balance
   const snap = await getDoc(doc(db,'users',user.uid));
   if(snap.exists()) {
     const bal = snap.data().balance || 0;
-    document.getElementById('headerBal').textContent = '₹' + bal.toFixed(2);
+    document.getElementById('headerBal').textContent = '₹' + Number(bal).toFixed(2);
   }
-
-  // Check for pending orders
   checkPendingOrder();
 });
 
-/* ============ CHECK PENDING ORDER ============ */
 async function checkPendingOrder() {
-  const q = query(
-    collection(db, 'deposits'), 
-    where('userId', '==', currentUser.uid), 
-    where('status', '==', 'pending')
-  );
-  const snap = await getDocs(q);
-  
-  if(!snap.empty) {
-    // Get the most recent one
-    const docData = snap.docs[0].data();
-    pendingOrderDocId = snap.docs[0].id;
+  try {
+    const q = query(
+      collection(db, 'deposits'), 
+      where('userId', '==', currentUser.uid), 
+      where('status', '==', 'pending')
+    );
+    const snap = await getDocs(q);
     
-    document.getElementById('pendingOrderId').innerText = docData.orderId || 'ORD-UNKNOWN';
-    document.getElementById('pendingAmt').innerText = '₹' + docData.amount.toFixed(2);
-    document.getElementById('pendingModal').classList.add('show');
-    
-    // Start pending timer
-    let timeLeft = 15 * 60; // 15 mins
-    if(docData.createdAt) {
-      const created = docData.createdAt.toDate();
-      const now = new Date();
-      const diffSeconds = Math.floor((now - created) / 1000);
-      timeLeft = (15 * 60) - diffSeconds;
-    }
-    if(timeLeft < 0) timeLeft = 0;
-    
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      if(timeLeft <= 0) {
-        clearInterval(timerInterval);
-        document.getElementById('pendingTimer').innerText = "Expired";
-      } else {
-        const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-        const s = (timeLeft % 60).toString().padStart(2, '0');
-        document.getElementById('pendingTimer').innerText = `${m}:${s}`;
+    if(!snap.empty) {
+      const docSnap = snap.docs[0];
+      const docData = docSnap.data();
+      pendingOrderDocId = docSnap.id;
+      
+      document.getElementById('pendingOrderId').innerText = docData.orderId || 'ORD-N/A';
+      document.getElementById('pendingAmt').innerText = '₹' + Number(docData.amount).toFixed(2);
+      document.getElementById('pendingModal').classList.add('show');
+      
+      let timeLeft = 15 * 60;
+      if(docData.createdAt) {
+        const created = docData.createdAt.toDate();
+        const diff = Math.floor((new Date() - created) / 1000);
+        timeLeft = Math.max(0, (15 * 60) - diff);
       }
-    }, 1000);
-  }
+      
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        if(timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('pendingTimer').innerText = "Expired";
+        } else {
+          const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+          const s = String(timeLeft % 60).padStart(2, '0');
+          document.getElementById('pendingTimer').innerText = `${m}:${s}`;
+        }
+      }, 1000);
+    }
+  } catch(e) {}
 }
 
-/* ============ CREATE NEW ORDER ============ */
 btnDeposit.addEventListener('click', async () => {
   const amt = parseFloat(amountInput.value);
-  if(!(amt >= 100 && amt <= 50000)) return alert('Amount must be between 100 and 50000');
+  if(!(amt >= 100 && amt <= 50000)) return toast('Amount must be between 100 and 50000');
   
   btnDeposit.disabled = true;
-  btnDeposit.innerText = "Processing...";
+  btnDeposit.innerText = "Connecting...";
   
   try {
-    const orderId = 'RC' + Date.now() + Math.floor(Math.random()*1000);
+    const orderId = 'RC' + Date.now();
     const docRef = await addDoc(collection(db, 'deposits'), {
       userId: currentUser.uid,
       orderId: orderId,
@@ -422,15 +314,12 @@ btnDeposit.addEventListener('click', async () => {
     });
     
     pendingOrderDocId = docRef.id;
-    currentAmount = amt;
+    document.getElementById('pendingAmt').innerText = '₹' + amt.toFixed(2);
+    document.getElementById('pendingOrderId').innerText = orderId;
     
-    // Show modal immediately
     showPaymentModal();
-    document.getElementById('pendingModal').classList.remove('show');
-    
   } catch(err) {
-    console.error(err);
-    alert('Failed to create order. Please try again.');
+    toast('Deposit failed. Try again.');
   } finally {
     btnDeposit.disabled = false;
     btnDeposit.innerText = "Deposit";
@@ -442,119 +331,78 @@ document.getElementById('continueBtn').addEventListener('click', () => {
   showPaymentModal();
 });
 
-/* ============ PAYMENT MODAL LOGIC ============ */
-function showPaymentModal() {
+window.showPaymentModal = function() {
+  document.getElementById('pendingModal').classList.remove('show');
   document.getElementById('paymentModal').classList.add('show');
   
-  const amt = document.getElementById('pendingAmt').innerText.replace('₹', '');
+  const amt = document.getElementById('pendingAmt').innerText.replace('₹', '').trim();
   document.getElementById('payModalAmt').innerText = amt;
   
-  // Generate UPI Link
   const upiLink = `upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
   
-  // Generate QR Code
   const qrContainer = document.getElementById('qrcode');
   qrContainer.innerHTML = '';
   new QRCode(qrContainer, {
     text: upiLink,
-    width: 180,
-    height: 180,
+    width: 170,
+    height: 170,
     colorDark : "#000000",
     colorLight : "#ffffff",
     correctLevel : QRCode.CorrectLevel.H
   });
 
-  // Setup App Links
   document.getElementById('paytmBtn').onclick = () => window.location.href = `paytmmp://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
   document.getElementById('phonepeBtn').onclick = () => window.location.href = `phonepe://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
+};
 
-  // Start Timer for Payment Modal
-  let timeLeft = 15 * 60;
-  clearInterval(paymentTimerInterval);
-  paymentTimerInterval = setInterval(() => {
-    timeLeft--;
-    if(timeLeft <= 0) {
-      clearInterval(paymentTimerInterval);
-      document.getElementById('paymentTimer').innerText = "Expired";
-    } else {
-      const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-      const s = (timeLeft % 60).toString().padStart(2, '0');
-      document.getElementById('paymentTimer').innerText = `${m}:${s}`;
-    }
-  }, 1000);
-}
+document.getElementById('submitUtrBtn').addEventListener('click', async () => {
+  const utr = document.getElementById('utrInput').value.trim();
+  if(utr.length < 12) return toast('Please enter valid 12-digit UTR');
+  if(!pendingOrderDocId) return toast('Order not found');
 
-/* ============ UTR SUBMISSION ============ */
-const utrInput = document.getElementById('utrInput');
-const submitUtrBtn = document.getElementById('submitUtrBtn');
-
-utrInput.addEventListener('input', () => {
-  if(utrInput.value.length >= 12) {
-    submitUtrBtn.innerText = "Submit";
-    submitUtrBtn.disabled = false;
-  } else {
-    submitUtrBtn.innerText = "Submit (UTR not entered)";
-    submitUtrBtn.disabled = true;
-  }
-});
-
-submitUtrBtn.addEventListener('click', async () => {
-  const utr = utrInput.value.trim();
-  if(utr.length < 12) return alert('Please enter a valid 12-digit UTR');
-  if(!pendingOrderDocId) return alert('Error: Order missing');
-
-  submitUtrBtn.disabled = true;
-  submitUtrBtn.innerText = "Submitting...";
+  const btn = document.getElementById('submitUtrBtn');
+  btn.disabled = true;
+  btn.innerText = "Submitting...";
 
   try {
-    const orderRef = doc(db, 'deposits', pendingOrderDocId);
-    await updateDoc(orderRef, {
+    await updateDoc(doc(db, 'deposits', pendingOrderDocId), {
       status: 'processing',
       utr: utr,
       submittedAt: serverTimestamp()
     });
+
+    // Create tracking transaction
+    await addDoc(collection(db, 'transactions'), {
+      userId: currentUser.uid,
+      type: 'deposit',
+      title: 'Recharge Pending',
+      amount: parseFloat(document.getElementById('payModalAmt').innerText),
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
     
-    alert('UTR submitted successfully! Please wait for admin approval.');
-    clearInterval(paymentTimerInterval);
-    location.href = 'deposit-history.html';
-    
+    toast('UTR submitted! Waiting for approval.');
+    setTimeout(() => location.href = 'deposit-history.html', 1200);
   } catch(err) {
-    console.error(err);
-    alert('Submission failed. Try again.');
-    submitUtrBtn.disabled = false;
-    submitUtrBtn.innerText = "Submit";
+    toast('Submission error');
+    btn.disabled = false;
+    btn.innerText = "Submit UTR";
   }
 });
 
-/* ============ CANCEL ORDER LOGIC ============ */
-document.getElementById('cancelOrderBtn').addEventListener('click', () => {
-  document.getElementById('pendingModal').classList.remove('show');
-  document.getElementById('cancelModal').classList.add('show');
-});
-
-document.getElementById('confirmCancelBtn').addEventListener('click', async () => {
-  const reason = document.querySelector('input[name="cancelReason"]:checked');
-  const otherReason = document.getElementById('otherReasonInput').value;
-  
-  if(!reason) return alert('Please select a reason');
-  
-  const finalReason = reason.value === "Other reasons" ? otherReason : reason.value;
-  
+window.cancelCurrentOrder = async function() {
+  if(!pendingOrderDocId) return;
   try {
-    const orderRef = doc(db, 'deposits', pendingOrderDocId);
-    await updateDoc(orderRef, {
+    await updateDoc(doc(db, 'deposits', pendingOrderDocId), {
       status: 'cancelled',
-      cancelReason: finalReason,
       cancelledAt: serverTimestamp()
     });
-    alert('Order cancelled successfully.');
+    toast('Order cancelled');
     location.reload();
-  } catch(err) {
-    console.error(err);
-    alert('Failed to cancel.');
+  } catch(e) {
+    toast('Failed to cancel');
   }
-});
-
+};
 </script>
 </body>
 </html>
