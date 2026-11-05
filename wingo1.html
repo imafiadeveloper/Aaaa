@@ -165,7 +165,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .res-footer .circle-loader{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* ============ FIXED: 5-SEC DRAW TRANSPARENT SMALL OVERLAY ============ */
+/* Draw Transparent Overlay */
 .draw-overlay{position:fixed;inset:0;background:rgba(10,20,40,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:9000;display:none;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;}
 .draw-overlay.show{display:flex;animation:fadeIn .25s ease;}
 .draw-circle{width:120px;height:120px;border-radius:50%;background:rgba(42,77,143,0.85);border:2px solid #4a90e2;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 0 30px rgba(74,144,226,0.6),inset 0 0 15px rgba(74,144,226,0.3);}
@@ -295,9 +295,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div class="ht-head">
       <div class="ht-col">Recent 30 Results Trend</div>
     </div>
-    <div class="chart-grid" id="chartGrid">
-      <!-- Chart populated here -->
-    </div>
+    <div class="chart-grid" id="chartGrid"></div>
   </div>
   
   <!-- My History View -->
@@ -308,9 +306,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="ht-col">Bet</div>
       <div class="ht-col">Result</div>
     </div>
-    <div id="myHistoryList">
-      <!-- My bets populated here -->
-    </div>
+    <div id="myHistoryList"></div>
   </div>
 </div>
 
@@ -362,9 +358,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="result-popup" id="resultPopup">
   <div class="res-box" id="resBox">
     <div class="res-header">
-      <div class="res-icon-wrap" id="resIconWrap">
-        <!-- icon injected by JS -->
-      </div>
+      <div class="res-icon-wrap" id="resIconWrap"></div>
       <div class="res-title" id="resTitle">You Won!</div>
       <div class="res-subtitle" id="resSubtitle">Congratulations 🎉</div>
     </div>
@@ -406,7 +400,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, orderBy, limit, getDocs,
+  addDoc, serverTimestamp, query, orderBy, limit, getDocs, deleteDoc,
   where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -421,6 +415,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+const RESULT_COLLECTION = 'results';
+const BET_COLLECTION = 'bets';
+const SLOT_MS = 60 * 1000;
+const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
 
 let currentUser = null;
 let userBalance = 0;
@@ -473,9 +472,6 @@ window.toast = function(msg) {
 };
 
 /* Slot Helpers */
-const SLOT_MS = 60 * 1000;
-const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
-
 function getSlotFromTime(ms = Date.now()) { return Math.floor((ms - EPOCH) / SLOT_MS); }
 function getPeriodIdFromSlot(slot) {
   const d = new Date(EPOCH + slot * SLOT_MS);
@@ -580,10 +576,35 @@ function hideDrawOverlay() {
   document.getElementById('drawOverlay').classList.remove('show');
 }
 
+/* 🧹 AUTO DELETE 24 HOURS OLD RESULTS (Results Collection Only) */
+async function cleanupOldResults() {
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(100));
+    const snap = await getDocs(q);
+    const now = Date.now();
+    const twentyFourHoursAgo = now - (24 * 60 * 60 * 1000);
+    const deletePromises = [];
+    
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      if (data.createdAt && data.createdAt.toMillis && data.createdAt.toMillis() < twentyFourHoursAgo) {
+        deletePromises.push(deleteDoc(docSnap.ref));
+      }
+    });
+    
+    if (deletePromises.length > 0) {
+      await Promise.all(deletePromises);
+      console.log("Purane results clean ho gaye!");
+    }
+  } catch (e) {
+    console.error("Cleanup error:", e);
+  }
+}
+
 /* Backfill */
 async function backfillMissingPeriods() {
   try {
-    const latestQ = query(collection(db, 'results'), orderBy('period', 'desc'), limit(1));
+    const latestQ = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(1));
     const latestSnap = await getDocs(latestQ);
     const currentSlot = getSlotFromTime(Date.now());
 
@@ -610,7 +631,7 @@ async function backfillMissingPeriods() {
 
 /* Generate Result & Tax */
 async function generateAndSaveResult(periodId, slot) {
-  const resRef = doc(db, 'results', periodId);
+  const resRef = doc(db, RESULT_COLLECTION, periodId);
   const existing = await getDoc(resRef);
   if (existing.exists()) {
     await resolveUserBetsForPeriod(periodId, existing.data());
@@ -639,7 +660,7 @@ async function generateAndSaveResult(periodId, slot) {
 async function resolveUserBetsForPeriod(periodId, resultData) {
   if (!currentUser) return;
   try {
-    const q = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
     const snap = await getDocs(q);
     if (snap.empty) return;
     
@@ -676,7 +697,7 @@ async function resolveUserBetsForPeriod(periodId, resultData) {
       
       totalWin += winAmt;
       hasPending = true;
-      promises.push(updateDoc(doc(db, 'bets', betDoc.id), {
+      promises.push(updateDoc(doc(db, BET_COLLECTION, betDoc.id), {
         status: isWin ? 'win' : 'lose',
         resultNum: rNum,
         winAmount: winAmt
@@ -711,6 +732,7 @@ onAuthStateChanged(auth, async (user) => {
     userBalance = Number(snap.data().balance || 0);
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
   }
+  await cleanupOldResults();
   await backfillMissingPeriods();
   initGame();
   loadHistory();
@@ -863,7 +885,7 @@ window.placeBet = async function() {
 
   try {
     await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
-    await addDoc(collection(db, 'bets'), {
+    await addDoc(collection(db, BET_COLLECTION), {
       userId: currentUser.uid,
       period: currentPeriod,
       choice: selectedChoice,
@@ -908,15 +930,15 @@ window.switchHistoryTab = function(tab, el) {
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
-    const q = query(collection(db, 'results'), orderBy('period', 'desc'), limit(10));
+    const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(10));
     const snap = await getDocs(q);
     if (snap.empty) {
       listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">No data</div>`;
       return;
     }
     let html = '';
-    snap.forEach((doc) => {
-      const d = doc.data();
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
       let colorHtml = '';
       if (d.color === 'violet') colorHtml = `<span class="res-num" style="background:#b659fe">${d.number}</span>`;
       else if (d.color === 'green') colorHtml = `<span class="res-num" style="background:#40ad72">${d.number}</span>`;
@@ -935,11 +957,11 @@ async function loadHistory() {
   }
 }
 
-/* LOAD CHART (Big/Small & Color) */
+/* LOAD CHART */
 async function loadChart() {
   const chartGrid = document.getElementById('chartGrid');
   try {
-    const q = query(collection(db, 'results'), orderBy('period', 'desc'), limit(30));
+    const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(30));
     const snap = await getDocs(q);
     
     if (snap.empty) {
@@ -949,9 +971,9 @@ async function loadChart() {
 
     let html = '';
     let resultsArr = [];
-    snap.forEach(doc => resultsArr.push(doc.data()));
+    snap.forEach(docSnap => resultsArr.push(docSnap.data()));
     
-    resultsArr.forEach((d, i) => {
+    resultsArr.forEach((d) => {
       let cClass = 'c-small';
       let sizeTxt = 'S';
       if (d.size === 'big') { cClass = 'c-big'; sizeTxt = 'B'; }
@@ -980,7 +1002,7 @@ async function loadMyHistory() {
   
   try {
     const q = query(
-      collection(db, 'bets'), 
+      collection(db, BET_COLLECTION), 
       where('userId', '==', currentUser.uid), 
       limit(30) 
     );
@@ -992,8 +1014,8 @@ async function loadMyHistory() {
     }
     
     let betsData = [];
-    snap.forEach((doc) => {
-      betsData.push({ id: doc.id, ...doc.data() });
+    snap.forEach((docSnap) => {
+      betsData.push({ id: docSnap.id, ...docSnap.data() });
     });
 
     betsData.sort((a, b) => {
