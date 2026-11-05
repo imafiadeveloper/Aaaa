@@ -173,19 +173,14 @@ let currentMulti = 1.00;
 let currentBetId = null;
 const TOTAL_BOXES = 25;
 let TOTAL_BOMBS = 3;
-let soundEnabled = true; // Sound state
+let soundEnabled = true;
 
 const gridEl = document.getElementById('grid');
 const startBtn = document.getElementById('startBtn');
 const cashoutBtn = document.getElementById('cashoutBtn');
 const minesSelect = document.getElementById('minesSelect');
 
-// --- SOUND LOGIC (Using Base64 Audio for instant load) ---
-const sounds = {
-    click: new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU" + "1234567890"), // Dummy base64, replace with actual logic
-};
-
-// Audio Context for synthesized sounds (No external files needed)
+// --- SOUND LOGIC ---
 let audioCtx;
 function playSound(type) {
     if (!soundEnabled) return;
@@ -225,7 +220,7 @@ document.getElementById('soundBtn').onclick = function() {
     if(soundEnabled) playSound('click');
 };
 
-// --- TOAST & HELPERS ---
+// --- HELPERS ---
 window.toast = function(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.style.display = 'block';
@@ -238,7 +233,7 @@ window.setBet = function(val) {
     document.getElementById('betAmount').value = val;
 }
 
-// --- AUTH & LOAD ---
+// --- AUTH ---
 onAuthStateChanged(auth, async (user) => {
     if(!user) return location.replace('index.html');
     currentUser = user;
@@ -268,10 +263,10 @@ function calculateMultiplier(safes, mines) {
     for(let i=0; i<safes; i++) {
         m *= (25 - i) / (25 - i - mines);
     }
-    return m * 0.95; // 5% house edge
+    return m * 0.95;
 }
 
-// --- START GAME (FIXED) ---
+// --- START GAME (Fixed Balance Error) ---
 window.startGame = async function() {
     if(isPlaying) return;
     playSound('click');
@@ -286,12 +281,14 @@ window.startGame = async function() {
     startBtn.textContent = 'Starting...';
 
     try {
-        // Balance Deduct
+        // 1. Deduct Balance from Database
         await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-betAmount) });
+        
+        // 2. Update Local Balance
         userBalance -= betAmount;
         document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
 
-        // Save Bet Record (WITHOUT THROWING ERROR)
+        // 3. Save Bet History (Ignore if fails)
         try {
             const betRef = await addDoc(collection(db, 'bets_mines'), {
                 userId: currentUser.uid,
@@ -302,17 +299,16 @@ window.startGame = async function() {
             });
             currentBetId = betRef.id;
         } catch(e) {
-            // Agar DB me save nahi hua to ignore karo, game mat roko
-            console.log("History save skipped");
+            console.log("History save skipped - Error in DB rules");
             currentBetId = null;
         }
 
+        // 4. Game Setup
         isPlaying = true;
         revealedCount = 0;
         currentMulti = 1.00;
         bombsArray = [];
 
-        // Generate Bombs
         while(bombsArray.length < TOTAL_BOMBS) {
             let r = Math.floor(Math.random() * 25);
             if(!bombsArray.includes(r)) bombsArray.push(r);
@@ -325,7 +321,6 @@ window.startGame = async function() {
         cashoutBtn.style.display = 'block';
         cashoutBtn.innerHTML = `Cashout ₹0.00`;
         document.getElementById('uiMulti').textContent = '1.00x';
-        document.getElementById('uiWin').textContent = '0.00';
         
         let nextM = calculateMultiplier(1, TOTAL_BOMBS);
         document.getElementById('uiNext').textContent = nextM.toFixed(2) + 'x';
@@ -335,12 +330,13 @@ window.startGame = async function() {
 
     } catch(e) {
         console.error(e);
-        toast('Balance update failed! Try again.');
+        toast('Balance update failed! Check connection.');
         startBtn.disabled = false;
         startBtn.textContent = 'Start Game';
     }
 }
 
+// --- BOX CLICK (Fixed Cashout Display) ---
 async function handleBoxClick(box) {
     if(!isPlaying || box.classList.contains('revealed')) return;
     
@@ -348,7 +344,7 @@ async function handleBoxClick(box) {
     box.classList.add('revealed');
 
     if(bombsArray.includes(idx)) {
-        // BOMB HIT
+        // BOMB
         playSound('bomb');
         box.classList.add('bomb');
         box.textContent = '💣';
@@ -377,8 +373,9 @@ async function handleBoxClick(box) {
         currentMulti = calculateMultiplier(revealedCount, TOTAL_BOMBS);
         
         document.getElementById('uiMulti').textContent = currentMulti.toFixed(2) + 'x';
+        
+        // FIX: Display Cashout Amount Properly
         const winAmt = betAmount * currentMulti;
-        document.getElementById('uiWin').textContent = winAmt.toFixed(2);
         cashoutBtn.innerHTML = `Cashout ₹${winAmt.toFixed(2)}`;
         
         if(revealedCount < (TOTAL_BOXES - TOTAL_BOMBS)) {
@@ -386,7 +383,7 @@ async function handleBoxClick(box) {
             document.getElementById('uiNext').textContent = nextM.toFixed(2) + 'x';
         } else {
             document.getElementById('uiNext').textContent = 'MAX';
-            cashout(); // Auto cashout
+            cashout(); 
         }
     }
 }
@@ -403,6 +400,7 @@ function revealAllBombs() {
     });
 }
 
+// --- CASHOUT ---
 window.cashout = async function() {
     if(!isPlaying || revealedCount === 0) return;
     isPlaying = false;
@@ -474,15 +472,20 @@ function showResultPopup(isWin, amount) {
     popup.classList.add('show');
 }
 
+// --- HISTORY FIX ---
 async function loadHistory() {
     if(!currentUser) return;
     const listEl = document.getElementById('historyList');
+    listEl.innerHTML = `<div style="text-align:center;color:#666;font-size:13px;padding:10px;">Loading...</div>`;
+    
     try {
         const q = query(collection(db, 'bets_mines'), where('userId', '==', currentUser.uid));
         const snap = await getDocs(q);
         
         let bets = [];
         snap.forEach(doc => bets.push(doc.data()));
+        
+        // Sort by latest
         bets.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
         bets = bets.slice(0, 5);
 
@@ -491,16 +494,21 @@ async function loadHistory() {
             return;
         }
 
-        listEl.innerHTML = bets.map(b => `
+        listEl.innerHTML = bets.map(b => {
+            let displayStatus = b.status === 'win' ? 'Win' : (b.status === 'lose' ? 'Lose' : 'Pending');
+            let displayAmt = b.status === 'win' ? '+₹' + Number(b.winAmount).toFixed(2) : '-₹' + b.amount;
+            let amtClass = b.status === 'win' ? 'win-amt' : 'lose-amt';
+            
+            return `
             <div class="h-item ${b.status === 'win' ? 'win' : 'lose'}">
-                <div>Bet: ₹${b.amount}</div>
-                <div class="amount ${b.status === 'win' ? 'win-amt' : 'lose-amt'}">
-                    ${b.status === 'win' ? '+₹' + Number(b.winAmount).toFixed(2) : '-₹' + b.amount}
-                </div>
+                <div>Bet: ₹${b.amount} <span style="font-size:10px;color:#a6a9ae;">(${displayStatus})</span></div>
+                <div class="amount ${amtClass}">${displayAmt}</div>
             </div>
-        `).join('');
+            `;
+        }).join('');
     } catch(e) {
         console.error("History error:", e);
+        listEl.innerHTML = `<div style="text-align:center;color:#fd565c;font-size:13px;padding:10px;">Failed to load history</div>`;
     }
 }
 </script>
