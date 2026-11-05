@@ -111,14 +111,16 @@
         .tab-item.center-tab svg { width: 55px; height: 55px; }
         .tab-item.center-tab span { margin-top: -5px; }
 
-        /* ================= FLOATING CUSTOMER SERVICE ================= */
+        /* ================= FLOATING CUSTOMER SERVICE & APP ================= */
         .customer-fab { position: fixed; bottom: 80px; right: 15px; width: 50px; height: 50px; border-radius: 50%; z-index: 99; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .customer-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .app-fab { position: fixed; bottom: 140px; right: 15px; width: 50px; height: 50px; border-radius: 50%; z-index: 99; background: #333; border: 2px solid #FAE59F; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .app-fab svg { width: 24px; height: 24px; stroke: #FAE59F; fill: none; stroke-width: 2; }
 
         /* ================= MODALS ================= */
         .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
-        .modal-box { width: 100%; max-width: 400px; background: #292929; border-radius: 14px; overflow: hidden; max-height: 90vh; overflow-y: auto;}
+        .modal-box { width: 100%; max-width: 400px; background: #292929; border-radius: 14px; overflow: hidden; max-height: 90vh; overflow-y: auto; }
         .modal-head { background: linear-gradient(180deg, #6F6F6F 0%, #404040 100%); padding: 14px; text-align: center; font-size: 15px; font-weight: 600; color: #fff; position: sticky; top: 0; z-index: 10; }
         .modal-body { padding: 18px; position: relative; }
 
@@ -148,6 +150,10 @@
         .activity-btn-wrap { margin-top: 15px; }
         .activity-btn { width: 100%; height: 48px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); border-radius: 24px; color: #3a2a10; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
+        /* Checkbox */
+        .reminder-chk { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #fff; margin-top: 15px; cursor: pointer; }
+        .reminder-chk input { width: 18px; height: 18px; accent-color: #C4933F; }
+
         /* ================= TELEGRAM MODAL ================= */
         .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
         .cs-logo { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f5c542, #ff9d2e); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
@@ -164,9 +170,12 @@
         .cs-chat-btn svg { width: 20px; height: 20px; stroke: #8f5206; fill: none; stroke-width: 2; }
         .modal-close-btn { display: block; width: 100%; text-align: center; padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent; }
 
-        /* Checkbox */
-        .reminder-chk { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #fff; margin-top: 15px; cursor: pointer; }
-        .reminder-chk input { width: 18px; height: 18px; accent-color: #C4933F; }
+        /* Popup Overlay Styles */
+        .popup-img-full { width: 100%; display: block; border-radius: 10px; }
+        .popup-content-text { font-size: 13px; line-height: 1.6; color: #ccc; text-align: center; padding: 10px 0; }
+        
+        .welcome-popup-text { font-size: 14px; line-height: 1.8; color: #ddd; }
+        .welcome-popup-text .highlight { color: #FAE59F; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -238,7 +247,22 @@
         <!-- WinGo 1 Min -->
         <a href="wingo1.html" class="game-item">
             <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go">
-            <span>Win Go</span>
+            <span>Win Go 1m</span>
+        </a>
+        <!-- WinGo 3 Min -->
+        <a href="wingo3.html" class="game-item">
+            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 3m">
+            <span>Win Go 3m</span>
+        </a>
+        <!-- WinGo 5 Min -->
+        <a href="wingo5.html" class="game-item">
+            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 5m">
+            <span>Win Go 5m</span>
+        </a>
+        <!-- WinGo 10 Min -->
+        <a href="wingo10.html" class="game-item">
+            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 10m">
+            <span>Win Go 10m</span>
         </a>
         <!-- 5D -->
         <a href="5d.html" class="game-item">
@@ -252,12 +276,12 @@
         </a>
         <!-- Aviator -->
         <a href="aviator.html" class="game-item">
-            <img src="./images/aviator_png.png" alt="Aviator">
+            <img src="./images/22001.png" alt="Aviator">
             <span>Aviator</span>
         </a>
         <!-- Mines -->
         <a href="mines.html" class="game-item">
-            <img src="./images/22001.png" alt="Mines">
+            <img src="./images/229.png" alt="Mines">
             <span>Mines</span>
         </a>
         <!-- TRX -->
@@ -333,7 +357,10 @@
     </div>
 </div>
 
-<!-- FLOATING CUSTOMER SERVICE -->
+<!-- FLOATING APP & CUSTOMER SERVICE -->
+<div class="app-fab" onclick="showToast('Add to Desktop Prompt')">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5l5-5 5 5m-5-5v12"/></svg>
+</div>
 <div class="customer-fab" onclick="openService()">
     <img src="./images/icon_sevice-1ca64bcf.png" alt="Service">
 </div>
@@ -368,117 +395,80 @@
 <!-- TOAST NOTIFICATION -->
 <div id="toast" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.8); color:#fff; padding:10px 20px; border-radius:8px; display:none; z-index:9999; font-size:14px; text-align:center;"></div>
 
-<!-- MODAL: RECHARGE BONUS POPUP -->
+<!-- POPUP 1: LOGIN WELCOME TEXT -->
+<div id="modal-login-welcome" class="modal-overlay">
+  <div class="modal-box" style="background:#292929;">
+    <div class="modal-head" style="background: linear-gradient(180deg, #F6DC88 0%, #D9AC4F 100%); color: #3a2a10;">Login Welcome</div>
+    <div class="modal-body" style="text-align:center;">
+      <div class="welcome-popup-text" style="margin-bottom: 20px;">
+        <p style="background:#FAE59F; color:#000; display:inline-block; padding:2px 8px; font-weight:bold; margin-bottom:15px;">BDGGAME.COM</p><br>
+        📌 Due to the recent emergence of many fake platforms, BDG has made a statement to prevent members or agents from being deceived.<br><br>
+        ❓ How to correctly identify plagiarized platforms?<br>
+        Open: <span class="highlight">BDGgame.World</span> and enter the URL to verify the authenticity!<br><br>
+        ✅ Official Telegram Group<br>
+        ✅ Official customer service<br>
+        ⭐ BDGGame has been operating for more than 5 years<br>
+        ⭐ The most professional games<br>
+        ⭐ High-quality agent benefits<br>
+        ⭐ The number one casino game platform<br><br>
+        <p style="background:#FAE59F; color:#000; display:inline-block; padding:2px 8px; font-weight:bold; margin-bottom:5px;">💎 Click to promote - become an agent 💎</p><br>
+        Get income every day
+      </div>
+      <button class="activity-btn" onclick="closeModal('modal-login-welcome')">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP 2: DIWALI BONUS (funjj.jpg) -->
+<div id="modal-diwali" class="modal-overlay">
+  <div class="modal-box" style="background:#292929; padding-bottom: 15px;">
+    <div class="modal-head">Diwali Bonus</div>
+    <div class="modal-body" style="text-align:center;">
+      <div class="popup-close" onclick="closeModal('modal-diwali')">×</div>
+      <!-- Image path -->
+      <img src="./images/funjj.jpg" class="popup-img-full" alt="Diwali Bonus">
+      <div style="margin-top:15px;">
+          <button class="activity-btn" onclick="closeModal('modal-diwali')">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP 3: RECHARGE BONUS (ogi.jpg) -->
 <div id="modal-recharge-bonus" class="modal-overlay">
-  <div class="modal-box" style="background:#3a3a3a; border-radius: 16px;">
-    <div class="modal-head" style="background:transparent; font-size:18px; padding:15px 10px 5px;">Extra first deposit bonus</div>
-    <div class="modal-body" style="padding-top:0;">
+  <div class="modal-box" style="background:#292929;">
+    <div class="modal-head">Recharge Bonus</div>
+    <div class="modal-body" style="text-align:center;">
       <div class="popup-close" onclick="closeRechargePopup()">×</div>
-      <p style="text-align:center; font-size:12px; color:#a6a9ae; margin-bottom:15px;">Each account can only receive rewards once</p>
+      <!-- Image path -->
+      <img src="./images/ogi.jpg" class="popup-img-full" alt="Recharge Bonus">
       
-      <div class="recharge-list">
-        <!-- Item 1 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">200000</span></span><span>+ ₹10,000.00</span></div>
-            <div class="sub">Deposit 200000 for the first time and you will receive 10000 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/200000</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 2 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">100000</span></span><span>+ ₹5,000.00</span></div>
-            <div class="sub">Deposit 100000 for the first time and you will receive 5000 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/100000</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 3 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">30000</span></span><span>+ ₹2,000.00</span></div>
-            <div class="sub">Deposit 30000 for the first time and you will receive 2000 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/30000</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 4 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">10000</span></span><span>+ ₹600.00</span></div>
-            <div class="sub">Deposit 10000 for the first time and you will receive 600 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/10000</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 5 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">3000</span></span><span>+ ₹300.00</span></div>
-            <div class="sub">Deposit 3000 for the first time and you will receive 300 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/3000</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 6 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">1000</span></span><span>+ ₹150.00</span></div>
-            <div class="sub">Deposit 1000 for the first time and you will receive 150 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/1000</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 7 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">500</span></span><span>+ ₹100.00</span></div>
-            <div class="sub">Deposit 500 for the first time and you will receive 100 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/500</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 8 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">300</span></span><span>+ ₹60.00</span></div>
-            <div class="sub">Deposit 300 for the first time and you will receive 60 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/300</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-        <!-- Item 9 -->
-        <div class="recharge-item">
-            <div class="head"><span>First deposit <span style="color:#FAE59F">100</span></span><span>+ ₹20.00</span></div>
-            <div class="sub">Deposit 100 for the first time and you will receive 20 bonus</div>
-            <div class="progress-row">
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/100</span></div>
-                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
-            </div>
-        </div>
-      </div>
-
-      <div class="rules-box">
-        <h4>Activity Rules</h4>
-        <ul>
-            <li>Exclusive for the first recharge of the account. There is only one chance. The more you recharge, the more rewards you will receive. The highest reward is ₹10,000.00;</li>
-            <li>Activities cannot be participated in repeatedly;</li>
-            <li>Rewards can only be claimed manually on IOS, Android, H5, and PC;</li>
-            <li>The bonus (excluding the principal) given in this event requires 1 times the coding turnover (i.e. valid bets) before it can be withdrawn, and the coding does not limit the platform;</li>
-            <li>This event is limited to normal human operations by the account owner. It is prohibited to rent, use plug-ins, robots, gamble with different accounts, brush each other, arbitrage, interfaces, protocols, exploit loopholes, group control or other technical means to participate, otherwise it will be canceled or Rewards will be deducted, frozen, or even blacklisted;</li>
-        </ul>
-      </div>
-
-      <label class="reminder-chk">
+      <label class="reminder-chk" style="justify-content: center; margin-top: 15px;">
           <input type="checkbox" id="noReminderChk" onchange="toggleNoReminder(this)">
           <span>No more reminders today</span>
       </label>
 
-      <div class="activity-btn-wrap">
+      <div class="activity-btn-wrap" style="margin-top:15px;">
           <button class="activity-btn" onclick="location.href='wallet.html'">Activity</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP 4: NEW USER REGISTRATION BONUS -->
+<div id="modal-register-bonus" class="modal-overlay">
+  <div class="modal-box" style="background:#fff; color:#333; text-align:center; padding-bottom: 20px; border-radius: 16px;">
+    <div class="modal-body" style="padding: 30px 20px;">
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: #fd565c; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; box-shadow: 0 4px 15px rgba(253,86,92,0.4);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" style="width: 35px; height: 35px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <p style="font-size: 14px; color: #888; margin-bottom: 10px;">Welcome, new friend</p>
+      <h2 style="font-size: 22px; font-weight: 800; color: #333; margin-bottom: 10px;">Registration successful</h2>
+      <p style="font-size: 13px; color: #888; margin-bottom: 20px;">Bonus! 1x wager to cash out!</p>
+      
+      <div style="font-size: 32px; font-weight: bold; color: #f5bb00; margin-bottom: 25px;">₹28.00</div>
+      
+      <button style="width: 100%; height: 50px; border-radius: 25px; background: #fd565c; color: #fff; font-size: 18px; font-weight: 700; box-shadow: 0 4px 15px rgba(253,86,92,0.4);" onclick="closeModal('modal-register-bonus')">Receive</button>
     </div>
   </div>
 </div>
@@ -561,16 +551,24 @@ onAuthStateChanged(auth, async (user) => {
           if(s.phone) document.getElementById('csPhone').value = s.phone;
       } catch(e){}
       
-      // Check if First Deposit Popup should be shown
-      const lastHiddenDate = localStorage.getItem('hideRechargePopupDate');
-      const today = new Date().toDateString();
-      
-      if (lastHiddenDate !== today) {
-          // Check user database to see if first deposit is done (optional logic here)
-          // For now, showing it automatically after login after 2 seconds
-          setTimeout(() => {
-              document.getElementById('modal-recharge-bonus').classList.add('show');
-          }, 1500);
+      // Check for New Registration Bonus
+      const isNewUser = localStorage.getItem('bdg_isNewUser');
+      if (isNewUser === 'true') {
+          setTimeout(() => document.getElementById('modal-register-bonus').classList.add('show'), 500);
+          localStorage.removeItem('bdg_isNewUser');
+      } else {
+          // Show Login Welcome Popup after 1 second
+          setTimeout(() => document.getElementById('modal-login-welcome').classList.add('show'), 1000);
+          
+          // Show Diwali Popup after 3 seconds
+          setTimeout(() => document.getElementById('modal-diwali').classList.add('show'), 3000);
+
+          // Show Recharge Bonus Popup after 5 seconds (if not hidden today)
+          const lastHiddenDate = localStorage.getItem('hideRechargePopupDate');
+          const today = new Date().toDateString();
+          if (lastHiddenDate !== today) {
+              setTimeout(() => document.getElementById('modal-recharge-bonus').classList.add('show'), 5000);
+          }
       }
   }
 });
