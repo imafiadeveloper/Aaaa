@@ -1,0 +1,15 @@
+{
+  "name": "BDG LOTTERY7",
+  "short_name": "BDG Game",
+  "start_url": "/home.html",
+  "display": "standalone",
+  "background_color": "#292929",
+  "theme_color": "#FAE59F",
+  "icons": [
+    {
+      "src": "./images/icon_sevice-1ca64bcf.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
