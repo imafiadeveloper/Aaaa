@@ -17,11 +17,12 @@
   button, input, select, textarea { font-family: inherit; outline: none; }
   button { cursor: pointer; border: none; }
 
+  /* Navbar */
   .navbar {
     position: sticky; top: 0; z-index: 50;
     display: flex; align-items: center; justify-content: space-between;
     height: 56px; padding: 0 14px;
-    background: linear-gradient(90deg, #6F7381 0%, #A9AAB5 100%);
+    background: linear-gradient(90deg, #3F3F3F 0%, #2a2a2a 100%);
     border-bottom: 1px solid #2a2a32;
   }
   .navbar-back {
@@ -31,31 +32,36 @@
   .navbar-back:active { background: rgba(255,255,255,0.1); }
   .navbar-brand {
     display: flex; align-items: center; gap: 8px;
-    font-weight: 800; font-size: 17px; letter-spacing: .5px; color: #fff;
+    font-weight: 800; font-size: 17px; letter-spacing: .5px; color: #FAE59F;
   }
-  .navbar-brand svg { width: 22px; height: 22px; }
+  .navbar-brand svg { width: 22px; height: 22px; stroke: #FAE59F; }
   .navbar-lang { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #fff; }
 
+  /* Heading Banner */
   .heading-banner {
     min-height: 110px;
-    background: linear-gradient(90deg, #6F7381 0%, #A9AAB5 100%);
+    background: linear-gradient(90deg, #3F3F3F 0%, #2a2a2a 100%);
     padding: 18px 22px 14px;
+    border-bottom: 1px solid #333;
   }
   .heading-banner h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-  .heading-banner p { font-size: 13px; color: #fff; line-height: 1.5; }
+  .heading-banner p { font-size: 13px; color: #a6a9ae; line-height: 1.5; }
 
-  .login-tabs { display: flex; padding: 0 22px; background: #f7f8ff; }
+  /* Login Tabs */
+  .login-tabs { display: flex; padding: 0 22px; background: #1A1A1A; }
   .login-tab {
     flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 14px 0; min-height: 78px;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid #333;
     background: transparent; color: #888;
+    transition: 0.2s;
   }
-  .login-tab.active { border-bottom: 4px solid #D9AC4F; }
-  .login-tab.active .login-tab-text { color: #d9ac4f; }
+  .login-tab.active { border-bottom: 4px solid #D9AC4F; background: #262626; border-radius: 10px 10px 0 0; }
+  .login-tab.active .login-tab-text { color: #D9AC4F; }
   .login-tab-icon { width: 30px; height: 30px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
   .login-tab-text { font-size: 15px; font-weight: 500; color: #888; }
 
+  /* Form Wrapper */
   .form-wrap {
     background: #090909; padding: 22px;
     min-height: calc(100vh - 56px - 110px - 78px);
@@ -63,6 +69,7 @@
   .form-panel { display: none; }
   .form-panel.active { display: block; }
 
+  /* Inputs */
   .input-block { margin-bottom: 20px; }
   .input-label {
     display: flex; align-items: center; gap: 6px;
@@ -71,49 +78,52 @@
   .input-label svg { width: 16px; height: 16px; stroke: #d9ac4f; fill: none; stroke-width: 2; }
   .input-box {
     display: flex; align-items: center;
-    background: #484848; border-radius: 10px; padding: 0 14px;
-    transition: box-shadow .2s;
+    background: #262626; border-radius: 10px; padding: 0 14px;
+    border: 1px solid #444;
+    transition: border-color .2s;
   }
-  .input-box:focus-within { box-shadow: 0 0 0 2px #d9ac4f; }
+  .input-box:focus-within { border-color: #d9ac4f; }
   .input-box select {
     background: transparent; border: none; color: #fff;
     font-size: 14px; padding: 6px 4px; max-width: 100px;
-    border-right: 1px solid #666; margin-right: 8px;
+    border-right: 1px solid #555; margin-right: 8px;
   }
   .input-box select option { background: #292929; }
   .input-box input {
     flex: 1; background: transparent; border: none; color: #fff;
     font-size: 15px; padding: 14px 6px; min-width: 0;
   }
-  .input-box input::placeholder { color: #aaa; }
+  .input-box input::placeholder { color: #888; }
   .eye-btn { background: transparent; padding: 8px; display: flex; opacity: .7; }
   .eye-btn svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; }
-  .eye-btn:active { opacity: 1; }
 
+  /* Remember */
   .remember-row {
     display: flex; align-items: center; gap: 8px;
-    font-size: 13px; color: #90929e; margin-bottom: 18px; cursor: pointer;
+    font-size: 13px; color: #a6a9ae; margin-bottom: 18px; cursor: pointer;
   }
   .remember-row input { accent-color: #d9ac4f; width: 16px; height: 16px; }
+
   .tip-row {
     display: flex; align-items: flex-start; gap: 6px;
     font-size: 13px; color: #d9ac4f; margin-bottom: 20px; line-height: 1.5;
   }
   .tip-row svg { width: 18px; height: 18px; flex: none; margin-top: 1px; }
 
+  /* Buttons */
   .btn-stack { display: flex; flex-direction: column; gap: 12px; }
   .btn-lg {
     width: 100%; height: 48px; border-radius: 24px;
-    font-size: 16px; font-weight: 700; letter-spacing: .5px;
+    font-size: 16px; font-weight: 700;
     display: flex; align-items: center; justify-content: center; gap: 8px;
     transition: transform .1s, opacity .2s;
   }
   .btn-lg:active { transform: scale(.98); }
-  .btn-primary { background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; }
-  .btn-primary:active { background: linear-gradient(180deg, #A9AAB5 0%, #6F7381 100%); color: #fff; }
-  .btn-ghost { background: transparent; border: 1px solid #C4933F; color: #c4933f; }
-  .btn-ghost:active { background: linear-gradient(180deg, #A9AAB5 0%, #6F7381 100%); color: #fff; border-color: #6F7381; }
+  .btn-primary { background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #3a2a10; }
+  .btn-ghost { background: transparent; border: 1px solid #C4933F; color: #C4933F; }
+  .btn-ghost:active { background: rgba(196, 147, 63, 0.1); }
 
+  /* Footer */
   .helper-footer { display: flex; justify-content: space-around; margin-top: 32px; }
   .helper-item {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -121,12 +131,13 @@
   }
   .helper-icon {
     width: 42px; height: 42px; border-radius: 50%;
-    background: #1f1f26;
+    background: #1f1f1f;
     display: flex; align-items: center; justify-content: center;
+    border: 1px solid #333;
   }
   .helper-icon svg { width: 20px; height: 20px; stroke: #d9ac4f; fill: none; stroke-width: 2; }
-  .helper-item:active .helper-icon { background: #2a2a32; }
 
+  /* Toast & Loader */
   #toast {
     position: fixed; left: 50%; top: 40%; transform: translateX(-50%);
     background: rgba(0,0,0,.9); color: #fff;
@@ -137,6 +148,21 @@
   #toast.show { display: block; animation: toastIn .2s ease; }
   @keyframes toastIn { from { opacity:0; transform: translate(-50%,-6px);} to {opacity:1; transform: translate(-50%,0);} }
 
+  #loader {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,.75);
+    display: none; align-items: center; justify-content: center;
+  }
+  #loader.show { display: flex; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 4px solid rgba(245,197,66,.25);
+    border-top-color: #f5c542; border-radius: 50%;
+    animation: spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Modals */
   .modal-overlay {
     position: fixed; inset: 0; z-index: 200;
     background: rgba(0,0,0,.8);
@@ -153,12 +179,35 @@
   }
   @keyframes modalIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .modal-head {
-    background: linear-gradient(180deg, #6F6F6F 0%, #404040 100%);
+    background: linear-gradient(180deg, #3F3F3F 0%, #292929 100%);
     padding: 14px; text-align: center;
-    font-size: 15px; font-weight: 600; color: #fff;
+    font-size: 15px; font-weight: 600; color: #FAE59F;
+    border-bottom: 1px solid #333;
   }
   .modal-body { padding: 18px; }
 
+  .modal-input {
+    width: 100%; height: 46px; border-radius: 10px;
+    background: #1A1A1A; color: #fff;
+    padding: 0 14px; font-size: 15px; border: 1px solid #444;
+    margin-bottom: 12px;
+  }
+  .modal-input::placeholder { color: #888; }
+  .modal-textarea {
+    width: 100%; min-height: 100px; border-radius: 10px;
+    background: #1A1A1A; color: #fff;
+    padding: 12px 14px; font-size: 15px; border: 1px solid #444;
+    margin-bottom: 12px; resize: vertical; line-height: 1.5;
+  }
+  .modal-textarea::placeholder { color: #888; }
+  .field-hint { font-size: 12px; color: #888; margin: -6px 0 12px 4px; }
+
+  .modal-close-btn {
+    display: block; width: 100%; text-align: center;
+    padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent;
+  }
+
+  /* CS Modal */
   .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
   .cs-logo {
     width: 90px; height: 90px; border-radius: 50%;
@@ -179,48 +228,11 @@
   .cs-chat-btn {
     width: 100%; height: 50px; border-radius: 25px;
     background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%);
-    color: #8f5206; font-size: 16px; font-weight: 700;
+    color: #3a2a10; font-size: 16px; font-weight: 700;
     display: flex; align-items: center; justify-content: center; gap: 8px;
     margin-top: 4px;
   }
-  .cs-chat-btn:active { transform: scale(.98); }
-  .cs-chat-btn:disabled { opacity: .6; cursor: not-allowed; }
-  .cs-chat-btn svg { width: 20px; height: 20px; stroke: #8f5206; fill: none; stroke-width: 2; }
-
-  .modal-close-btn {
-    display: block; width: 100%; text-align: center;
-    padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent;
-  }
-
-  .modal-input {
-    width: 100%; height: 46px; border-radius: 10px;
-    background: #484848; color: #fff;
-    padding: 0 14px; font-size: 15px; border: none;
-    margin-bottom: 12px;
-  }
-  .modal-input::placeholder { color: #aaa; }
-  .modal-textarea {
-    width: 100%; min-height: 100px; border-radius: 10px;
-    background: #484848; color: #fff;
-    padding: 12px 14px; font-size: 15px; border: none;
-    margin-bottom: 12px; resize: vertical; line-height: 1.5;
-  }
-  .modal-textarea::placeholder { color: #aaa; }
-  .field-hint { font-size: 12px; color: #8a8a95; margin: -6px 0 12px 4px; }
-
-  #loader {
-    position: fixed; inset: 0; z-index: 9998;
-    background: rgba(0,0,0,.75);
-    display: none; align-items: center; justify-content: center;
-  }
-  #loader.show { display: flex; }
-  .spinner {
-    width: 48px; height: 48px;
-    border: 4px solid rgba(245,197,66,.25);
-    border-top-color: #f5c542; border-radius: 50%;
-    animation: spin .9s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .cs-chat-btn svg { width: 20px; height: 20px; stroke: #3a2a10; fill: none; stroke-width: 2; }
 
   @media (max-width: 380px) {
     .heading-banner { padding: 14px 16px 10px; }
@@ -234,13 +246,13 @@
 <header class="navbar">
   <button class="navbar-back" onclick="history.back()" aria-label="Back">&#8592;</button>
   <div class="navbar-brand">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linejoin="round">
       <rect x="3" y="3" width="18" height="18" rx="3"/>
-      <circle cx="8" cy="8" r="1" fill="#fff"/>
-      <circle cx="16" cy="8" r="1" fill="#fff"/>
-      <circle cx="8" cy="16" r="1" fill="#fff"/>
-      <circle cx="16" cy="16" r="1" fill="#fff"/>
-      <circle cx="12" cy="12" r="1" fill="#fff"/>
+      <circle cx="8" cy="8" r="1" fill="#FAE59F"/>
+      <circle cx="16" cy="8" r="1" fill="#FAE59F"/>
+      <circle cx="8" cy="16" r="1" fill="#FAE59F"/>
+      <circle cx="16" cy="16" r="1" fill="#FAE59F"/>
+      <circle cx="12" cy="12" r="1" fill="#FAE59F"/>
     </svg>
     BDG LOTTERY7
   </div>
@@ -265,6 +277,7 @@
 
 <div class="form-wrap">
 
+  <!-- Phone Panel -->
   <div id="panel-phone" class="form-panel active">
     <div class="input-block">
       <div class="input-label">
@@ -307,6 +320,7 @@
     </div>
   </div>
 
+  <!-- Email Panel -->
   <div id="panel-email" class="form-panel">
     <div class="input-block">
       <div class="input-label">
@@ -355,13 +369,13 @@
   </div>
 </div>
 
-<!-- MODAL: REGISTER (Added Invite Code) -->
+<!-- MODAL: REGISTER (Invite Code Required) -->
 <div id="modal-register" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-head">Create Account</div>
     <div class="modal-body">
       <div style="display:flex;gap:6px;">
-        <select id="regCountry" style="width:88px;height:46px;border-radius:10px;background:#484848;border:none;color:#fff;font-size:14px;padding:0 8px;">
+        <select id="regCountry" style="width:88px;height:46px;border-radius:10px;background:#1A1A1A;border:1px solid #444;color:#fff;font-size:14px;padding:0 8px;">
           <option value="+91" selected>+91</option>
           <option value="+880">+880</option>
           <option value="+977">+977</option>
@@ -378,12 +392,12 @@
       <input id="regPwd" class="modal-input" type="password" maxlength="32" placeholder="Set password (min 6)" />
       <input id="regPwd2" class="modal-input" type="password" maxlength="32" placeholder="Confirm password" />
       
-      <!-- NAYA: INVITE CODE INPUT -->
-      <input id="regInviteCode" class="modal-input" type="text" maxlength="20" placeholder="Invite Code (Optional)" />
+      <!-- INVITE CODE (REQUIRED) -->
+      <input id="regInviteCode" class="modal-input" type="text" maxlength="20" placeholder="Invite Code (Required)" style="border-color: #fd565c;" />
       
-      <div class="tip-row">
+      <div class="tip-row" style="color:#fd565c;">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span>Email required — it is used for login &amp; password recovery.</span>
+        <span>Invite code is required to create an account.</span>
       </div>
       <button class="btn-lg btn-primary" style="margin-bottom:10px;" onclick="doRegister()">Create Account</button>
       <button class="modal-close-btn" onclick="closeModal('modal-register')">Cancel</button>
@@ -432,8 +446,7 @@
       </div>
       <input id="csPhone" class="modal-input" type="tel" inputmode="numeric" maxlength="12" placeholder="Your phone number (e.g. 9876543210)" />
       <div class="field-hint">Enter the phone number linked to your account</div>
-      <textarea id="csDesc" class="modal-textarea" maxlength="600" placeholder="Describe your problem in detail (e.g. deposit issue, withdrawal, login problem...)"></textarea>
-      <div class="field-hint">Minimum 5 characters, maximum 600</div>
+      <textarea id="csDesc" class="modal-textarea" maxlength="600" placeholder="Describe your problem in detail..."></textarea>
       <button id="csSendBtn" class="cs-chat-btn" onclick="sendSupport()">
         <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
         Send to Support
@@ -467,28 +480,23 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
   authDomain: "bdglottery7.firebaseapp.com",
   projectId: "bdglottery7",
   storageBucket: "bdglottery7.firebasestorage.app",
   messagingSenderId: "568771943906",
-  appId: "1:568771943906:web:5b78078d9c0d67427dedbb",
-  measurementId: "G-VRYNMCS0EZ"
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ================= TELEGRAM ================= */
 const TG_CONFIG = {
   BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw",
   CHAT_ID:   "8167337368"
 };
 
-/* ================= HELPERS ================= */
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -527,7 +535,6 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('show'); });
 });
 
-/* ================= AUTH STATE ================= */
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
@@ -539,7 +546,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-/* ================= LOGIN ================= */
 async function doLogin(mode) {
   const isPhone = mode === 'phone';
   const country = isPhone ? document.getElementById('phoneCountry').value : '';
@@ -554,7 +560,6 @@ async function doLogin(mode) {
   if (!pwd) { showToast('Please enter password'); return; }
 
   let emailToLogin = username;
-
   if (isPhone) {
     emailToLogin = `${country.replace('+','')}${username}@bdg7.com`;
   }
@@ -581,7 +586,6 @@ async function doLogin(mode) {
   } catch (err) {
     hideLoader();
     const code = err.code || '';
-    
     if (code.includes('user-not-found') || code.includes('invalid-credential') || code.includes('wrong-password')) {
       showToast('Invalid Credentials. Check Phone/Email & Password.');
     } else if (code.includes('too-many-requests')) {
@@ -589,22 +593,20 @@ async function doLogin(mode) {
     } else {
       showToast('Login failed: ' + (err.message || 'Try again'));
     }
-    console.error(err);
   }
 }
 window.doLogin = doLogin;
 
-/* ================= REGISTER ================= */
 function openRegister() {
   ['regPhone','regName','regEmail','regPwd','regPwd2','regInviteCode'].forEach(id => {
     document.getElementById(id).value = '';
   });
   
-  // URL se ref code nikalo (agar hai to)
+  // URL se ref code auto-fill karo
   const urlParams = new URLSearchParams(window.location.search);
   const refCode = urlParams.get('ref');
   if (refCode) {
-      document.getElementById('regInviteCode').value = refCode;
+      document.getElementById('regInviteCode').value = refCode.toUpperCase();
   }
   
   openModal('modal-register');
@@ -625,28 +627,33 @@ async function doRegister() {
   if (!realEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(realEmail)) { showToast('Valid email required'); return; }
   if (pwd.length < 6) { showToast('Password min 6 chars'); return; }
   if (pwd !== pwd2) { showToast('Passwords do not match'); return; }
+  
+  // 🔥 INVITE CODE COMPULSORY CHECK
+  if (!inviteCode) { 
+      showToast('Invite Code is required to create an account!'); 
+      return; 
+  }
 
   showLoader();
   try {
     const authEmail = `${country.replace('+','')}${phone}@bdg7.com`;
 
-    // 1. Firebase Auth me account create karo
+    // 1. Check Invite Code validity
+    let referredBy = null;
+    const q = query(collection(db, "users"), where("inviteCode", "==", inviteCode.toUpperCase()));
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.empty) {
+        hideLoader();
+        showToast('Invalid Invite Code! Cannot create account.');
+        return;
+    }
+    referredBy = querySnapshot.docs[0].id;
+
+    // 2. Create User in Auth
     const cred = await createUserWithEmailAndPassword(auth, authEmail, pwd);
 
-    // 2. ReferredBy check karo (Agar invite code daala hai)
-    let referredBy = null;
-    if (inviteCode) {
-        // Invite code se search karo ki ye kis user ka hai
-        const q = query(collection(db, "users"), where("inviteCode", "==", inviteCode.toUpperCase()));
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-            referredBy = querySnapshot.docs[0].id; // Us user ka UID
-        } else {
-            showToast('Invalid Invite Code, but account created.');
-        }
-    }
-
-    // 3. Firestore me data save karo
+    // 3. Save User Data with referredBy
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       country, 
@@ -654,8 +661,9 @@ async function doRegister() {
       name, 
       realEmail: realEmail, 
       authEmail: authEmail,
-      inviteCode: cred.user.uid.substring(0, 8).toUpperCase(), // Naya Invite Code
-      referredBy: referredBy, // Team link
+      inviteCode: cred.user.uid.substring(0, 8).toUpperCase(), // Naya code
+      referredBy: referredBy,
+      balance: 0, // Initial balance (0)
       createdAt: serverTimestamp()
     });
 
@@ -670,7 +678,6 @@ async function doRegister() {
     
   } catch (err) {
     hideLoader();
-    console.error("ERROR:", err);
     const code = err.code || '';
     if (code.includes('email-already-in-use')) {
       showToast('This Phone Number is already registered.');
@@ -683,7 +690,6 @@ async function doRegister() {
 }
 window.doRegister = doRegister;
 
-/* ================= FORGOT PASSWORD ================= */
 function openForgot() {
   document.getElementById('fpEmail').value = '';
   openModal('modal-forgot');
@@ -708,12 +714,10 @@ async function doForgot() {
     } else {
       showToast('Failed: ' + (err.message || 'Try again'));
     }
-    console.error(err);
   }
 }
 window.doForgot = doForgot;
 
-/* ================= CUSTOMER SERVICE ================= */
 function openService() {
   try {
     const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
@@ -789,14 +793,11 @@ async function sendSupport() {
 }
 window.sendSupport = sendSupport;
 
-/* ================= AUTOFILL ================= */
 window.addEventListener('DOMContentLoaded', () => {
-  // Check for ref code in URL
   const urlParams = new URLSearchParams(window.location.search);
   const refCode = urlParams.get('ref');
   
   if (refCode) {
-      // Agar URL me ref code hai, to direct Register form kholo
       openRegister();
   } else {
       const last = localStorage.getItem('bdg7_last');
