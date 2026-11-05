@@ -981,16 +981,17 @@ async function loadChart() {
   }
 }
 
-/* LOAD MY HISTORY */
+/* ==================== FIXED: LOAD MY HISTORY ==================== */
 async function loadMyHistory() {
   if (!currentUser) return;
   const listEl = document.getElementById('myHistoryList');
+  
   try {
+    // Sirf where query use kar rahe hain (No orderBy to avoid Index Error)
     const q = query(
       collection(db, 'bets'), 
       where('userId', '==', currentUser.uid), 
-      orderBy('createdAt', 'desc'), 
-      limit(20)
+      limit(30) 
     );
     const snap = await getDocs(q);
     
@@ -999,10 +1000,23 @@ async function loadMyHistory() {
       return;
     }
     
-    let html = '';
+    // Data ko array me daal ke JavaScript se sort kar rahe hain (Newest First)
+    let betsData = [];
     snap.forEach((doc) => {
-      const d = doc.data();
-      
+      betsData.push({ id: doc.id, ...doc.data() });
+    });
+
+    betsData.sort((a, b) => {
+      const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
+      const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
+      return timeB - timeA;
+    });
+
+    // Sirf top 20 bets show karenge
+    betsData = betsData.slice(0, 20);
+    
+    let html = '';
+    betsData.forEach((d) => {
       // Format result status
       let resHtml = '';
       if (d.status === 'win') {
@@ -1023,7 +1037,7 @@ async function loadMyHistory() {
     });
     listEl.innerHTML = html;
   } catch (e) {
-    console.error(e);
+    console.error("My History Error:", e);
     listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">Failed to load history</div>`;
   }
 }
