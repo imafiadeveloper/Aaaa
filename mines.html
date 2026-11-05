@@ -30,7 +30,7 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
 
 /* Grid */
 .grid-container{margin:0 16px 20px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
-.box{aspect-ratio:1;background:#2a2d35;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:inset 0 -4px 0 rgba(0,0,0,0.4);transition:transform 0.15s, background 0.2s;}
+.box{aspect-ratio:1;background:#2a2d35;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:inset 0 -4px 0 rgba(0,0,0,0.4);transition:transform 0.15s, background 0.2s;user-select:none;}
 .box:active{transform:scale(0.92);}
 .box:hover{background:#353943;}
 .box.revealed{background:#1a1d24;box-shadow:none;cursor:default;transform:scale(1);}
@@ -147,7 +147,7 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
 const app = initializeApp(firebaseConfig);
@@ -169,13 +169,13 @@ const gridEl = document.getElementById('grid');
 const startBtn = document.getElementById('startBtn');
 const cashoutBtn = document.getElementById('cashoutBtn');
 
-function toast(msg) {
+window.toast = function(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 2000);
 }
 
-function setBet(val) {
+window.setBet = function(val) {
     if(isPlaying) return;
     document.getElementById('betAmount').value = val;
 }
@@ -212,7 +212,7 @@ function calculateMultiplier(safes) {
     return m * 0.95; // 5% house edge
 }
 
-async function startGame() {
+window.startGame = async function() {
     if(isPlaying) return;
     betAmount = Number(document.getElementById('betAmount').value);
     if(betAmount < 10) return toast('Minimum bet is ₹10');
@@ -257,6 +257,7 @@ async function startGame() {
         document.getElementById('betAmount').disabled = true;
 
     } catch(e) {
+        console.error(e);
         toast('Error starting game');
         startBtn.disabled = false;
         startBtn.textContent = 'Start Game';
@@ -322,7 +323,7 @@ function revealAllBombs() {
     });
 }
 
-async function cashout() {
+window.cashout = async function() {
     if(!isPlaying || revealedCount === 0) return;
     isPlaying = false;
 
@@ -354,7 +355,7 @@ async function cashout() {
     loadHistory();
 }
 
-window.closePopup = () => {
+window.closePopup = function() {
     document.getElementById('resultPopup').classList.remove('show');
     // Reset UI
     document.getElementById('uiMulti').textContent = '1.00x';
@@ -392,7 +393,7 @@ async function loadHistory() {
     if(!currentUser) return;
     const listEl = document.getElementById('historyList');
     try {
-        const q = query(collection(db, 'bets_mines'), where('userId', '==', currentUser.uid), limit(20));
+        const q = query(collection(db, 'bets_mines'), where('userId', '==', currentUser.uid));
         const snap = await getDocs(q);
         
         let bets = [];
@@ -409,12 +410,12 @@ async function loadHistory() {
             <div class="h-item ${b.status === 'win' ? 'win' : 'lose'}">
                 <div>Bet: ₹${b.amount}</div>
                 <div class="amount ${b.status === 'win' ? 'win-amt' : 'lose-amt'}">
-                    ${b.status === 'win' ? '+₹' + b.winAmount.toFixed(2) : '-₹' + b.amount}
+                    ${b.status === 'win' ? '+₹' + Number(b.winAmount).toFixed(2) : '-₹' + b.amount}
                 </div>
             </div>
         `).join('');
     } catch(e) {
-        console.error(e);
+        console.error("History error:", e);
     }
 }
 </script>

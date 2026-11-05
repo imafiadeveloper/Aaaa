@@ -904,19 +904,34 @@ window.switchHistoryTab = function(tab, el) {
   }
 };
 
-/* LOAD GAME HISTORY */
+/* LOAD GAME HISTORY (FIXED - NO ORDERBY INDEX NEEDED) */
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(10));
+    // Note: orderBy hata diya hai taaki index ki zaroorat na pade
+    const q = query(collection(db, RESULT_COLLECTION), limit(50));
     const snap = await getDocs(q);
+    
     if (snap.empty) {
       listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">No data</div>`;
       return;
     }
+
+    let results = [];
+    snap.forEach(doc => results.push(doc.data()));
+
+    // JS Sort (Newest First)
+    results.sort((a,b) => {
+        if(a.period > b.period) return -1;
+        if(a.period < b.period) return 1;
+        return 0;
+    });
+
+    // Show Top 10
+    results = results.slice(0, 10);
+
     let html = '';
-    snap.forEach((doc) => {
-      const d = doc.data();
+    results.forEach((d) => {
       let colorHtml = '';
       if (d.color === 'violet') colorHtml = `<span class="res-num" style="background:#b659fe">${d.number}</span>`;
       else if (d.color === 'green') colorHtml = `<span class="res-num" style="background:#40ad72">${d.number}</span>`;
@@ -931,7 +946,8 @@ async function loadHistory() {
     });
     listEl.innerHTML = html;
   } catch (e) {
-    listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">Failed to load</div>`;
+    console.error(e);
+    listEl.innerHTML = `<div class="ht-row" style="justify-content:center;color:#666;">Failed to load history</div>`;
   }
 }
 
@@ -939,7 +955,7 @@ async function loadHistory() {
 async function loadChart() {
   const chartGrid = document.getElementById('chartGrid');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(30));
+    const q = query(collection(db, RESULT_COLLECTION), limit(30));
     const snap = await getDocs(q);
     
     if (snap.empty) {
@@ -947,10 +963,17 @@ async function loadChart() {
       return;
     }
 
-    let html = '';
     let resultsArr = [];
     snap.forEach(doc => resultsArr.push(doc.data()));
     
+    // JS Sort
+    resultsArr.sort((a,b) => {
+        if(a.period > b.period) return -1;
+        if(a.period < b.period) return 1;
+        return 0;
+    });
+
+    let html = '';
     resultsArr.forEach((d, i) => {
       let cClass = 'c-small';
       let sizeTxt = 'S';
