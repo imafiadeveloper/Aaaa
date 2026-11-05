@@ -3,93 +3,469 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0f1115">
-<title>BDG LOTTERY7 - Mines</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0b0e14">
+<title>BDG LOTTERY7 - Mines VIP</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
+:root {
+    --bg-main: #0b0e14;
+    --card-bg: rgba(20, 24, 34, 0.85);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --gold-primary: #f5c443;
+    --gold-gradient: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+    --green-cashout: linear-gradient(135deg, #00e676 0%, #00b348 100%);
+    --gem-color: #00f0ff;
+    --bomb-color: #ff3366;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;padding-bottom:20px;}
+
+body {
+    background: radial-gradient(circle at 50% 0%, #171d2b 0%, #0a0c12 70%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    padding-bottom: 24px;
+}
 
 /* Navbar */
-.navbar{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 16px;background:#1a1d24;border-bottom:1px solid #333;position:sticky;top:0;z-index:100;}
-.navbar-brand{font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;}
-.navbar-right{display:flex;gap:12px;align-items:center;}
-.nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:0.2s;}
-.nav-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;}
-.nav-icon.active svg{stroke:#FAE59F;}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 58px;
+    padding: 0 16px;
+    background: rgba(14, 18, 26, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.navbar-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.navbar-right { display: flex; gap: 10px; align-items: center; }
+.nav-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+.nav-icon svg { width: 18px; height: 18px; stroke: #9eabbf; fill: none; stroke-width: 2.2; }
+.nav-icon.active svg { stroke: var(--gold-primary); }
+.nav-icon:active { transform: scale(0.92); }
 
-/* Balance */
-.bal-box{background:#1a1d24;margin:16px;border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;border:1px solid #2a2d35;}
-.bal-box span{color:#a6a9ae;font-size:12px;}
-.bal-box h2{color:#FAE59F;font-size:24px;font-weight:900;}
+/* Balance Widget */
+.bal-box {
+    background: var(--card-bg);
+    margin: 14px 16px 12px;
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.bal-label {
+    color: #7b889b;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    display: block;
+    margin-bottom: 3px;
+}
+.bal-amount {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+.bal-amount span { color: var(--gold-primary); }
+.bal-refresh-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.bal-refresh-btn:active { transform: rotate(180deg) scale(0.9); }
 
-/* Game Info Bar */
-.game-info{display:flex;justify-content:space-between;margin:0 16px 16px;gap:8px;}
-.gi-col{flex:1;background:#1a1d24;padding:12px;border-radius:12px;text-align:center;border:1px solid #2a2d35;}
-.gi-col span{color:#a6a9ae;font-size:10px;display:block;margin-bottom:4px;text-transform:uppercase;}
-.gi-col strong{font-size:16px;color:#FAE59F;}
+/* Live Game HUD Bar */
+.game-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 16px 14px;
+    gap: 8px;
+}
+.gi-col {
+    background: var(--card-bg);
+    padding: 10px 8px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+.gi-col span {
+    color: #748194;
+    font-size: 10px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.gi-col strong {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--gold-primary);
+}
 
-/* Grid */
-.grid-container{margin:0 16px 20px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
-.box{aspect-ratio:1;background:#2a2d35;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:inset 0 -4px 0 rgba(0,0,0,0.4);transition:transform 0.15s, background 0.2s;user-select:none;}
-.box:active{transform:scale(0.92);}
-.box:hover{background:#353943;}
-.box.revealed{background:#1a1d24;box-shadow:none;cursor:default;transform:scale(1);}
-.box.safe{background:#40ad72;box-shadow:inset 0 -4px 0 #2e7d50;animation:pop 0.3s ease;}
-.box.bomb{background:#fd565c;box-shadow:inset 0 -4px 0 #b8393e;animation:shake 0.4s ease;}
-.box.disabled{pointer-events:none;opacity:0.6;}
-@keyframes pop { 0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(5px); } 50% { transform: translateX(-5px); } 75% { transform: translateX(5px); } 100% { transform: translateX(0); } }
+/* 5x5 Mines Matrix */
+.grid-container {
+    margin: 0 16px 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 9px;
+    perspective: 1000px;
+}
+.box {
+    aspect-ratio: 1;
+    background: linear-gradient(145deg, #232938 0%, #151923 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 6px 0 #0d1017, 0 10px 14px rgba(0, 0, 0, 0.45);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s ease;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+.box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+.box:active:not(.revealed):not(.disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #0d1017, 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+.box.revealed {
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
+    cursor: default;
+    border-color: rgba(255, 255, 255, 0.03);
+}
+.box.safe {
+    background: radial-gradient(circle at 50% 50%, #0d3824 0%, #061e12 100%);
+    border: 1.5px solid #00e676;
+    box-shadow: 0 0 18px rgba(0, 230, 118, 0.35);
+    animation: gemReveal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+.box.bomb {
+    background: radial-gradient(circle at 50% 50%, #4a121d 0%, #220509 100%);
+    border: 1.5px solid #ff3366;
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.45);
+    animation: bombBlast 0.45s ease forwards;
+}
+.box.disabled {
+    pointer-events: none;
+    opacity: 0.45;
+}
 
-/* Controls */
-.controls{margin:auto 16px 20px;display:flex;flex-direction:column;gap:12px;}
-.input-row{display:flex;gap:8px;align-items:center;}
-.input-row input{flex:1;background:#1a1d24;border:1px solid #444;border-radius:10px;padding:14px;color:#fff;font-size:18px;font-weight:700;text-align:center;outline:none;}
-.input-row input:focus{border-color:#FAE59F;}
-.quick-btns{display:flex;gap:8px;}
-.quick-btn{flex:1;background:#2a2d35;border:none;border-radius:8px;padding:10px;color:#fff;font-weight:700;cursor:pointer;font-size:12px;}
-.quick-btn:active{background:#3f3f3f;}
-.mines-select{background:#1a1d24;color:#fff;border:1px solid #444;border-radius:10px;padding:0 10px;font-weight:700;font-size:16px;outline:none;cursor:pointer;}
-.btn-main{width:100%;height:56px;border-radius:12px;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:18px;font-weight:900;border:none;cursor:pointer;box-shadow:0 4px 15px rgba(250,229,159,0.3);transition:transform 0.1s;}
-.btn-main:active{transform:scale(0.98);}
-.btn-main:disabled{opacity:0.5;cursor:not-allowed;}
-.btn-cashout{background:linear-gradient(180deg,#40ad72 0%,#25874b 100%);color:#fff;box-shadow:0 4px 15px rgba(64,173,114,0.4);display:none;}
+@keyframes gemReveal {
+    0% { transform: scale(0.6) rotate(-20deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes bombBlast {
+    0% { transform: scale(0.5); }
+    30% { transform: scale(1.25) rotate(10deg); }
+    60% { transform: scale(0.9) rotate(-10deg); }
+    100% { transform: scale(1) rotate(0); }
+}
 
-/* History */
-.history-section{margin:0 16px 20px;}
-.history-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.history-head h3{font-size:15px;}
-.history-list{display:flex;flex-direction:column;gap:8px;}
-.h-item{display:flex;justify-content:space-between;align-items:center;background:#1a1d24;padding:12px;border-radius:10px;font-size:13px;}
-.h-item.win{border-left:3px solid #40ad72;}
-.h-item.lose{border-left:3px solid #fd565c;}
-.h-item .amount{font-weight:700;}
-.h-item .win-amt{color:#40ad72;}
-.h-item .lose-amt{color:#fd565c;}
+/* Betting Control Deck */
+.controls {
+    margin: 0 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+}
+.input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.input-wrapper {
+    flex: 1.2;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.input-wrapper .currency-symbol {
+    position: absolute;
+    left: 14px;
+    color: var(--gold-primary);
+    font-weight: 800;
+    font-size: 16px;
+}
+.input-wrapper input {
+    width: 100%;
+    background: #11141c;
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 13px 12px 13px 32px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+    outline: none;
+    font-family: 'Orbitron', sans-serif;
+    transition: 0.2s;
+}
+.input-wrapper input:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 12px rgba(245, 196, 67, 0.2);
+}
+.mines-select {
+    flex: 0.9;
+    background: #11141c;
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 13px 10px;
+    font-weight: 700;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+.quick-btns {
+    display: flex;
+    gap: 6px;
+}
+.quick-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 9px 0;
+    color: #cfd8e3;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.15s;
+}
+.quick-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.quick-btn:active { transform: scale(0.95); }
 
-.toast{position:fixed;top:10%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;z-index:9999;display:none;text-align:center;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+/* Main Action Buttons */
+.btn-main {
+    width: 100%;
+    height: 54px;
+    border-radius: 14px;
+    background: var(--gold-gradient);
+    color: #211500;
+    font-size: 17px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(245, 196, 67, 0.35);
+    transition: all 0.15s ease;
+}
+.btn-main:active { transform: scale(0.98); }
+.btn-main:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
 
-/* Game Popup */
-.result-popup{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
-.result-popup.show{display:flex;animation:fadeIn .3s ease;}
-.res-box{width:100%;max-width:340px;border-radius:24px;padding:30px 20px;text-align:center;position:relative;animation:popIn .4s cubic-bezier(.68,-0.55,.27,1.55);}
+.btn-cashout {
+    background: var(--green-cashout);
+    color: #01290e;
+    box-shadow: 0 6px 22px rgba(0, 230, 118, 0.38);
+    display: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+}
+
+/* History Box */
+.history-section {
+    margin: 0 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+}
+.history-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+.history-head h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #8c9ba5;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.h-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.025);
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+.h-item.win { border-left: 3.5px solid #00e676; }
+.h-item.lose { border-left: 3.5px solid #ff3366; }
+.h-item .amount { font-family: 'Orbitron', sans-serif; font-weight: 800; }
+.h-item .win-amt { color: #00e676; text-shadow: 0 0 8px rgba(0,230,118,0.25); }
+.h-item .lose-amt { color: #ff3366; }
+
+/* In-game Toast Notification */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(14, 18, 26, 0.95);
+    border: 1px solid var(--gold-primary);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 9999;
+    display: none;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    opacity: 0;
+    transition: all 0.25s ease;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Result Modal Popup */
+.result-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 10, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.result-popup.show { display: flex; animation: fadeIn .25s ease; }
+.res-box {
+    width: 100%;
+    max-width: 330px;
+    border-radius: 24px;
+    padding: 32px 24px 26px;
+    text-align: center;
+    position: relative;
+    background: #131722;
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    animation: popIn .35s cubic-bezier(.34,1.56,.64,1);
+}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@keyframes popIn{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
-.res-box.win{background:linear-gradient(160deg,#1a1d24 0%,#0f1115 100%);border:2px solid #40ad72;box-shadow:0 0 50px rgba(64,173,114,0.3);}
-.res-box.lose{background:linear-gradient(160deg,#1a1d24 0%,#0f1115 100%);border:2px solid #fd565c;box-shadow:0 0 50px rgba(253,86,92,0.3);}
-.res-icon{font-size:60px;margin-bottom:15px;}
-.res-title{font-size:24px;font-weight:900;margin-bottom:8px;}
-.res-box.win .res-title{color:#40ad72;}
-.res-box.lose .res-title{color:#fd565c;}
-.res-amount{font-size:36px;font-weight:900;color:#FAE59F;margin-bottom:20px;}
-.res-btn{width:100%;height:50px;border-radius:25px;background:#FAE59F;color:#3a2a10;font-size:16px;font-weight:700;border:none;cursor:pointer;}
+@keyframes popIn{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+.res-box.win {
+    border-color: #00e676;
+    box-shadow: 0 0 40px rgba(0, 230, 118, 0.25);
+}
+.res-box.lose {
+    border-color: #ff3366;
+    box-shadow: 0 0 40px rgba(255, 51, 102, 0.25);
+}
+.res-icon { font-size: 54px; margin-bottom: 12px; }
+.res-title {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.res-box.win .res-title { color: #00e676; }
+.res-box.lose .res-title { color: #ff3366; }
+.res-amount {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gold-primary);
+    margin-bottom: 22px;
+}
+.res-btn {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--gold-gradient);
+    color: #211500;
+    font-size: 15px;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 </style>
 </head>
 <body>
 
 <div class="navbar">
-    <a href="home.html" class="nav-icon"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
-    <div class="navbar-brand">MINES</div>
+    <a href="home.html" class="nav-icon" style="text-decoration:none;"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <div class="navbar-brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c443" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        MINES VIP
+    </div>
     <div class="navbar-right">
         <div class="nav-icon active" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
     </div>
@@ -97,10 +473,12 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
 
 <div class="bal-box">
     <div>
-        <span>Total Balance</span>
-        <h2>₹<span id="balanceVal">0.00</span></h2>
+        <span class="bal-label">Total Balance</span>
+        <div class="bal-amount">₹<span id="balanceVal">0.00</span></div>
     </div>
-    <svg viewBox="0 0 24 24" onclick="location.reload()" style="width:24px;height:24px;stroke:#a6a9ae;fill:none;stroke-width:2;cursor:pointer;"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+    <div class="bal-refresh-btn" onclick="location.reload()">
+        <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#9eabbf;fill:none;stroke-width:2;"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+    </div>
 </div>
 
 <div class="game-info">
@@ -113,7 +491,10 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
 
 <div class="controls">
     <div class="input-row">
-        <input type="number" id="betAmount" value="10" min="10">
+        <div class="input-wrapper">
+            <span class="currency-symbol">₹</span>
+            <input type="number" id="betAmount" value="10" min="10" step="10">
+        </div>
         <select id="minesSelect" class="mines-select">
             <option value="3">3 Mines</option>
             <option value="5">5 Mines</option>
@@ -126,10 +507,11 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
         <button class="quick-btn" onclick="setBet(10)">₹10</button>
         <button class="quick-btn" onclick="setBet(100)">₹100</button>
         <button class="quick-btn" onclick="setBet(500)">₹500</button>
-        <button class="quick-btn" onclick="setBet(1000)">₹1K</button>
+        <button class="quick-btn" onclick="setBet(1000)">₹1,000</button>
+        <button class="quick-btn" onclick="doubleBet()">2X</button>
     </div>
     <button class="btn-main" id="startBtn" onclick="startGame()">Start Game</button>
-    <button class="btn-main btn-cashout" id="cashoutBtn" onclick="cashout()">Cashout ₹<span id="uiWin">0.00</span></button>
+    <button class="btn-main btn-cashout" id="cashoutBtn" onclick="cashout()">CASHOUT ₹<span id="uiWin">0.00</span></button>
 </div>
 
 <div class="history-section">
@@ -137,11 +519,11 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
         <h3>Recent Games</h3>
     </div>
     <div class="history-list" id="historyList">
-        <!-- History items will load here -->
+        <!-- History items populate here -->
     </div>
 </div>
 
-<!-- Result Popup -->
+<!-- Modal Popup for Results -->
 <div class="result-popup" id="resultPopup">
   <div class="res-box" id="resBox">
     <div class="res-icon" id="resIcon">💎</div>
@@ -158,7 +540,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
+const firebaseConfig = { 
+    apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", 
+    authDomain: "bdglottery7.firebaseapp.com", 
+    projectId: "bdglottery7", 
+    storageBucket: "bdglottery7.firebasestorage.app", 
+    messagingSenderId: "568771943906", 
+    appId: "1:568771943906:web:5b78078d9c0d67427dedbb" 
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -180,7 +569,7 @@ const startBtn = document.getElementById('startBtn');
 const cashoutBtn = document.getElementById('cashoutBtn');
 const minesSelect = document.getElementById('minesSelect');
 
-// --- SOUND LOGIC ---
+// --- SOUND LOGIC (Web Audio API) ---
 let audioCtx;
 function playSound(type) {
     if (!soundEnabled) return;
@@ -192,26 +581,36 @@ function playSound(type) {
         gain.connect(audioCtx.destination);
 
         if (type === 'click') {
-            osc.type = 'sine'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+        } else if (type === 'gem') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600 + (revealedCount * 50), audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200 + (revealedCount * 50), audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.18);
         } else if (type === 'win') {
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-        } else if (type === 'bomb') {
-            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.3);
+            osc.type = 'triangle'; 
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(554.37, audioCtx.currentTime + 0.08);
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.16);
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.24);
             gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+        } else if (type === 'bomb') {
+            osc.type = 'sawtooth'; 
+            osc.frequency.setValueAtTime(160, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.35);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
             osc.start(); osc.stop(audioCtx.currentTime + 0.4);
         }
-    } catch(e) { console.log("Audio error"); }
+    } catch(e) {}
 }
 
 document.getElementById('soundBtn').onclick = function() {
@@ -223,8 +622,13 @@ document.getElementById('soundBtn').onclick = function() {
 // --- HELPERS ---
 window.toast = function(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 2000);
+    t.textContent = msg; 
+    t.style.display = 'block';
+    setTimeout(() => t.classList.add('show'), 10);
+    setTimeout(() => {
+        t.classList.remove('show');
+        setTimeout(() => t.style.display = 'none', 250);
+    }, 2200);
 }
 
 window.setBet = function(val) {
@@ -233,7 +637,14 @@ window.setBet = function(val) {
     document.getElementById('betAmount').value = val;
 }
 
-// --- AUTH ---
+window.doubleBet = function() {
+    if(isPlaying) return;
+    playSound('click');
+    const input = document.getElementById('betAmount');
+    input.value = (Number(input.value) || 10) * 2;
+}
+
+// --- AUTH & INITIALIZATION ---
 onAuthStateChanged(auth, async (user) => {
     if(!user) return location.replace('index.html');
     currentUser = user;
@@ -266,7 +677,7 @@ function calculateMultiplier(safes, mines) {
     return m * 0.95;
 }
 
-// --- START GAME (Fixed Balance Error) ---
+// --- START GAME ---
 window.startGame = async function() {
     if(isPlaying) return;
     playSound('click');
@@ -278,17 +689,14 @@ window.startGame = async function() {
     if(betAmount > userBalance) return toast('Insufficient Balance');
 
     startBtn.disabled = true;
-    startBtn.textContent = 'Starting...';
+    startBtn.textContent = 'CONNECTING...';
 
     try {
-        // 1. Deduct Balance from Database
         await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-betAmount) });
         
-        // 2. Update Local Balance
         userBalance -= betAmount;
         document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
 
-        // 3. Save Bet History (Ignore if fails)
         try {
             const betRef = await addDoc(collection(db, 'bets_mines'), {
                 userId: currentUser.uid,
@@ -299,11 +707,9 @@ window.startGame = async function() {
             });
             currentBetId = betRef.id;
         } catch(e) {
-            console.log("History save skipped - Error in DB rules");
             currentBetId = null;
         }
 
-        // 4. Game Setup
         isPlaying = true;
         revealedCount = 0;
         currentMulti = 1.00;
@@ -319,7 +725,7 @@ window.startGame = async function() {
         document.getElementById('uiMines').textContent = TOTAL_BOMBS;
         startBtn.style.display = 'none';
         cashoutBtn.style.display = 'block';
-        cashoutBtn.innerHTML = `Cashout ₹0.00`;
+        cashoutBtn.innerHTML = `CASHOUT ₹0.00`;
         document.getElementById('uiMulti').textContent = '1.00x';
         
         let nextM = calculateMultiplier(1, TOTAL_BOMBS);
@@ -332,11 +738,11 @@ window.startGame = async function() {
         console.error(e);
         toast('Balance update failed! Check connection.');
         startBtn.disabled = false;
-        startBtn.textContent = 'Start Game';
+        startBtn.textContent = 'START GAME';
     }
 }
 
-// --- BOX CLICK (Fixed Cashout Display) ---
+// --- BOX CLICK LOGIC ---
 async function handleBoxClick(box) {
     if(!isPlaying || box.classList.contains('revealed')) return;
     
@@ -344,7 +750,7 @@ async function handleBoxClick(box) {
     box.classList.add('revealed');
 
     if(bombsArray.includes(idx)) {
-        // BOMB
+        // BOMB TRIGGERED
         playSound('bomb');
         box.classList.add('bomb');
         box.textContent = '💣';
@@ -353,7 +759,7 @@ async function handleBoxClick(box) {
         
         startBtn.style.display = 'block';
         startBtn.disabled = false;
-        startBtn.textContent = 'Start Game';
+        startBtn.textContent = 'START GAME';
         cashoutBtn.style.display = 'none';
         document.getElementById('betAmount').disabled = false;
         minesSelect.disabled = false;
@@ -365,8 +771,8 @@ async function handleBoxClick(box) {
         }
 
     } else {
-        // SAFE
-        playSound('click');
+        // SAFE GEM REVEALED
+        playSound('gem');
         box.classList.add('safe');
         box.textContent = '💎';
         revealedCount++;
@@ -374,9 +780,8 @@ async function handleBoxClick(box) {
         
         document.getElementById('uiMulti').textContent = currentMulti.toFixed(2) + 'x';
         
-        // FIX: Display Cashout Amount Properly
         const winAmt = betAmount * currentMulti;
-        cashoutBtn.innerHTML = `Cashout ₹${winAmt.toFixed(2)}`;
+        cashoutBtn.innerHTML = `CASHOUT ₹${winAmt.toFixed(2)}`;
         
         if(revealedCount < (TOTAL_BOXES - TOTAL_BOMBS)) {
             const nextM = calculateMultiplier(revealedCount + 1, TOTAL_BOMBS);
@@ -400,7 +805,7 @@ function revealAllBombs() {
     });
 }
 
-// --- CASHOUT ---
+// --- CASHOUT LOGIC ---
 window.cashout = async function() {
     if(!isPlaying || revealedCount === 0) return;
     isPlaying = false;
@@ -413,7 +818,7 @@ window.cashout = async function() {
     cashoutBtn.style.display = 'none';
     startBtn.style.display = 'block';
     startBtn.disabled = false;
-    startBtn.textContent = 'Start Game';
+    startBtn.textContent = 'START GAME';
     document.getElementById('betAmount').disabled = false;
     minesSelect.disabled = false;
     
@@ -442,7 +847,6 @@ window.cashout = async function() {
 window.closePopup = function() {
     document.getElementById('resultPopup').classList.remove('show');
     document.getElementById('uiMulti').textContent = '1.00x';
-    document.getElementById('uiWin').textContent = '0.00';
     document.getElementById('uiNext').textContent = '1.18x';
     renderGrid();
     loadHistory();
@@ -459,24 +863,24 @@ function showResultPopup(isWin, amount) {
     
     if(isWin) {
         icon.textContent = '💎';
-        title.textContent = 'You Won!';
+        title.textContent = 'Victory!';
         amt.textContent = '+ ₹' + Number(amount).toFixed(2);
-        amt.style.color = '#40ad72';
+        amt.style.color = '#00e676';
     } else {
         icon.textContent = '💥';
         title.textContent = 'Game Over';
         amt.textContent = '- ₹' + Number(amount).toFixed(2);
-        amt.style.color = '#fd565c';
+        amt.style.color = '#ff3366';
     }
 
     popup.classList.add('show');
 }
 
-// --- HISTORY FIX ---
+// --- HISTORY LOGS ---
 async function loadHistory() {
     if(!currentUser) return;
     const listEl = document.getElementById('historyList');
-    listEl.innerHTML = `<div style="text-align:center;color:#666;font-size:13px;padding:10px;">Loading...</div>`;
+    listEl.innerHTML = `<div style="text-align:center;color:#6f7d95;font-size:13px;padding:12px;">Loading...</div>`;
     
     try {
         const q = query(collection(db, 'bets_mines'), where('userId', '==', currentUser.uid));
@@ -485,12 +889,11 @@ async function loadHistory() {
         let bets = [];
         snap.forEach(doc => bets.push(doc.data()));
         
-        // Sort by latest
         bets.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
         bets = bets.slice(0, 5);
 
         if(bets.length === 0) {
-            listEl.innerHTML = `<div style="text-align:center;color:#666;font-size:13px;padding:10px;">No history found</div>`;
+            listEl.innerHTML = `<div style="text-align:center;color:#6f7d95;font-size:13px;padding:12px;">No history records</div>`;
             return;
         }
 
@@ -501,14 +904,14 @@ async function loadHistory() {
             
             return `
             <div class="h-item ${b.status === 'win' ? 'win' : 'lose'}">
-                <div>Bet: ₹${b.amount} <span style="font-size:10px;color:#a6a9ae;">(${displayStatus})</span></div>
+                <div>Bet: ₹${b.amount} <span style="font-size:11px;color:#748194;margin-left:4px;">(${displayStatus})</span></div>
                 <div class="amount ${amtClass}">${displayAmt}</div>
             </div>
             `;
         }).join('');
     } catch(e) {
         console.error("History error:", e);
-        listEl.innerHTML = `<div style="text-align:center;color:#fd565c;font-size:13px;padding:10px;">Failed to load history</div>`;
+        listEl.innerHTML = `<div style="text-align:center;color:#ff3366;font-size:13px;padding:12px;">Failed to load history</div>`;
     }
 }
 </script>
