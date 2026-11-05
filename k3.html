@@ -196,10 +196,10 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     </span>
   </div>
   <div class="dice-slots">
-    <!-- Path changed to direct root -->
-    <div class="dice-box" id="dice1"><img src="./bg1.png" id="img1" alt=""></div>
-    <div class="dice-box" id="dice2"><img src="./bg1.png" id="img2" alt=""></div>
-    <div class="dice-box" id="dice3"><img src="./bg1.png" id="img3" alt=""></div>
+    <!-- 🔥 FIXED PATH & ONERROR FALLBACK -->
+    <div class="dice-box"><img src="/bg1.png" id="img1" alt="" onerror="this.src='bg1.png'"></div>
+    <div class="dice-box"><img src="/bg1.png" id="img2" alt="" onerror="this.src='bg1.png'"></div>
+    <div class="dice-box"><img src="/bg1.png" id="img3" alt="" onerror="this.src='bg1.png'"></div>
   </div>
   <div class="total-box-wrap">
     <div class="total-box" id="diceTotal">3</div>
@@ -863,7 +863,6 @@ async function loadHistory() {
       let sizeText = d.total >= 11 ? 'Big' : 'Small';
       let sizeColor = d.total >= 11 ? '#f5a623' : '#4a90e2';
       
-      // Update top dice on latest result
       if (doc.id === snap.docs[0].id) {
         animateDice(d.dice);
       }
@@ -887,13 +886,13 @@ function animateDice(dice) {
   let count = 0;
   const interval = setInterval(() => {
     diceEls.forEach((el, i) => {
-      el.src = `./bg${Math.floor(Math.random()*6)+1}.png`; // Yaha direct root path
+      el.src = `/bg${Math.floor(Math.random()*6)+1}.png`; // Root path
     });
     count++;
     if (count > 10) {
       clearInterval(interval);
       diceEls.forEach((el, i) => {
-        el.src = `./bg${dice[i]}.png`; // Yaha direct root path
+        el.src = `/bg${dice[i]}.png`; // Root path
       });
       document.getElementById('diceTotal').textContent = dice.reduce((a,b)=>a+b, 0);
     }
