@@ -40,11 +40,12 @@
         .games-title { display: flex; align-items: center; font-size: 16px; font-weight: 600; margin-bottom: 10px; gap: 6px; }
         .games-title::before { content: ''; display: block; width: 4px; height: 16px; background: linear-gradient(180deg, #F6DC88 0%, #DAAD51 100%); border-radius: 2px; }
         .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .game-item { background: #3F3F3F; border-radius: 10px; padding: 8px; text-align: center; text-decoration: none; color: #fff; display: block; }
-        .game-item img { width: 100%; border-radius: 8px; display: block; margin-bottom: 5px; }
-        .game-item span { font-size: 12px; font-weight: 500; }
+        .game-item { background: #3F3F3F; border-radius: 10px; padding: 8px; text-align: center; text-decoration: none; color: #fff; display: block; position: relative; overflow: hidden; }
+        .game-item img { width: 100%; border-radius: 8px; display: block; margin-bottom: 5px; object-fit: cover; aspect-ratio: 1; }
+        .game-item span { font-size: 12px; font-weight: 500; display: block; }
+        .game-item .badge { position: absolute; top: 5px; right: 5px; background: #fd565c; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
 
-        /* ================= WINNING INFO ================= */
+        /* ================= WINNING INFO (SLOW) ================= */
         .winning-section { padding: 0 10px; margin-bottom: 20px; }
         .section-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         .section-title::before { content: ''; display: block; width: 4px; height: 16px; background: linear-gradient(180deg, #F6DC88 0%, #DAAD51 100%); border-radius: 2px; }
@@ -52,8 +53,8 @@
         .winners-box { background: #3F3F3F; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 10px; height: 180px; overflow: hidden; position: relative; }
         .winner-item { display: flex; align-items: center; justify-content: space-between; background: #292929; padding: 8px 10px; border-radius: 8px; }
         
-        /* SLOW SCROLL ANIMATION (30s) */
-        .winner-scroll-container { animation: scrollWinners 30s linear infinite; display: flex; flex-direction: column; gap: 10px; }
+        /* SLOW SCROLL ANIMATION (60s) */
+        .winner-scroll-container { animation: scrollWinners 60s linear infinite; display: flex; flex-direction: column; gap: 10px; }
         @keyframes scrollWinners {
             0% { transform: translateY(0); }
             100% { transform: translateY(-50%); }
@@ -64,7 +65,6 @@
         .winner-left img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #444; object-fit: cover; }
         .winner-name { font-size: 11px; color: #a6a9ae; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* WinGo Icon Fix (CP.png) */
         .winner-type { display: flex; align-items: center; gap: 2px; }
         .winner-type img.cp-icon { height: 18px; width: auto; object-fit: contain; }
         .winner-type .balls { display: flex; margin-left: 2px; }
@@ -83,7 +83,6 @@
         .ranking-section { padding: 0 10px; margin-bottom: 20px; }
         .ranking-top { display: flex; justify-content: center; align-items: flex-end; height: 160px; margin-bottom: 10px; position: relative; }
         .rank-item { display: flex; flex-direction: column; align-items: center; width: 33%; position: relative; z-index: 1; }
-        
         .rank-item:nth-child(1) { order: 2; top: -20px; z-index: 2; }
         .rank-item:nth-child(2) { order: 1; top: -10px; }
         .rank-item:nth-child(3) { order: 3; top: -10px; }
@@ -116,15 +115,42 @@
         .customer-fab { position: fixed; bottom: 80px; right: 15px; width: 50px; height: 50px; border-radius: 50%; z-index: 99; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .customer-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        /* ================= MODAL (Telegram Support) ================= */
+        /* ================= MODALS ================= */
         .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
-        .modal-box { width: 100%; max-width: 400px; background: #292929; border-radius: 14px; overflow: hidden; }
-        .modal-head { background: linear-gradient(180deg, #6F6F6F 0%, #404040 100%); padding: 14px; text-align: center; font-size: 15px; font-weight: 600; color: #fff; }
-        .modal-body { padding: 18px; }
+        .modal-box { width: 100%; max-width: 400px; background: #292929; border-radius: 14px; overflow: hidden; max-height: 90vh; overflow-y: auto;}
+        .modal-head { background: linear-gradient(180deg, #6F6F6F 0%, #404040 100%); padding: 14px; text-align: center; font-size: 15px; font-weight: 600; color: #fff; position: sticky; top: 0; z-index: 10; }
+        .modal-body { padding: 18px; position: relative; }
+
+        /* Custom Popup Close */
+        .popup-close { position: absolute; top: -10px; right: 10px; font-size: 28px; color: #fff; cursor: pointer; z-index: 20; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .popup-close:hover { color: #fd565c; }
+
+        /* Recharge Bonus Popup Styles */
+        .recharge-popup-img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+        .recharge-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;}
+        .recharge-item { background: #3f3f3f; border-radius: 10px; padding: 12px; border: 1px solid #444; }
+        .recharge-item .head { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+        .recharge-item .head span:first-child { font-weight: bold; color: #fff; }
+        .recharge-item .head span:last-child { color: #FAE59F; font-weight: bold; }
+        .recharge-item .sub { font-size: 11px; color: #a6a9ae; margin-bottom: 10px; }
+        .progress-row { display: flex; align-items: center; gap: 10px; }
+        .progress-bar-bg { flex: 1; height: 10px; background: #292929; border-radius: 5px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: #a6a9ae; width: 0%; border-radius: 5px; }
+        .progress-bar-bg span { font-size: 10px; color: #fff; position: relative; top: -3px; left: 50%; transform: translateX(-50%); }
+        .deposit-btn { background: transparent; border: 1px solid #FAE59F; color: #FAE59F; padding: 6px 15px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+        
+        .rules-box { background: #1f1f1f; border-radius: 10px; padding: 15px; font-size: 11px; color: #a6a9ae; line-height: 1.6; }
+        .rules-box h4 { color: #fff; margin-bottom: 8px; font-size: 14px; text-align: center; }
+        .rules-box ul { padding-left: 15px; }
+        .rules-box li { margin-bottom: 8px; }
+        
+        .activity-btn-wrap { margin-top: 15px; }
+        .activity-btn { width: 100%; height: 48px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); border-radius: 24px; color: #3a2a10; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+        /* ================= TELEGRAM MODAL ================= */
         .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
         .cs-logo { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f5c542, #ff9d2e); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-        /* FIXED ICON (SVG) */
         .cs-logo svg { width: 45px; height: 45px; stroke: #1a1a1a; fill: none; stroke-width: 2; }
         .cs-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
         .cs-sub { font-size: 13px; color: #a6a9ae; text-align: center; line-height: 1.5; margin-bottom: 16px; }
@@ -135,15 +161,16 @@
         .modal-textarea { width: 100%; min-height: 100px; border-radius: 10px; background: #484848; color: #fff; padding: 12px 14px; font-size: 15px; border: none; margin-bottom: 12px; resize: vertical; line-height: 1.5; outline: none; }
         .modal-textarea::placeholder { color: #aaa; }
         .cs-chat-btn { width: 100%; height: 50px; border-radius: 25px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        /* FIXED BUTTON ICON (SVG) */
         .cs-chat-btn svg { width: 20px; height: 20px; stroke: #8f5206; fill: none; stroke-width: 2; }
-        .cs-chat-btn:active { transform: scale(.98); }
         .modal-close-btn { display: block; width: 100%; text-align: center; padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent; }
+
+        /* Checkbox */
+        .reminder-chk { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #fff; margin-top: 15px; cursor: pointer; }
+        .reminder-chk input { width: 18px; height: 18px; accent-color: #C4933F; }
     </style>
 </head>
 <body>
 
-<!-- SVG Gradients -->
 <svg style="position: absolute; width: 0; height: 0;">
     <defs>
         <linearGradient id="gold-grad" x1="0" y1="1" x2="0" y2="0">
@@ -192,27 +219,56 @@
 <div class="notice-bar">
     <svg viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
     <div class="notice-text">Welcome To BDG LOTTERY7! 🎉</div>
-    <button class="notice-btn">
+    <button class="notice-btn" onclick="showToast('Notice Details')">
         Detail 
         <svg viewBox="0 0 24 24" fill="none" stroke="#292929" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </button>
 </div>
 
-<!-- GAMES LIST (Working Links Added) -->
+<!-- ALL GAMES LIST -->
 <div class="games-list" id="gameList">
-    <div class="games-title">Lottery</div>
+    <div class="games-title">Lottery & Games</div>
     <div class="games-grid">
+        <!-- WinGo 30 Sec -->
+        <a href="wingo30.html" class="game-item">
+            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 30s">
+            <span>Win Go 30s</span>
+            <div class="badge">NEW</div>
+        </a>
+        <!-- WinGo 1 Min -->
         <a href="wingo1.html" class="game-item">
             <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go">
             <span>Win Go</span>
         </a>
+        <!-- 5D -->
         <a href="5d.html" class="game-item">
             <img src="./images/lotterycategory_20240110062118e9kt.png" alt="5D">
             <span>5D</span>
         </a>
+        <!-- K3 -->
         <a href="k3.html" class="game-item">
             <img src="./images/lotterycategory_20240110062111bt8e.png" alt="K3">
             <span>K3</span>
+        </a>
+        <!-- Aviator -->
+        <a href="aviator.html" class="game-item">
+            <img src="./images/aviator_png.png" alt="Aviator">
+            <span>Aviator</span>
+        </a>
+        <!-- Mines -->
+        <a href="mines.html" class="game-item">
+            <img src="./images/22001.png" alt="Mines">
+            <span>Mines</span>
+        </a>
+        <!-- TRX -->
+        <a href="trx.html" class="game-item">
+            <img src="./images/lotterycategory_20240110062124qut6.png" alt="TRX">
+            <span>TRX Win</span>
+        </a>
+        <!-- Cricket -->
+        <a href="cricket.html" class="game-item">
+            <img src="./images/810.png" alt="Cricket">
+            <span>Cricket</span>
         </a>
     </div>
 </div>
@@ -222,7 +278,7 @@
     <div class="section-title">Winning information</div>
     <div class="winners-box">
         <div class="winner-scroll-container" id="winnersContainer">
-            <!-- JS se yahan 50+ entries aayengi -->
+            <!-- JS se yahan entries aayengi -->
         </div>
     </div>
 </div>
@@ -230,7 +286,6 @@
 <!-- RANKING -->
 <div class="ranking-section">
     <div class="section-title">Today's earnings chart</div>
-    
     <div class="ranking-top">
         <!-- Rank 2 -->
         <div class="rank-item">
@@ -280,11 +335,10 @@
 
 <!-- FLOATING CUSTOMER SERVICE -->
 <div class="customer-fab" onclick="openService()">
-    <!-- Icon image remains here, ensure it's correct in your folder -->
     <img src="./images/icon_sevice-1ca64bcf.png" alt="Service">
 </div>
 
-<!-- BOTTOM TAB BAR (Working Links Added) -->
+<!-- BOTTOM TAB BAR -->
 <div class="bottom-tabbar">
     <a href="home.html" class="tab-item active">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -314,6 +368,121 @@
 <!-- TOAST NOTIFICATION -->
 <div id="toast" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.8); color:#fff; padding:10px 20px; border-radius:8px; display:none; z-index:9999; font-size:14px; text-align:center;"></div>
 
+<!-- MODAL: RECHARGE BONUS POPUP -->
+<div id="modal-recharge-bonus" class="modal-overlay">
+  <div class="modal-box" style="background:#3a3a3a; border-radius: 16px;">
+    <div class="modal-head" style="background:transparent; font-size:18px; padding:15px 10px 5px;">Extra first deposit bonus</div>
+    <div class="modal-body" style="padding-top:0;">
+      <div class="popup-close" onclick="closeRechargePopup()">×</div>
+      <p style="text-align:center; font-size:12px; color:#a6a9ae; margin-bottom:15px;">Each account can only receive rewards once</p>
+      
+      <div class="recharge-list">
+        <!-- Item 1 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">200000</span></span><span>+ ₹10,000.00</span></div>
+            <div class="sub">Deposit 200000 for the first time and you will receive 10000 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/200000</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 2 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">100000</span></span><span>+ ₹5,000.00</span></div>
+            <div class="sub">Deposit 100000 for the first time and you will receive 5000 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/100000</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 3 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">30000</span></span><span>+ ₹2,000.00</span></div>
+            <div class="sub">Deposit 30000 for the first time and you will receive 2000 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/30000</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 4 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">10000</span></span><span>+ ₹600.00</span></div>
+            <div class="sub">Deposit 10000 for the first time and you will receive 600 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/10000</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 5 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">3000</span></span><span>+ ₹300.00</span></div>
+            <div class="sub">Deposit 3000 for the first time and you will receive 300 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/3000</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 6 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">1000</span></span><span>+ ₹150.00</span></div>
+            <div class="sub">Deposit 1000 for the first time and you will receive 150 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/1000</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 7 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">500</span></span><span>+ ₹100.00</span></div>
+            <div class="sub">Deposit 500 for the first time and you will receive 100 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/500</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 8 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">300</span></span><span>+ ₹60.00</span></div>
+            <div class="sub">Deposit 300 for the first time and you will receive 60 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/300</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+        <!-- Item 9 -->
+        <div class="recharge-item">
+            <div class="head"><span>First deposit <span style="color:#FAE59F">100</span></span><span>+ ₹20.00</span></div>
+            <div class="sub">Deposit 100 for the first time and you will receive 20 bonus</div>
+            <div class="progress-row">
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span>0/100</span></div>
+                <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+            </div>
+        </div>
+      </div>
+
+      <div class="rules-box">
+        <h4>Activity Rules</h4>
+        <ul>
+            <li>Exclusive for the first recharge of the account. There is only one chance. The more you recharge, the more rewards you will receive. The highest reward is ₹10,000.00;</li>
+            <li>Activities cannot be participated in repeatedly;</li>
+            <li>Rewards can only be claimed manually on IOS, Android, H5, and PC;</li>
+            <li>The bonus (excluding the principal) given in this event requires 1 times the coding turnover (i.e. valid bets) before it can be withdrawn, and the coding does not limit the platform;</li>
+            <li>This event is limited to normal human operations by the account owner. It is prohibited to rent, use plug-ins, robots, gamble with different accounts, brush each other, arbitrage, interfaces, protocols, exploit loopholes, group control or other technical means to participate, otherwise it will be canceled or Rewards will be deducted, frozen, or even blacklisted;</li>
+        </ul>
+      </div>
+
+      <label class="reminder-chk">
+          <input type="checkbox" id="noReminderChk" onchange="toggleNoReminder(this)">
+          <span>No more reminders today</span>
+      </label>
+
+      <div class="activity-btn-wrap">
+          <button class="activity-btn" onclick="location.href='wallet.html'">Activity</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: CUSTOMER SERVICE (Telegram) -->
 <div id="modal-service" class="modal-overlay">
   <div class="modal-box">
@@ -321,7 +490,6 @@
     <div class="modal-body">
       <div class="cs-logo-wrap">
         <div class="cs-logo">
-          <!-- SVG Icon Fixed -->
           <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         </div>
         <div class="cs-title">BDG LOTTERY7</div>
@@ -334,7 +502,6 @@
       <input id="csPhone" class="modal-input" type="tel" inputmode="numeric" maxlength="12" placeholder="Your phone number" />
       <textarea id="csDesc" class="modal-textarea" maxlength="600" placeholder="Describe your problem in detail..."></textarea>
       <button id="csSendBtn" class="cs-chat-btn" onclick="sendSupport()">
-        <!-- SVG Icon Fixed -->
         <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
         Send to Support
       </button>
@@ -346,7 +513,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -354,32 +521,11 @@ const firebaseConfig = {
   projectId: "bdglottery7",
   storageBucket: "bdglottery7.firebasestorage.app",
   messagingSenderId: "568771943906",
-  appId: "1:568771943906:web:5b78078d9c0d67427dedbb",
-  measurementId: "G-VRYNMCS0EZ"
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    // window.location.href = "index.html"; // Uncomment to enforce login
-  } else {
-      try {
-          const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
-          if(s.phone) document.getElementById('csPhone').value = s.phone;
-      } catch(e){}
-  }
-});
-
-window.doLogout = async () => {
-  try {
-    await signOut(auth);
-    localStorage.removeItem('bdg7_session');
-    window.location.href = "index.html";
-  } catch (e) { console.error(e); }
-};
 
 window.showToast = (msg) => {
   const t = document.getElementById('toast');
@@ -391,8 +537,46 @@ window.showToast = (msg) => {
 window.openService = () => { document.getElementById('modal-service').classList.add('show'); };
 window.closeModal = (id) => { document.getElementById(id).classList.remove('show'); };
 
-const TG_CONFIG = { BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw", CHAT_ID: "8167337368" };
+// Popup logic
+window.closeRechargePopup = () => {
+    document.getElementById('modal-recharge-bonus').classList.remove('show');
+    if(document.getElementById('noReminderChk').checked) {
+        localStorage.setItem('hideRechargePopupDate', new Date().toDateString());
+    }
+};
 
+window.toggleNoReminder = (chk) => {
+    if(chk.checked) {
+        localStorage.setItem('hideRechargePopupDate', new Date().toDateString());
+        showToast('Popup will not show again today');
+    } else {
+        localStorage.removeItem('hideRechargePopupDate');
+    }
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+      try {
+          const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
+          if(s.phone) document.getElementById('csPhone').value = s.phone;
+      } catch(e){}
+      
+      // Check if First Deposit Popup should be shown
+      const lastHiddenDate = localStorage.getItem('hideRechargePopupDate');
+      const today = new Date().toDateString();
+      
+      if (lastHiddenDate !== today) {
+          // Check user database to see if first deposit is done (optional logic here)
+          // For now, showing it automatically after login after 2 seconds
+          setTimeout(() => {
+              document.getElementById('modal-recharge-bonus').classList.add('show');
+          }, 1500);
+      }
+  }
+});
+
+// Telegram Support
+const TG_CONFIG = { BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw", CHAT_ID: "8167337368" };
 window.sendSupport = async () => {
   const phone = document.getElementById('csPhone').value.trim();
   const desc  = document.getElementById('csDesc').value.trim();
@@ -434,15 +618,13 @@ window.sendSupport = async () => {
 };
 </script>
 
-<!-- JS LOGIC: 50+ Winners Generate -->
+<!-- WINNERS GENERATOR (60s SLOW ANIMATION) -->
 <script>
     const avatars = [
         "19-2ac9fd83.png", "3-abfcc056.png", "17-bedde42f.png",
         "7-00479cfa.png", "6-7c7f5203.png", "1-c7e4efc8.png",
         "8-ea087ede.png"
     ];
-    
-    // FIXED ICON (CP.png)
     const cpIcon = "CP.png";
     
     function getBalls() {
@@ -461,8 +643,7 @@ window.sendSupport = async () => {
 
     const container = document.getElementById('winnersContainer');
     let html = '';
-    
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 30; i++) {
         const avatar = avatars[i % avatars.length];
         const name = `Mem***${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}`;
         const amount = (Math.random() * 5000 + 100).toFixed(2);
@@ -484,9 +665,9 @@ window.sendSupport = async () => {
         </div>
         `;
     }
-    
-    container.innerHTML = html + html; 
+    container.innerHTML = html + html; // Duplicate for seamless scrolling
 
+    // Slider Logic
     let slideIndex = 0;
     showSlides();
     function showSlides() {
