@@ -40,6 +40,13 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .notice-bar svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;flex-shrink:0;}
 .notice-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
+/* Tabs (30s, 1M, 3M, 5M) */
+.tabs-wrap{display:flex;margin:0 16px 16px;background:#262626;border-radius:12px;padding:4px;}
+.tab{flex:1;text-align:center;padding:10px 0;font-size:13px;font-weight:600;color:#a6a9ae;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.tab.active{background:#333;color:#FAE59F;}
+.tab.active svg{stroke:#FAE59F;}
+.tab svg{width:20px;height:20px;stroke:#a6a9ae;fill:none;stroke-width:2;}
+
 /* Timer Box */
 .timer-box{margin:0 16px 16px;padding:16px;border-radius:12px;display:flex;flex-direction:column;background:url('./images/diban-f8c2e476.png') no-repeat center / cover;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.1);}
 .timer-box::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:1;}
@@ -227,10 +234,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
     <span>5 Min</span>
   </div>
-  <div class="tab" onclick="location.href='wingo10.html'">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    <span>10 Min</span>
-  </div>
 </div>
 
 <div class="timer-box" id="timerBox">
@@ -276,6 +279,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 </div>
 
 <div class="history-container">
+  <!-- Game History -->
   <div id="gameHistoryView" class="history-table">
     <div class="ht-head">
       <div class="ht-col">Period</div>
@@ -286,6 +290,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div id="historyList"></div>
   </div>
   
+  <!-- Chart View -->
   <div id="chartView" class="history-table" style="display:none;">
     <div class="ht-head">
       <div class="ht-col">Recent 30 Results Trend</div>
@@ -293,6 +298,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div class="chart-grid" id="chartGrid"></div>
   </div>
   
+  <!-- My History View -->
   <div id="myHistoryView" class="history-table" style="display:none;">
     <div class="ht-head">
       <div class="ht-col">Period</div>
@@ -426,8 +432,7 @@ let popupTimer = null;
 let lastLiveSlot = -1;
 let drawOverlayActive = false;
 
-/* ==================== WINGO 30s CONFIG ==================== */
-const GAME_TYPE = '30s';
+/* ==================== 30s CONFIG ==================== */
 const RESULT_COLLECTION = 'results_30s';
 const BET_COLLECTION = 'bets_30s';
 const SLOT_MS = 30 * 1000; // 30 Seconds
@@ -863,7 +868,6 @@ window.placeBet = async function() {
       period: currentPeriod,
       choice: selectedChoice,
       amount: total,
-      gameType: GAME_TYPE,
       status: 'pending',
       createdAt: serverTimestamp()
     });
