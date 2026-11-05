@@ -8,68 +8,72 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#1a1c23;color:#fff;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;}
+body{background:#0f1115;color:#fff;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;}
 
 /* Navbar */
-.navbar{display:flex;justify-content:space-between;align-items:center;height:50px;padding:0 12px;background:#1a1c23;border-bottom:1px solid #2a2c35;}
-.navbar-brand{font-size:20px;font-weight:900;color:#fd565c;font-style:italic;letter-spacing:1px;font-family:'Arial Black', sans-serif;}
+.navbar{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 16px;background:#1a1c23;border-bottom:1px solid #2a2c35;}
+.navbar-brand{font-size:22px;font-weight:900;color:#fd565c;font-style:italic;letter-spacing:1px;font-family:'Arial Black', sans-serif;}
 .navbar-right{display:flex;gap:12px;align-items:center;font-weight:700;font-size:14px;color:#40ad72;}
 
 /* Top History */
-.top-history{display:flex;gap:6px;overflow-x:auto;padding:6px 12px;background:#1a1c23;align-items:center;border-bottom:1px solid #2a2c35;}
+.top-history{display:flex;gap:8px;overflow-x:auto;padding:8px 16px;background:#1a1c23;align-items:center;border-bottom:1px solid #2a2c35;}
 .top-history::-webkit-scrollbar{display:none;}
-.h-bar-item{background:#252830;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;color:#a6a9ae;}
+.h-bar-item{background:#252830;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;color:#a6a9ae;}
 .h-bar-item.low{color:#40ad72;}
 .h-bar-item.mid{color:#feca57;}
 .h-bar-item.high{color:#fd565c;}
 
 /* Game Area Container */
-.game-container{margin:8px 12px;position:relative;display:flex;flex-direction:column;}
+.game-container{margin:10px 16px;position:relative;flex:1;display:flex;flex-direction:column;}
 
 /* Fun Mode Bar */
-.fun-mode-bar{background:#e59a1e;color:#000;text-align:center;font-size:11px;font-weight:900;padding:4px;border-radius:8px 8px 0 0;letter-spacing:0.5px;}
+.fun-mode-bar{background:#e59a1e;color:#000;text-align:center;font-size:12px;font-weight:900;padding:6px;border-radius:12px 12px 0 0;letter-spacing:0.5px;}
 
-/* Canvas Area */
-.canvas-wrapper{position:relative;height:280px;background:#0d0914;border-radius:0 0 8px 8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+/* Canvas Area - Real Aviator Colors */
+.canvas-wrapper{position:relative;height:320px;background:#110e1a;border-radius:0 0 12px 12px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 #graphCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;}
-.plane{position:absolute;width:70px;height:55px;z-index:2;transition:transform 0.05s linear;transform-origin:center;display:none;top:0;left:0;filter:drop-shadow(0 0 10px rgba(253,86,92,0.8));}
-.multiplier-display{position:relative;z-index:10;font-size:56px;font-weight:900;color:#fff;text-shadow:0 0 30px rgba(255,255,255,0.2);font-family:'Arial Black', sans-serif;}
+
+/* SVG Plane */
+.plane{position:absolute;width:80px;height:60px;z-index:2;transform-origin:bottom left;display:none;bottom:10px;left:10px;filter:drop-shadow(0 0 15px rgba(253,86,92,0.8));}
+.plane svg{width:100%;height:100%;}
+
+.multiplier-display{position:relative;z-index:10;font-size:70px;font-weight:900;color:#fff;text-shadow:0 0 40px rgba(255,255,255,0.2);font-family:'Arial Black', sans-serif;}
 .multiplier-display.crashed{color:#fd565c;animation:shake 0.5s;}
-@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(10px);}50%{transform:translateX(-10px);}75%{transform:translateX(10px);}100%{transform:translateX(0);}}
-.status-text{position:relative;z-index:10;font-size:13px;color:#a6a9ae;margin-top:2px;font-weight:600;}
+@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(15px);}50%{transform:translateX(-15px);}75%{transform:translateX(15px);}100%{transform:translateX(0);}}
+.status-text{position:relative;z-index:10;font-size:15px;color:#a6a9ae;margin-top:5px;font-weight:600;}
 
 /* Live Viewers Badge */
-.viewers-badge{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.6);padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:4px;z-index:10;font-size:11px;font-weight:700;}
-.viewers-badge img{width:14px;height:14px;border-radius:50%;border:1px solid #fff;margin-left:-4px;}
+.viewers-badge{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.6);padding:4px 12px;border-radius:20px;display:flex;align-items:center;gap:6px;z-index:10;font-size:12px;font-weight:700;}
+.viewers-badge img{width:16px;height:16px;border-radius:50%;border:1px solid #fff;margin-left:-5px;}
 
 /* Controls (Double Panel) */
-.controls{margin:0 12px 12px;display:flex;flex-direction:column;gap:8px;}
-.control-box{background:#252830;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;}
-.tabs{display:flex;background:#1a1c23;border-radius:6px;padding:3px;}
-.tabs button{flex:1;background:transparent;border:none;color:#a6a9ae;font-size:12px;font-weight:700;padding:5px;border-radius:4px;cursor:pointer;}
+.controls{margin:0 16px 16px;display:flex;flex-direction:column;gap:10px;}
+.control-box{background:#252830;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px;}
+.tabs{display:flex;background:#1a1c23;border-radius:8px;padding:4px;}
+.tabs button{flex:1;background:transparent;border:none;color:#a6a9ae;font-size:13px;font-weight:700;padding:6px;border-radius:6px;cursor:pointer;}
 .tabs button.active{background:#353945;color:#fff;}
-.control-row{display:flex;gap:8px;}
-.input-area{flex:1;display:flex;flex-direction:column;gap:5px;}
-.input-main{display:flex;background:#1a1c23;border-radius:6px;overflow:hidden;align-items:center;height:40px;}
-.input-main button{background:transparent;color:#fff;border:none;width:35px;font-size:18px;font-weight:bold;cursor:pointer;}
-.input-main input{flex:1;background:transparent;border:none;color:#fff;text-align:center;font-size:15px;font-weight:700;outline:none;width:100%;}
-.quick-btns{display:flex;gap:5px;}
-.quick-btns button{flex:1;background:#1a1c23;border:none;border-radius:4px;color:#a6a9ae;font-size:10px;padding:6px 0;font-weight:700;cursor:pointer;}
-.action-btn{flex:1;height:100%;min-height:70px;border-radius:6px;background:linear-gradient(180deg,#40ad72 0%,#1d7a47 100%);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.1;}
-.action-btn span{font-size:11px;font-weight:600;opacity:0.9;}
+.control-row{display:flex;gap:10px;}
+.input-area{flex:1;display:flex;flex-direction:column;gap:6px;}
+.input-main{display:flex;background:#1a1c23;border-radius:8px;overflow:hidden;align-items:center;height:44px;}
+.input-main button{background:transparent;color:#fff;border:none;width:40px;font-size:20px;font-weight:bold;cursor:pointer;}
+.input-main input{flex:1;background:transparent;border:none;color:#fff;text-align:center;font-size:16px;font-weight:700;outline:none;width:100%;}
+.quick-btns{display:flex;gap:6px;}
+.quick-btns button{flex:1;background:#1a1c23;border:none;border-radius:6px;color:#a6a9ae;font-size:11px;padding:8px 0;font-weight:700;cursor:pointer;}
+.action-btn{flex:1;height:100%;min-height:80px;border-radius:8px;background:linear-gradient(180deg,#40ad72 0%,#1d7a47 100%);color:#fff;font-size:18px;font-weight:800;border:none;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.2;}
+.action-btn span{font-size:13px;font-weight:600;opacity:0.9;}
 .action-btn.cashout{background:linear-gradient(180deg,#e59a1e 0%,#c47d0b 100%);color:#fff;}
 .action-btn:disabled{opacity:0.5;cursor:not-allowed;}
 
 /* Bottom Tabs */
-.bottom-tabs{margin:0 12px 12px;background:#252830;border-radius:10px;overflow:hidden;}
+.bottom-tabs{margin:0 16px 16px;background:#252830;border-radius:12px;overflow:hidden;}
 .tab-headers{display:flex;background:#1a1c23;}
-.tab-headers button{flex:1;background:transparent;border:none;color:#a6a9ae;font-size:12px;font-weight:700;padding:8px;cursor:pointer;border-bottom:2px solid transparent;}
+.tab-headers button{flex:1;background:transparent;border:none;color:#a6a9ae;font-size:13px;font-weight:700;padding:10px;cursor:pointer;border-bottom:2px solid transparent;}
 .tab-headers button.active{color:#fff;border-bottom:2px solid #40ad72;background:#252830;}
-.tab-content{padding:8px 12px;height:150px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;}
+.tab-content{padding:10px 16px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
 .tab-content::-webkit-scrollbar{width:4px;}
 .tab-content::-webkit-scrollbar-thumb{background:#444;border-radius:4px;}
-.lb-item{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);animation:fadeIn 0.3s;}
-.lb-item .user{color:#a6a9ae;display:flex;align-items:center;gap:4px;}
+.lb-item{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);animation:fadeIn 0.3s;}
+.lb-item .user{color:#a6a9ae;display:flex;align-items:center;gap:6px;}
 .lb-item .amt{color:#fff;font-weight:700;}
 .lb-item .win{color:#40ad72;font-weight:700;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
@@ -87,7 +91,7 @@ body{background:#1a1c23;color:#fff;min-height:100vh;overflow-x:hidden;display:fl
 <body>
 
 <div class="navbar">
-    <a href="home.html" style="text-decoration:none;color:#fff;font-size:20px;">&#8592;</a>
+    <a href="home.html" style="text-decoration:none;color:#fff;font-size:24px;">&#8592;</a>
     <div class="navbar-brand">Aviator</div>
     <div class="navbar-right">
         ₹<span id="balanceVal">0.00</span>
@@ -103,8 +107,15 @@ body{background:#1a1c23;color:#fff;min-height:100vh;overflow-x:hidden;display:fl
     <div class="canvas-wrapper" id="gameArea">
         <canvas id="graphCanvas"></canvas>
         
-        <!-- PLANE IMAGE -->
-        <img class="plane" id="plane" src="./images/146744-removebg-preview.png" alt="Plane" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 64 64\' fill=\'%23fd565c\'><path d=\'M53.2 31.8c-1.1-1-2.9-1.5-4.4-1.2l-11.3 2.1c-1.2-1.2-4.3-4.3-5.5-5.5l2.1-11.3c.3-1.5-.2-3.3-1.2-4.4-1.3-1.3-3.3-1.3-4.6 0l-9.9 9.9c-1.3 1.3-1.3 3.3 0 4.6l5.5 5.5c-1.2 1.2-4.3 4.3-5.5 5.5l-9.9-9.9c-1.3-1.3-3.3-1.3-4.6 0-1 1.1-1.5 2.9-1.2 4.4l2.1 11.3c-1.2 1.2-4.3 4.3-5.5 5.5L1.1 45.6C-.4 47.1-.4 49.5 1.1 51l9.9 9.9c1.5 1.5 3.9 1.5 5.4 0l9.9-9.9c1.2-1.2 4.3-4.3 5.5-5.5l5.5 5.5c1.3 1.3 3.3 1.3 4.6 0l9.9-9.9c1.1-1 1.5-2.9 1.2-4.4l-2.1-11.3c1.2-1.2 4.3-4.3 5.5-5.5l11.3-2.1c1.5-.3 3.3-2.2 4.4-3.2C56.1 33.8 54.9 32.8 53.2 31.8z\'/></svg>'">
+        <!-- PERFECT SVG PLANE (No image issues, matches real Aviator) -->
+        <div class="plane" id="plane">
+            <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                <path d="M110 35 L85 30 L75 10 L65 10 L68 28 L40 25 L20 5 L10 5 L20 25 L5 25 L0 35 L20 40 L10 60 L20 60 L40 40 L68 45 L65 65 L75 65 L85 45 L110 40 Z" fill="#fd565c"/>
+                <path d="M95 35 L105 15 L115 15 L105 35 Z" fill="#fd565c"/>
+                <circle cx="85" cy="38" r="4" fill="#110e1a"/>
+                <path d="M5 25 L15 30" stroke="#fd565c" stroke-width="2"/>
+            </svg>
+        </div>
         
         <div class="multiplier-display" id="multiplier">0.00x</div>
         <div class="status-text" id="status">Waiting for next round...</div>
@@ -310,13 +321,15 @@ function startWaitingPhase() {
 
 function drawRadialBackground() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Faint radial lines starting from bottom-left
-    const cx = 0;
-    const cy = canvas.height;
+    
+    // Real Aviator Radial Lines from Bottom Left
+    const cx = 10;
+    const cy = canvas.height - 10;
     ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-    ctx.lineWidth = 1;
-    for(let i=0; i<25; i++) {
-        const angle = (i / 25) * (Math.PI / 2);
+    ctx.lineWidth = 1.5;
+    
+    for(let i=0; i<30; i++) {
+        const angle = (i / 30) * (Math.PI / 2);
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(cx + Math.cos(angle) * canvas.width * 1.5, cy - Math.sin(angle) * canvas.height * 1.5);
@@ -330,6 +343,7 @@ function startFlight() {
     multEl.textContent = '1.00x';
     planeEl.style.display = 'block';
     
+    // Crash Point Logic (Fair Randomness)
     const r = Math.random();
     if(r < 0.05) crashPoint = 1.00; 
     else crashPoint = Math.max(1.00, 0.99 / (1 - r * 0.96)); 
@@ -343,18 +357,22 @@ function startFlight() {
         
         multEl.textContent = currentMultiplier.toFixed(2) + 'x';
         
-        // Position Logic so it stays inside Canvas
+        // Calculate perfect position
         const progress = Math.min(1, currentMultiplier / (crashPoint > 8 ? 8 : crashPoint));
-        const maxX = canvas.width * 0.8;
-        const maxY = canvas.height * 0.7;
+        const maxX = canvas.width * 0.85;
+        const maxY = canvas.height * 0.85;
         
-        // Ease-out curve for X and Y
-        const px = maxX * Math.pow(progress, 0.8);
-        const py = maxY * Math.pow(progress, 1.2);
+        // Bezier Curve math for X and Y
+        const px = maxX * Math.pow(progress, 1.5);
+        const py = maxY * Math.pow(progress, 1.8);
         
-        // Plane position (setting left and top for easier math)
-        planeEl.style.left = `${px}px`;
-        planeEl.style.bottom = `${py + 10}px`; // +10 for bottom padding
+        // Update Plane Position
+        planeEl.style.left = `${px + 5}px`;
+        planeEl.style.bottom = `${py + 5}px`;
+        
+        // Rotate plane based on curve angle
+        const angle = -Math.atan2(py - (py * 0.95), px - (px * 0.95)) * (180 / Math.PI);
+        // Simpler rotation for now to look good:
         planeEl.style.transform = `rotate(-20deg)`;
 
         drawGraph(px, py);
@@ -368,22 +386,23 @@ function startFlight() {
 function drawGraph(px, py) {
     drawRadialBackground();
     
-    // Filled area
+    // Fill area under curve
     const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
     gradient.addColorStop(0, 'rgba(253,86,92,0.4)');
     gradient.addColorStop(1, 'rgba(253,86,92,0)');
     
     ctx.beginPath();
-    ctx.moveTo(10, canvas.height - 10); // Start point
-    ctx.quadraticCurveTo(10 + px * 0.4, canvas.height - 10, px, canvas.height - py - 10);
-    ctx.lineTo(px, canvas.height - 10);
+    ctx.moveTo(10, canvas.height - 10); // Start
+    // Curve to plane position
+    ctx.quadraticCurveTo(10 + px * 0.3, canvas.height - 10, px + 10, canvas.height - py - 10);
+    ctx.lineTo(px + 10, canvas.height - 10);
     ctx.fillStyle = gradient;
     ctx.fill();
     
     // Red Line
     ctx.beginPath();
     ctx.moveTo(10, canvas.height - 10);
-    ctx.quadraticCurveTo(10 + px * 0.4, canvas.height - 10, px, canvas.height - py - 10);
+    ctx.quadraticCurveTo(10 + px * 0.3, canvas.height - 10, px + 10, canvas.height - py - 10);
     ctx.strokeStyle = '#fd565c';
     ctx.lineWidth = 4;
     ctx.stroke();
