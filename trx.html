@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0b0e14">
+<title>BDG LOTTERY7 - TRX Win</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --trx-red: #ff0646;
+  --trx-cyan: #00f0ff;
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --green: #00e676;
+  --violet: #b659fe;
+  --card-bg: #151821;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #171d2b 0%, #0a0c12 70%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+/* Navbar */
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:rgba(14,18,26,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;letter-spacing:1.5px;color:#fff;display:flex;align-items:center;gap:6px;}
+.navbar-brand span{color:var(--trx-red);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+/* Balance */
+.bal-card{background:linear-gradient(145deg, #1b202c 0%, #12151d 100%);margin:12px 16px;border-radius:18px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.bal-label{font-size:11px;color:#7b889b;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:#9eabbf;fill:none;stroke-width:2.2;}
+
+/* Blockchain Live Hash Banner */
+.hash-banner{margin:0 16px 12px;background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.18);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.hash-icon{width:32px;height:32px;border-radius:8px;background:rgba(0,240,255,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hash-icon svg{width:18px;height:18px;stroke:var(--trx-cyan);fill:none;stroke-width:2;}
+.hash-details{flex:1;min-width:0;}
+.hash-title{font-size:10px;color:var(--trx-cyan);font-weight:800;letter-spacing:0.8px;text-transform:uppercase;}
+.hash-val{font-family:'Roboto Mono',monospace;font-size:11px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.hash-val strong{color:var(--gold);font-weight:900;}
+
+/* Timer Card */
+.timer-card{margin:0 16px 12px;background:linear-gradient(135deg, #181d28 0%, #10131b 100%);border-radius:16px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);}
+.tc-left span{font-size:11px;color:#7b889b;font-weight:700;text-transform:uppercase;display:block;margin-bottom:3px;}
+.tc-left h3{font-family:'Orbitron',sans-serif;font-size:15px;color:#fff;font-weight:800;letter-spacing:0.5px;}
+.tc-right{text-align:right;}
+.tc-right p{font-size:10px;color:#7b889b;font-weight:700;text-transform:uppercase;margin-bottom:3px;}
+.countdown{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);letter-spacing:1px;}
+
+/* Recent Hash Multiplier Badges */
+.recent-results{display:flex;gap:8px;overflow-x:auto;padding:0 16px 14px;}
+.res-chip{flex:0 0 auto;min-width:44px;height:44px;border-radius:12px;background:#151821;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.res-chip .chip-num{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;}
+.res-chip .chip-dot{width:6px;height:6px;border-radius:50%;margin-top:2px;}
+.dot-green{background:var(--green);box-shadow:0 0 6px var(--green);}
+.dot-red{background:var(--trx-red);box-shadow:0 0 6px var(--trx-red);}
+.dot-violet{background:var(--violet);box-shadow:0 0 6px var(--violet);}
+
+/* Betting Board */
+.bet-board{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:16px;border:1px solid var(--border);}
+.color-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.btn-col{height:46px;border-radius:12px;font-weight:800;font-size:14px;letter-spacing:0.5px;color:#fff;display:flex;align-items:center;justify-content:center;text-transform:uppercase;box-shadow:0 4px 14px rgba(0,0,0,0.4);transition:0.1s;}
+.btn-col:active{transform:scale(0.96);}
+.btn-col.green{background:linear-gradient(135deg, #00e676, #00a844);}
+.btn-col.violet{background:linear-gradient(135deg, #b659fe, #7a27bd);}
+.btn-col.red{background:linear-gradient(135deg, #ff1744, #b70025);}
+
+.numbers-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px;}
+.btn-num{aspect-ratio:1;border-radius:50%;background:#202533;border:1.5px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;cursor:pointer;transition:0.15s;position:relative;overflow:hidden;}
+.btn-num:active{transform:scale(0.92);}
+.btn-num.num-green{color:var(--green);border-color:rgba(0,230,118,0.4);}
+.btn-num.num-red{color:var(--trx-red);border-color:rgba(255,6,70,0.4);}
+.btn-num.num-violet{color:var(--violet);border-color:rgba(182,89,254,0.4);}
+
+.size-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn-sz{height:44px;border-radius:12px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:15px;letter-spacing:1px;color:#fff;}
+.btn-sz.big{background:linear-gradient(135deg, #f5a623, #c47d0c);}
+.btn-sz.small{background:linear-gradient(135deg, #4a90e2, #1b5b9c);}
+
+/* History Tabs */
+.tabs-header{display:flex;margin:0 16px 12px;background:#151821;border-radius:12px;padding:4px;border:1px solid var(--border);}
+.tab-btn{flex:1;text-align:center;padding:9px;font-size:12px;font-weight:700;color:#7b889b;border-radius:8px;}
+.tab-btn.active{background:#232938;color:var(--gold);}
+.history-wrap{margin:0 16px;background:#151821;border-radius:16px;padding:12px;border:1px solid var(--border);min-height:100px;}
+.table-head,.table-row{display:flex;align-items:center;justify-content:space-between;padding:10px 8px;font-size:12px;}
+.table-head{color:#7b889b;font-weight:700;border-bottom:1px solid var(--border);text-transform:uppercase;font-size:10px;}
+.table-row{border-bottom:1px solid rgba(255,255,255,0.03);}
+.table-row:last-child{border-bottom:none;}
+.col{flex:1;text-align:center;}
+
+/* Bet Modal (Bottom Sheet) */
+.modal-overlay{position:fixed;inset:0;background:rgba(5,7,12,0.85);backdrop-filter:blur(6px);z-index:999;display:none;align-items:flex-end;}
+.modal-overlay.show{display:flex;}
+.sheet{width:100%;background:#181d28;border-radius:24px 24px 0 0;padding:20px 18px 24px;border-top:1.5px solid var(--border);animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.sheet-title{font-size:16px;font-weight:900;color:#fff;}
+.sheet-title span{color:var(--gold);}
+.sheet-close{font-size:24px;color:#7b889b;cursor:pointer;}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.ctrl-label{font-size:12px;color:#7b889b;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:7px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:13px;font-weight:800;color:#fff;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+.qty-box{display:flex;align-items:center;background:#10131a;border-radius:8px;border:1px solid var(--border);}
+.qty-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#9eabbf;}
+.qty-input{width:48px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Orbitron',sans-serif;font-weight:800;}
+.multi-btns{display:flex;gap:6px;}
+.m-btn{padding:6px 10px;border-radius:6px;background:rgba(255,255,255,0.05);font-size:11px;font-weight:800;color:#9eabbf;}
+.m-btn.active{background:var(--gold);color:#211400;}
+.btn-submit-bet{width:100%;height:48px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-top:14px;box-shadow:0 6px 20px rgba(245,196,67,0.35);}
+
+/* Drawing Phase Blur Overlay */
+.draw-overlay{position:fixed;inset:0;background:rgba(10,14,24,0.75);backdrop-filter:blur(8px);z-index:9000;display:none;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;}
+.draw-overlay.show{display:flex;}
+.draw-box{width:130px;height:130px;border-radius:50%;background:rgba(255,6,70,0.12);border:2px solid var(--trx-red);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 35px rgba(255,6,70,0.45);}
+.draw-counter{font-family:'Orbitron',sans-serif;font-size:55px;font-weight:900;color:#fff;line-height:1;}
+.draw-lbl{font-size:11px;font-weight:800;color:var(--trx-cyan);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+
+/* Result Popup */
+.result-popup{position:fixed;inset:0;background:rgba(4,6,10,0.85);backdrop-filter:blur(6px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
+.result-popup.show{display:flex;}
+.res-card{width:100%;max-width:320px;border-radius:22px;padding:26px 20px 22px;text-align:center;background:#151821;border:1.5px solid var(--border);box-shadow:0 20px 50px rgba(0,0,0,0.8);animation:scalePop .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes scalePop{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+.res-card.win{border-color:var(--gold);box-shadow:0 0 45px rgba(245,196,67,0.3);}
+.res-card.lose{border-color:#4a90e2;box-shadow:0 0 45px rgba(74,144,226,0.25);}
+.res-icon{font-size:52px;margin-bottom:10px;}
+.res-title{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.res-card.win .res-title{color:var(--gold);}
+.res-card.lose .res-title{color:#64b5f6;}
+.res-amt{font-family:'Orbitron',sans-serif;font-size:30px;font-weight:900;margin-bottom:18px;}
+.res-card.win .res-amt{color:var(--green);}
+.res-card.lose .res-amt{color:#ff5252;}
+.btn-res-close{width:100%;height:44px;border-radius:12px;background:var(--gold-grad);color:#211400;font-size:14px;font-weight:900;text-transform:uppercase;}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(14,18,26,0.95);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">BDG <span>TRX WIN</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="hash-banner">
+  <div class="hash-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+  <div class="hash-details">
+    <div class="hash-title">TRX Blockchain Simulated Hash</div>
+    <div class="hash-val" id="liveHash">000000000...<strong id="hashTail">8</strong></div>
+  </div>
+</div>
+
+<div class="timer-card">
+  <div class="tc-left">
+    <span>Period ID</span>
+    <h3 id="periodText">Loading...</h3>
+  </div>
+  <div class="tc-right">
+    <p>Time Left</p>
+    <div class="countdown" id="timerClock">00:55</div>
+  </div>
+</div>
+
+<div class="recent-results" id="recentBar"></div>
+
+<div class="bet-board" id="betBoard">
+  <div class="color-row">
+    <button class="btn-col green" onclick="openBetModal('green','color')">Green 2X</button>
+    <button class="btn-col violet" onclick="openBetModal('violet','color')">Violet 4.5X</button>
+    <button class="btn-col red" onclick="openBetModal('red','color')">Red 2X</button>
+  </div>
+  <div class="numbers-grid" id="numGrid"></div>
+  <div class="size-row">
+    <button class="btn-sz big" onclick="openBetModal('big','size')">Big (5-9) 2X</button>
+    <button class="btn-sz small" onclick="openBetModal('small','size')">Small (0-4) 2X</button>
+  </div>
+</div>
+
+<div class="tabs-header">
+  <div class="tab-btn active" onclick="switchTab('game',this)">Game History</div>
+  <div class="tab-btn" onclick="switchTab('chart',this)">Chart Trend</div>
+  <div class="tab-btn" onclick="switchTab('my',this)">My Bets</div>
+</div>
+
+<div class="history-wrap">
+  <div id="gameView">
+    <div class="table-head"><div class="col">Period</div><div class="col">Block Hash</div><div class="col">Num</div><div class="col">Result</div></div>
+    <div id="gameList"></div>
+  </div>
+  <div id="chartView" style="display:none;"><div id="chartGrid" style="display:grid;grid-template-columns:repeat(10,1fr);gap:6px;padding:8px 0;"></div></div>
+  <div id="myView" style="display:none;"><div id="myList"></div></div>
+</div>
+
+<!-- Bottom Bet Sheet -->
+<div class="modal-overlay" id="betModal">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div class="sheet-title">Select <span id="sheetChoice">GREEN</span></div>
+      <div class="sheet-close" onclick="closeBetModal()">×</div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Amount</span>
+      <div class="chips">
+        <div class="chip active" onclick="setAmt(this,1)">₹1</div>
+        <div class="chip" onclick="setAmt(this,10)">₹10</div>
+        <div class="chip" onclick="setAmt(this,100)">₹100</div>
+        <div class="chip" onclick="setAmt(this,1000)">₹1K</div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Quantity</span>
+      <div class="qty-box">
+        <button class="qty-btn" onclick="setQty(-1)">-</button>
+        <input type="number" id="qtyVal" class="qty-input" value="1" min="1" readonly>
+        <button class="qty-btn" onclick="setQty(1)">+</button>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Multiplier</span>
+      <div class="multi-btns">
+        <button class="m-btn active" onclick="setMulti(this,1)">X1</button>
+        <button class="m-btn" onclick="setMulti(this,5)">X5</button>
+        <button class="m-btn" onclick="setMulti(this,10)">X10</button>
+      </div>
+    </div>
+    <button class="btn-submit-bet" id="btnPlaceBet" onclick="placeBet()">Total ₹<span id="totalBetSpan">1</span> Confirm</button>
+  </div>
+</div>
+
+<!-- 5 Sec Drawing Phase Overlay -->
+<div class="draw-overlay" id="drawOverlay">
+  <div class="draw-box">
+    <div class="draw-counter" id="drawSec">5</div>
+    <div class="draw-lbl">Verifying Hash</div>
+  </div>
+</div>
+
+<!-- Popup Result -->
+<div class="result-popup" id="resultPopup">
+  <div class="res-card" id="resCard">
+    <div class="res-icon" id="resIcon">💎</div>
+    <div class="res-title" id="resTitle">Victory!</div>
+    <div class="res-amt" id="resAmt">₹0.00</div>
+    <button class="btn-res-close" onclick="closePopup()">Continue</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, updateDoc, increment, collection,
+  addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
+  where, runTransaction
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const RESULT_COLLECTION = 'results_trx';
+const BET_COLLECTION = 'bets_trx';
+const SLOT_MS = 60 * 1000;
+const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
+
+let currentUser = null;
+let userBalance = 0;
+let currentPeriod = '';
+let currentSlot = -1;
+let selectedChoice = '', selectedType = '';
+let baseAmt = 1, currentQty = 1, currentMulti = 1;
+let isBettingClosed = false, soundOn = true;
+
+// Procedural Audio
+let audioCtx;
+function playSound(type) {
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    if (type === 'tick') {
+      osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+    } else if (type === 'win') {
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+    } else if (type === 'lose') {
+      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    }
+  } catch(e){}
+}
+
+document.getElementById('soundBtn').onclick = () => {
+  soundOn = !soundOn;
+  toast(soundOn ? 'Sound ON' : 'Sound OFF');
+};
+
+window.toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2000);
+};
+
+function getSlot(ms = Date.now()) { return Math.floor((ms - EPOCH) / SLOT_MS); }
+function getPeriodId(slot) {
+  const d = new Date(EPOCH + slot * SLOT_MS);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
+  return `${y}${m}${day}10${String(slotOfDay).padStart(4, '0')}`;
+}
+
+// Generate Deterministic TRX Block Hash
+function generateTrxHash(slot) {
+  let hashSeed = (slot * 2654435761) % 4294967296;
+  const chars = '0123456789abcdef';
+  let hash = '00000000000';
+  for (let i = 0; i < 30; i++) {
+    hashSeed = (hashSeed * 1664525 + 1013904223) % 4294967296;
+    hash += chars[hashSeed % 16];
+  }
+  const lastDigit = Math.abs(hashSeed) % 10;
+  hash += lastDigit;
+  return { hash, lastDigit };
+}
+
+/* 🧹 24h Auto-Cleanup Results */
+async function cleanupOldResults() {
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(100));
+    const snap = await getDocs(q);
+    const dayAgo = Date.now() - (24 * 60 * 60 * 1000);
+    const delPromises = [];
+    snap.forEach(d => {
+      const data = d.data();
+      if (data.createdAt?.toMillis && data.createdAt.toMillis() < dayAgo) {
+        delPromises.push(deleteDoc(d.ref));
+      }
+    });
+    if (delPromises.length) await Promise.all(delPromises);
+  } catch(e){}
+}
+
+/* Gapless Backfill */
+async function backfillMissingPeriods() {
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(50));
+    const snap = await getDocs(q);
+    const cur = getSlot();
+    let maxSlot = cur - 15;
+    snap.forEach(d => {
+      const p = d.data().period;
+      if (p && p.length >= 12) {
+        const slotDay = parseInt(p.slice(-4));
+        const dt = Date.UTC(parseInt(p.slice(0,4)), parseInt(p.slice(4,6))-1, parseInt(p.slice(6,8)));
+        const s = Math.floor((dt + slotDay * SLOT_MS - EPOCH) / SLOT_MS);
+        if (s > maxSlot) maxSlot = s;
+      }
+    });
+    for (let s = maxSlot + 1; s < cur; s++) {
+      await saveResultForSlot(s, getPeriodId(s));
+    }
+  } catch(e){}
+}
+
+async function saveResultForSlot(slot, periodId) {
+  const ref = doc(db, RESULT_COLLECTION, periodId);
+  const snap = await getDoc(ref);
+  if (snap.exists()) return;
+  const { hash, lastDigit } = generateTrxHash(slot);
+  let color = 'violet';
+  if ([1,3,7,9].includes(lastDigit)) color = 'green';
+  else if ([2,4,6,8].includes(lastDigit)) color = 'red';
+  const size = lastDigit >= 5 ? 'big' : 'small';
+  const data = { period: periodId, hash, number: lastDigit, color, size, createdAt: serverTimestamp() };
+  try {
+    await runTransaction(db, async (tx) => {
+      const ex = await tx.get(ref);
+      if (!ex.exists()) tx.set(ref, data);
+    });
+  } catch(e){}
+  await resolveBets(periodId, data);
+}
+
+async function resolveBets(periodId, resData) {
+  if (!currentUser) return;
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+    const snap = await getDocs(q);
+    if (snap.empty) return;
+    let winTotal = 0, lostTotal = 0, hasPending = false, ownerTaxTotal = 0;
+    const batch = [];
+    snap.forEach(d => {
+      const b = d.data();
+      if (b.status !== 'pending') return;
+      hasPending = true;
+      let won = false, multi = 2;
+      const num = resData.number;
+      if (b.type === 'color') {
+        if (b.choice === resData.color) won = true;
+        else if (resData.color === 'violet' && (b.choice === 'green' || b.choice === 'red')) {
+          won = true; multi = 1.5;
+        }
+        if (b.choice === 'violet' && resData.color === 'violet') multi = 4.5;
+      } else if (b.type === 'size' && b.choice === resData.size) won = true;
+      else if (b.type === 'number' && parseInt(b.choice) === num) { won = true; multi = 9; }
+
+      let winAmt = 0;
+      if (won) {
+        const gross = b.amount * multi;
+        const tax = gross * 0.15;
+        ownerTaxTotal += tax;
+        winAmt = gross - tax;
+        winTotal += winAmt;
+      } else lostTotal += b.amount;
+
+      batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), {
+        status: won ? 'win' : 'lose',
+        winAmount: winAmt,
+        resultNum: num
+      }));
+    });
+    if (!hasPending) return;
+    await Promise.all(batch);
+
+    if (ownerTaxTotal > 0) {
+      updateDoc(doc(db, 'system', 'owner_earnings'), { total: increment(ownerTaxTotal) }).catch(()=>{});
+    }
+
+    if (winTotal > 0) {
+      await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
+      userBalance += winTotal;
+      document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+      showResultModal(true, winTotal);
+    } else if (lostTotal > 0) {
+      showResultModal(false, lostTotal);
+    }
+  } catch(e){}
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+  initNumGrid();
+  await cleanupOldResults();
+  await backfillMissingPeriods();
+  startTimer();
+  loadGameHistory();
+  loadMyHistory();
+});
+
+function initNumGrid() {
+  const g = document.getElementById('numGrid');
+  let html = '';
+  for (let i = 0; i <= 9; i++) {
+    let cls = 'num-violet';
+    if ([1,3,7,9].includes(i)) cls = 'num-green';
+    else if ([2,4,6,8].includes(i)) cls = 'num-red';
+    html += `<button class="btn-num ${cls}" onclick="openBetModal('${i}','number')">${i}</button>`;
+  }
+  g.innerHTML = html;
+}
+
+function startTimer() {
+  let lastSlotTrack = -1;
+  setInterval(() => {
+    const now = Date.now();
+    const slot = getSlot(now);
+    const secLeft = Math.max(0, Math.ceil((SLOT_MS - (now - (EPOCH + slot * SLOT_MS))) / 1000));
+    
+    if (lastSlotTrack !== -1 && slot !== lastSlotTrack) {
+      saveResultForSlot(lastSlotTrack, getPeriodId(lastSlotTrack)).then(() => {
+        loadGameHistory(); loadMyHistory();
+      });
+    }
+    lastSlotTrack = slot;
+    currentSlot = slot;
+    currentPeriod = getPeriodId(slot);
+    document.getElementById('periodText').textContent = currentPeriod;
+    document.getElementById('timerClock').textContent = `00:${String(secLeft).padStart(2,'0')}`;
+
+    // Live Simulated Hash Tail
+    const hashObj = generateTrxHash(slot);
+    document.getElementById('liveHash').innerHTML = `${hashObj.hash.slice(0,24)}...<strong id="hashTail">${hashObj.lastDigit}</strong>`;
+
+    if (secLeft <= 5) {
+      isBettingClosed = true;
+      document.getElementById('drawOverlay').classList.add('show');
+      document.getElementById('drawSec').textContent = secLeft;
+      if (secLeft > 0) playSound('tick');
+    } else {
+      isBettingClosed = false;
+      document.getElementById('drawOverlay').classList.remove('show');
+    }
+  }, 250);
+}
+
+// Betting Modal Logic
+window.openBetModal = (choice, type) => {
+  if (isBettingClosed) return toast('Betting closed for current block!');
+  selectedChoice = choice; selectedType = type;
+  document.getElementById('sheetChoice').textContent = choice.toUpperCase();
+  document.getElementById('betModal').classList.add('show');
+  updateTotalBetSpan();
+};
+window.closeBetModal = () => document.getElementById('betModal').classList.remove('show');
+
+window.setAmt = (el, amt) => {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); baseAmt = amt; updateTotalBetSpan();
+};
+window.setQty = (delta) => {
+  currentQty = Math.max(1, currentQty + delta);
+  document.getElementById('qtyVal').value = currentQty;
+  updateTotalBetSpan();
+};
+window.setMulti = (el, m) => {
+  document.querySelectorAll('.m-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active'); currentMulti = m; updateTotalBetSpan();
+};
+function updateTotalBetSpan() {
+  document.getElementById('totalBetSpan').textContent = baseAmt * currentQty * currentMulti;
+}
+
+window.placeBet = async () => {
+  if (isBettingClosed) return toast('Betting closed for this period');
+  const total = baseAmt * currentQty * currentMulti;
+  if (total > userBalance) return toast('Insufficient balance');
+  const btn = document.getElementById('btnPlaceBet');
+  btn.disabled = true; btn.textContent = 'PLACING...';
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
+    userBalance -= total;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
+    await addDoc(collection(db, BET_COLLECTION), {
+      userId: currentUser.uid,
+      period: currentPeriod,
+      choice: selectedChoice,
+      type: selectedType,
+      amount: total,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+    toast(`Bet placed on ${selectedChoice.toUpperCase()}!`);
+    closeBetModal();
+    loadMyHistory();
+  } catch(e) {
+    toast('Bet failed. Try again.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'CONFIRM';
+  }
+};
+
+function showResultModal(isWin, amt) {
+  const popup = document.getElementById('resultPopup');
+  const card = document.getElementById('resCard');
+  card.className = 'res-card ' + (isWin ? 'win' : 'lose');
+  document.getElementById('resIcon').textContent = isWin ? '💎' : '📉';
+  document.getElementById('resTitle').textContent = isWin ? 'Hash Match Won!' : 'Block Settled';
+  document.getElementById('resAmt').textContent = (isWin ? '+₹' : '-₹') + Number(amt).toFixed(2);
+  popup.classList.add('show');
+  playSound(isWin ? 'win' : 'lose');
+}
+window.closePopup = () => document.getElementById('resultPopup').classList.remove('show');
+
+async function loadGameHistory() {
+  const gList = document.getElementById('gameList');
+  const recBar = document.getElementById('recentBar');
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(30));
+    const snap = await getDocs(q);
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
+
+    // Recent top chips
+    recBar.innerHTML = arr.slice(0, 10).map(d => `
+      <div class="res-chip">
+        <div class="chip-num">${d.number}</div>
+        <div class="chip-dot dot-${d.color}"></div>
+      </div>
+    `).join('');
+
+    // Table rows
+    gList.innerHTML = arr.slice(0, 10).map(d => `
+      <div class="table-row">
+        <div class="col" style="font-family:'Orbitron',sans-serif;font-size:11px;">${d.period.slice(-5)}</div>
+        <div class="col" style="font-family:'Roboto Mono',monospace;font-size:10px;color:var(--trx-cyan);">${(d.hash||'').slice(-6)}</div>
+        <div class="col" style="font-family:'Orbitron',sans-serif;font-weight:900;color:${d.color==='green'?'var(--green)':(d.color==='red'?'var(--trx-red)':'var(--violet)')};">${d.number}</div>
+        <div class="col" style="font-size:11px;font-weight:800;text-transform:capitalize;">${d.size}</div>
+      </div>
+    `).join('');
+
+    // Chart trend
+    document.getElementById('chartGrid').innerHTML = arr.slice(0, 30).map(d => `
+      <div style="aspect-ratio:1;border-radius:50%;background:#202533;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:'Orbitron',sans-serif;font-weight:800;border:1px solid ${d.color==='green'?'var(--green)':(d.color==='red'?'var(--trx-red)':'var(--violet)')};color:#fff;">${d.number}</div>
+    `).join('');
+  } catch(e){}
+}
+
+async function loadMyHistory() {
+  const myView = document.getElementById('myList');
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(25));
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      myView.innerHTML = '<div style="text-align:center;color:#666;padding:20px;font-size:12px;">No bets found</div>';
+      return;
+    }
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
+    myView.innerHTML = arr.slice(0,10).map(b => `
+      <div class="table-row">
+        <div class="col" style="font-size:11px;">${b.period.slice(-5)}</div>
+        <div class="col" style="font-weight:700;text-transform:uppercase;">${b.choice}</div>
+        <div class="col">₹${b.amount}</div>
+        <div class="col" style="font-weight:800;color:${b.status==='win'?'var(--green)':(b.status==='lose'?'var(--trx-red)':'var(--gold)')};">
+          ${b.status==='win'?'+₹'+Number(b.winAmount).toFixed(2):(b.status==='lose'?'-₹'+b.amount:'Pending')}
+        </div>
+      </div>
+    `).join('');
+  } catch(e){}
+}
+
+window.switchTab = (tab, el) => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('gameView').style.display = tab === 'game' ? 'block' : 'none';
+  document.getElementById('chartView').style.display = tab === 'chart' ? 'block' : 'none';
+  document.getElementById('myView').style.display = tab === 'my' ? 'block' : 'none';
+};
+</script>
+</body>
+</html>
