@@ -3,189 +3,492 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>VIP - BDG LOTTERY7</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#181818">
+<title>VIP Club - BDG LOTTERY7</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
+:root{
+  --gold-grad: linear-gradient(135deg, #FFE57F 0%, #F5C443 50%, #C8891D 100%);
+  --gold-text: #FAE59F;
+  --card-bg: #232326;
+  --border: rgba(255,255,255,0.06);
+}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#1A1A1A;color:#fff;min-height:100vh;padding-bottom:80px;}
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
-.nav-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
-.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
-.nav-title{font-size:16px;font-weight:600;}
+body{background:#181818;color:#fff;min-height:100vh;padding-bottom:50px;overflow-x:hidden;}
+button{border:none;outline:none;cursor:pointer;background:transparent;}
 
-/* User Header */
-.user-header{display:flex;align-items:center;gap:12px;padding:0 16px 16px;}
-.uh-avatar{width:60px;height:60px;border-radius:50%;border:2px solid #FAE59F;overflow:hidden;}
-.uh-info{display:flex;flex-direction:column;gap:4px;}
-.uh-name{font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px;}
-.uh-vip{background:#666;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;}
-.uh-exp{display:flex;gap:12px;margin-top:4px;}
-.uh-box{background:#262626;border-radius:8px;padding:8px 12px;text-align:center;}
-.uh-box h4{font-size:14px;color:#FAE59F;font-weight:700;}
-.uh-box p{font-size:10px;color:#a6a9ae;margin-top:2px;}
+/* Navbar */
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:#181818;border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.nav-title{font-size:16px;font-weight:700;}
 
-.notice{margin:0 16px 16px;background:#262626;padding:10px 12px;border-radius:8px;font-size:12px;color:#a6a9ae;}
+/* User Card */
+.user-card{background:linear-gradient(145deg, #252528 0%, #1c1c1e 100%);margin:14px 16px 12px;border-radius:18px;padding:16px;border:1px solid var(--border);box-shadow:0 8px 25px rgba(0,0,0,0.4);}
+.uh-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.uh-avatar{width:58px;height:58px;border-radius:50%;border:2px solid #FAE59F;overflow:hidden;flex-shrink:0;box-shadow:0 4px 12px rgba(250,229,159,0.25);background:#2c2c2c;}
+.uh-avatar img{width:100%;height:100%;object-fit:cover;display:none;}
+.uh-info{display:flex;flex-direction:column;gap:5px;flex:1;}
+.uh-name{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px;}
+.uh-vip-tag{background:var(--gold-grad);color:#2b1d03;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:900;letter-spacing:0.4px;font-family:'Orbitron',sans-serif;}
+.uh-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:#8c9099;}
+
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.exp-box{background:rgba(0,0,0,0.3);border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.03);}
+.exp-box h4{font-family:'Orbitron',sans-serif;font-size:16px;color:#FAE59F;font-weight:800;margin-bottom:3px;}
+.exp-box p{font-size:11px;color:#85888e;}
+
+/* Notice */
+.notice{margin:0 16px 14px;background:rgba(250,229,159,0.07);border:1px solid rgba(250,229,159,0.15);padding:10px 14px;border-radius:10px;font-size:11px;color:#FAE59F;display:flex;align-items:center;gap:8px;}
+.notice svg{width:16px;height:16px;stroke:#FAE59F;flex-shrink:0;}
 
 /* VIP Slider */
-.vip-slider-wrap{display:flex;overflow-x:auto;gap:12px;padding:0 16px 20px;scroll-snap-type:x mandatory;}
+.vip-slider-wrap{display:flex;overflow-x:auto;gap:12px;padding:0 16px 16px;scroll-snap-type:x mandatory;}
 .vip-slider-wrap::-webkit-scrollbar{display:none;}
-.vip-card{flex:0 0 85%;scroll-snap-align:center;border-radius:16px;padding:20px;position:relative;overflow:hidden;color:#fff;}
-/* Gradients for VIP Levels */
-.vip-bg-0{background:linear-gradient(135deg,#444,#222);}
-.vip-bg-1{background:linear-gradient(135deg,#8da4c9,#516488);}
-.vip-bg-2{background:linear-gradient(135deg,#f3a957,#c47826);}
-.vip-bg-3{background:linear-gradient(135deg,#ff7a7a,#d13c3c);}
-.vip-bg-4{background:linear-gradient(135deg,#a872ff,#6b31d9);}
-.vip-bg-5{background:linear-gradient(135deg,#4fd1ff,#1b87c9);}
-.vip-bg-6{background:linear-gradient(135deg,#ff5e62,#ff9966);}
-.vip-bg-7{background:linear-gradient(135deg,#00b09b,#96c93d);}
-.vip-bg-8{background:linear-gradient(135deg,#ff0099,#493240);}
-.vip-bg-9{background:linear-gradient(135deg,#e65c00,#f9d423);}
-.vip-bg-10{background:linear-gradient(135deg,#ff0000,#000000);}
+.vip-card{flex:0 0 88%;scroll-snap-align:center;border-radius:20px;padding:20px 18px;position:relative;overflow:hidden;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.12);}
 
-.vip-card h2{font-size:22px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
-.vip-card h2 span{font-size:12px;background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:10px;font-weight:500;}
-.vip-card p.req{font-size:12px;opacity:0.9;margin-bottom:16px;}
-.vip-progress{height:6px;background:rgba(0,0,0,0.3);border-radius:3px;margin-bottom:8px;overflow:hidden;}
-.vip-progress-bar{height:100%;background:#FAE59F;border-radius:3px;width:0%;}
-.vip-stats{display:flex;justify-content:space-between;font-size:10px;opacity:0.8;}
-.vip-star{position:absolute;right:-10px;top:-10px;font-size:100px;opacity:0.1;}
+.vip-bg-1{background:linear-gradient(135deg,#3a4860,#1b2537);}
+.vip-bg-2{background:linear-gradient(135deg,#734b22,#3d2208);}
+.vip-bg-3{background:linear-gradient(135deg,#6f2424,#380a0a);}
+.vip-bg-4{background:linear-gradient(135deg,#542a8a,#270a4a);}
+.vip-bg-5{background:linear-gradient(135deg,#1f5777,#082738);}
+.vip-bg-6{background:linear-gradient(135deg,#82392c,#3d1007);}
+.vip-bg-7{background:linear-gradient(135deg,#195c47,#072a1f);}
+.vip-bg-8{background:linear-gradient(135deg,#731c50,#30051e);}
+.vip-bg-9{background:linear-gradient(135deg,#735508,#352400);}
+.vip-bg-10{background:linear-gradient(135deg,#570808,#180000);}
 
-/* Benefits */
-.benefits-card{background:#262626;margin:0 16px 20px;border-radius:16px;padding:16px;}
-.benefits-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.benefits-title svg{width:20px;height:20px;stroke:#FAE59F;fill:none;stroke-width:2;}
-.b-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.b-row:last-child{margin-bottom:0;}
+.vip-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.vip-card-head h2{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;}
+.vip-status-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);}
+.vip-status-badge.active{background:var(--gold-grad);color:#211400;border:none;}
+
+.vip-card p.req{font-size:12px;opacity:0.85;margin-bottom:14px;}
+.vip-progress-box{margin-bottom:12px;}
+.vip-progress-bar-bg{height:7px;background:rgba(0,0,0,0.4);border-radius:4px;overflow:hidden;}
+.vip-progress-bar-fill{height:100%;background:var(--gold-grad);border-radius:4px;width:0%;transition:width 0.4s ease;}
+.vip-stats{display:flex;justify-content:space-between;font-size:11px;margin-top:6px;font-weight:600;opacity:0.9;}
+.vip-star-bg{position:absolute;right:-15px;top:-10px;font-size:110px;opacity:0.08;pointer-events:none;font-weight:900;}
+
+/* Benefits Card */
+.benefits-card{background:var(--card-bg);margin:0 16px 16px;border-radius:18px;padding:16px;border:1px solid var(--border);}
+.benefits-title{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.benefits-title svg{width:18px;height:18px;stroke:#FAE59F;fill:none;stroke-width:2.2;}
+.b-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.b-row:last-child{border-bottom:none;padding-bottom:0;}
 .b-left{display:flex;align-items:center;gap:12px;}
-.b-icon{font-size:24px;}
-.b-info h4{font-size:14px;font-weight:600;margin-bottom:2px;}
-.b-info p{font-size:11px;color:#a6a9ae;}
-.b-right{background:#333;border:1px solid #FAE59F;color:#FAE59F;padding:6px 12px;border-radius:8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.b-icon{font-size:22px;width:34px;height:34px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;border-radius:10px;}
+.b-info h4{font-size:13px;font-weight:700;margin-bottom:2px;}
+.b-info p{font-size:11px;color:#85888e;}
+.b-right{font-family:'Orbitron',sans-serif;background:#1a1a1d;border:1px solid rgba(250,229,159,0.3);color:#FAE59F;padding:7px 14px;border-radius:10px;font-size:13px;font-weight:800;}
 
-/* Tabs */
-.tabs{display:flex;margin:0 16px;background:#262626;border-radius:12px;padding:4px;}
-.tab{flex:1;text-align:center;padding:10px;font-size:14px;font-weight:600;color:#a6a9ae;border-radius:8px;cursor:pointer;}
-.tab.active{background:#333;color:#FAE59F;}
-.tab-content{padding:20px 16px;}
-.empty-state{text-align:center;color:#666;padding:30px;}
+/* Level Reward Claim Button */
+.claim-box{margin:0 16px 16px;}
+.btn-claim{width:100%;height:46px;border-radius:23px;background:var(--gold-grad);color:#2b1d03;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 15px rgba(245,196,67,0.35);transition:0.15s;}
+.btn-claim:active{transform:scale(0.98);}
+.btn-claim:disabled{opacity:0.4;cursor:not-allowed;box-shadow:none;}
+
+/* Tabs Container */
+.tabs-wrap{display:flex;margin:0 16px 12px;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--border);}
+.tab{flex:1;text-align:center;padding:9px;font-size:13px;font-weight:700;color:#85888e;border-radius:8px;cursor:pointer;}
+.tab.active{background:#323236;color:#FAE59F;}
+.tab-content{margin:0 16px;background:var(--card-bg);border-radius:16px;padding:16px;border:1px solid var(--border);min-height:100px;}
+.empty-state{text-align:center;color:#666;font-size:13px;padding:24px 0;}
+
+/* Claim Record Rows */
+.hist-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;}
+.hist-item:last-child{border-bottom:none;}
+.hist-amt{color:#00e676;font-family:'Orbitron',sans-serif;font-weight:800;}
+
+/* Toast */
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(20,20,22,0.96);border:1px solid rgba(250,229,159,0.3);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
 <div class="navbar">
-  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
-  <div class="nav-title">VIP</div>
-  <div style="width:40px;"></div>
+  <div class="nav-left" onclick="location.href='account.html'">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
+  <div class="nav-title">VIP Club</div>
+  <div style="width:36px;"></div>
 </div>
 
-<div class="user-header">
-  <div class="uh-avatar"><img src="https://ui-avatars.com/api/?name=User&background=random" style="width:100%;height:100%;object-fit:cover;"></div>
-  <div class="uh-info">
-    <div class="uh-name">Member <span class="uh-vip">VIP0</span></div>
+<!-- Current User Card -->
+<div class="user-card">
+  <div class="uh-top">
+    <div class="uh-avatar">
+      <img id="avatarImg" src="" alt="Avatar">
+    </div>
+    <div class="uh-info">
+      <div class="uh-name">
+        <span id="userName">Member</span>
+        <span class="uh-vip-tag" id="currentVipTag">VIP0</span>
+      </div>
+      <div class="uh-meta">UID: <span id="userUid">---</span></div>
+    </div>
+  </div>
+
+  <div class="exp-grid">
+    <div class="exp-box">
+      <h4 id="userExpVal">0</h4>
+      <p>My Total EXP (₹1=1EXP)</p>
+    </div>
+    <div class="exp-box">
+      <h4 id="nextNeedVal">3,000</h4>
+      <p>Needed for Next VIP</p>
+    </div>
   </div>
 </div>
 
-<div class="uh-exp" style="padding:0 16px 16px; display:flex; gap:12px;">
-  <div class="uh-box" style="flex:1;"><h4>0 EXP</h4><p>My experience</p></div>
-  <div class="uh-box" style="flex:1;"><h4>27 Days</h4><p>Payout time</p></div>
+<div class="notice">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+  Play lottery or games to earn 1 EXP per ₹1 bet automatically.
 </div>
 
-<div class="notice">VIP level rewards are settled at 2:00 am on the 1st of every month</div>
+<!-- VIP Level Carousel -->
+<div class="vip-slider-wrap" id="vipSlider"></div>
 
-<!-- VIP Slider -->
-<div class="vip-slider-wrap" id="vipSlider">
-  <!-- Generated by JS -->
+<!-- Claim Level-Up Reward Section -->
+<div class="claim-box">
+  <button class="btn-claim" id="claimRewardBtn" onclick="claimVipReward()" disabled>
+    Claim Level Reward (₹<span id="claimAmountVal">0</span>)
+  </button>
 </div>
 
-<!-- Benefits -->
+<!-- Dynamic Benefits for Selected VIP -->
 <div class="benefits-card">
-  <div class="benefits-title"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/></svg> Benefits level</div>
-  <div id="benefitsContainer">
-    <!-- Generated by JS -->
+  <div class="benefits-title">
+    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <span id="benefitsLevelTitle">VIP1 Benefits</span>
   </div>
+  <div id="benefitsContainer"></div>
 </div>
 
-<!-- History/Rules Tabs -->
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('history')">History</div>
-  <div class="tab" onclick="switchTab('rules')">Rules</div>
+<!-- History & Rules Tab -->
+<div class="tabs-wrap">
+  <div class="tab active" onclick="switchTab('history', this)">Claim History</div>
+  <div class="tab" onclick="switchTab('rules', this)">VIP Rules</div>
 </div>
+
 <div id="tab-history" class="tab-content">
-  <div class="empty-state">No data</div>
-</div>
-<div id="tab-rules" class="tab-content" style="display:none; color:#a6a9ae; font-size:13px; line-height:1.6;">
-  1. VIP level is calculated based on total bet amount.<br><br>
-  2. 1 INR bet = 1 EXP.<br><br>
-  3. Level up rewards can only be claimed once per account.<br><br>
-  4. Monthly rewards are distributed on the 1st of every month.
+  <div id="historyList"><div class="empty-state">No reward history</div></div>
 </div>
 
-<script>
-// VIP Data
-const vipData = [
-  { level: 0, exp: 0, upReward: 0, monthly: 0, rebate: '0%', bgClass: 'vip-bg-0' },
-  { level: 1, exp: 3000, upReward: 60, monthly: 5, rebate: '0.05%', bgClass: 'vip-bg-1' },
-  { level: 2, exp: 30000, upReward: 180, monthly: 20, rebate: '0.05%', bgClass: 'vip-bg-2' },
-  { level: 3, exp: 400000, upReward: 690, monthly: 300, rebate: '0.1%', bgClass: 'vip-bg-3' },
-  { level: 4, exp: 1500000, upReward: 1200, monthly: 600, rebate: '0.15%', bgClass: 'vip-bg-4' },
-  { level: 5, exp: 3000000, upReward: 2500, monthly: 1000, rebate: '0.2%', bgClass: 'vip-bg-5' },
-  { level: 6, exp: 6000000, upReward: 5000, monthly: 2000, rebate: '0.25%', bgClass: 'vip-bg-6' },
-  { level: 7, exp: 10000000, upReward: 10000, monthly: 3000, rebate: '0.3%', bgClass: 'vip-bg-7' },
-  { level: 8, exp: 20000000, upReward: 20000, monthly: 5000, rebate: '0.35%', bgClass: 'vip-bg-8' },
-  { level: 9, exp: 50000000, upReward: 50000, monthly: 10000, rebate: '0.4%', bgClass: 'vip-bg-9' },
-  { level: 10, exp: 100000000, upReward: 100000, monthly: 20000, rebate: '0.5%', bgClass: 'vip-bg-10' }
+<div id="tab-rules" class="tab-content" style="display:none; color:#a6a9ae; font-size:12px; line-height:1.7;">
+  1. <strong>EXP Accumulation:</strong> Every ₹1 valid bet placed across WinGo (30s, 1m, 3m, 5m, 10m), K3, 5D, or Mines gives 1 EXP.<br>
+  2. <strong>Level Up Promotion:</strong> Once your EXP meets the requirements, your VIP level is upgraded immediately.<br>
+  3. <strong>Level Up Bonus:</strong> Every level reward can only be claimed once per account.<br>
+  4. <strong>Lifetime VIP:</strong> VIP levels never expire or downgrade.
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, updateDoc, increment, collection,
+  getDocs, query, where, addDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const profileImages = [
+  "3-abfcc056.png", "6-7c7f5203.png", "7-00479cfa.png",
+  "19-2ac9fd83.png", "17-bedde42f.png"
 ];
 
-const slider = document.getElementById('vipSlider');
-let html = '';
-vipData.forEach((v, index) => {
-  if(index === 0) return; // Don't show VIP0 in slider
-  
-  html += `
-    <div class="vip-card ${v.bgClass}">
-      <div class="vip-star">★</div>
-      <h2>VIP${v.level} <span>Not open yet</span></h2>
-      <p class="req">Upgrading VIP${v.level} requires ${v.exp.toLocaleString()}EXP</p>
-      <div style="font-size:12px;margin-bottom:16px;">Bet ₹1=1EXP</div>
-      <div class="vip-progress">
-        <div class="vip-progress-bar"></div>
-      </div>
-      <div class="vip-stats">
-        <span>0/${v.exp.toLocaleString()}</span>
-        <span>${v.exp.toLocaleString()} EXP can be leveled up</span>
-      </div>
-    </div>
-  `;
-});
-slider.innerHTML = html;
+const vipTiers = [
+  { level: 0, exp: 0, upReward: 0, monthly: 0, rebate: '0%', bgClass: 'vip-bg-1' },
+  { level: 1, exp: 3000, upReward: 60, monthly: 15, rebate: '0.05%', bgClass: 'vip-bg-1' },
+  { level: 2, exp: 30000, upReward: 180, monthly: 50, rebate: '0.08%', bgClass: 'vip-bg-2' },
+  { level: 3, exp: 200000, upReward: 690, monthly: 200, rebate: '0.12%', bgClass: 'vip-bg-3' },
+  { level: 4, exp: 800000, upReward: 1500, monthly: 500, rebate: '0.15%', bgClass: 'vip-bg-4' },
+  { level: 5, exp: 2000000, upReward: 3800, monthly: 1200, rebate: '0.20%', bgClass: 'vip-bg-5' },
+  { level: 6, exp: 5000000, upReward: 8800, monthly: 2500, rebate: '0.25%', bgClass: 'vip-bg-6' },
+  { level: 7, exp: 12000000, upReward: 18800, monthly: 5000, rebate: '0.30%', bgClass: 'vip-bg-7' },
+  { level: 8, exp: 25000000, upReward: 38800, monthly: 10000, rebate: '0.35%', bgClass: 'vip-bg-8' },
+  { level: 9, exp: 60000000, upReward: 88800, monthly: 25000, rebate: '0.40%', bgClass: 'vip-bg-9' },
+  { level: 10, exp: 150000000, upReward: 188800, monthly: 50000, rebate: '0.50%', bgClass: 'vip-bg-10' }
+];
 
-// Default showing VIP1 benefits
-function updateBenefits(level) {
-  const v = vipData[level];
+let currentUser = null;
+let currentExp = 0;
+let userVipLevel = 0;
+let claimedLevels = [];
+let selectedViewLevel = 1;
+
+window.toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  document.getElementById('userUid').textContent = user.uid.substring(0, 8).toUpperCase();
+
+  // Avatar Setup
+  const sum = user.uid.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const avatarImg = document.getElementById('avatarImg');
+  avatarImg.src = './images/' + profileImages[sum % profileImages.length];
+  avatarImg.style.display = 'block';
+
+  await fetchUserDataAndExp();
+});
+
+// Calculate EXP across game bets
+async function fetchUserDataAndExp() {
+  try {
+    const userSnap = await getDoc(doc(db, 'users', currentUser.uid));
+    const uData = userSnap.data() || {};
+    document.getElementById('userName').textContent = uData.name || 'Member';
+
+    // Fetch Claimed VIP list
+    claimedLevels = Array.isArray(uData.claimedVipLevels) ? uData.claimedVipLevels : [];
+
+    // Aggregate bets for EXP (₹1 Bet = 1 EXP)
+    let totalBetTurnover = Number(uData.totalTurnover || 0);
+
+    if (!uData.totalTurnover) {
+      const collectionsToCheck = [
+        'bets', 'bets_30s', 'bets_3m', 'bets_5m', 'bets_10m', 'bets_k3', 'bets_5d', 'bets_mines'
+      ];
+      const results = await Promise.allSettled(
+        collectionsToCheck.map(colName =>
+          getDocs(query(collection(db, colName), where('userId', '==', currentUser.uid)))
+        )
+      );
+
+      results.forEach(res => {
+        if (res.status === 'fulfilled' && !res.value.empty) {
+          res.value.forEach(docSnap => {
+            totalBetTurnover += Number(docSnap.data().amount || 0);
+          });
+        }
+      });
+
+      // Cache totalTurnover to avoid heavy queries next time
+      updateDoc(doc(db, 'users', currentUser.uid), { totalTurnover: totalBetTurnover }).catch(() => {});
+    }
+
+    currentExp = Math.floor(totalBetTurnover);
+
+    // Determine VIP Level
+    userVipLevel = 0;
+    for (let i = vipTiers.length - 1; i >= 0; i--) {
+      if (currentExp >= vipTiers[i].exp) {
+        userVipLevel = vipTiers[i].level;
+        break;
+      }
+    }
+
+    // Save actual user VIP level to DB
+    if (uData.vipLevel !== userVipLevel) {
+      updateDoc(doc(db, 'users', currentUser.uid), { vipLevel: userVipLevel }).catch(() => {});
+    }
+
+    // Update Header HUD
+    document.getElementById('currentVipTag').textContent = 'VIP' + userVipLevel;
+    document.getElementById('userExpVal').textContent = currentExp.toLocaleString();
+
+    const nextTier = vipTiers[userVipLevel + 1] || vipTiers[userVipLevel];
+    const needExp = Math.max(0, nextTier.exp - currentExp);
+    document.getElementById('nextNeedVal').textContent = needExp > 0 ? needExp.toLocaleString() : 'MAX';
+
+    renderSlider();
+    selectVipLevel(Math.min(10, Math.max(1, userVipLevel + 1)));
+    loadClaimHistory();
+  } catch (err) {
+    console.error("VIP Error:", err);
+    toast('Error loading VIP status');
+  }
+}
+
+function renderSlider() {
+  const slider = document.getElementById('vipSlider');
+  let html = '';
+
+  vipTiers.forEach((v) => {
+    if (v.level === 0) return;
+
+    const isUnlocked = userVipLevel >= v.level;
+    const isCurrent = userVipLevel === v.level;
+    const progressPercent = Math.min(100, (currentExp / v.exp) * 100);
+
+    let statusText = 'Locked';
+    let statusClass = '';
+    if (isCurrent) { statusText = 'Current'; statusClass = 'active'; }
+    else if (isUnlocked) { statusText = 'Unlocked'; statusClass = 'active'; }
+
+    html += `
+      <div class="vip-card ${v.bgClass}" onclick="window.selectVipLevel(${v.level})" style="cursor:pointer;">
+        <div class="vip-star-bg">★</div>
+        <div class="vip-card-head">
+          <h2>VIP${v.level}</h2>
+          <span class="vip-status-badge ${statusClass}">${statusText}</span>
+        </div>
+        <p class="req">Requirement: ${v.exp.toLocaleString()} EXP</p>
+        <div class="vip-progress-box">
+          <div class="vip-progress-bar-bg">
+            <div class="vip-progress-bar-fill" style="width:${progressPercent.toFixed(1)}%;"></div>
+          </div>
+          <div class="vip-stats">
+            <span>${Math.min(currentExp, v.exp).toLocaleString()} / ${v.exp.toLocaleString()}</span>
+            <span>${progressPercent.toFixed(0)}%</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  slider.innerHTML = html;
+}
+
+window.selectVipLevel = function(level) {
+  selectedViewLevel = level;
+  const v = vipTiers[level];
+  document.getElementById('benefitsLevelTitle').textContent = `VIP${v.level} Benefits`;
+
   document.getElementById('benefitsContainer').innerHTML = `
     <div class="b-row">
-      <div class="b-left"><div class="b-icon">🎁</div><div class="b-info"><h4>Level up rewards</h4><p>Each account can only receive 1 time</p></div></div>
-      <div class="b-right">₹ ${v.upReward}</div>
+      <div class="b-left">
+        <div class="b-icon">🎁</div>
+        <div class="b-info">
+          <h4>Level Up Reward</h4>
+          <p>Claimable once upon reaching VIP${v.level}</p>
+        </div>
+      </div>
+      <div class="b-right">₹${v.upReward.toLocaleString()}</div>
     </div>
     <div class="b-row">
-      <div class="b-left"><div class="b-icon">🪙</div><div class="b-info"><h4>Monthly reward</h4><p>Each account can only receive 1 time per month</p></div></div>
-      <div class="b-right">₹ ${v.monthly}</div>
+      <div class="b-left">
+        <div class="b-icon">🪙</div>
+        <div class="b-info">
+          <h4>Monthly Reward</h4>
+          <p>1st of every month settlement</p>
+        </div>
+      </div>
+      <div class="b-right">₹${v.monthly.toLocaleString()}</div>
     </div>
     <div class="b-row">
-      <div class="b-left"><div class="b-icon">💸</div><div class="b-info"><h4>Rebate rate</h4><p>Increase income of rebate</p></div></div>
+      <div class="b-left">
+        <div class="b-icon">💸</div>
+        <div class="b-info">
+          <h4>Rebate Bonus</h4>
+          <p>Additional turnover rebate</p>
+        </div>
+      </div>
       <div class="b-right">${v.rebate}</div>
     </div>
   `;
-}
-updateBenefits(1);
 
-function switchTab(tab) {
+  // Claim Button Update
+  const claimBtn = document.getElementById('claimRewardBtn');
+  document.getElementById('claimAmountVal').textContent = v.upReward;
+
+  const alreadyClaimed = claimedLevels.includes(level);
+  if (userVipLevel >= level && !alreadyClaimed) {
+    claimBtn.disabled = false;
+    claimBtn.textContent = `Claim VIP${level} Reward (₹${v.upReward})`;
+  } else if (alreadyClaimed) {
+    claimBtn.disabled = true;
+    claimBtn.textContent = `VIP${level} Reward Claimed ✓`;
+  } else {
+    claimBtn.disabled = true;
+    claimBtn.textContent = `Reach VIP${level} to Claim (₹${v.upReward})`;
+  }
+};
+
+window.claimVipReward = async function() {
+  const level = selectedViewLevel;
+  const reward = vipTiers[level].upReward;
+  if (userVipLevel < level || claimedLevels.includes(level)) return;
+
+  const btn = document.getElementById('claimRewardBtn');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  try {
+    claimedLevels.push(level);
+
+    // 1. Add reward directly to balance
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(reward),
+      claimedVipLevels: claimedLevels
+    });
+
+    // 2. Save Claim Log in history
+    await addDoc(collection(db, 'vip_rewards'), {
+      userId: currentUser.uid,
+      vipLevel: level,
+      amount: reward,
+      claimedAt: serverTimestamp()
+    });
+
+    toast(`Success! ₹${reward} added to your balance.`);
+    window.selectVipLevel(level);
+    loadClaimHistory();
+  } catch (err) {
+    console.error(err);
+    toast('Claim failed. Try again.');
+    btn.disabled = false;
+  }
+};
+
+async function loadClaimHistory() {
+  const container = document.getElementById('historyList');
+  try {
+    const q = query(collection(db, 'vip_rewards'), where('userId', '==', currentUser.uid));
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+      container.innerHTML = `<div class="empty-state">No reward claims yet</div>`;
+      return;
+    }
+
+    let records = [];
+    snap.forEach(d => records.push(d.data()));
+    records.sort((a,b) => (b.claimedAt?.toMillis() || 0) - (a.claimedAt?.toMillis() || 0));
+
+    let html = '';
+    records.forEach(r => {
+      const dateStr = r.claimedAt ? new Date(r.claimedAt.toDate()).toLocaleDateString() : 'Today';
+      html += `
+        <div class="hist-item">
+          <div>
+            <strong>VIP${r.vipLevel} Level Up Reward</strong>
+            <div style="color:#777;font-size:10px;margin-top:2px;">${dateStr}</div>
+          </div>
+          <div class="hist-amt">+₹${Number(r.amount).toFixed(2)}</div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  } catch (e) {
+    container.innerHTML = `<div class="empty-state">No claims found</div>`;
+  }
+}
+
+window.switchTab = function(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+  el.classList.add('active');
   document.getElementById('tab-history').style.display = tab === 'history' ? 'block' : 'none';
   document.getElementById('tab-rules').style.display = tab === 'rules' ? 'block' : 'none';
-}
+};
 </script>
 </body>
 </html>
