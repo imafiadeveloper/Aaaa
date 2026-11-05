@@ -3,262 +3,244 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#090909">
+<meta name="theme-color" content="#141416">
 <title>BDG LOTTERY7 - Wallet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
+:root{
+  --gold-gradient: linear-gradient(180deg, #FFE793 0%, #E5B24E 50%, #C48E2F 100%);
+  --gold-primary: #FAE59F;
+  --bg-dark: #141416;
+  --card-dark: #202024;
+  --border-glass: rgba(255,255,255,0.06);
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;width:100%;background:#090909;font-family:'Inter','Roboto',-apple-system,BlinkMacSystemFont,sans-serif;color:#fff;overflow-x:hidden;}
+html,body{height:100%;width:100%;background:var(--bg-dark);font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;}
 a{text-decoration:none;color:inherit;}
 button{font-family:inherit;cursor:pointer;border:none;outline:none;}
-input{font-family:inherit;outline:none;border:none;}
-img{display:block;max-width:100%;}
 ::-webkit-scrollbar{width:0;height:0;}
 
 /* ============ NAVBAR ============ */
 .navbar{
   position:sticky;top:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  height:56px;padding:0 16px;
-  background:#090909;
-  border-bottom:1px solid rgba(255,255,255,0.06);
+  height:54px;padding:0 16px;
+  background:rgba(20,20,22,0.95);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-glass);
 }
-.navbar-left{display:flex;align-items:center;gap:10px;cursor:pointer;}
-.navbar-logo{width:32px;height:24px;background:url('./images/indiaFlag.png') no-repeat center / contain;border-radius:3px;}
-.navbar-brand{font-size:15px;font-weight:700;color:#fff;}
+.navbar-left{width:38px;height:38px;display:flex;align-items:center;cursor:pointer;}
+.navbar-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;color:#fff;letter-spacing:0.3px;}
 .navbar-right{
-  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
-  border-radius:50%;cursor:pointer;transition:background .2s;
+  width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;cursor:pointer;background:rgba(255,255,255,0.04);
 }
-.navbar-right:active{background:rgba(255,255,255,0.08);}
-.navbar-right svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2;}
+.navbar-right svg{width:20px;height:20px;stroke:#FAE59F;fill:none;stroke-width:2;}
 
 /* ============ PAGE WRAPPER ============ */
-.page{
-  padding:16px 16px 110px;
-  min-height:calc(100vh - 56px);
-}
+.page{padding:14px 16px 105px;}
 
-/* ============ USER PROFILE ============ */
+/* ============ USER INFO ============ */
 .user-card{
   display:flex;flex-direction:column;align-items:center;
-  padding:20px 16px 24px;
+  padding:10px 0 16px;
 }
 .user-avatar{
   width:64px;height:64px;border-radius:50%;
-  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:10px;
-  box-shadow:0 6px 20px rgba(196,147,63,0.35);
-  overflow: hidden;
+  border:2.5px solid #FAE59F;
+  box-shadow:0 0 16px rgba(250,229,159,0.3);
+  overflow:hidden;background:#2a2a2e;margin-bottom:8px;
 }
 .user-avatar img{width:100%;height:100%;object-fit:cover;display:none;}
-.user-name{font-size:16px;font-weight:700;letter-spacing:.2px;color:#fff;}
-.user-uid{font-size:12px;color:#a6a9ae;margin-top:3px;}
+.user-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:0.2px;}
+.user-uid{font-size:11px;color:#8f929b;margin-top:3px;font-weight:600;}
 
-/* ============ BALANCE CARD ============ */
+/* ============ 3D BALANCE CARD ============ */
 .balance-card{
   position:relative;overflow:hidden;
-  background:#1A1A1A;
-  border:1px solid rgba(250,229,159,0.15);
-  border-radius:20px;
-  padding:22px 18px 20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  background:linear-gradient(145deg, #27272b 0%, #1c1c1f 100%);
+  border:1px solid rgba(250,229,159,0.18);
+  border-radius:20px;padding:20px 18px 16px;
+  box-shadow:0 12px 28px rgba(0,0,0,0.55);
 }
-.balance-card::before{
-  content:'';position:absolute;top:-60px;right:-60px;
-  width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(250,229,159,0.15),transparent 70%);
+.balance-card::after{
+  content:'';position:absolute;top:-50px;right:-50px;
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(250,229,159,0.12),transparent 70%);
   pointer-events:none;
 }
-.bc-label{font-size:13px;color:#a6a9ae;margin-bottom:6px;font-weight:500;}
-.bc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.bc-label{font-size:12px;color:#a4a7b2;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.bc-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .bc-amount{
-  font-size:32px;font-weight:800;letter-spacing:.5px;
-  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  line-height:1.1;
+  font-family:'Orbitron',sans-serif;
+  font-size:24px;font-weight:900;
+  color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:0.5px;
 }
-.bc-amount .cur{font-size:22px;font-weight:700;}
+.bc-amount span{color:#FAE59F;}
 .refresh-btn{
   width:36px;height:36px;border-radius:50%;
-  background:rgba(250,229,159,0.1);
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
   display:flex;align-items:center;justify-content:center;
-  transition:transform .5s;
+  cursor:pointer;flex-shrink:0;transition:all .3s ease;
 }
-.refresh-btn:active{background:rgba(250,229,159,0.2);}
-.refresh-btn.spin{animation:spin .8s linear;}
+.refresh-btn:active{transform:scale(0.9);}
+.refresh-btn.spin svg{animation:spin .75s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .refresh-btn svg{width:18px;height:18px;stroke:#FAE59F;fill:none;stroke-width:2.2;}
 
 .bc-stats{
-  display:flex;gap:10px;margin-top:18px;
-  padding-top:16px;border-top:1px dashed rgba(255,255,255,0.08);
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,0.06);
 }
 .bc-stat{
-  flex:1;background:#222;border-radius:12px;
-  padding:10px 8px;text-align:center;
+  background:rgba(0,0,0,0.25);border-radius:12px;
+  padding:10px;text-align:center;
+  border:1px solid rgba(255,255,255,0.03);
 }
-.bc-stat-label{font-size:11px;color:#a6a9ae;margin-bottom:4px;}
-.bc-stat-val{font-size:14px;font-weight:700;color:#FAE59F;}
+.bc-stat-label{font-size:10px;color:#858892;font-weight:600;text-transform:uppercase;margin-bottom:3px;}
+.bc-stat-val{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:800;color:#FAE59F;}
 
-/* ============ MAIN WALLET TRANSFER BTN ============ */
+/* ============ MAIN TRANSFER BUTTON ============ */
 .transfer-btn{
-  width:100%;height:50px;margin-top:16px;
+  width:100%;height:48px;margin-top:14px;
   border-radius:14px;
-  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
-  color:#3a2a10;font-size:15px;font-weight:700;
+  background:var(--gold-gradient);
+  color:#291a03;font-size:14px;font-weight:900;
   display:flex;align-items:center;justify-content:center;gap:8px;
-  box-shadow:0 8px 20px rgba(196,147,63,0.3);
-  transition:transform .15s,box-shadow .15s;
+  box-shadow:0 6px 18px rgba(196,147,63,0.32);
+  letter-spacing:0.3px;transition:transform .15s;
 }
-.transfer-btn:active{transform:scale(0.97);box-shadow:0 4px 10px rgba(196,147,63,0.3);}
-.transfer-btn svg{width:20px;height:20px;stroke:#3a2a10;fill:none;stroke-width:2.2;}
+.transfer-btn:active{transform:scale(0.98);}
+.transfer-btn svg{width:18px;height:18px;stroke:#291a03;fill:none;stroke-width:2.6;}
 
 /* ============ ACTION GRID ============ */
 .action-grid{
   display:grid;grid-template-columns:repeat(2,1fr);
-  gap:12px;margin-top:20px;
+  gap:10px;margin-top:16px;
 }
 .action-item{
-  background:#1A1A1A;border:1px solid rgba(255,255,255,0.06);
-  border-radius:16px;padding:18px 10px 14px;
+  background:var(--card-dark);
+  border:1px solid var(--border-glass);
+  border-radius:16px;padding:16px 12px;
   display:flex;flex-direction:column;align-items:center;gap:10px;
-  transition:transform .15s,background .15s;cursor:pointer;
+  cursor:pointer;transition:all .15s ease;
 }
-.action-item:active{transform:scale(0.97);background:#222;}
+.action-item:active{background:#2a2a2f;transform:scale(0.97);}
 .action-icon{
-  width:48px;height:48px;border-radius:14px;
+  width:46px;height:46px;border-radius:14px;
   display:flex;align-items:center;justify-content:center;
-  background:rgba(250,229,159,0.1);
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
-.action-icon svg{width:24px;height:24px;stroke:#FAE59F;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.action-icon.green{background:rgba(107,190,88,0.12);}
-.action-icon.green svg{stroke:#6abe57;}
-.action-icon.blue{background:rgba(84,150,255,0.12);}
-.action-icon.blue svg{stroke:#5496ff;}
-.action-icon.red{background:rgba(242,65,59,0.12);}
-.action-icon.red svg{stroke:#f2413b;}
-.action-label{font-size:13px;font-weight:600;color:#fff;}
+.action-icon.green{background:#172b1e;}
+.action-icon.green svg{stroke:#00e676;}
+.action-icon.red{background:#301b1e;}
+.action-icon.red svg{stroke:#ff4d4f;}
+.action-icon.blue{background:#162438;}
+.action-icon.blue svg{stroke:#4a90e2;}
+.action-icon.yellow{background:#332915;}
+.action-icon.yellow svg{stroke:#FAE59F;}
+.action-icon svg{width:22px;height:22px;fill:none;stroke-width:2.2;}
+.action-label{font-size:13px;font-weight:700;color:#eaeaea;}
 
-/* ============ SECTION TITLE ============ */
+/* ============ RECENT TRANSACTIONS ============ */
 .section-title{
   display:flex;align-items:center;justify-content:space-between;
-  margin:24px 0 12px;
+  margin:22px 0 12px;
 }
-.section-title h3{font-size:15px;font-weight:700;color:#fff;}
+.section-title h3{font-size:14px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.5px;}
 
-/* ============ TRANSACTION LIST ============ */
-.tx-list{display:flex;flex-direction:column;gap:10px;}
+.tx-list{display:flex;flex-direction:column;gap:8px;}
 .tx-item{
-  background:#1A1A1A;border:1px solid rgba(255,255,255,0.05);
-  border-radius:14px;padding:14px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--card-dark);
+  border:1px solid var(--border-glass);
+  border-radius:14px;padding:12px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
 .tx-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1;}
 .tx-icon{
-  width:40px;height:40px;border-radius:12px;flex-shrink:0;
+  width:38px;height:38px;border-radius:10px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
 }
-.tx-icon.deposit{background:rgba(107,190,88,0.12);}
-.tx-icon.deposit svg{stroke:#6abe57;}
-.tx-icon.withdraw{background:rgba(242,65,59,0.12);}
-.tx-icon.withdraw svg{stroke:#f2413b;}
-.tx-icon.bet{background:rgba(250,229,159,0.1);}
+.tx-icon.deposit{background:#172b1e;}
+.tx-icon.deposit svg{stroke:#00e676;}
+.tx-icon.withdraw{background:#301b1e;}
+.tx-icon.withdraw svg{stroke:#ff4d4f;}
+.tx-icon.bet{background:rgba(250,229,159,0.08);}
 .tx-icon.bet svg{stroke:#FAE59F;}
-.tx-icon svg{width:20px;height:20px;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.tx-icon svg{width:18px;height:18px;fill:none;stroke-width:2.2;}
 .tx-info{min-width:0;flex:1;}
-.tx-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tx-meta{display:flex;align-items:center;gap:6px;font-size:11px;}
-.tx-time{color:#a6a9ae;}
-.tx-status{padding:2px 6px;border-radius:4px;font-weight:600;font-size:9px;}
-.tx-status.success{background:rgba(107,190,88,0.15);color:#6abe57;}
-.tx-status.pending{background:rgba(250,171,0,0.15);color:#ffab00;}
-.tx-status.failed{background:rgba(242,65,59,0.15);color:#f2413b;}
-.tx-amt{font-size:15px;font-weight:700;flex-shrink:0;}
-.tx-amt.plus{color:#6abe57;}
-.tx-amt.minus{color:#f2413b;}
+.tx-time{color:#777a83;}
+.tx-status{padding:1px 6px;border-radius:4px;font-weight:700;font-size:9px;}
+.tx-status.success{background:rgba(0,230,118,0.12);color:#00e676;}
+.tx-status.pending{background:rgba(250,171,0,0.12);color:#ffab00;}
+.tx-status.failed{background:rgba(255,77,79,0.12);color:#ff4d4f;}
+.tx-amt{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:800;flex-shrink:0;}
+.tx-amt.plus{color:#00e676;}
+.tx-amt.minus{color:#ff4d4f;}
 
 .empty-state{
-  display:flex;flex-direction:column;align-items:center;gap:10px;
-  padding:36px 20px;color:#a6a9ae;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:30px 16px;color:#6b6e78;
 }
-.empty-state svg{width:56px;height:56px;stroke:#444;fill:none;stroke-width:1.5;}
-.empty-state p{font-size:13px;}
+.empty-state svg{width:48px;height:48px;stroke:#3e3e44;fill:none;stroke-width:1.5;}
+.empty-state p{font-size:12px;font-weight:500;}
 
 /* ============ TOAST ============ */
 .toast{
-  position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:rgba(30,30,30,0.98);border:1px solid rgba(250,229,159,0.25);
-  color:#fff;font-size:13px;font-weight:500;
-  padding:12px 22px;border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.6);
-  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
-  z-index:9999;max-width:80vw;text-align:center;
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid rgba(250,229,159,0.3);
+  color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* ============ BOTTOM TAB BAR ============ */
 .tabbar{
   position:fixed;bottom:0;left:0;right:0;z-index:200;
-  height:64px;
-  background:rgba(15,15,15,0.98);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-top:1px solid rgba(255,255,255,0.07);
-  display:flex;align-items:stretch;
+  height:64px;background:#111112;
+  border-top:1px solid var(--border-glass);
+  display:flex;align-items:center;justify-content:space-around;
   padding-bottom:env(safe-area-inset-bottom);
 }
-.tab{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;color:#6b6e73;font-size:10px;font-weight:600;
-  position:relative;transition:color .2s;cursor:pointer;
-}
-.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6b6e73;font-size:10px;font-weight:600;cursor:pointer;}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;}
 .tab.active{color:#FAE59F;}
-.tab-center{
-  flex:1;display:flex;align-items:center;justify-content:center;position:relative;
-}
+.tab-center{flex:1;display:flex;align-items:center;justify-content:center;position:relative;}
 .tab-center-btn{
-  position:absolute;top:-22px;
-  width:56px;height:56px;border-radius:50%;
-  background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);
+  position:absolute;top:-24px;width:54px;height:54px;border-radius:50%;
+  background:var(--gold-gradient);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 8px 20px rgba(196,147,63,0.5),0 0 0 4px #090909;
-  transition:transform .15s;
+  box-shadow:0 8px 18px rgba(196,147,63,0.45), 0 0 0 4px #111112;
 }
-.tab-center-btn:active{transform:scale(0.92);}
-.tab-center-btn svg{width:26px;height:26px;stroke:#3a2a10;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-.tab-center-label{
-  position:absolute;bottom:8px;font-size:10px;font-weight:600;color:#FAE59F;
-}
-
-/* Responsive tweaks */
-@media (max-width:360px){
-  .bc-amount{font-size:28px;}
-  .action-item{padding:16px 8px 12px;}
-  .action-icon{width:44px;height:44px;}
-}
+.tab-center-btn svg{width:24px;height:24px;stroke:#291a03;fill:none;stroke-width:2.2;}
+.tab-center-label{position:absolute;bottom:6px;font-size:10px;font-weight:600;color:#FAE59F;}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- NAVBAR (CLEAN, NO FLAG) -->
 <div class="navbar">
   <div class="navbar-left" onclick="location.href='home.html'">
-    <div class="navbar-logo"></div>
-    <div class="navbar-brand">BDG LOTTERY7</div>
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
   </div>
-  <div class="navbar-right" id="supportBtn" title="Customer Service">
-    <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
+  <div class="navbar-title">Wallet</div>
+  <div class="navbar-right" id="supportBtn" title="Support">
+    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
   </div>
 </div>
 
-<!-- PAGE -->
+<!-- PAGE WRAPPER -->
 <div class="page">
 
-  <!-- USER PROFILE -->
+  <!-- USER PROFILE HEADER -->
   <div class="user-card">
     <div class="user-avatar">
       <img id="userAvatar" src="" alt="Profile">
@@ -271,7 +253,7 @@ img{display:block;max-width:100%;}
   <div class="balance-card">
     <div class="bc-label">Total Balance</div>
     <div class="bc-row">
-      <div class="bc-amount"><span class="cur">₹</span><span id="balanceVal">0.00</span></div>
+      <div class="bc-amount"><span>₹</span><span id="balanceVal">0.00</span></div>
       <div class="refresh-btn" id="refreshBtn">
         <svg viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
       </div>
@@ -289,7 +271,7 @@ img{display:block;max-width:100%;}
   </div>
 
   <!-- MAIN WALLET TRANSFER BUTTON -->
-  <button class="transfer-btn" id="transferBtn">
+  <button class="transfer-btn" onclick="location.href='transfer.html'">
     <svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
     Main Wallet Transfer
   </button>
@@ -302,34 +284,37 @@ img{display:block;max-width:100%;}
       </div>
       <div class="action-label">Deposit</div>
     </div>
+
     <div class="action-item" onclick="location.href='withdraw.html'">
       <div class="action-icon red">
         <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
       </div>
       <div class="action-label">Withdraw</div>
     </div>
+
     <div class="action-item" onclick="location.href='deposit-history.html'">
       <div class="action-icon blue">
         <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
       </div>
       <div class="action-label">Deposit History</div>
     </div>
+
     <div class="action-item" onclick="location.href='withdraw-history.html'">
-      <div class="action-icon">
+      <div class="action-icon yellow">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
       </div>
       <div class="action-label">Withdraw History</div>
     </div>
   </div>
 
-  <!-- RECENT TRANSACTIONS -->
+  <!-- RECENT ACTIVITY -->
   <div class="section-title">
     <h3>Recent Activity</h3>
   </div>
   <div class="tx-list" id="txList">
     <div class="empty-state">
       <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
-      <p>Loading transactions...</p>
+      <p>Loading activity...</p>
     </div>
   </div>
 
@@ -350,7 +335,7 @@ img{display:block;max-width:100%;}
   </div>
   <div class="tab-center">
     <button class="tab-center-btn" onclick="location.href='promotion.html'">
-      <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2zM12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
     </button>
     <span class="tab-center-label">Promotion</span>
   </div>
@@ -367,9 +352,8 @@ img{display:block;max-width:100%;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ============ FIREBASE CONFIG ============ */
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
   authDomain: "bdglottery7.firebaseapp.com",
@@ -383,20 +367,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ============ TELEGRAM CONFIG ============ */
-const TG_BOT_TOKEN = "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw";
-const TG_CHAT_ID = "8167337368";
-
-/* ============ PROFILE IMAGES ============ */
 const profileImages = [
-  "3-abfcc056.png",
-  "6-7c7f5203.png",
-  "7-00479cfa.png",
-  "19-2ac9fd83.png",
-  "17-bedde42f.png"
+  "3-abfcc056.png", "6-7c7f5203.png", "7-00479cfa.png",
+  "19-2ac9fd83.png", "17-bedde42f.png"
 ];
 
-/* ============ UTILITIES ============ */
 const toastEl = document.getElementById('toast');
 let toastTimer = null;
 function toast(msg){
@@ -421,31 +396,11 @@ function fmtTime(ts){
     else return '--';
     if(isNaN(d.getTime())) return '--';
     const pad = x=>String(x).padStart(2,'0');
-    return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    return `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }catch(e){return '--';}
 }
 
-/* ============ TELEGRAM SUPPORT ============ */
-document.getElementById('supportBtn').addEventListener('click', async ()=>{
-  try{
-    await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        chat_id: TG_CHAT_ID,
-        text: `📩 Wallet Support Request\nUser: ${currentUserData?.name || currentUserData?.username || 'Unknown'}\nUID: ${currentUser?.uid || '-'}\nTime: ${new Date().toLocaleString('en-IN')}`
-      })
-    });
-    toast('Support notified. We will contact you soon.');
-  }catch(err){
-    console.warn('Telegram error:', err);
-    toast('Support request sent.');
-  }
-});
-
-/* ============ AUTH STATE ============ */
 let currentUser = null;
-let currentUserData = null;
 
 onAuthStateChanged(auth, async (user) => {
   if(!user){
@@ -457,7 +412,6 @@ onAuthStateChanged(auth, async (user) => {
   loadTransactions(user.uid);
 });
 
-/* ============ LOAD USER DATA ============ */
 async function loadUserData(uid){
   try{
     const snap = await getDoc(doc(db,'users',uid));
@@ -465,85 +419,69 @@ async function loadUserData(uid){
       toast('User profile not found');
       return;
     }
-    currentUserData = snap.data();
-    renderUser(currentUserData);
+    const data = snap.data();
+    
+    document.getElementById('userName').textContent = data.name || data.username || 'Member';
+    document.getElementById('userUid').textContent = 'UID: ' + uid.substring(0,8).toUpperCase();
+
+    const bal = Number(data.balance ?? data.wallet ?? 0);
+    document.getElementById('balanceVal').textContent = fmt(bal);
+
+    const dep = Number(data.totalDeposit ?? data.totalRecharge ?? 0);
+    const wd  = Number(data.totalWithdraw ?? 0);
+    document.getElementById('totalDeposit').textContent = '₹' + fmt(dep);
+    document.getElementById('totalWithdraw').textContent = '₹' + fmt(wd);
+
+    // Profile Avatar
+    const charSum = uid.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    const imgIndex = charSum % profileImages.length;
+    const userAvatar = document.getElementById('userAvatar');
+    userAvatar.src = './images/' + profileImages[imgIndex];
+    userAvatar.style.display = 'block';
+
   }catch(err){
     console.error('loadUserData error:',err);
     toast('Failed to load profile');
   }
 }
 
-function renderUser(data){
-  const name = data.name || data.username || data.fullName || 'User';
-  document.getElementById('userName').textContent = name;
-  document.getElementById('userUid').textContent = 'UID: ' + (currentUser?.uid.substring(0,8).toUpperCase() || '---');
-
-  const bal = Number(data.balance ?? data.wallet ?? data.money ?? 0);
-  document.getElementById('balanceVal').textContent = fmt(bal);
-
-  const dep = Number(data.totalDeposit ?? data.totalRecharge ?? 0);
-  const wd  = Number(data.totalWithdraw ?? 0);
-  document.getElementById('totalDeposit').textContent = '₹' + fmt(dep);
-  document.getElementById('totalWithdraw').textContent = '₹' + fmt(wd);
-
-  // User Avatar Logic (UID ke hisaab se fixed image)
-  if(currentUser) {
-    const charCodeSum = currentUser.uid.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const imgIndex = charCodeSum % profileImages.length;
-    const selectedAvatar = profileImages[imgIndex];
-    
-    const userAvatar = document.getElementById('userAvatar');
-    userAvatar.src = './images/' + selectedAvatar;
-    userAvatar.style.display = 'block';
-  }
-}
-
-/* ============ REFRESH BUTTON ============ */
+// Refresh balance
 document.getElementById('refreshBtn').addEventListener('click', async (e)=>{
-  if(e.currentTarget.classList.contains('spin')) return;
-  e.currentTarget.classList.add('spin');
+  const btn = e.currentTarget;
+  if(btn.classList.contains('spin')) return;
+  btn.classList.add('spin');
   try{
     if(currentUser){
-      const snap = await getDoc(doc(db,'users',currentUser.uid));
-      if(snap.exists()){
-        currentUserData = snap.data();
-        renderUser(currentUserData);
-        toast('Balance updated');
-      }
-      loadTransactions(currentUser.uid);
+      await loadUserData(currentUser.uid);
+      await loadTransactions(currentUser.uid);
+      toast('Balance updated');
     }
   }catch(err){
-    console.error(err);
     toast('Refresh failed');
   }finally{
-    setTimeout(()=>e.currentTarget.classList.remove('spin'), 800);
+    setTimeout(()=>btn.classList.remove('spin'), 750);
   }
 });
 
-/* ============ MAIN WALLET TRANSFER ============ */
-document.getElementById('transferBtn').addEventListener('click', ()=>{
-  location.href = 'transfer.html';
-});
-
-/* ============ LOAD TRANSACTIONS (FULLY WORKING) ============ */
+// Load Transactions (Safe, No-Index Query)
 async function loadTransactions(uid){
   const listEl = document.getElementById('txList');
   try{
     const txRef = collection(db,'transactions');
-    const q = query(txRef, where('userId','==',uid));
+    const q = query(txRef, where('userId','==',uid), limit(25));
     const snap = await getDocs(q);
 
     if(snap.empty){
       listEl.innerHTML = `
         <div class="empty-state">
           <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
-          <p>No transactions yet</p>
+          <p>No transaction records found</p>
         </div>`;
       return;
     }
 
     let arr = [];
-    snap.forEach(docSnap => arr.push(docSnap.data()));
+    snap.forEach(d => arr.push(d.data()));
     arr.sort((a,b) => {
       const tA = a.createdAt?.toMillis?.() || a.time || 0;
       const tB = b.createdAt?.toMillis?.() || b.time || 0;
@@ -551,15 +489,15 @@ async function loadTransactions(uid){
     });
 
     let html = '';
-    arr.forEach(t => {
+    arr.slice(0, 15).forEach(t => {
       const type = (t.type || t.transactionType || '').toLowerCase();
-      const amt = Number(t.amount ?? t.money ?? 0);
+      const amt = Number(t.amount ?? 0);
       const ts = t.createdAt || t.time || t.timestamp;
-      const title = t.title || t.description || (
-        type.includes('deposit') ? 'Deposit' :
+      
+      let title = t.title || (
+        type.includes('deposit') ? 'Recharge' :
         type.includes('withdraw') ? 'Withdraw' :
-        type.includes('bet') ? 'Bet Placed' :
-        type.includes('win') ? 'Winning' : 'Transaction'
+        type.includes('win') ? 'Game Profit' : 'Transaction'
       );
       
       let stText = 'Success';
@@ -570,10 +508,11 @@ async function loadTransactions(uid){
       let cls = 'bet';
       let sign = '-';
       let iconPath = '<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>';
-      if(type.includes('deposit') || type.includes('recharge') || type.includes('credit') || amt > 0) {
+
+      if(type.includes('deposit') || type.includes('recharge') || amt > 0) {
         cls = 'deposit'; sign = '+';
         iconPath = '<path d="M12 5v14M5 12h14"/>';
-      } else if(type.includes('withdraw') || type.includes('debit')) {
+      } else if(type.includes('withdraw')) {
         cls = 'withdraw'; sign = '-';
         iconPath = '<path d="M5 12h14"/>';
       }
@@ -596,14 +535,14 @@ async function loadTransactions(uid){
         </div>`;
     });
     
-    listEl.innerHTML = html.split('</div>\n        <div class="tx-item">').slice(0, 15).join('</div>\n        <div class="tx-item">') + '</div>';
+    listEl.innerHTML = html;
 
   }catch(err){
     console.error('loadTransactions error:', err);
     listEl.innerHTML = `
       <div class="empty-state">
         <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
-        <p>Could not load activity</p>
+        <p>No activity found</p>
       </div>`;
   }
 }
