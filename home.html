@@ -120,7 +120,7 @@
         /* ================= MODALS ================= */
         .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
-        .modal-box { width: 100%; max-width: 400px; background: #292929; border-radius: 14px; overflow: hidden; max-height: 90vh; overflow-y: auto; }
+        .modal-box { width: 100%; max-width: 340px; background: #292929; border-radius: 14px; overflow: hidden; max-height: 90vh; overflow-y: auto; }
         .modal-head { background: linear-gradient(180deg, #6F6F6F 0%, #404040 100%); padding: 14px; text-align: center; font-size: 15px; font-weight: 600; color: #fff; position: sticky; top: 0; z-index: 10; }
         .modal-body { padding: 18px; position: relative; }
 
@@ -176,6 +176,9 @@
         
         .welcome-popup-text { font-size: 14px; line-height: 1.8; color: #ddd; }
         .welcome-popup-text .highlight { color: #FAE59F; font-weight: bold; }
+
+        /* Iframe Modal */
+        .iframe-modal { width: 100%; height: 80vh; border: none; border-radius: 14px; background: #292929; }
     </style>
 </head>
 <body>
@@ -434,25 +437,9 @@
   </div>
 </div>
 
-<!-- POPUP 3: RECHARGE BONUS (ogi.jpg) -->
+<!-- POPUP 3: RECHARGE BONUS (IFRAME) -->
 <div id="modal-recharge-bonus" class="modal-overlay">
-  <div class="modal-box" style="background:#292929;">
-    <div class="modal-head">Recharge Bonus</div>
-    <div class="modal-body" style="text-align:center;">
-      <div class="popup-close" onclick="closeRechargePopup()">×</div>
-      <!-- Image path -->
-      <img src="./images/ogi.jpg" class="popup-img-full" alt="Recharge Bonus">
-      
-      <label class="reminder-chk" style="justify-content: center; margin-top: 15px;">
-          <input type="checkbox" id="noReminderChk" onchange="toggleNoReminder(this)">
-          <span>No more reminders today</span>
-      </label>
-
-      <div class="activity-btn-wrap" style="margin-top:15px;">
-          <button class="activity-btn" onclick="location.href='wallet.html'">Activity</button>
-      </div>
-    </div>
-  </div>
+  <iframe src="first-deposit.html" class="iframe-modal" id="rechargeIframe"></iframe>
 </div>
 
 <!-- POPUP 4: NEW USER REGISTRATION BONUS -->
@@ -502,7 +489,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -527,25 +514,24 @@ window.showToast = (msg) => {
 window.openService = () => { document.getElementById('modal-service').classList.add('show'); };
 window.closeModal = (id) => { document.getElementById(id).classList.remove('show'); };
 
-// Popup logic
+// Close Recharge Modal iframe logic
 window.closeRechargePopup = () => {
     document.getElementById('modal-recharge-bonus').classList.remove('show');
-    if(document.getElementById('noReminderChk').checked) {
-        localStorage.setItem('hideRechargePopupDate', new Date().toDateString());
-    }
-};
-
-window.toggleNoReminder = (chk) => {
-    if(chk.checked) {
-        localStorage.setItem('hideRechargePopupDate', new Date().toDateString());
-        showToast('Popup will not show again today');
-    } else {
-        localStorage.removeItem('hideRechargePopupDate');
-    }
+    // Iframe ke andar ka checkbox check karo
+    try {
+        const iframe = document.getElementById('rechargeIframe');
+        const chk = iframe.contentWindow.document.getElementById('noReminderChk');
+        if(chk && chk.checked) {
+            localStorage.setItem('hideRechargePopupDate', new Date().toDateString());
+        }
+    } catch(e) {}
 };
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      const userData = snap.data();
+
       try {
           const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
           if(s.phone) document.getElementById('csPhone').value = s.phone;
@@ -563,10 +549,11 @@ onAuthStateChanged(auth, async (user) => {
           // Show Diwali Popup after 3 seconds
           setTimeout(() => document.getElementById('modal-diwali').classList.add('show'), 3000);
 
-          // Show Recharge Bonus Popup after 5 seconds (if not hidden today)
+          // Show Recharge Bonus Popup after 5 seconds (if not hidden today and first deposit not done)
           const lastHiddenDate = localStorage.getItem('hideRechargePopupDate');
           const today = new Date().toDateString();
-          if (lastHiddenDate !== today) {
+          
+          if (lastHiddenDate !== today && userData && userData.firstDepositDone !== true) {
               setTimeout(() => document.getElementById('modal-recharge-bonus').classList.add('show'), 5000);
           }
       }

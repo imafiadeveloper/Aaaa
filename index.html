@@ -477,7 +477,9 @@ import {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
+  updateDoc,
+  increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -656,6 +658,7 @@ async function doRegister() {
 
     const newInviteCode = cred.user.uid.substring(0, 8).toUpperCase();
 
+    // 🔥 SIGNUP BONUS (₹28) & FLAG ADD KIYA
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       country, 
@@ -663,14 +666,22 @@ async function doRegister() {
       name, 
       realEmail: realEmail, 
       authEmail: authEmail,
-      inviteCode: newInviteCode, // User ka apna code generate hoga
+      inviteCode: newInviteCode, 
       referredBy: referredBy,
-      balance: 0,
+      balance: 28, // 🎁 Signup Bonus
+      firstDepositDone: false, // 🚩 First Deposit Popup ke liye
       createdAt: serverTimestamp()
     });
 
+    // 🔥 REFERRAL BONUS (₹10) ADD KIYA
+    if (referredBy) {
+        try {
+            await updateDoc(doc(db, "users", referredBy), { balance: increment(10) });
+        } catch (e) { console.error("Referral error:", e); }
+    }
+
     hideLoader();
-    showToast(`Account Created! Your Invite Code is: ${newInviteCode}`); // 🔥 Show Code
+    showToast(`Account Created! Signup Bonus: ₹28`); 
     closeModal('modal-register');
     
     document.getElementById('phoneCountry').value = country;

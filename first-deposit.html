@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>First Deposit Bonus</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+  body { background: #292929; color: #fff; padding: 15px; }
+  
+  .popup-head { text-align: center; font-size: 18px; font-weight: 700; color: #FAE59F; margin-bottom: 5px; }
+  .popup-sub { text-align: center; font-size: 12px; color: #a6a9ae; margin-bottom: 15px; }
+
+  .recharge-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+  .recharge-item { background: #3f3f3f; border-radius: 10px; padding: 12px; border: 1px solid #444; }
+  .recharge-item .head { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+  .recharge-item .head span:first-child { font-weight: bold; color: #fff; }
+  .recharge-item .head span:last-child { color: #FAE59F; font-weight: bold; }
+  .recharge-item .sub { font-size: 11px; color: #a6a9ae; margin-bottom: 10px; }
+  
+  .progress-row { display: flex; align-items: center; gap: 10px; }
+  .progress-bar-bg { flex: 1; height: 10px; background: #292929; border-radius: 5px; position: relative; }
+  .progress-bar-fill { height: 100%; background: #a6a9ae; width: 0%; border-radius: 5px; }
+  .progress-text { position: absolute; top: -2px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #fff; }
+  .deposit-btn { background: transparent; border: 1px solid #FAE59F; color: #FAE59F; padding: 6px 15px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+
+  .rules-box { background: #1f1f1f; border-radius: 10px; padding: 15px; font-size: 11px; color: #a6a9ae; line-height: 1.6; }
+  .rules-box h4 { color: #fff; margin-bottom: 8px; font-size: 14px; text-align: center; }
+  .rules-box ul { padding-left: 15px; }
+  .rules-box li { margin-bottom: 8px; }
+
+  .reminder-chk { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #fff; margin-top: 15px; cursor: pointer; justify-content: center; }
+  .reminder-chk input { width: 18px; height: 18px; accent-color: #C4933F; }
+
+  .btn-wrap { margin-top: 15px; }
+  .activity-btn { width: 100%; height: 48px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); border-radius: 24px; color: #3a2a10; font-size: 16px; font-weight: 700; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+
+  <div class="popup-head">Extra first deposit bonus</div>
+  <div class="popup-sub">Each account can only receive rewards once</div>
+  
+  <div class="recharge-list">
+    <!-- Item 1 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">200000</span></span><span>+ ₹10,000.00</span></div>
+        <div class="sub">Deposit 200000 for the first time and you will receive 10000 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/200000</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 2 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">100000</span></span><span>+ ₹5,000.00</span></div>
+        <div class="sub">Deposit 100000 for the first time and you will receive 5000 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/100000</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 3 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">30000</span></span><span>+ ₹2,000.00</span></div>
+        <div class="sub">Deposit 30000 for the first time and you will receive 2000 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/30000</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 4 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">10000</span></span><span>+ ₹600.00</span></div>
+        <div class="sub">Deposit 10000 for the first time and you will receive 600 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/10000</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 5 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">3000</span></span><span>+ ₹300.00</span></div>
+        <div class="sub">Deposit 3000 for the first time and you will receive 300 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/3000</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 6 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">1000</span></span><span>+ ₹150.00</span></div>
+        <div class="sub">Deposit 1000 for the first time and you will receive 150 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/1000</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 7 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">500</span></span><span>+ ₹100.00</span></div>
+        <div class="sub">Deposit 500 for the first time and you will receive 100 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/500</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 8 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">300</span></span><span>+ ₹60.00</span></div>
+        <div class="sub">Deposit 300 for the first time and you will receive 60 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/300</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+    <!-- Item 9 -->
+    <div class="recharge-item">
+        <div class="head"><span>First deposit <span style="color:#FAE59F">100</span></span><span>+ ₹20.00</span></div>
+        <div class="sub">Deposit 100 for the first time and you will receive 20 bonus</div>
+        <div class="progress-row">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div><span class="progress-text">0/100</span></div>
+            <button class="deposit-btn" onclick="location.href='wallet.html'">Deposit</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="rules-box">
+    <h4>Activity Rules</h4>
+    <ul>
+        <li>Exclusive for the first recharge of the account. The highest reward is ₹10,000.00;</li>
+        <li>Activities cannot be participated in repeatedly;</li>
+        <li>The bonus requires 1 times the coding turnover (i.e. valid bets) before withdrawal.</li>
+    </ul>
+  </div>
+
+  <label class="reminder-chk">
+      <input type="checkbox" id="noReminderChk" onchange="toggleReminder(this)">
+      <span>No more reminders today</span>
+  </label>
+
+  <div class="btn-wrap">
+      <button class="activity-btn" onclick="location.href='wallet.html'">Activity</button>
+  </div>
+
+<script>
+  function toggleReminder(chk) {
+    if(chk.checked) {
+        localStorage.setItem('hideRechargePopupDate', new Date().toDateString());
+    } else {
+        localStorage.removeItem('hideRechargePopupDate');
+    }
+  }
+</script>
+</body>
+</html>
