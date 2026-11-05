@@ -602,7 +602,6 @@ function openRegister() {
     document.getElementById(id).value = '';
   });
   
-  // URL se ref code auto-fill karo
   const urlParams = new URLSearchParams(window.location.search);
   const refCode = urlParams.get('ref');
   if (refCode) {
@@ -628,7 +627,6 @@ async function doRegister() {
   if (pwd.length < 6) { showToast('Password min 6 chars'); return; }
   if (pwd !== pwd2) { showToast('Passwords do not match'); return; }
   
-  // 🔥 INVITE CODE COMPULSORY CHECK
   if (!inviteCode) { 
       showToast('Invite Code is required to create an account!'); 
       return; 
@@ -638,22 +636,26 @@ async function doRegister() {
   try {
     const authEmail = `${country.replace('+','')}${phone}@bdg7.com`;
 
-    // 1. Check Invite Code validity
+    // 🔥 ADMIN BYPASS 🔥
     let referredBy = null;
-    const q = query(collection(db, "users"), where("inviteCode", "==", inviteCode.toUpperCase()));
-    const querySnapshot = await getDocs(q);
     
-    if (querySnapshot.empty) {
-        hideLoader();
-        showToast('Invalid Invite Code! Cannot create account.');
-        return;
+    // Agar user ADMIN daalta hai, to check skip hoga
+    if (inviteCode.toUpperCase() !== 'ADMIN') {
+        const q = query(collection(db, "users"), where("inviteCode", "==", inviteCode.toUpperCase()));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+            hideLoader();
+            showToast('Invalid Invite Code! Please check and try again.');
+            return;
+        }
+        referredBy = querySnapshot.docs[0].id;
     }
-    referredBy = querySnapshot.docs[0].id;
 
-    // 2. Create User in Auth
     const cred = await createUserWithEmailAndPassword(auth, authEmail, pwd);
 
-    // 3. Save User Data with referredBy
+    const newInviteCode = cred.user.uid.substring(0, 8).toUpperCase();
+
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       country, 
@@ -661,17 +663,16 @@ async function doRegister() {
       name, 
       realEmail: realEmail, 
       authEmail: authEmail,
-      inviteCode: cred.user.uid.substring(0, 8).toUpperCase(), // Naya code
+      inviteCode: newInviteCode, // User ka apna code generate hoga
       referredBy: referredBy,
-      balance: 0, // Initial balance (0)
+      balance: 0,
       createdAt: serverTimestamp()
     });
 
     hideLoader();
-    showToast('Account created! Please log in.');
+    showToast(`Account Created! Your Invite Code is: ${newInviteCode}`); // 🔥 Show Code
     closeModal('modal-register');
     
-    // Auto-fill Phone Login
     document.getElementById('phoneCountry').value = country;
     document.getElementById('phoneInput').value = phone;
     switchTab('phone');
@@ -682,7 +683,7 @@ async function doRegister() {
     if (code.includes('email-already-in-use')) {
       showToast('This Phone Number is already registered.');
     } else if (code.includes('permission-denied')) {
-      showToast('Firestore rules error! Check rules.');
+      showToast('Database Error! Please check rules.');
     } else {
       showToast('Error: ' + err.message);
     }
