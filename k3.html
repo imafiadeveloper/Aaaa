@@ -215,7 +215,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
   <!-- DYNAMIC BET CONTENT -->
   <div id="betContent">
-    <!-- Default Total -->
     <div class="bet-options">
       <div class="bet-opt-btn big" onclick="openBetModal('big')">Big</div>
       <div class="bet-opt-btn small" onclick="openBetModal('small')">Small</div>
@@ -328,7 +327,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, limit, getDocs,
+  addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
   where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -412,7 +411,7 @@ function getPeriodIdFromSlot(slot) {
   const m = String(d.getUTCMonth() + 1).padStart(2, '0');
   const day = String(d.getUTCDate()).padStart(2, '0');
   const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
-  return `${y}${m}${day}${6000 + slotOfDay}`; // 6000 series for K3
+  return `${y}${m}${day}${6000 + slotOfDay}`;
 }
 function getSlotFromPeriodId(periodId) {
   if (!periodId || periodId.length < 12) return null;
@@ -492,6 +491,31 @@ function hideDrawOverlay() {
   document.getElementById('drawOverlay').classList.remove('show');
 }
 
+/* 🧹 AUTO DELETE 24 HOURS OLD RESULTS */
+async function cleanupOldResults() {
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(100));
+    const snap = await getDocs(q);
+    const now = Date.now();
+    const twentyFourHoursAgo = now - (24 * 60 * 60 * 1000);
+    const deletePromises = [];
+    
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      if (data.createdAt && data.createdAt.toMillis && data.createdAt.toMillis() < twentyFourHoursAgo) {
+        deletePromises.push(deleteDoc(docSnap.ref));
+      }
+    });
+    
+    if (deletePromises.length > 0) {
+      await Promise.all(deletePromises);
+      console.log("K3: Purane results delete ho gaye!");
+    }
+  } catch (e) {
+    console.error("Cleanup error:", e);
+  }
+}
+
 /* Generate Result for K3 */
 function generateK3Result(slot) {
   const seed = slot * 9301 + 49297;
@@ -517,8 +541,8 @@ async function backfillMissingPeriods() {
       startSlot = currentSlot - 10; 
     } else {
       let lastSlot = null;
-      latestSnap.forEach(doc => {
-        const p = doc.data().period;
+      latestSnap.forEach(docSnap => {
+        const p = docSnap.data().period;
         if(p) lastSlot = getSlotFromPeriodId(p);
       });
       startSlot = (lastSlot === null) ? (currentSlot - 10) : (lastSlot + 1);
@@ -600,7 +624,7 @@ async function resolveUserBetsForPeriod(periodId, resultData) {
       
       let winAmt = 0;
       if (isWin) {
-        let grossWin = bet.amount * 2; // Default multiplier for simplicity, adjust as needed
+        let grossWin = bet.amount * 2;
         const ownerTax = grossWin * 0.15;
         totalOwnerTax += ownerTax;
         winAmt = grossWin - ownerTax; 
@@ -644,6 +668,7 @@ onAuthStateChanged(auth, async (user) => {
     userBalance = Number(snap.data().balance || 0);
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
   }
+  await cleanupOldResults();
   await backfillMissingPeriods();
   initGame();
   loadHistory();
@@ -848,7 +873,7 @@ window.switchHistoryTab = function(tab, el) {
   }
 };
 
-/* LOAD GAME HISTORY (FIXED) */
+/* LOAD GAME HISTORY */
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
@@ -859,7 +884,7 @@ async function loadHistory() {
       return;
     }
     let results = [];
-    snap.forEach(doc => results.push({ id: doc.id, ...doc.data() }));
+    snap.forEach(docSnap => results.push({ id: docSnap.id, ...docSnap.data() }));
     results.sort((a,b) => (b.period || '').localeCompare(a.period || ''));
     
     if (results.length > 0) {
@@ -889,21 +914,21 @@ function animateDice(dice) {
   const diceEls = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
   let count = 0;
   const interval = setInterval(() => {
-    diceEls.forEach((el, i) => {
-      el.src = `./images/bg${Math.floor(Math.random()*6)+1}.png`; // Images folder path
+    diceEls.forEach((el) => {
+      el.src = `./images/bg${Math.floor(Math.random()*6)+1}.png`;
     });
     count++;
     if (count > 10) {
       clearInterval(interval);
       diceEls.forEach((el, i) => {
-        el.src = `./images/bg${dice[i]}.png`; // Images folder path
+        el.src = `./images/bg${dice[i]}.png`;
       });
       document.getElementById('diceTotal').textContent = dice.reduce((a,b)=>a+b, 0);
     }
   }, 100);
 }
 
-/* LOAD MY HISTORY (FIXED) */
+/* LOAD MY HISTORY */
 async function loadMyHistory() {
   if (!currentUser) return;
   const listEl = document.getElementById('myHistoryList');
@@ -915,7 +940,7 @@ async function loadMyHistory() {
       return;
     }
     let betsData = [];
-    snap.forEach((doc) => betsData.push({ id: doc.id, ...doc.data() }));
+    snap.forEach((docSnap) => betsData.push({ id: docSnap.id, ...docSnap.data() }));
     betsData.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
     betsData = betsData.slice(0, 20);
     let html = '';

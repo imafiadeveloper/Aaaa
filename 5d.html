@@ -327,7 +327,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, limit, getDocs,
+  addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
   where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -411,7 +411,7 @@ function getPeriodIdFromSlot(slot) {
   const m = String(d.getUTCMonth() + 1).padStart(2, '0');
   const day = String(d.getUTCDate()).padStart(2, '0');
   const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
-  return `${y}${m}${day}${5000 + slotOfDay}`; // 5000 series for 5D
+  return `${y}${m}${day}${5000 + slotOfDay}`;
 }
 function getSlotFromPeriodId(periodId) {
   if (!periodId || periodId.length < 12) return null;
@@ -491,6 +491,31 @@ function hideDrawOverlay() {
   document.getElementById('drawOverlay').classList.remove('show');
 }
 
+/* 🧹 AUTO DELETE 24 HOURS OLD RESULTS */
+async function cleanupOldResults() {
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(100));
+    const snap = await getDocs(q);
+    const now = Date.now();
+    const twentyFourHoursAgo = now - (24 * 60 * 60 * 1000);
+    const deletePromises = [];
+    
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      if (data.createdAt && data.createdAt.toMillis && data.createdAt.toMillis() < twentyFourHoursAgo) {
+        deletePromises.push(deleteDoc(docSnap.ref));
+      }
+    });
+    
+    if (deletePromises.length > 0) {
+      await Promise.all(deletePromises);
+      console.log("5D: Purane results delete ho gaye!");
+    }
+  } catch (e) {
+    console.error("Cleanup error:", e);
+  }
+}
+
 /* Generate Result for 5D */
 function generate5DResult(slot) {
   const seed = slot * 9301 + 49297;
@@ -516,8 +541,8 @@ async function backfillMissingPeriods() {
       startSlot = currentSlot - 10; 
     } else {
       let lastSlot = null;
-      latestSnap.forEach(doc => {
-        const p = doc.data().period;
+      latestSnap.forEach(docSnap => {
+        const p = docSnap.data().period;
         if(p) lastSlot = getSlotFromPeriodId(p);
       });
       startSlot = (lastSlot === null) ? (currentSlot - 10) : (lastSlot + 1);
@@ -649,6 +674,7 @@ onAuthStateChanged(auth, async (user) => {
     userBalance = Number(snap.data().balance || 0);
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
   }
+  await cleanupOldResults();
   await backfillMissingPeriods();
   initGame();
   loadHistory();
@@ -660,7 +686,6 @@ function initGame() {
   const grid = document.getElementById('numGrid');
   let html = '';
   
-  // 🔥 Number Images added here
   const numImages = [
     'n0-30bd92d1.png', 'n1-dfccbff5.png', 'n2-c2913607.png', 'n3-f92c313f.png', 'n4-cb84933b.png',
     'n5-49d0e9c5.png', 'n6-a56e0b9a.png', 'n7-5961a17f.png', 'n8-d4d951a4.png', 'n9-a20f6f42.png'
@@ -675,7 +700,7 @@ function initGame() {
   runTimer();
 }
 
-function selectTab(tab, el) {
+window.selectTab = function(tab, el) {
   selectedTab = tab;
   document.querySelectorAll('.d5-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -837,7 +862,7 @@ window.switchHistoryTab = function(tab, el) {
   }
 };
 
-/* LOAD GAME HISTORY (FIXED) */
+/* LOAD GAME HISTORY */
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
@@ -851,7 +876,6 @@ async function loadHistory() {
     snap.forEach(doc => results.push({ id: doc.id, ...doc.data() }));
     results.sort((a,b) => (b.period || '').localeCompare(a.period || ''));
     
-    // Populate latest slots
     if (results.length > 0) {
       const d = results[0];
       document.getElementById('slotA').textContent = d.digits[0];

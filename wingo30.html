@@ -371,7 +371,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, limit, getDocs,
+  addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
   where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -550,6 +550,31 @@ function hideDrawOverlay() {
   document.getElementById('drawOverlay').classList.remove('show');
 }
 
+/* 🧹 AUTO DELETE 24 HOURS OLD RESULTS */
+async function cleanupOldResults() {
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(100));
+    const snap = await getDocs(q);
+    const now = Date.now();
+    const twentyFourHoursAgo = now - (24 * 60 * 60 * 1000);
+    const deletePromises = [];
+    
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      if (data.createdAt && data.createdAt.toMillis && data.createdAt.toMillis() < twentyFourHoursAgo) {
+        deletePromises.push(deleteDoc(docSnap.ref));
+      }
+    });
+    
+    if (deletePromises.length > 0) {
+      await Promise.all(deletePromises);
+      console.log("30s: Purane results delete ho gaye!");
+    }
+  } catch (e) {
+    console.error("Cleanup error:", e);
+  }
+}
+
 /* Backfill */
 async function backfillMissingPeriods() {
   try {
@@ -684,6 +709,7 @@ onAuthStateChanged(auth, async (user) => {
     userBalance = Number(snap.data().balance || 0);
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
   }
+  await cleanupOldResults();
   await backfillMissingPeriods();
   initGame();
   loadHistory();
@@ -741,7 +767,6 @@ function runTimer() {
 
     const betArea = document.getElementById('betArea');
 
-    // Close betting on last 5 sec
     if (secLeft <= 5) {
       isBettingClosed = true;
       betArea.classList.add('disabled');
@@ -878,7 +903,7 @@ window.switchHistoryTab = function(tab, el) {
   }
 };
 
-/* LOAD GAME HISTORY (FIXED) */
+/* LOAD GAME HISTORY */
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
@@ -922,7 +947,7 @@ async function loadHistory() {
   }
 }
 
-/* LOAD CHART (FIXED) */
+/* LOAD CHART */
 async function loadChart() {
   const chartGrid = document.getElementById('chartGrid');
   try {
@@ -944,7 +969,7 @@ async function loadChart() {
     });
 
     let html = '';
-    resultsArr.forEach((d, i) => {
+    resultsArr.forEach((d) => {
       let cClass = 'c-small';
       let sizeTxt = 'S';
       if (d.size === 'big') { cClass = 'c-big'; sizeTxt = 'B'; }
