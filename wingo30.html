@@ -40,13 +40,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .notice-bar svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;flex-shrink:0;}
 .notice-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* Tabs (30s, 1M, 3M, 5M) */
-.tabs-wrap{display:flex;margin:0 16px 16px;background:#262626;border-radius:12px;padding:4px;}
-.tab{flex:1;text-align:center;padding:10px 0;font-size:13px;font-weight:600;color:#a6a9ae;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.tab.active{background:#333;color:#FAE59F;}
-.tab.active svg{stroke:#FAE59F;}
-.tab svg{width:20px;height:20px;stroke:#a6a9ae;fill:none;stroke-width:2;}
-
 /* Timer Box */
 .timer-box{margin:0 16px 16px;padding:16px;border-radius:12px;display:flex;flex-direction:column;background:url('./images/diban-f8c2e476.png') no-repeat center / cover;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.1);}
 .timer-box::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:1;}
@@ -165,7 +158,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .res-footer .circle-loader{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* ============ FIXED: 5-SEC DRAW TRANSPARENT SMALL OVERLAY ============ */
+/* 5 SEC DRAW OVERLAY */
 .draw-overlay{position:fixed;inset:0;background:rgba(10,20,40,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:9000;display:none;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;}
 .draw-overlay.show{display:flex;animation:fadeIn .25s ease;}
 .draw-circle{width:120px;height:120px;border-radius:50%;background:rgba(42,77,143,0.85);border:2px solid #4a90e2;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 0 30px rgba(74,144,226,0.6),inset 0 0 15px rgba(74,144,226,0.3);}
@@ -217,25 +210,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="notice-text">Welcome to BDG LOTTERY7 WinGo. 30 second 1 issue, 25 seconds to order, 5 seconds waiting for the draw.</div>
 </div>
 
-<div class="tabs-wrap">
-  <div class="tab active">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    <span>30 Sec</span>
-  </div>
-  <div class="tab" onclick="location.href='wingo1.html'">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    <span>1 Min</span>
-  </div>
-  <div class="tab" onclick="location.href='wingo3.html'">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    <span>3 Min</span>
-  </div>
-  <div class="tab" onclick="location.href='wingo5.html'">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    <span>5 Min</span>
-  </div>
-</div>
-
 <div class="timer-box" id="timerBox">
   <div class="tb-content">
     <div class="tb-left">
@@ -279,7 +253,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 </div>
 
 <div class="history-container">
-  <!-- Game History -->
   <div id="gameHistoryView" class="history-table">
     <div class="ht-head">
       <div class="ht-col">Period</div>
@@ -290,7 +263,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div id="historyList"></div>
   </div>
   
-  <!-- Chart View -->
   <div id="chartView" class="history-table" style="display:none;">
     <div class="ht-head">
       <div class="ht-col">Recent 30 Results Trend</div>
@@ -298,7 +270,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div class="chart-grid" id="chartGrid"></div>
   </div>
   
-  <!-- My History View -->
   <div id="myHistoryView" class="history-table" style="display:none;">
     <div class="ht-head">
       <div class="ht-col">Period</div>
@@ -400,7 +371,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, orderBy, limit, getDocs,
+  addDoc, serverTimestamp, query, limit, getDocs,
   where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -435,7 +406,7 @@ let drawOverlayActive = false;
 /* ==================== 30s CONFIG ==================== */
 const RESULT_COLLECTION = 'results_30s';
 const BET_COLLECTION = 'bets_30s';
-const SLOT_MS = 30 * 1000; // 30 Seconds
+const SLOT_MS = 30 * 1000;
 
 /* Audio */
 const snd1 = document.getElementById('soundDi1');
@@ -474,7 +445,6 @@ window.toast = function(msg) {
 
 /* Slot Helpers */
 const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
-
 function getSlotFromTime(ms = Date.now()) { return Math.floor((ms - EPOCH) / SLOT_MS); }
 function getPeriodIdFromSlot(slot) {
   const d = new Date(EPOCH + slot * SLOT_MS);
@@ -482,7 +452,7 @@ function getPeriodIdFromSlot(slot) {
   const m = String(d.getUTCMonth() + 1).padStart(2, '0');
   const day = String(d.getUTCDate()).padStart(2, '0');
   const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
-  return `${y}${m}${day}${7000 + slotOfDay}`; // 7000 series for 30s
+  return `${y}${m}${day}${7000 + slotOfDay}`;
 }
 function getSlotFromPeriodId(periodId) {
   if (!periodId || periodId.length < 12) return null;
@@ -577,34 +547,6 @@ function updateDrawOverlay(secLeft) {
 function hideDrawOverlay() {
   drawOverlayActive = false;
   document.getElementById('drawOverlay').classList.remove('show');
-}
-
-/* Backfill */
-async function backfillMissingPeriods() {
-  try {
-    const latestQ = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(1));
-    const latestSnap = await getDocs(latestQ);
-    const currentSlot = getSlotFromTime(Date.now());
-
-    let startSlot;
-    if (latestSnap.empty) {
-      startSlot = currentSlot - 20;
-    } else {
-      const lastPeriod = latestSnap.docs[0].data().period;
-      const lastSlot = getSlotFromPeriodId(lastPeriod);
-      startSlot = (lastSlot === null) ? (currentSlot - 20) : (lastSlot + 1);
-    }
-    if (startSlot >= currentSlot) return;
-
-    startSlot = Math.max(startSlot, currentSlot - 500);
-    
-    for (let slot = startSlot; slot < currentSlot; slot++) {
-      const periodId = getPeriodIdFromSlot(slot);
-      await generateAndSaveResult(periodId, slot);
-    }
-  } catch (err) {
-    console.error('Backfill error:', err);
-  }
 }
 
 /* Generate Result & Tax */
@@ -710,7 +652,6 @@ onAuthStateChanged(auth, async (user) => {
     userBalance = Number(snap.data().balance || 0);
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
   }
-  await backfillMissingPeriods();
   initGame();
   loadHistory();
   loadChart();
@@ -904,11 +845,11 @@ window.switchHistoryTab = function(tab, el) {
   }
 };
 
-/* LOAD GAME HISTORY (FIXED - NO ORDERBY INDEX NEEDED) */
+/* LOAD GAME HISTORY (FIXED) */
 async function loadHistory() {
   const listEl = document.getElementById('historyList');
   try {
-    // Note: orderBy hata diya hai taaki index ki zaroorat na pade
+    // FIX: Removed orderBy to prevent index errors
     const q = query(collection(db, RESULT_COLLECTION), limit(50));
     const snap = await getDocs(q);
     
@@ -920,7 +861,7 @@ async function loadHistory() {
     let results = [];
     snap.forEach(doc => results.push(doc.data()));
 
-    // JS Sort (Newest First)
+    // Sort in JS (Newest First)
     results.sort((a,b) => {
         if(a.period > b.period) return -1;
         if(a.period < b.period) return 1;
@@ -951,7 +892,7 @@ async function loadHistory() {
   }
 }
 
-/* LOAD CHART (Big/Small & Color) */
+/* LOAD CHART (FIXED) */
 async function loadChart() {
   const chartGrid = document.getElementById('chartGrid');
   try {
@@ -966,7 +907,7 @@ async function loadChart() {
     let resultsArr = [];
     snap.forEach(doc => resultsArr.push(doc.data()));
     
-    // JS Sort
+    // Sort in JS
     resultsArr.sort((a,b) => {
         if(a.period > b.period) return -1;
         if(a.period < b.period) return 1;
