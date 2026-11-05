@@ -14,8 +14,9 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
 .navbar{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 16px;background:#1a1d24;border-bottom:1px solid #333;position:sticky;top:0;z-index:100;}
 .navbar-brand{font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;}
 .navbar-right{display:flex;gap:12px;align-items:center;}
-.nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;}
+.nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:0.2s;}
 .nav-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;}
+.nav-icon.active svg{stroke:#FAE59F;}
 
 /* Balance */
 .bal-box{background:#1a1d24;margin:16px;border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;border:1px solid #2a2d35;}
@@ -90,7 +91,7 @@ body{background:#0f1115;color:#fff;min-height:100vh;display:flex;flex-direction:
     <a href="home.html" class="nav-icon"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
     <div class="navbar-brand">MINES</div>
     <div class="navbar-right">
-        <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+        <div class="nav-icon active" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
     </div>
 </div>
 
@@ -171,13 +172,60 @@ let revealedCount = 0;
 let currentMulti = 1.00;
 let currentBetId = null;
 const TOTAL_BOXES = 25;
-let TOTAL_BOMBS = 3; // Dynamic now
+let TOTAL_BOMBS = 3;
+let soundEnabled = true; // Sound state
 
 const gridEl = document.getElementById('grid');
 const startBtn = document.getElementById('startBtn');
 const cashoutBtn = document.getElementById('cashoutBtn');
 const minesSelect = document.getElementById('minesSelect');
 
+// --- SOUND LOGIC (Using Base64 Audio for instant load) ---
+const sounds = {
+    click: new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU" + "1234567890"), // Dummy base64, replace with actual logic
+};
+
+// Audio Context for synthesized sounds (No external files needed)
+let audioCtx;
+function playSound(type) {
+    if (!soundEnabled) return;
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'click') {
+            osc.type = 'sine'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        } else if (type === 'win') {
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+        } else if (type === 'bomb') {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        }
+    } catch(e) { console.log("Audio error"); }
+}
+
+document.getElementById('soundBtn').onclick = function() {
+    soundEnabled = !soundEnabled;
+    this.classList.toggle('active');
+    if(soundEnabled) playSound('click');
+};
+
+// --- TOAST & HELPERS ---
 window.toast = function(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.style.display = 'block';
@@ -186,9 +234,11 @@ window.toast = function(msg) {
 
 window.setBet = function(val) {
     if(isPlaying) return;
+    playSound('click');
     document.getElementById('betAmount').value = val;
 }
 
+// --- AUTH & LOAD ---
 onAuthStateChanged(auth, async (user) => {
     if(!user) return location.replace('index.html');
     currentUser = user;
@@ -212,7 +262,6 @@ function renderGrid() {
     }
 }
 
-// Correct Multiplier Logic
 function calculateMultiplier(safes, mines) {
     if(safes === 0) return 1.00;
     let m = 1;
@@ -222,8 +271,11 @@ function calculateMultiplier(safes, mines) {
     return m * 0.95; // 5% house edge
 }
 
+// --- START GAME (FIXED) ---
 window.startGame = async function() {
     if(isPlaying) return;
+    playSound('click');
+    
     betAmount = Number(document.getElementById('betAmount').value);
     TOTAL_BOMBS = Number(minesSelect.value);
     
@@ -239,17 +291,19 @@ window.startGame = async function() {
         userBalance -= betAmount;
         document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
 
-        // Create Bet Record (Error handling fixed)
+        // Save Bet Record (WITHOUT THROWING ERROR)
         try {
             const betRef = await addDoc(collection(db, 'bets_mines'), {
                 userId: currentUser.uid,
                 amount: betAmount,
+                mines: TOTAL_BOMBS,
                 status: 'pending',
                 createdAt: serverTimestamp()
             });
             currentBetId = betRef.id;
         } catch(e) {
-            console.log("History save error, but game will continue");
+            // Agar DB me save nahi hua to ignore karo, game mat roko
+            console.log("History save skipped");
             currentBetId = null;
         }
 
@@ -273,7 +327,6 @@ window.startGame = async function() {
         document.getElementById('uiMulti').textContent = '1.00x';
         document.getElementById('uiWin').textContent = '0.00';
         
-        // Correct Next Multi calculation
         let nextM = calculateMultiplier(1, TOTAL_BOMBS);
         document.getElementById('uiNext').textContent = nextM.toFixed(2) + 'x';
         
@@ -282,7 +335,7 @@ window.startGame = async function() {
 
     } catch(e) {
         console.error(e);
-        toast('Error starting game. Check connection.');
+        toast('Balance update failed! Try again.');
         startBtn.disabled = false;
         startBtn.textContent = 'Start Game';
     }
@@ -296,6 +349,7 @@ async function handleBoxClick(box) {
 
     if(bombsArray.includes(idx)) {
         // BOMB HIT
+        playSound('bomb');
         box.classList.add('bomb');
         box.textContent = '💣';
         isPlaying = false;
@@ -308,7 +362,7 @@ async function handleBoxClick(box) {
         document.getElementById('betAmount').disabled = false;
         minesSelect.disabled = false;
 
-        showResultPopup(false, betAmount, false);
+        showResultPopup(false, betAmount);
         
         if(currentBetId) {
             updateDoc(doc(db, 'bets_mines', currentBetId), { status: 'lose', winAmount: 0 }).catch(()=>{});
@@ -316,6 +370,7 @@ async function handleBoxClick(box) {
 
     } else {
         // SAFE
+        playSound('click');
         box.classList.add('safe');
         box.textContent = '💎';
         revealedCount++;
@@ -331,7 +386,7 @@ async function handleBoxClick(box) {
             document.getElementById('uiNext').textContent = nextM.toFixed(2) + 'x';
         } else {
             document.getElementById('uiNext').textContent = 'MAX';
-            cashout(); // Auto cashout if all safe found
+            cashout(); // Auto cashout
         }
     }
 }
@@ -351,9 +406,10 @@ function revealAllBombs() {
 window.cashout = async function() {
     if(!isPlaying || revealedCount === 0) return;
     isPlaying = false;
+    playSound('win');
 
     const grossWin = betAmount * currentMulti;
-    const tax = grossWin * 0.15; // 15% tax on winnings
+    const tax = grossWin * 0.15; 
     const finalWin = grossWin - tax;
 
     cashoutBtn.style.display = 'none';
@@ -367,23 +423,26 @@ window.cashout = async function() {
         if(!b.classList.contains('revealed')) b.classList.add('disabled');
     });
 
-    showResultPopup(true, finalWin, true);
+    showResultPopup(true, finalWin);
 
-    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(finalWin) });
-    userBalance += finalWin;
-    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+    try {
+        await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(finalWin) });
+        userBalance += finalWin;
+        document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
 
-    if(currentBetId) {
-        await updateDoc(doc(db, 'bets_mines', currentBetId), {
-            status: 'win', winAmount: finalWin, multiplier: currentMulti
-        }).catch(()=>{});
+        if(currentBetId) {
+            await updateDoc(doc(db, 'bets_mines', currentBetId), {
+                status: 'win', winAmount: finalWin, multiplier: currentMulti
+            }).catch(()=>{});
+        }
+    } catch(e) {
+        console.error("Cashout error", e);
     }
     loadHistory();
 }
 
 window.closePopup = function() {
     document.getElementById('resultPopup').classList.remove('show');
-    // Reset UI
     document.getElementById('uiMulti').textContent = '1.00x';
     document.getElementById('uiWin').textContent = '0.00';
     document.getElementById('uiNext').textContent = '1.18x';
@@ -391,7 +450,7 @@ window.closePopup = function() {
     loadHistory();
 };
 
-function showResultPopup(isWin, amount, isCashout) {
+function showResultPopup(isWin, amount) {
     const popup = document.getElementById('resultPopup');
     const box = document.getElementById('resBox');
     const icon = document.getElementById('resIcon');
