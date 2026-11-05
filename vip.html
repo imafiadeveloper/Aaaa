@@ -45,7 +45,8 @@ button{border:none;outline:none;cursor:pointer;background:transparent;}
 /* VIP Slider */
 .vip-slider-wrap{display:flex;overflow-x:auto;gap:12px;padding:0 16px 16px;scroll-snap-type:x mandatory;}
 .vip-slider-wrap::-webkit-scrollbar{display:none;}
-.vip-card{flex:0 0 88%;scroll-snap-align:center;border-radius:20px;padding:20px 18px;position:relative;overflow:hidden;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.12);}
+.vip-card{flex:0 0 88%;scroll-snap-align:center;border-radius:20px;padding:20px 18px;position:relative;overflow:hidden;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.45);border:2px solid transparent;transition:border-color 0.2s;}
+.vip-card.selected{border-color:#FAE59F;}
 
 .vip-bg-1{background:linear-gradient(135deg,#3a4860,#1b2537);}
 .vip-bg-2{background:linear-gradient(135deg,#734b22,#3d2208);}
@@ -84,9 +85,31 @@ button{border:none;outline:none;cursor:pointer;background:transparent;}
 
 /* Level Reward Claim Button */
 .claim-box{margin:0 16px 16px;}
-.btn-claim{width:100%;height:46px;border-radius:23px;background:var(--gold-grad);color:#2b1d03;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 15px rgba(245,196,67,0.35);transition:0.15s;}
-.btn-claim:active{transform:scale(0.98);}
-.btn-claim:disabled{opacity:0.4;cursor:not-allowed;box-shadow:none;}
+.btn-claim{
+  width:100%;
+  height:48px;
+  border-radius:24px;
+  background:var(--gold-grad);
+  color:#2b1d03;
+  font-size:14px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  box-shadow:0 4px 15px rgba(245,196,67,0.35);
+  transition:all 0.15s ease;
+}
+.btn-claim:active:not(:disabled){transform:scale(0.98);}
+.btn-claim:disabled{
+  background:#383838;
+  color:#737373;
+  box-shadow:none;
+  cursor:not-allowed;
+  border:1px solid rgba(255,255,255,0.05);
+}
 
 /* Tabs Container */
 .tabs-wrap{display:flex;margin:0 16px 12px;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--border);}
@@ -153,7 +176,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;}
 <!-- Claim Level-Up Reward Section -->
 <div class="claim-box">
   <button class="btn-claim" id="claimRewardBtn" onclick="claimVipReward()" disabled>
-    Claim Level Reward (₹<span id="claimAmountVal">0</span>)
+    Claim VIP1 Reward (₹60)
   </button>
 </div>
 
@@ -177,9 +200,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;}
 </div>
 
 <div id="tab-rules" class="tab-content" style="display:none; color:#a6a9ae; font-size:12px; line-height:1.7;">
-  1. <strong>EXP Accumulation:</strong> Every ₹1 valid bet placed across WinGo (30s, 1m, 3m, 5m, 10m), K3, 5D, or Mines gives 1 EXP.<br>
+  1. <strong>EXP Accumulation:</strong> Every ₹1 valid bet placed across WinGo, K3, 5D, or Mines gives 1 EXP.<br>
   2. <strong>Level Up Promotion:</strong> Once your EXP meets the requirements, your VIP level is upgraded immediately.<br>
-  3. <strong>Level Up Bonus:</strong> Every level reward can only be claimed once per account.<br>
+  3. <strong>Level Up Bonus:</strong> Every level reward can only be claimed manually once per account.<br>
   4. <strong>Lifetime VIP:</strong> VIP levels never expire or downgrade.
 </div>
 
@@ -242,7 +265,6 @@ onAuthStateChanged(auth, async (user) => {
   currentUser = user;
   document.getElementById('userUid').textContent = user.uid.substring(0, 8).toUpperCase();
 
-  // Avatar Setup
   const sum = user.uid.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const avatarImg = document.getElementById('avatarImg');
   avatarImg.src = './images/' + profileImages[sum % profileImages.length];
@@ -251,17 +273,14 @@ onAuthStateChanged(auth, async (user) => {
   await fetchUserDataAndExp();
 });
 
-// Calculate EXP across game bets
 async function fetchUserDataAndExp() {
   try {
     const userSnap = await getDoc(doc(db, 'users', currentUser.uid));
     const uData = userSnap.data() || {};
     document.getElementById('userName').textContent = uData.name || 'Member';
 
-    // Fetch Claimed VIP list
     claimedLevels = Array.isArray(uData.claimedVipLevels) ? uData.claimedVipLevels : [];
 
-    // Aggregate bets for EXP (₹1 Bet = 1 EXP)
     let totalBetTurnover = Number(uData.totalTurnover || 0);
 
     if (!uData.totalTurnover) {
@@ -282,13 +301,12 @@ async function fetchUserDataAndExp() {
         }
       });
 
-      // Cache totalTurnover to avoid heavy queries next time
       updateDoc(doc(db, 'users', currentUser.uid), { totalTurnover: totalBetTurnover }).catch(() => {});
     }
 
     currentExp = Math.floor(totalBetTurnover);
 
-    // Determine VIP Level
+    // Calculate VIP Level accurately
     userVipLevel = 0;
     for (let i = vipTiers.length - 1; i >= 0; i--) {
       if (currentExp >= vipTiers[i].exp) {
@@ -297,12 +315,10 @@ async function fetchUserDataAndExp() {
       }
     }
 
-    // Save actual user VIP level to DB
     if (uData.vipLevel !== userVipLevel) {
       updateDoc(doc(db, 'users', currentUser.uid), { vipLevel: userVipLevel }).catch(() => {});
     }
 
-    // Update Header HUD
     document.getElementById('currentVipTag').textContent = 'VIP' + userVipLevel;
     document.getElementById('userExpVal').textContent = currentExp.toLocaleString();
 
@@ -311,7 +327,17 @@ async function fetchUserDataAndExp() {
     document.getElementById('nextNeedVal').textContent = needExp > 0 ? needExp.toLocaleString() : 'MAX';
 
     renderSlider();
-    selectVipLevel(Math.min(10, Math.max(1, userVipLevel + 1)));
+
+    // Default selection: Unclaimed unlocked level or user's current level
+    let defaultLevel = 1;
+    for (let i = 1; i <= Math.max(1, userVipLevel); i++) {
+      if (!claimedLevels.includes(i)) {
+        defaultLevel = i;
+        break;
+      }
+      defaultLevel = i;
+    }
+    window.selectVipLevel(defaultLevel);
     loadClaimHistory();
   } catch (err) {
     console.error("VIP Error:", err);
@@ -328,15 +354,17 @@ function renderSlider() {
 
     const isUnlocked = userVipLevel >= v.level;
     const isCurrent = userVipLevel === v.level;
+    const isClaimed = claimedLevels.includes(v.level);
     const progressPercent = Math.min(100, (currentExp / v.exp) * 100);
 
     let statusText = 'Locked';
     let statusClass = '';
     if (isCurrent) { statusText = 'Current'; statusClass = 'active'; }
+    else if (isClaimed) { statusText = 'Claimed ✓'; statusClass = 'active'; }
     else if (isUnlocked) { statusText = 'Unlocked'; statusClass = 'active'; }
 
     html += `
-      <div class="vip-card ${v.bgClass}" onclick="window.selectVipLevel(${v.level})" style="cursor:pointer;">
+      <div class="vip-card ${v.bgClass} ${selectedViewLevel === v.level ? 'selected' : ''}" id="card-vip-${v.level}" onclick="window.selectVipLevel(${v.level})" style="cursor:pointer;">
         <div class="vip-star-bg">★</div>
         <div class="vip-card-head">
           <h2>VIP${v.level}</h2>
@@ -356,11 +384,39 @@ function renderSlider() {
     `;
   });
   slider.innerHTML = html;
+
+  // Add scroll snap listener to dynamically update benefits on swipe
+  slider.onscroll = () => {
+    clearTimeout(slider._t);
+    slider._t = setTimeout(() => {
+      const cards = slider.querySelectorAll('.vip-card');
+      const center = slider.scrollLeft + (slider.offsetWidth / 2);
+      let closestLevel = selectedViewLevel;
+      let minDiff = Infinity;
+      cards.forEach((card, idx) => {
+        const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+        const diff = Math.abs(center - cardCenter);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestLevel = idx + 1;
+        }
+      });
+      if (closestLevel !== selectedViewLevel) {
+        window.selectVipLevel(closestLevel);
+      }
+    }, 80);
+  };
 }
 
 window.selectVipLevel = function(level) {
   selectedViewLevel = level;
   const v = vipTiers[level];
+  if (!v) return;
+
+  document.querySelectorAll('.vip-card').forEach(c => c.classList.remove('selected'));
+  const activeCard = document.getElementById(`card-vip-${level}`);
+  if (activeCard) activeCard.classList.add('selected');
+
   document.getElementById('benefitsLevelTitle').textContent = `VIP${v.level} Benefits`;
 
   document.getElementById('benefitsContainer').innerHTML = `
@@ -396,12 +452,12 @@ window.selectVipLevel = function(level) {
     </div>
   `;
 
-  // Claim Button Update
+  // Fix: Manual Claim Button State Update
   const claimBtn = document.getElementById('claimRewardBtn');
-  document.getElementById('claimAmountVal').textContent = v.upReward;
-
   const alreadyClaimed = claimedLevels.includes(level);
-  if (userVipLevel >= level && !alreadyClaimed) {
+  const isUnlocked = userVipLevel >= level;
+
+  if (isUnlocked && !alreadyClaimed) {
     claimBtn.disabled = false;
     claimBtn.textContent = `Claim VIP${level} Reward (₹${v.upReward})`;
   } else if (alreadyClaimed) {
@@ -415,8 +471,16 @@ window.selectVipLevel = function(level) {
 
 window.claimVipReward = async function() {
   const level = selectedViewLevel;
-  const reward = vipTiers[level].upReward;
-  if (userVipLevel < level || claimedLevels.includes(level)) return;
+  const v = vipTiers[level];
+  if (!v) return;
+  const reward = v.upReward;
+
+  if (userVipLevel < level) {
+    return toast(`You need to unlock VIP${level} first!`);
+  }
+  if (claimedLevels.includes(level)) {
+    return toast(`VIP${level} reward already claimed!`);
+  }
 
   const btn = document.getElementById('claimRewardBtn');
   btn.disabled = true;
@@ -425,13 +489,13 @@ window.claimVipReward = async function() {
   try {
     claimedLevels.push(level);
 
-    // 1. Add reward directly to balance
+    // 1. Credit Reward to Firebase User Balance
     await updateDoc(doc(db, 'users', currentUser.uid), {
       balance: increment(reward),
       claimedVipLevels: claimedLevels
     });
 
-    // 2. Save Claim Log in history
+    // 2. Save Claim in History Collection
     await addDoc(collection(db, 'vip_rewards'), {
       userId: currentUser.uid,
       vipLevel: level,
@@ -439,12 +503,13 @@ window.claimVipReward = async function() {
       claimedAt: serverTimestamp()
     });
 
-    toast(`Success! ₹${reward} added to your balance.`);
+    toast(`Success! ₹${reward} added to your wallet!`);
     window.selectVipLevel(level);
+    renderSlider();
     loadClaimHistory();
   } catch (err) {
-    console.error(err);
-    toast('Claim failed. Try again.');
+    console.error("Claim Error:", err);
+    toast('Claim failed. Check network!');
     btn.disabled = false;
   }
 };
@@ -456,7 +521,7 @@ async function loadClaimHistory() {
     const snap = await getDocs(q);
 
     if (snap.empty) {
-      container.innerHTML = `<div class="empty-state">No reward claims yet</div>`;
+      container.innerHTML = `<div class="empty-state">No claims found</div>`;
       return;
     }
 
