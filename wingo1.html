@@ -21,6 +21,7 @@ body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
 button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
 ::-webkit-scrollbar{width:0;height:0;}
 
+/* Header */
 .navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:50px;padding:0 14px;background:#242424;}
 .nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
@@ -29,6 +30,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .nav-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .nav-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;}
 
+/* Wallet Card */
 .wallet-card{
   margin:10px 12px;background:linear-gradient(135deg,#363a45 0%,#262830 100%);
   border-radius:18px;padding:14px 16px;text-align:center;position:relative;
@@ -41,6 +43,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .btn-withdraw{background:#f44336;color:#fff;}
 .btn-deposit{background:#00b977;color:#fff;}
 
+/* Notice */
 .notice-strip{
   margin:0 12px 10px;background:#242424;border-radius:20px;padding:8px 14px;
   display:flex;align-items:center;gap:8px;font-size:11px;color:#bbb;
@@ -49,6 +52,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .notice-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
 .notice-btn{background:#FAE59F;color:#222;font-size:10px;font-weight:800;padding:3px 10px;border-radius:12px;}
 
+/* Ticket Card */
 .ticket-card{
   margin:0 12px 10px;background:linear-gradient(135deg, #f5d47a 0%, #d8a846 100%);
   border-radius:18px;padding:14px;color:#332205;position:relative;
@@ -73,6 +77,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .prev-ball.violet{background:#9c27b0;}
 .tc-period{position:absolute;bottom:10px;right:14px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.5px;}
 
+/* Betting Board */
 .bet-board{margin:0 12px 14px;background:#262626;border-radius:18px;padding:12px;}
 .color-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
 .c-btn{height:42px;border-radius:8px;font-weight:800;font-size:13px;color:#fff;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
@@ -81,6 +86,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .c-btn.violet{background:#9c27b0;}
 .c-btn.red{background:#f44336;}
 
+/* Balls Grid */
 .num-grid{
   display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
   background:#1a1a1a;border-radius:14px;padding:12px 8px;margin-bottom:12px;
@@ -92,21 +98,25 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .num-btn:active{transform:scale(0.9);}
 .num-btn img{width:100%;height:100%;object-fit:contain;pointer-events:none;}
 
+/* Multipliers */
 .multi-row{display:flex;align-items:center;gap:6px;overflow-x:auto;margin-bottom:12px;}
 .btn-rand{border:1px solid #f44336;color:#f44336;font-size:11px;font-weight:700;padding:6px 10px;border-radius:6px;flex-shrink:0;}
 .m-chip{background:#2a2a2a;color:#a6a9ae;font-size:11px;font-weight:700;padding:6px 10px;border-radius:6px;flex-shrink:0;cursor:pointer;}
 .m-chip.active{background:#00b977;color:#fff;}
 
+/* Big / Small Row */
 .size-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .btn-sz{height:44px;border-radius:24px;font-size:15px;font-weight:800;color:#fff;transition:transform .15s;}
 .btn-sz:active{transform:scale(0.96);}
 .btn-sz.big{background:#f5a623;}
 .btn-sz.small{background:#4a90e2;}
 
+/* Tabs */
 .tabs-header{display:flex;margin:16px 12px 10px;gap:6px;}
 .t-btn{flex:1;background:#262626;color:#a6a9ae;font-size:12px;font-weight:700;padding:10px 0;border-radius:10px;text-align:center;cursor:pointer;}
 .t-btn.active{background:var(--gold-bg);color:#2a1b02;}
 
+/* History Table */
 .hist-table{margin:0 12px;background:#242424;border-radius:12px;overflow:hidden;}
 .th-head{display:flex;background:#2f3440;padding:10px 0;font-size:11px;color:#9aa0ad;font-weight:700;}
 .th-row{display:flex;padding:10px 0;font-size:12px;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
@@ -121,6 +131,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .dot-red{background:#f44336;}
 .dot-violet{background:#9c27b0;}
 
+/* 5-Sec Countdown Flip Overlay */
 .exact-draw-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(3px);
   z-index:9999;display:none;align-items:center;justify-content:center;gap:16px;pointer-events:none;
@@ -135,6 +146,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;line-height:1;
 }
 
+/* Win / Lose Popup Modal */
 .result-popup{
   position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10000;
   display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);
@@ -177,6 +189,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   color:#fff;font-size:18px;font-weight:900;background:rgba(0,0,0,0.4);
 }
 
+/* Bet Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
 .sheet{width:100%;background:#262626;border-radius:20px 20px 0 0;padding:18px 16px 24px;animation:slideUp .25s ease;}
@@ -348,7 +361,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="toast" id="toast"></div>
 
-<!-- 5-Sec Ticking Sounds -->
+<!-- 5-Sec Audio -->
 <audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
 <audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
 
@@ -373,8 +386,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const RESULT_COLLECTION = 'results_1m';
-const BET_COLLECTION = 'bets_1m';
+// EXACT MATCH WITH YOUR RULES
+const RESULT_COLLECTION = 'results';
+const BET_COLLECTION = 'bets';
 const SLOT_DURATION_SEC = 60;
 
 let currentUser = null;
@@ -418,6 +432,7 @@ window.toast = (msg) => {
   setTimeout(() => t.style.display = 'none', 1800);
 };
 
+/* IST Timezone Calculation (UTC + 5:30) */
 function getISTDateComponents() {
   const now = new Date();
   const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -442,6 +457,7 @@ function getPeriodId() {
   return getPeriodIdFromIndex(slotIndex);
 }
 
+// Auto prune old docs
 async function pruneOldResults() {
   try {
     const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(35)));
@@ -456,6 +472,7 @@ async function pruneOldResults() {
   } catch(e){}
 }
 
+// 10% Strict Win Deterministic Engine
 function computeDeterministicResult(slotIndex, periodId) {
   const seed = (slotIndex * 9301 + 49297) % 233280;
   const num = Math.abs(seed) % 10;
@@ -533,7 +550,7 @@ async function resolveBets(periodId, resData) {
       let winAmt = 0;
       if (won) {
         const gross = b.amount * multi;
-        winAmt = gross - (gross * 0.15);
+        winAmt = gross - (gross * 0.15); // 15% platform owner commission
         winTotal += winAmt;
       } else {
         lostTotal += b.amount;
@@ -600,6 +617,7 @@ onAuthStateChanged(auth, async (user) => {
   loadGameHistory();
 });
 
+// Render 0-9 Image Balls
 function initBalls() {
   const g = document.getElementById('numGrid');
   const numImages = [
