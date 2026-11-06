@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BDG LOTTERY7 — Ultimate Admin Control Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  --bg: #0e0e11;
+  --card: #18181c;
+  --card-sub: #222228;
+  --border: rgba(255,255,255,0.08);
+  --red: #ff4d4f;
+  --green: #00e676;
+  --violet: #b388ff;
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; -webkit-tap-highlight-color:transparent; }
+body { background:var(--bg); color:#fff; min-height:100vh; padding-bottom:60px; }
+button { cursor:pointer; border:none; outline:none; }
+input, select { outline:none; border:none; background:transparent; color:#fff; font-family:inherit; }
+
+/* Navbar */
+.navbar {
+  position:sticky; top:0; z-index:100; height:56px; background:#141418;
+  display:flex; align-items:center; justify-content:space-between; padding:0 16px;
+  border-bottom:1px solid var(--border);
+}
+.nav-brand { font-size:16px; font-weight:900; color:var(--gold); display:flex; align-items:center; gap:8px; }
+.admin-badge { background:rgba(255,77,79,0.2); color:var(--red); font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; border:1px solid rgba(255,77,79,0.3); }
+
+/* Navigation Tabs */
+.tabs-wrap { display:flex; gap:8px; padding:12px 16px; overflow-x:auto; background:#121215; border-bottom:1px solid var(--border); }
+.tab-btn {
+  flex:0 0 auto; background:var(--card); color:#8f929b; padding:8px 14px;
+  border-radius:20px; font-size:12px; font-weight:700; border:1px solid var(--border);
+  transition:all 0.2s;
+}
+.tab-btn.active { background:var(--gold-grad); color:#1c1304; border-color:transparent; }
+
+.section { display:none; padding:16px; }
+.section.active { display:block; }
+
+/* Cards & Layout */
+.card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:14px; box-shadow:0 4px 14px rgba(0,0,0,0.4); }
+.card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.card-head h3 { font-size:14px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px; }
+
+/* WinGo Controller Elements */
+.game-selector { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; }
+.g-pill {
+  padding:6px 12px; background:var(--card-sub); border:1px solid var(--border); border-radius:8px;
+  font-size:11px; font-weight:700; color:#aaa; cursor:pointer;
+}
+.g-pill.active { background:#FAE59F; color:#1a1a1a; font-weight:800; }
+
+.mode-toggle { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.mode-btn {
+  padding:12px; border-radius:12px; background:var(--card-sub); border:1.5px solid var(--border);
+  font-size:13px; font-weight:800; text-align:center; color:#888;
+}
+.mode-btn.active-auto { border-color:var(--green); background:rgba(0,230,118,0.1); color:var(--green); }
+.mode-btn.active-manual { border-color:var(--red); background:rgba(255,77,79,0.1); color:var(--red); }
+
+.pool-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:16px; }
+.pool-box { background:#121215; border-radius:10px; padding:10px; text-align:center; border:1px solid var(--border); }
+.pool-box span { font-size:10px; color:#8f929b; text-transform:uppercase; font-weight:700; display:block; }
+.pool-box strong { font-family:'Orbitron',sans-serif; font-size:14px; margin-top:4px; display:block; }
+
+.num-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-bottom:14px; }
+.num-btn {
+  aspect-ratio:1; border-radius:10px; background:#222; font-family:'Orbitron',sans-serif;
+  font-size:18px; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center;
+  border:2px solid transparent; cursor:pointer;
+}
+.num-btn.selected { border-color:var(--gold); box-shadow:0 0 10px rgba(250,229,159,0.4); }
+.c-green { background:linear-gradient(135deg, #00b09b, #96c93d); }
+.c-red { background:linear-gradient(135deg, #ff416c, #ff4b2b); }
+.c-violet { background:linear-gradient(135deg, #8a2387, #e94057); }
+
+/* Table Elements */
+.user-item { background:var(--card-sub); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:10px; }
+.u-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:12px; }
+.u-row:last-child { margin-bottom:0; }
+.input-row { display:flex; gap:8px; background:#121215; padding:8px 12px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; }
+.input-row input { flex:1; font-size:13px; }
+
+.btn-sm { padding:6px 14px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer; }
+.btn-gold { background:var(--gold-grad); color:#1c1304; }
+.btn-red { background:rgba(255,77,79,0.2); color:var(--red); border:1px solid var(--red); }
+.btn-green { background:rgba(0,230,118,0.2); color:var(--green); border:1px solid var(--green); }
+
+/* Toast */
+.toast {
+  position:fixed; top:20px; left:50%; transform:translateX(-50%);
+  background:rgba(20,20,25,0.96); border:1px solid var(--gold); color:#fff;
+  font-size:13px; font-weight:700; padding:10px 20px; border-radius:10px;
+  display:none; z-index:9999;
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-brand">
+    <span>⚡ BDG ADMIN MASTER</span>
+    <span class="admin-badge">ROOT ACCESS</span>
+  </div>
+  <button class="btn-sm btn-red" onclick="location.href='home.html'">Exit</button>
+</header>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" onclick="switchTab('wingoTab', this)">WinGo Control</button>
+  <button class="tab-btn" onclick="switchTab('withdrawTab', this)">Withdrawals</button>
+  <button class="tab-btn" onclick="switchTab('usersTab', this)">User Records</button>
+  <button class="tab-btn" onclick="switchTab('giftTab', this)">Gift Codes</button>
+  <button class="tab-btn" onclick="switchTab('notifyTab', this)">Broadcasts</button>
+</nav>
+
+<!-- 1. WINGO CONTROL ROOM -->
+<section id="wingoTab" class="section active">
+  <div class="card">
+    <div class="card-head">
+      <h3>WinGo Game Room Control</h3>
+      <span id="gamePeriod" style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:12px;">Period: --</span>
+    </div>
+
+    <div class="game-selector">
+      <div class="g-pill active" onclick="selectGame('bets_30s', '30s', this)">WinGo 30s</div>
+      <div class="g-pill" onclick="selectGame('bets', '1m', this)">WinGo 1M</div>
+      <div class="g-pill" onclick="selectGame('bets_3m', '3m', this)">WinGo 3M</div>
+      <div class="g-pill" onclick="selectGame('bets_5m', '5m', this)">WinGo 5M</div>
+    </div>
+
+    <div class="mode-toggle">
+      <div class="mode-btn active-auto" id="autoModeBtn" onclick="setMode('auto')">AUTO MODE (Fair)</div>
+      <div class="mode-btn" id="manualModeBtn" onclick="setMode('manual')">MANUAL OVERRIDE</div>
+    </div>
+
+    <h4 style="font-size:12px; color:#8f929b; margin-bottom:8px; text-transform:uppercase;">Live Bets Placed This Round</h4>
+    <div class="pool-grid">
+      <div class="pool-box"><span>Green Total</span><strong style="color:var(--green);" id="poolGreen">₹0</strong></div>
+      <div class="pool-box"><span>Violet Total</span><strong style="color:var(--violet);" id="poolViolet">₹0</strong></div>
+      <div class="pool-box"><span>Red Total</span><strong style="color:var(--red);" id="poolRed">₹0</strong></div>
+      <div class="pool-box"><span>Big Total</span><strong id="poolBig">₹0</strong></div>
+      <div class="pool-box"><span>Small Total</span><strong id="poolSmall">₹0</strong></div>
+      <div class="pool-box"><span>Total Pot</span><strong style="color:var(--gold);" id="poolTotal">₹0</strong></div>
+    </div>
+
+    <h4 style="font-size:12px; color:#8f929b; margin-bottom:8px; text-transform:uppercase;">Select Preset Result (Manual Mode)</h4>
+    <div class="num-grid">
+      <div class="num-btn c-violet" onclick="selectManualNum(0, this)">0</div>
+      <div class="num-btn c-green" onclick="selectManualNum(1, this)">1</div>
+      <div class="num-btn c-red" onclick="selectManualNum(2, this)">2</div>
+      <div class="num-btn c-green" onclick="selectManualNum(3, this)">3</div>
+      <div class="num-btn c-red" onclick="selectManualNum(4, this)">4</div>
+      <div class="num-btn c-violet" onclick="selectManualNum(5, this)">5</div>
+      <div class="num-btn c-red" onclick="selectManualNum(6, this)">6</div>
+      <div class="num-btn c-green" onclick="selectManualNum(7, this)">7</div>
+      <div class="num-btn c-red" onclick="selectManualNum(8, this)">8</div>
+      <div class="num-btn c-green" onclick="selectManualNum(9, this)">9</div>
+    </div>
+
+    <button class="btn-sm btn-gold" style="width:100%; height:44px; font-size:13px;" onclick="applyWinGoDecision()">
+      LOCK RESULT FOR NEXT ROUND
+    </button>
+  </div>
+</section>
+
+<!-- 2. WITHDRAWAL MANAGEMENT -->
+<section id="withdrawTab" class="section">
+  <div class="card">
+    <div class="card-head">
+      <h3>Pending Withdrawal Requests</h3>
+      <button class="btn-sm btn-gold" onclick="loadWithdrawals()">Refresh</button>
+    </div>
+    <div id="withdrawListContainer">
+      <div style="text-align:center; padding:30px; color:#666;">Loading withdrawals...</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. USERS MANAGEMENT -->
+<section id="usersTab" class="section">
+  <div class="card">
+    <div class="card-head">
+      <h3>User Database & Balances</h3>
+    </div>
+    <div class="input-row">
+      <input type="text" id="userSearchInput" placeholder="Search by Phone, UID or Invite Code..." oninput="filterUsers()">
+    </div>
+    <div id="usersListContainer">
+      <div style="text-align:center; padding:30px; color:#666;">Loading users...</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. GIFT CODE GENERATOR -->
+<section id="giftTab" class="section">
+  <div class="card">
+    <div class="card-head">
+      <h3>Generate 32-Char Gift Code</h3>
+    </div>
+    <div class="input-row">
+      <input type="number" id="giftAmount" placeholder="Reward Amount (₹)">
+    </div>
+    <div class="input-row">
+      <input type="number" id="giftMaxUsers" placeholder="Max Claim Users Limit (e.g. 10)">
+    </div>
+    <button class="btn-sm btn-gold" style="width:100%; height:42px;" onclick="generateGiftCode()">GENERATE & ACTIVATE CODE</button>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>Active Gift Codes</h3></div>
+    <div id="activeGiftCodesContainer">
+      <div style="text-align:center; padding:20px; color:#666;">No active codes</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. BROADCAST SYSTEM -->
+<section id="notifyTab" class="section">
+  <div class="card">
+    <div class="card-head"><h3>Send Global Notification</h3></div>
+    <div class="input-row">
+      <input type="text" id="broadcastTitle" placeholder="Notification Title">
+    </div>
+    <div class="input-row" style="height:90px;">
+      <textarea id="broadcastMsg" style="width:100%; height:100%; background:transparent; border:none; outline:none; color:#fff; font-size:13px;" placeholder="Type broadcast message here..."></textarea>
+    </div>
+    <button class="btn-sm btn-gold" style="width:100%; height:42px;" onclick="sendBroadcast()">SEND NOTIFICATION TO ALL USERS</button>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, 
+  where, getDocs, onSnapshot, serverTimestamp, increment, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let currentMode = 'auto';
+let selectedNumber = null;
+let currentCollection = 'bets_30s';
+let currentGameTag = '30s';
+let allUsersData = [];
+
+window.toast = (m) => {
+  const t = document.getElementById('toast');
+  t.textContent = m; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2000);
+};
+
+window.switchTab = (id, el) => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+  if(id === 'withdrawTab') loadWithdrawals();
+  if(id === 'usersTab') loadUsers();
+  if(id === 'giftTab') loadGiftCodes();
+};
+
+// ========================================================
+// 1. WINGO REAL-TIME MONITOR & CONTROL
+// ========================================================
+window.selectGame = (col, tag, el) => {
+  document.querySelectorAll('.g-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentCollection = col;
+  currentGameTag = tag;
+  listenToPoolBets();
+};
+
+window.setMode = (m) => {
+  currentMode = m;
+  if(m === 'auto') {
+    document.getElementById('autoModeBtn').className = 'mode-btn active-auto';
+    document.getElementById('manualModeBtn').className = 'mode-btn';
+    selectedNumber = null;
+    document.querySelectorAll('.num-btn').forEach(n => n.classList.remove('selected'));
+  } else {
+    document.getElementById('manualModeBtn').className = 'mode-btn active-manual';
+    document.getElementById('autoModeBtn').className = 'mode-btn';
+  }
+};
+
+window.selectManualNum = (num, el) => {
+  setMode('manual');
+  selectedNumber = num;
+  document.querySelectorAll('.num-btn').forEach(n => n.classList.remove('selected'));
+  el.classList.add('selected');
+};
+
+function listenToPoolBets() {
+  const q = query(collection(db, currentCollection), where('status', '==', 'pending'), limit(100));
+  onSnapshot(q, (snap) => {
+    let green = 0, violet = 0, red = 0, big = 0, small = 0, total = 0;
+    snap.forEach(d => {
+      const data = d.data();
+      const amt = Number(data.amount || 0);
+      total += amt;
+      const select = String(data.select || '').toLowerCase();
+      if(select === 'green') green += amt;
+      if(select === 'violet') violet += amt;
+      if(select === 'red') red += amt;
+      if(select === 'big') big += amt;
+      if(select === 'small') small += amt;
+    });
+
+    document.getElementById('poolGreen').textContent = `₹${green}`;
+    document.getElementById('poolViolet').textContent = `₹${violet}`;
+    document.getElementById('poolRed').textContent = `₹${red}`;
+    document.getElementById('poolBig').textContent = `₹${big}`;
+    document.getElementById('poolSmall').textContent = `₹${small}`;
+    document.getElementById('poolTotal').textContent = `₹${total}`;
+  });
+}
+listenToPoolBets();
+
+window.applyWinGoDecision = async () => {
+  try {
+    await setDoc(doc(db, 'game_controls', `wingo_${currentGameTag}`), {
+      mode: currentMode,
+      targetNumber: selectedNumber,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    toast(currentMode === 'auto' ? 'Switched to Auto Fair Mode!' : `Result locked: Number ${selectedNumber}`);
+  } catch(e) {
+    toast('Control sync failed: ' + e.message);
+  }
+};
+
+// ========================================================
+// 2. WITHDRAWAL VERIFICATION (APPROVE / REJECT)
+// ========================================================
+window.loadWithdrawals = async () => {
+  const container = document.getElementById('withdrawListContainer');
+  container.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">Fetching requests...</div>`;
+  try {
+    const q = query(collection(db, 'withdrawals'), where('status', '==', 'pending'), limit(50));
+    const snap = await getDocs(q);
+
+    if(snap.empty) {
+      container.innerHTML = `<div style="text-align:center; padding:30px; color:#888;">No pending withdrawals!</div>`;
+      return;
+    }
+
+    let html = '';
+    snap.forEach(d => {
+      const w = d.data();
+      html += `
+        <div class="user-item">
+          <div class="u-row">
+            <span><strong>Order:</strong> ${w.orderId || d.id}</span>
+            <strong style="color:var(--gold); font-size:15px;">₹${Number(w.amount).toFixed(2)}</strong>
+          </div>
+          <div class="u-row">
+            <span><strong>UPI ID:</strong> ${w.upiId || 'N/A'}</span>
+            <span>UID: ${w.userId.slice(0,8)}</span>
+          </div>
+          <div class="u-row" style="margin-top:10px; gap:8px;">
+            <button class="btn-sm btn-green" style="flex:1;" onclick="processWd('${d.id}', '${w.userId}', ${w.amount}, 'completed')">Approve Payout</button>
+            <button class="btn-sm btn-red" style="flex:1;" onclick="processWd('${d.id}', '${w.userId}', ${w.amount}, 'rejected')">Reject &amp; Refund</button>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = `<div style="text-align:center; color:var(--red);">Error loading requests</div>`;
+  }
+};
+
+window.processWd = async (docId, userId, amount, status) => {
+  if(!confirm(`Are you sure you want to mark this as ${status}?`)) return;
+  try {
+    await updateDoc(doc(db, 'withdrawals', docId), {
+      status: status,
+      processedAt: serverTimestamp()
+    });
+
+    if(status === 'rejected') {
+      // Refund balance to user
+      await updateDoc(doc(db, 'users', userId), {
+        balance: increment(amount)
+      });
+      toast(`Rejected! ₹${amount} refunded to user.`);
+    } else {
+      toast(`Withdrawal approved successfully!`);
+    }
+    loadWithdrawals();
+  } catch(e) {
+    toast('Action failed: ' + e.message);
+  }
+};
+
+// ========================================================
+// 3. USER MANAGEMENT & BALANCES
+// ========================================================
+window.loadUsers = async () => {
+  const container = document.getElementById('usersListContainer');
+  container.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">Loading users...</div>`;
+  try {
+    const snap = await getDocs(query(collection(db, 'users'), limit(100)));
+    allUsersData = [];
+    snap.forEach(d => allUsersData.push({ id: d.id, ...d.data() }));
+    renderUsers(allUsersData);
+  } catch(e) {
+    container.innerHTML = `<div style="text-align:center; color:var(--red);">Failed to load users</div>`;
+  }
+};
+
+function renderUsers(list) {
+  const container = document.getElementById('usersListContainer');
+  if(!list.length) {
+    container.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">No users found</div>`;
+    return;
+  }
+  let html = '';
+  list.forEach(u => {
+    html += `
+      <div class="user-item">
+        <div class="u-row">
+          <span><strong>${u.phone || 'No Phone'}</strong> (UID: ${u.id.slice(0,8)})</span>
+          <strong style="color:var(--gold);">₹${Number(u.balance || 0).toFixed(2)}</strong>
+        </div>
+        <div class="u-row">
+          <span>Code: ${u.inviteCode || u.referralCode || '--'}</span>
+          <span>Deposited: ₹${Number(u.totalRecharge || 0).toFixed(2)}</span>
+        </div>
+        <div class="u-row" style="margin-top:8px; gap:6px;">
+          <button class="btn-sm btn-green" onclick="modifyUserBal('${u.id}', 100)">+₹100</button>
+          <button class="btn-sm btn-green" onclick="modifyUserBal('${u.id}', 500)">+₹500</button>
+          <button class="btn-sm btn-red" onclick="modifyUserBal('${u.id}', -100)">-₹100</button>
+          <button class="btn-sm btn-gold" onclick="customBalPrompt('${u.id}')">Custom Edit</button>
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+window.filterUsers = () => {
+  const term = document.getElementById('userSearchInput').value.toLowerCase().trim();
+  const filtered = allUsersData.filter(u => 
+    (u.phone && u.phone.includes(term)) || 
+    (u.id && u.id.toLowerCase().includes(term)) || 
+    (u.inviteCode && u.inviteCode.toLowerCase().includes(term))
+  );
+  renderUsers(filtered);
+};
+
+window.modifyUserBal = async (uid, diff) => {
+  try {
+    await updateDoc(doc(db, 'users', uid), { balance: increment(diff) });
+    toast(`Balance updated by ${diff > 0 ? '+' : ''}${diff}`);
+    loadUsers();
+  } catch(e) {
+    toast('Error updating balance');
+  }
+};
+
+window.customBalPrompt = (uid) => {
+  const amt = prompt("Enter amount to add (positive) or deduct (negative):");
+  if(amt && !isNaN(amt)) modifyUserBal(uid, parseFloat(amt));
+};
+
+// ========================================================
+// 4. 32-CHARACTER CRYPTO GIFT CODE GENERATOR
+// ========================================================
+function create32HexCode() {
+  const chars = '0123456789ABCDEF';
+  let out = '';
+  for(let i = 0; i < 32; i++) {
+    out += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return out;
+}
+
+window.generateGiftCode = async () => {
+  const amt = parseFloat(document.getElementById('giftAmount').value);
+  const maxClaims = parseInt(document.getElementById('giftMaxUsers').value);
+
+  if(!amt || amt <= 0) return toast('Please enter valid amount');
+  if(!maxClaims || maxClaims <= 0) return toast('Set max claims count');
+
+  const code = create32HexCode();
+
+  try {
+    await setDoc(doc(db, 'gift_codes', code), {
+      code: code,
+      amount: amt,
+      maxUsers: maxClaims,
+      claimedCount: 0,
+      claimedBy: [],
+      status: 'active',
+      createdAt: serverTimestamp()
+    });
+
+    toast(`Gift Code Created: ${code.slice(0,8)}...`);
+    document.getElementById('giftAmount').value = '';
+    document.getElementById('giftMaxUsers').value = '';
+    loadGiftCodes();
+  } catch(e) {
+    toast('Failed to create code');
+  }
+};
+
+window.loadGiftCodes = async () => {
+  const container = document.getElementById('activeGiftCodesContainer');
+  try {
+    const snap = await getDocs(query(collection(db, 'gift_codes'), where('status', '==', 'active'), limit(20)));
+    if(snap.empty) {
+      container.innerHTML = `<div style="text-align:center; padding:16px; color:#888;">No active gift codes</div>`;
+      return;
+    }
+    let html = '';
+    snap.forEach(d => {
+      const g = d.data();
+      html += `
+        <div class="user-item">
+          <div class="u-row">
+            <span style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:11px;">${g.code}</span>
+          </div>
+          <div class="u-row" style="margin-top:6px;">
+            <span>Value: <strong>₹${g.amount}</strong></span>
+            <span>Claims: <strong>${g.claimedCount || 0} / ${g.maxUsers}</strong></span>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  } catch(e) {}
+};
+
+// ========================================================
+// 5. GLOBAL BROADCAST SENDER
+// ========================================================
+window.sendBroadcast = async () => {
+  const title = document.getElementById('broadcastTitle').value.trim();
+  const msg = document.getElementById('broadcastMsg').value.trim();
+  if(!title || !msg) return toast('Fill title and message');
+
+  try {
+    await setDoc(doc(db, 'notifications', `broadcast_${Date.now()}`), {
+      title: title,
+      message: msg,
+      target: 'all',
+      createdAt: serverTimestamp()
+    });
+    toast('Global notification broadcasted!');
+    document.getElementById('broadcastTitle').value = '';
+    document.getElementById('broadcastMsg').value = '';
+  } catch(e) {
+    toast('Broadcast failed: ' + e.message);
+  }
+};
+</script>
+</body>
+</html>
