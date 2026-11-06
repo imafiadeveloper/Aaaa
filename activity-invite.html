@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#181818">
+<title>BDG GAME - Invite Friends</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #FAE59F;
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+
+.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+
+.banner-wrap{margin:12px 14px;}
+.top-banner{width:100%;border-radius:14px;display:block;}
+.brand-strip{text-align:center;padding:10px 0;}
+.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;}
+
+.detail-card{margin:0 14px 14px;background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);}
+.dc-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.dc-sub{font-size:11px;color:var(--gold);font-weight:700;}
+.dc-title{font-size:18px;font-weight:800;margin-top:4px;}
+.dc-desc{font-size:12px;color:#8f929b;margin-top:2px;}
+.dc-badge{text-align:right;}
+.dc-badge span{font-size:10px;color:var(--gold);font-weight:700;}
+.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:32px;color:var(--gold);line-height:1;}
+.dc-timing{margin-top:16px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.1);font-size:12px;color:#8f929b;}
+.dc-timing p{font-size:11px;color:#666;margin-top:4px;}
+
+.section-label{padding:0 14px 10px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px;}
+
+.steps-list{margin:0 14px;display:flex;flex-direction:column;gap:10px;}
+.step-item{background:#202024;border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:14px;border:1px solid var(--border);}
+.step-num{
+  width:28px;height:28px;border-radius:8px;background:rgba(250,229,159,0.1);
+  color:var(--gold);font-family:'Orbitron',sans-serif;font-weight:900;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;
+}
+.step-text{font-size:13px;line-height:1.5;color:#ddd;}
+.step-text strong{color:var(--gold);}
+
+.btn-invite{
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
+  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
+  font-size:15px;font-weight:900;
+}
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-title">Activity details</div>
+</header>
+
+<div class="banner-wrap">
+  <img src="./images/Banner_2026102722040583fi.png" class="top-banner" onerror="this.src='./images/banner3.png'">
+</div>
+
+<div class="brand-strip">
+  <h2>BDG GAME</h2>
+</div>
+
+<div class="detail-card">
+  <div class="dc-header">
+    <div>
+      <div class="dc-sub">👥 REFERRAL</div>
+      <div class="dc-title">Invite friends earn cash</div>
+      <div class="dc-desc">Reach milestones. Earn more.</div>
+    </div>
+    <div class="dc-badge">
+      <span>👥 TOTAL</span>
+      <h1>6</h1>
+      <span style="color:#8f929b;">TIERS</span>
+    </div>
+  </div>
+  <div class="dc-timing">
+    <div style="display:flex;justify-content:space-between;">
+      <span>⏱️ Activity window</span>
+      <strong style="color:#fff;">Within 30 days of binding</strong>
+    </div>
+    <p>Sports Betting · Fantasy Sports</p>
+  </div>
+</div>
+
+<div class="section-label">🎁 How it works</div>
+
+<div class="steps-list">
+  <div class="step-item">
+    <div class="step-num">1</div>
+    <div class="step-text">Invite eligible friends using your referral link or referral code.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">2</div>
+    <div class="step-text">Your invited friends participate in <strong>Sports Betting</strong> or <strong>Fantasy Sports</strong>.</div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">3</div>
+    <div class="step-text">Meet the invite and qualifying activity requirements for the current tier.</div>
+  </div>
+</div>
+
+<button class="btn-invite" onclick="copyReferralLink()">Invite Now</button>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let refCode = 'BDG777';
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if(snap.exists() && snap.data().referralCode) refCode = snap.data().referralCode;
+  }
+});
+
+window.copyReferralLink = () => {
+  const link = `${window.location.origin}/register.html?ref=${refCode}`;
+  navigator.clipboard.writeText(link).then(() => toast('Referral link copied to clipboard!'));
+};
+</script>
+</body>
+</html>

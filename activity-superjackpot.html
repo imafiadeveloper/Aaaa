@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#181818">
+<title>BDG GAME - Super Jackpot</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #FAE59F;
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+
+.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+
+.jackpot-banner{
+  margin:12px 14px;background:linear-gradient(135deg, #ff7150 0%, #ff4b2b 100%);
+  border-radius:18px;padding:24px 18px;position:relative;overflow:hidden;
+}
+.jb-title{font-size:24px;font-weight:900;color:#fff;}
+.jb-sub{font-size:12px;color:rgba(255,255,255,0.9);margin-top:6px;max-width:240px;line-height:1.4;}
+.jb-note{font-size:11px;color:rgba(255,255,255,0.7);margin-top:12px;max-width:240px;}
+
+.batch-btn{
+  width:calc(100% - 28px);height:44px;margin:0 14px 14px;border-radius:24px;
+  background:#2b2b32;color:#8f929b;font-size:13px;font-weight:700;display:flex;
+  align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);
+}
+
+.sub-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 16px;}
+.stab{height:46px;border-radius:12px;background:#202024;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700;color:#8f929b;}
+.stab.active{background:#2a2a30;color:var(--gold);border-color:rgba(250,229,159,0.3);}
+
+.empty-box{
+  margin:0 14px;background:#202024;border-radius:16px;padding:50px 20px;
+  text-align:center;border:1px solid var(--border);
+}
+.empty-icon{font-size:48px;opacity:0.3;margin-bottom:12px;}
+.empty-box p{font-size:13px;color:#8f929b;font-weight:600;}
+
+.btn-gobet{
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
+  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
+  font-size:15px;font-weight:900;
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-title">Super Jackpot</div>
+</header>
+
+<div class="jackpot-banner">
+  <div class="jb-title">Super Jackpot</div>
+  <div class="jb-sub">When you get the Super Jackpot in [Slots] Can get 1 additional bonus</div>
+  <div class="jb-note">The reward is valid for 30 day, and you will not be able to claim it after it expires!</div>
+</div>
+
+<button class="batch-btn">
+  <span>🎁</span> Receive in batches
+</button>
+
+<div class="sub-tabs">
+  <button class="stab active">📋 Rule</button>
+  <button class="stab">👑 Winning star</button>
+</div>
+
+<div class="empty-box">
+  <div class="empty-icon">📜</div>
+  <p>You don't have a big jackpot yet, let's bet</p>
+</div>
+
+<button class="btn-gobet" onclick="location.href='boxing-king.html'">Go bet</button>
+
+</body>
+</html>
