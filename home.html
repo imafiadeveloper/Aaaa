@@ -1,471 +1,563 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BDG LOTTERY7 — Home</title>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        /* ================= GLOBAL ================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Roboto', system-ui, sans-serif; }
-        body { background: #292929; color: #fff; -webkit-tap-highlight-color: transparent; padding-bottom: 70px; display: flex; flex-direction: column; min-height: 100vh; }
-        button { cursor: pointer; border: none; background: transparent; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1a1a">
+<title>BDG GAME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold-grad: linear-gradient(180deg, #F9E79F 0%, #E5B24E 50%, #C48E2F 100%);
+  --gold-solid: #FAE59F;
+  --bg-main: #202020;
+  --card-bg: #2b2b2b;
+  --border-subtle: rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+html,body{background:var(--bg-main);color:#fff;overflow-x:hidden;min-height:100vh;padding-bottom:80px;}
+a{text-decoration:none;color:inherit;display:block;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-        /* ================= NAVBAR ================= */
-        .navbar { position: sticky; top: 0; z-index: 100; background: #3F3F3F; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; height: 60px; }
-        .navbar-left { display: flex; align-items: center; gap: 10px; }
-        .navbar-logo { width: 35px; height: 25px; background: url('./images/indiaFlag.png') no-repeat center / contain; border-radius: 3px; }
-        .navbar-right { display: flex; align-items: center; gap: 12px; }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #fff; text-decoration: none; }
-        .nav-btn svg { width: 26px; height: 26px; }
-        .lang-box { display: flex; align-items: center; gap: 4px; font-size: 12px; background: #292929; padding: 4px 8px; border-radius: 20px; }
-        .lang-box img { width: 14px; height: 14px; border-radius: 50%; }
+/* Top Header */
+.top-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#282828;}
+.logo-area{display:flex;flex-direction:column;gap:3px;}
+.brand-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;text-shadow:0 1px 3px rgba(0,0,0,0.8);}
+.flag-greeting{display:flex;align-items:center;gap:6px;font-size:11px;color:#c0c2c8;}
+.flag-icon{width:18px;height:12px;background:#d92b2b;border-radius:2px;display:inline-block;position:relative;overflow:hidden;}
+.flag-icon::before{content:'';position:absolute;top:0;left:0;width:7px;height:7px;background:#00247d;}
 
-        /* ================= BANNER (SLIDER) ================= */
-        .banner-wrapper { width: 100%; padding: 10px; overflow: hidden; }
-        .slideshow-container { position: relative; border-radius: 10px; overflow: hidden; }
-        .mySlides { display: none; }
-        .mySlides img { width: 100%; display: block; border-radius: 10px; }
-        .fade { animation-name: fade; animation-duration: 1.5s; }
-        @keyframes fade { from {opacity: .4} to {opacity: 1} }
+.top-actions{display:flex;flex-direction:column;gap:6px;}
+.top-btn{
+  background:linear-gradient(180deg, #F7DC8A 0%, #D8AC4F 100%);
+  color:#312105;font-size:11px;font-weight:800;
+  padding:5px 12px;border-radius:18px;
+  display:flex;align-items:center;gap:5px;justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+.top-btn svg{width:13px;height:13px;stroke:#312105;fill:none;stroke-width:2.5;}
 
-        /* ================= NOTICE BAR ================= */
-        .notice-bar { margin: 0 10px 15px; background: #1f1f1f; border-radius: 30px; display: flex; align-items: center; padding: 8px 15px; gap: 10px; }
-        .notice-bar svg { width: 20px; height: 20px; flex: none; }
-        .notice-text { flex: 1; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .notice-btn { background: linear-gradient(90deg,#F6DC88 1.33%,#D9AC4F 102.67%); color: #292929; font-size: 11px; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 4px; font-weight: 600; }
-        .notice-btn svg { width: 14px; height: 14px; }
+/* Slider Banner */
+.slider-container{padding:10px 12px 6px;position:relative;overflow:hidden;}
+.slides-wrapper{position:relative;border-radius:14px;overflow:hidden;background:#2e2e2e;aspect-ratio:2.1/1;}
+.mySlide{display:none;width:100%;height:100%;position:relative;}
+.mySlide.active{display:block;}
+.mySlide img{width:100%;height:100%;object-fit:cover;display:block;}
+.banner-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  padding:16px;display:flex;flex-direction:column;justify-content:center;
+}
+.banner-badge{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#FAE59F;text-shadow:0 2px 8px rgba(0,0,0,0.8);}
+.banner-sub{font-size:13px;color:#fff;margin:4px 0 8px;font-weight:700;}
+.banner-pill{background:#d9ac4f;color:#221500;font-size:10px;font-weight:800;padding:3px 10px;border-radius:12px;width:fit-content;}
 
-        /* ================= GAMES LIST ================= */
-        .games-list { padding: 0 10px; margin-bottom: 20px; }
-        .games-title { display: flex; align-items: center; font-size: 16px; font-weight: 600; margin-bottom: 10px; gap: 6px; }
-        .games-title::before { content: ''; display: block; width: 4px; height: 16px; background: linear-gradient(180deg, #F6DC88 0%, #DAAD51 100%); border-radius: 2px; }
-        .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .game-item { background: #3F3F3F; border-radius: 10px; padding: 8px; text-align: center; text-decoration: none; color: #fff; display: block; position: relative; overflow: hidden; }
-        .game-item img { width: 100%; border-radius: 8px; display: block; margin-bottom: 5px; object-fit: cover; aspect-ratio: 1; }
-        .game-item span { font-size: 12px; font-weight: 500; display: block; }
-        .game-item .badge { position: absolute; top: 5px; right: 5px; background: #fd565c; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
+/* Notice Strip */
+.notice-strip{
+  margin:4px 12px 10px;background:#282828;border-radius:24px;
+  padding:6px 12px;display:flex;align-items:center;gap:8px;
+  border:1px solid var(--border-subtle);
+}
+.notice-strip svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;flex-shrink:0;}
+.marquee-text{flex:1;font-size:11px;color:#c2c5cd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.detail-btn{
+  background:linear-gradient(180deg,#F7DC8A 0%,#D8AC4F 100%);
+  color:#2f2105;font-size:10px;font-weight:800;padding:4px 10px;
+  border-radius:14px;flex-shrink:0;
+}
 
-        /* ================= WINNING INFO ================= */
-        .winning-section { padding: 0 10px; margin-bottom: 20px; }
-        .section-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-        .section-title::before { content: ''; display: block; width: 4px; height: 16px; background: linear-gradient(180deg, #F6DC88 0%, #DAAD51 100%); border-radius: 2px; }
-        .winners-box { background: #3F3F3F; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 10px; height: 180px; overflow: hidden; position: relative; }
-        .winner-item { display: flex; align-items: center; justify-content: space-between; background: #292929; padding: 8px 10px; border-radius: 8px; }
-        .winner-scroll-container { animation: scrollWinners 60s linear infinite; display: flex; flex-direction: column; gap: 10px; }
-        @keyframes scrollWinners { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
-        .winners-box:hover .winner-scroll-container { animation-play-state: paused; }
-        .winner-left { display: flex; align-items: center; gap: 10px; width: 40%; }
-        .winner-left img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #444; object-fit: cover; }
-        .winner-name { font-size: 11px; color: #a6a9ae; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .winner-type { display: flex; align-items: center; gap: 2px; }
-        .winner-type img.cp-icon { height: 18px; width: auto; object-fit: contain; }
-        .winner-type .balls { display: flex; margin-left: 2px; }
-        .winner-type .balls span { display: inline-block; width: 14px; height: 14px; border-radius: 50%; font-size: 9px; text-align: center; line-height: 14px; color: #fff; font-weight: bold; margin-left: -4px; border: 1px solid #292929; }
-        .ball-red { background: #fd565c; } .ball-green { background: #40ad72; } .ball-purple { background: #b659fe; } .ball-orange { background: #ffa82e; } .ball-blue { background: #6da7f4; }
-        .winner-amount { text-align: right; }
-        .winner-amount h4 { color: #fae59f; font-size: 13px; margin-bottom: 2px; font-weight: 600; }
-        .winner-amount span { font-size: 10px; color: #aeb0c6; }
+/* User Info Bar */
+.user-bar{
+  margin:0 12px 14px;background:linear-gradient(135deg, #F3D989 0%, #D8AB4E 100%);
+  border-radius:16px;padding:10px 14px;color:#2c1f06;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 6px 18px rgba(216,171,78,0.25);
+}
+.ub-left{display:flex;align-items:center;gap:8px;min-width:0;}
+.ub-avatar{width:26px;height:26px;border-radius:50%;background:#2c1f06;display:flex;align-items:center;justify-content:center;color:#FAE59F;}
+.ub-avatar svg{width:16px;height:16px;fill:none;stroke:#FAE59F;stroke-width:2;}
+.ub-name{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ub-right{display:flex;align-items:center;gap:8px;}
+.ub-refresh{width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.ub-refresh svg{width:18px;height:18px;stroke:#2c1f06;fill:none;stroke-width:2.2;}
+.ub-mail{width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.ub-mail svg{width:20px;height:20px;fill:none;stroke:#2c1f06;stroke-width:2;}
 
-        /* ================= RANKING ================= */
-        .ranking-section { padding: 0 10px; margin-bottom: 20px; }
-        .ranking-top { display: flex; justify-content: center; align-items: flex-end; height: 160px; margin-bottom: 10px; position: relative; }
-        .rank-item { display: flex; flex-direction: column; align-items: center; width: 33%; position: relative; z-index: 1; }
-        .rank-item:nth-child(1) { order: 2; top: -20px; z-index: 2; }
-        .rank-item:nth-child(2) { order: 1; top: -10px; }
-        .rank-item:nth-child(3) { order: 3; top: -10px; }
-        .rank-avatar { width: 55px; height: 55px; border-radius: 50%; position: relative; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; }
-        .rank-avatar img.avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .crown { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 25px; z-index: 3; }
-        .rank-place { position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 20px; z-index: 3;}
-        .rank-name { font-size: 11px; color: #fff; margin-bottom: 3px; }
-        .rank-amt { font-size: 11px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; padding: 2px 10px; border-radius: 10px; font-weight: bold; }
-        .rank-list-item { display: flex; align-items: center; background: #3A3A3A; padding: 10px; border-radius: 8px; margin-bottom: 8px; }
-        .rank-list-item .num { font-size: 16px; color: #fae59f; width: 25px; font-weight: bold; }
-        .rank-list-item img { width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; object-fit: cover;}
-        .rank-list-item .name { font-size: 12px; color: #a6a9ae; flex: 1; }
-        .rank-list-item .amt { font-size: 11px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; padding: 4px 10px; border-radius: 10px; font-weight: bold; }
+/* Game Category Deck */
+.category-deck{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px 10px;}
+.cat-card{
+  background:linear-gradient(145deg, #EAD083 0%, #C99738 100%);
+  border-radius:14px;padding:10px 6px;text-align:center;
+  color:#241602;cursor:pointer;position:relative;overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform .15s;
+}
+.cat-card:active{transform:scale(0.96);}
+.cat-card.active{box-shadow:0 0 0 2px #fff, 0 6px 16px rgba(216,171,78,0.4);}
+.cat-icon{font-size:26px;margin-bottom:2px;}
+.cat-name{font-size:12px;font-weight:900;text-transform:capitalize;}
 
-        /* ================= BOTTOM TAB BAR ================= */
-        .bottom-tabbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: #1A1A1A; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid #333; }
-        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6F7381; text-decoration: none; font-size: 10px; gap: 3px; width: 20%; position: relative; }
-        .tab-item svg { width: 24px; height: 24px; fill: #6F7381; }
-        .tab-item.active { color: #D9AC4F; }
-        .tab-item.active svg { fill: url(#gold-grad); }
-        .tab-item.center-tab { top: -15px; }
-        .tab-item.center-tab svg { width: 55px; height: 55px; }
-        .tab-item.center-tab span { margin-top: -5px; }
+/* Secondary Categories */
+.category-subdeck{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px 14px;}
+.subcat-card{
+  background:#2b2b2b;border:1px solid var(--border-subtle);
+  border-radius:12px;padding:8px 4px;text-align:center;
+  color:#e2e2e2;cursor:pointer;
+}
+.subcat-card.active{background:#383838;color:#FAE59F;border-color:#FAE59F;}
+.subcat-card span{font-size:11px;font-weight:800;display:block;}
 
-        /* ================= FLOATING BUTTONS ================= */
-        .customer-fab { position: fixed; bottom: 80px; right: 15px; width: 50px; height: 50px; border-radius: 50%; z-index: 99; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .customer-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .app-fab { position: fixed; bottom: 140px; right: 15px; width: 50px; height: 50px; border-radius: 50%; z-index: 99; background: #333; border: 2px solid #FAE59F; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .app-fab svg { width: 24px; height: 24px; stroke: #FAE59F; fill: none; stroke-width: 2; }
+/* Lottery Filter Tabs */
+.lottery-tabs-bar{
+  display:flex;gap:6px;overflow-x:auto;padding:0 12px 12px;
+}
+.lot-tab{
+  padding:6px 14px;border-radius:14px;background:#2a2a2a;
+  color:#8f9299;font-size:12px;font-weight:700;white-space:nowrap;
+  cursor:pointer;border:1px solid transparent;
+}
+.lot-tab.active{background:#383838;color:#FAE59F;border-color:rgba(250,229,159,0.3);}
 
-        /* ================= COMPACT & SMALL MODALS ================= */
-        .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.75); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 14px; }
-        .modal-overlay.show { display: flex; animation: fadeIn .2s ease; }
-        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-        @keyframes popUp { from{transform:scale(0.85);opacity:0;} to{transform:scale(1);opacity:1;} }
+/* Section Headers */
+.section-head{display:flex;align-items:center;gap:6px;padding:0 12px 10px;}
+.section-head::before{content:'';width:4px;height:14px;background:#FAE59F;border-radius:2px;}
+.section-head h3{font-size:15px;font-weight:800;color:#fff;}
 
-        .modal-box { width: 88%; max-width: 290px; background: #262626; border-radius: 14px; overflow: hidden; max-height: 80vh; overflow-y: auto; margin: auto; position: relative; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: popUp .25s ease; }
-        .modal-head { background: linear-gradient(180deg, #444 0%, #2f2f2f 100%); padding: 10px 14px; text-align: center; font-size: 13px; font-weight: 700; color: #fff; position: sticky; top: 0; z-index: 10; letter-spacing: 0.5px; }
-        .modal-body { padding: 12px 14px; position: relative; }
-        .popup-close { position: absolute; top: 6px; right: 8px; width: 24px; height: 24px; display:flex; align-items:center; justify-content:center; border-radius: 50%; font-size: 18px; color: #bbb; background: rgba(0,0,0,0.4); cursor: pointer; z-index: 20; }
-        .popup-close:hover { color: #fff; background: rgba(0,0,0,0.7); }
+/* Games Grid */
+.games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 12px 16px;}
+.game-card{
+  background:linear-gradient(160deg, #2a2a2e 0%, #1c1c1e 100%);
+  border:1px solid var(--border-subtle);border-radius:14px;
+  overflow:hidden;position:relative;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  transition:transform .15s;
+}
+.game-card:active{transform:scale(0.96);}
+.card-thumb{
+  aspect-ratio:1.05/1;width:100%;background:#18181a;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.card-thumb img{width:100%;height:100%;object-fit:cover;}
+.badge-tag{
+  position:absolute;top:5px;right:5px;
+  font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;
+  padding:2px 6px;border-radius:8px;color:#fff;
+  background:#ff334b;box-shadow:0 2px 6px rgba(255,51,75,0.4);
+}
+.badge-tag.gold{background:linear-gradient(135deg, #F3D989 0%, #D8AB4E 100%);color:#2a1b02;}
+.card-footer{
+  padding:7px 4px;text-align:center;
+  background:#26262a;border-top:1px solid rgba(255,255,255,0.04);
+}
+.card-title{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-        .activity-btn { width: 100%; height: 38px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); border-radius: 19px; color: #3a2a10; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-decoration: none; border: none; cursor: pointer; }
-        .activity-btn:active { transform: scale(0.97); }
+/* Ranking Podium */
+.ranking-wrap{margin:0 12px 16px;}
+.podium-box{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:16px 0 12px;}
+.podium-item{
+  flex:1;background:#282828;border-radius:12px;
+  padding:12px 6px 10px;text-align:center;position:relative;
+  border:1px solid var(--border-subtle);
+}
+.podium-item.p1{background:linear-gradient(180deg, #3d3218 0%, #252013 100%);border-color:#FAE59F;transform:translateY(-10px);}
+.podium-avatar{width:46px;height:46px;border-radius:50%;margin:0 auto 6px;position:relative;background:#383838;}
+.podium-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+.crown-icon{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:16px;}
+.pod-name{font-size:11px;font-weight:700;color:#e8e8e8;}
+.pod-amt{
+  font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;
+  color:#FAE59F;margin-top:4px;background:rgba(0,0,0,0.3);
+  padding:2px 4px;border-radius:6px;
+}
 
-        /* First Deposit Mini Card UI */
-        .deposit-card-wrap { text-align: center; }
-        .deposit-badge-icon { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, #f5c442, #ff8f00); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(245,196,66,0.4); }
-        .deposit-badge-icon svg { width: 30px; height: 30px; fill: #292929; }
-        .dep-title { font-size: 15px; font-weight: 800; color: #FAE59F; margin-bottom: 4px; }
-        .dep-desc { font-size: 11px; color: #a6a9ae; line-height: 1.4; margin-bottom: 12px; }
-        .dep-reward-box { background: rgba(255,255,255,0.05); border: 1px dashed rgba(250,229,159,0.4); border-radius: 10px; padding: 8px; margin-bottom: 14px; }
-        .dep-reward-box span { font-size: 10px; color: #bbb; display:block; }
-        .dep-reward-box strong { font-size: 16px; color: #40ad72; font-weight: 900; }
+.rank-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#282828;border-radius:10px;padding:9px 12px;margin-bottom:6px;
+  border:1px solid var(--border-subtle);font-size:12px;
+}
+.rr-left{display:flex;align-items:center;gap:8px;}
+.rr-rank{font-family:'Orbitron',sans-serif;font-weight:900;color:#858892;width:18px;}
+.rr-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;background:#333;}
+.rr-amt{font-family:'Orbitron',sans-serif;font-weight:900;color:#FAE59F;}
 
-        .popup-img-full { width: 100%; display: block; border-radius: 8px; }
-        .welcome-popup-text { font-size: 11px; line-height: 1.5; color: #ccc; text-align: left; }
-        .welcome-popup-text .highlight { color: #FAE59F; font-weight: bold; }
-        .details-popup-text { font-size: 11px; line-height: 1.5; color: #ddd; text-align: left; }
+/* Floating Add To Desktop Button */
+.float-desktop-btn{
+  position:fixed;bottom:85px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(180deg, #F3D989 0%, #D8AB4E 100%);
+  color:#281c03;font-size:12px;font-weight:900;
+  padding:8px 24px;border-radius:24px;z-index:99;
+  box-shadow:0 4px 16px rgba(0,0,0,0.5);display:flex;align-items:center;gap:6px;
+}
 
-        /* Telegram Modal */
-        .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 4px 0; }
-        .cs-logo { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #f5c542, #ff9d2e); display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
-        .cs-logo svg { width: 28px; height: 28px; stroke: #1a1a1a; fill: none; stroke-width: 2; }
-        .cs-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 2px; }
-        .cs-sub { font-size: 10px; color: #a6a9ae; text-align: center; margin-bottom: 10px; }
-        .cs-warn { display: flex; gap: 6px; align-items: flex-start; background: rgba(217,172,79,.12); border: 1px solid rgba(217,172,79,.4); border-radius: 8px; padding: 6px 8px; font-size: 10px; color: #fae59f; line-height: 1.4; margin-bottom: 10px; }
-        .cs-warn svg { width: 14px; height: 14px; flex: none; stroke: #d9ac4f; fill: none; stroke-width: 2; }
-        .modal-input { width: 100%; height: 38px; border-radius: 8px; background: #383838; color: #fff; padding: 0 10px; font-size: 13px; border: none; margin-bottom: 8px; outline: none; }
-        .modal-textarea { width: 100%; min-height: 70px; border-radius: 8px; background: #383838; color: #fff; padding: 8px 10px; font-size: 13px; border: none; margin-bottom: 10px; resize: vertical; line-height: 1.4; outline: none; }
-        .cs-chat-btn { width: 100%; height: 40px; border-radius: 20px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .cs-chat-btn svg { width: 16px; height: 16px; stroke: #8f5206; fill: none; stroke-width: 2; }
-        .modal-close-btn { display: block; width: 100%; text-align: center; padding: 8px; font-size: 12px; color: #a6a9ae; background: transparent; }
-    </style>
+/* Bottom Tabbar */
+.bottom-tabbar{
+  position:fixed;bottom:0;left:0;right:0;height:65px;
+  background:#161616;border-top:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;justify-content:space-around;
+  z-index:200;padding-bottom:env(safe-area-inset-bottom);
+}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:#787b86;font-size:10px;font-weight:700;}
+.tab-item svg{width:22px;height:22px;fill:none;stroke:#787b86;stroke-width:2;}
+.tab-item.active{color:#FAE59F;}
+.tab-item.active svg{stroke:#FAE59F;}
+.center-spin-wrap{position:relative;top:-18px;display:flex;flex-direction:column;align-items:center;}
+.center-spin-btn{
+  width:58px;height:58px;border-radius:50%;
+  background:radial-gradient(circle, #ffe57f 0%, #e0ab3e 60%, #a46d14 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 18px rgba(224,171,62,0.5), 0 0 0 4px #161616;
+  font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:#2c1b00;
+}
+.center-spin-lbl{font-size:10px;font-weight:900;color:#FAE59F;margin-top:2px;}
+
+/* Toast */
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold-solid);
+  color:#fff;font-size:12px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:9999;
+}
+.toast.show{opacity:1;}
+</style>
 </head>
 <body>
 
-<svg style="position: absolute; width: 0; height: 0;">
-    <defs>
-        <linearGradient id="gold-grad" x1="0" y1="1" x2="0" y2="0">
-            <stop stop-color="#C4933F"></stop>
-            <stop offset="1" stop-color="#FAE59F"></stop>
-        </linearGradient>
-    </defs>
-</svg>
-
-<!-- NAVBAR -->
-<header class="navbar">
-    <div class="navbar-left">
-        <div class="navbar-logo"></div>
-        <span style="font-weight:bold; font-size:14px; color:#fff;">BDG LOTTERY7</span>
+<!-- Header -->
+<header class="top-header">
+  <div class="logo-area">
+    <div class="brand-title">BDG GAME</div>
+    <div class="flag-greeting">
+      <span class="flag-icon"></span>
+      <span>Welcome to BDG Game</span>
     </div>
-    <div class="navbar-right">
-        <div class="lang-box">
-            <img src="./images/en-4b649537.png" alt="EN">
-            <span>EN</span>
-        </div>
-        <button class="nav-btn" onclick="showToast('App coming soon!')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4"/></svg>
-            <span>APP</span>
-        </button>
-        <button class="nav-btn" onclick="openService()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-            <span>Service</span>
-        </button>
-    </div>
+  </div>
+  <div class="top-actions">
+    <button class="top-btn" onclick="triggerPWAInstall()">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      <span>Download APP</span>
+    </button>
+    <button class="top-btn" onclick="location.href='home.html'">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span>Customer Service</span>
+    </button>
+  </div>
 </header>
 
-<!-- BANNER SLIDER -->
-<div class="banner-wrapper">
-    <div class="slideshow-container">
-        <div class="mySlides fade"><img src="./images/Banner_20240110082959xdnc.png"></div>
-        <div class="mySlides fade"><img src="./images/Banner_20231125140847kw1d.png"></div>
-        <div class="mySlides fade"><img src="./images/Banner_20231104194139qiih.png"></div>
-        <div class="mySlides fade"><img src="./images/Banner_202311251408377776.png"></div>
-        <div class="mySlides fade"><img src="./images/Banner_20231128182652ptr8.png"></div>
-        <div class="mySlides fade"><img src="./images/Banner_20240110083058enng.png"></div>
-        <div class="mySlides fade"><img src="./images/Banner_20240110083018keqf.png"></div>
+<!-- Banner Slider -->
+<div class="slider-container">
+  <div class="slides-wrapper">
+    <div class="mySlide active">
+      <img src="./images/Banner_20240110082959xdnc.png" onerror="this.src='./images/Banner_20231125140847kw1d.png'">
+      <div class="banner-overlay">
+        <div class="banner-badge">Super Jackpot</div>
+        <div class="banner-sub">Get Big Bonus & Rewards</div>
+        <div class="banner-pill">VIP EXCLUSIVE</div>
+      </div>
     </div>
-</div>
-
-<!-- NOTICE BAR -->
-<div class="notice-bar">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
-    <div class="notice-text">Welcome To BDG LOTTERY7! 🎉</div>
-    <button class="notice-btn" onclick="openModal('modal-notice-details')">
-        Detail 
-        <svg viewBox="0 0 24 24" fill="none" stroke="#292929" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-</div>
-
-<!-- ALL GAMES LIST -->
-<div class="games-list" id="gameList">
-    <div class="games-title">Lottery & Games</div>
-    <div class="games-grid">
-        <a href="wingo30.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 30s">
-            <span>Win Go 30s</span>
-            <div class="badge">NEW</div>
-        </a>
-        <a href="wingo1.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go">
-            <span>Win Go 1m</span>
-        </a>
-        <a href="wingo3.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 3m">
-            <span>Win Go 3m</span>
-        </a>
-        <a href="wingo5.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 5m">
-            <span>Win Go 5m</span>
-        </a>
-        <a href="wingo10.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 10m">
-            <span>Win Go 10m</span>
-        </a>
-        <a href="5d.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062118e9kt.png" alt="5D">
-            <span>5D</span>
-        </a>
-        <a href="k3.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062111bt8e.png" alt="K3">
-            <span>K3</span>
-        </a>
-        <a href="aviator.html" class="game-item">
-            <img src="./images/22001.png" alt="Aviator">
-            <span>Aviator</span>
-        </a>
-        <a href="mines.html" class="game-item">
-            <img src="./images/229.png" alt="Mines">
-            <span>Mines</span>
-        </a>
-        <a href="trx.html" class="game-item">
-            <img src="./images/lotterycategory_20240110062124qut6.png" alt="TRX">
-            <span>TRX Win</span>
-        </a>
-        <a href="cricket.html" class="game-item">
-            <img src="./images/810.png" alt="Cricket">
-            <span>Cricket</span>
-        </a>
+    <div class="mySlide">
+      <img src="./images/Banner_20231125140847kw1d.png">
+      <div class="banner-overlay">
+        <div class="banner-badge">Win Go 1Min</div>
+        <div class="banner-sub">Fastest Payout Lottery</div>
+        <div class="banner-pill">PLAY NOW</div>
+      </div>
     </div>
+  </div>
 </div>
 
-<!-- WINNING INFO -->
-<div class="winning-section">
-    <div class="section-title">Winning information</div>
-    <div class="winners-box">
-        <div class="winner-scroll-container" id="winnersContainer"></div>
+<!-- Notice Strip -->
+<div class="notice-strip">
+  <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+  <div class="marquee-text">Welcome to BDG Game! Please verify official accounts & official support 24/7.</div>
+  <button class="detail-btn" onclick="toast('Please check details in Notification tab')">Detail</button>
+</div>
+
+<!-- User Account Strip -->
+<div class="user-bar">
+  <div class="ub-left">
+    <div class="ub-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <div class="ub-name" id="userName">Member...</div>
+    <div style="font-weight:900;font-size:13px;">₹<span id="userBalance">0.00</span></div>
+  </div>
+  <div class="ub-right">
+    <div class="ub-refresh" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div>
+    <div class="ub-mail" onclick="location.href='notification.html'"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+  </div>
+</div>
+
+<!-- Main Game Categories Deck -->
+<div class="category-deck">
+  <div class="cat-card active" onclick="switchMainCat('lottery', this)">
+    <div class="cat-icon">🎰</div>
+    <div class="cat-name">Lottery</div>
+  </div>
+  <div class="cat-card" onclick="switchMainCat('original', this)">
+    <div class="cat-icon">🚀</div>
+    <div class="cat-name">Original</div>
+  </div>
+  <div class="cat-card" onclick="switchMainCat('slots', this)">
+    <div class="cat-icon">💎</div>
+    <div class="cat-name">Slots</div>
+  </div>
+</div>
+
+<div class="category-subdeck">
+  <div class="subcat-card" onclick="switchMainCat('sports', this)"><span>⚽ Sports</span></div>
+  <div class="subcat-card" onclick="switchMainCat('casino', this)"><span>🎡 Casino</span></div>
+  <div class="subcat-card" onclick="switchMainCat('rummy', this)"><span>🃏 Rummy</span></div>
+</div>
+
+<!-- Section: Lottery Filtered Games -->
+<div id="lotterySection">
+  <div class="section-head">
+    <h3>Lottery</h3>
+  </div>
+
+  <div class="lottery-tabs-bar">
+    <div class="lot-tab active" onclick="filterLottery('all', this)">All</div>
+    <div class="lot-tab" onclick="filterLottery('wingo', this)">Win Go</div>
+    <div class="lot-tab" onclick="filterLottery('trx', this)">Trx Win</div>
+    <div class="lot-tab" onclick="filterLottery('5d', this)">5D</div>
+    <div class="lot-tab" onclick="filterLottery('k3', this)">K3</div>
+  </div>
+
+  <div class="games-grid" id="lotteryGrid">
+    <!-- Win Go 30s -->
+    <a href="wingo30.html" class="game-card" data-cat="wingo">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 30s">
+        <span class="badge-tag">30s</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Win Go 30s</div></div>
+    </a>
+
+    <!-- Win Go 1Min -->
+    <a href="wingo1.html" class="game-card" data-cat="wingo">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 1Min">
+        <span class="badge-tag gold">1Min</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Win Go 1Min</div></div>
+    </a>
+
+    <!-- Win Go 3Min -->
+    <a href="wingo3.html" class="game-card" data-cat="wingo">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 3Min">
+        <span class="badge-tag">3Min</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Win Go 3Min</div></div>
+    </a>
+
+    <!-- Win Go 5Min -->
+    <a href="wingo5.html" class="game-card" data-cat="wingo">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 5Min">
+        <span class="badge-tag">5Min</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Win Go 5Min</div></div>
+    </a>
+
+    <!-- Win Go 10Min -->
+    <a href="wingo10.html" class="game-card" data-cat="wingo">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 10Min">
+        <span class="badge-tag">10Min</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Win Go 10Min</div></div>
+    </a>
+
+    <!-- 5D -->
+    <a href="5d.html" class="game-card" data-cat="5d">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062118e9kt.png" alt="5D 1Min">
+        <span class="badge-tag gold">5D</span>
+      </div>
+      <div class="card-footer"><div class="card-title">5D 1Min</div></div>
+    </a>
+
+    <!-- K3 -->
+    <a href="k3.html" class="game-card" data-cat="k3">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062111bt8e.png" alt="K3">
+        <span class="badge-tag">K3</span>
+      </div>
+      <div class="card-footer"><div class="card-title">K3 Dice</div></div>
+    </a>
+
+    <!-- TRX Win -->
+    <a href="trx.html" class="game-card" data-cat="trx">
+      <div class="card-thumb">
+        <img src="./images/lotterycategory_20240110062124qut6.png" alt="TRX Win">
+        <span class="badge-tag gold">TRX</span>
+      </div>
+      <div class="card-footer"><div class="card-title">TRX Win</div></div>
+    </a>
+
+    <!-- Cricket Prediction -->
+    <a href="cricket.html" class="game-card" data-cat="cricket">
+      <div class="card-thumb">
+        <img src="./images/810.png" alt="Cricket">
+        <span class="badge-tag">CRICKET</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Cricket Win</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- Section: Mini / Original Games -->
+<div id="originalSection">
+  <div class="section-head">
+    <h3>Mini Games & Originals</h3>
+  </div>
+  <div class="games-grid">
+    <a href="aviator.html" class="game-card">
+      <div class="card-thumb">
+        <img src="./images/22001.png" alt="Aviator">
+        <span class="badge-tag">HOT</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Aviator</div></div>
+    </a>
+
+    <a href="mines.html" class="game-card">
+      <div class="card-thumb">
+        <img src="./images/229.png" alt="Mines">
+        <span class="badge-tag gold">VIP</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Mines VIP</div></div>
+    </a>
+
+    <a href="dragontiger.html" class="game-card">
+      <div class="card-thumb">
+        <div style="font-size:42px;">🐉🐅</div>
+        <span class="badge-tag">POPULAR</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Dragon Tiger</div></div>
+    </a>
+
+    <a href="#" class="game-card" onclick="toast('Game updating soon...')">
+      <div class="card-thumb">
+        <div style="font-size:40px;">🐔</div>
+        <span class="badge-tag">NEW</span>
+      </div>
+      <div class="card-footer"><div class="card-title">Chicken Road</div></div>
+    </a>
+
+    <a href="#" class="game-card" onclick="toast('Game updating soon...')">
+      <div class="card-thumb">
+        <div style="font-size:40px;">🌪️</div>
+      </div>
+      <div class="card-footer"><div class="card-title">Vortex</div></div>
+    </a>
+
+    <a href="#" class="game-card" onclick="toast('Game updating soon...')">
+      <div class="card-thumb">
+        <div style="font-size:40px;">🎯</div>
+      </div>
+      <div class="card-footer"><div class="card-title">Javelin 80</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- Ranking Podium -->
+<div class="ranking-wrap">
+  <div class="section-head">
+    <h3>Today's Earnings Chart</h3>
+  </div>
+  <div class="podium-box">
+    <!-- Rank 2 -->
+    <div class="podium-item">
+      <div class="podium-avatar">
+        <img src="./images/3-abfcc056.png" onerror="this.src='./images/6-7c7f5203.png'">
+        <div class="crown-icon">🥈</div>
+      </div>
+      <div class="pod-name">Mem***E6F</div>
+      <div class="pod-amt">₹27,240,080</div>
     </div>
-</div>
-
-<!-- RANKING -->
-<div class="ranking-section">
-    <div class="section-title">Today's earnings chart</div>
-    <div class="ranking-top">
-        <div class="rank-item">
-            <div class="rank-avatar">
-                <img src="./images/3-abfcc056.png" class="avatar">
-                <img src="./images/crown2-8b009e96.png" class="crown">
-                <img src="./images/place2-2e2fac0d.png" class="rank-place">
-            </div>
-            <div class="rank-name">Mem***RAP</div>
-            <div class="rank-amt">₹125,744,358</div>
-        </div>
-        <div class="rank-item">
-            <div class="rank-avatar" style="width:65px; height:65px;">
-                <img src="./images/6-7c7f5203.png" class="avatar">
-                <img src="./images/crown1-7e4e2fd9.png" class="crown" style="width:30px; top:-18px;">
-                <img src="./images/place1-c2ee5099.png" class="rank-place" style="width:25px; bottom:-8px;">
-            </div>
-            <div class="rank-name">Mem***SJE</div>
-            <div class="rank-amt">₹153,076,000</div>
-        </div>
-        <div class="rank-item">
-            <div class="rank-avatar">
-                <img src="./images/17-bedde42f.png" class="avatar">
-                <img src="./images/crown3-2ca02146.png" class="crown">
-                <img src="./images/place3-d9b0be38.png" class="rank-place">
-            </div>
-            <div class="rank-name">Mem***FEW</div>
-            <div class="rank-amt">₹62,667,080</div>
-        </div>
+    <!-- Rank 1 -->
+    <div class="podium-item p1">
+      <div class="podium-avatar" style="width:52px;height:52px;">
+        <img src="./images/6-7c7f5203.png">
+        <div class="crown-icon" style="font-size:20px;top:-15px;">👑</div>
+      </div>
+      <div class="pod-name">Mem***Q0B</div>
+      <div class="pod-amt">₹68,800,214</div>
     </div>
-
-    <div class="rank-list-item">
-        <div class="num">4</div>
-        <img src="./images/19-2ac9fd83.png">
-        <div class="name">Mem***JHT</div>
-        <div class="amt">₹30,825,449</div>
+    <!-- Rank 3 -->
+    <div class="podium-item">
+      <div class="podium-avatar">
+        <img src="./images/17-bedde42f.png" onerror="this.src='./images/6-7c7f5203.png'">
+        <div class="crown-icon">🥉</div>
+      </div>
+      <div class="pod-name">Mem***0AF</div>
+      <div class="pod-amt">₹3,501,350</div>
     </div>
-    <div class="rank-list-item">
-        <div class="num">5</div>
-        <img src="./images/7-00479cfa.png">
-        <div class="name">Mem***AGB</div>
-        <div class="amt">₹12,679,114</div>
+  </div>
+
+  <div class="rank-row">
+    <div class="rr-left">
+      <span class="rr-rank">4</span>
+      <img src="./images/19-2ac9fd83.png" class="rr-avatar" onerror="this.src='./images/7-00479cfa.png'">
+      <span>Mem***7VY</span>
     </div>
+    <span class="rr-amt">₹2,180,339.28</span>
+  </div>
+  <div class="rank-row">
+    <div class="rr-left">
+      <span class="rr-rank">5</span>
+      <img src="./images/7-00479cfa.png" class="rr-avatar">
+      <span>ma***mi</span>
+    </div>
+    <span class="rr-amt">₹2,133,885.80</span>
+  </div>
+  <div class="rank-row">
+    <div class="rr-left">
+      <span class="rr-rank">6</span>
+      <img src="./images/1-c7e4efc8.png" class="rr-avatar" onerror="this.src='./images/7-00479cfa.png'">
+      <span>Mem***0WA</span>
+    </div>
+    <span class="rr-amt">₹2,024,544.20</span>
+  </div>
 </div>
 
-<!-- FLOATING APP & CUSTOMER SERVICE -->
-<div class="app-fab" id="installAppBtn" onclick="triggerPWAInstall()">
-    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5l5-5 5 5m-5-5v12"/></svg>
-</div>
-<div class="customer-fab" onclick="openService()">
-    <img src="./images/icon_sevice-1ca64bcf.png" alt="Service">
+<!-- Floating Desktop Install Button -->
+<div class="float-desktop-btn" onclick="triggerPWAInstall()">
+  <span style="font-size:14px;">BDG</span>
+  <span>Add to Desktop</span>
 </div>
 
-<!-- BOTTOM TAB BAR -->
+<!-- Bottom Navigation Bar with Centered Wheel -->
 <div class="bottom-tabbar">
-    <a href="home.html" class="tab-item active">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Home</span>
-    </a>
-    <a href="activity.html" class="tab-item">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <span>Activity</span>
-    </a>
-    <a href="promotion.html" class="tab-item center-tab">
-        <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M112.494 16C115.5 16 118.181 17.5313 119.725 20.1104L133.863 44.1284C135.569 47.1105 135.325 57.1851 133.213 59.8448L79.8313 119.325C75.525 124.645 67.6438 125.531 62.2 121.26C61.4688 120.696 60.8188 120.051 60.25 119.325L6.78751 59.8448C4.59376 57.1851 4.35001 47.0299 6.13751 44.1284L20.275 20.1104C21.8188 17.5313 24.5813 16 27.5063 16H112.494Z" fill="#3B3B3B"></path>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.637 31.3135C105.994 31.3135 108.106 32.4418 109.244 34.3762L120.294 52.2687C121.675 54.4448 121.431 57.2657 119.725 59.2L77.9625 106.833C74.55 110.782 68.4562 111.427 64.2312 108.284C63.6625 107.881 63.175 107.397 62.6875 106.833L21.0875 59.2C19.3813 57.1851 19.2188 54.4448 20.5188 52.2687L31.5688 34.3762C32.7063 32.5224 34.9 31.3135 37.175 31.3135H103.637ZM82.7562 68.6299L72.6 83.1374C72.1125 83.8627 70.2437 84.0239 69.5125 83.4597C69.35 83.3791 69.2687 83.218 69.1062 83.1374L58.1375 68.6299C56.5938 66.5344 53.5062 66.0508 51.3125 67.5821C49.1187 69.0329 48.6312 71.9344 50.175 74.0299L61.1437 88.5374C65.3687 93.6956 68.05 95.7911 70.8937 95.7911C74.0625 95.7911 76.7437 92.2448 79.75 88.5374L90.7187 74.0299C92.2625 71.9344 91.775 69.0329 89.5812 67.5821C87.3875 66.0508 84.3 66.5344 82.7562 68.6299Z" fill="url(#gold-grad)"></path>
-        </svg>
-        <span>Promotion</span>
-    </a>
-    <a href="wallet.html" class="tab-item">
-        <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        <span>Wallet</span>
-    </a>
-    <a href="account.html" class="tab-item">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>Account</span>
-    </a>
-</div>
-
-<!-- TOAST -->
-<div id="toast" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.85); color:#fff; padding:10px 18px; border-radius:8px; display:none; z-index:9999; font-size:13px; text-align:center;"></div>
-
-<!-- POPUP 1: COMPACT LOGIN WELCOME -->
-<div id="modal-login-welcome" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-head" style="background: linear-gradient(180deg, #F6DC88 0%, #D9AC4F 100%); color: #3a2a10;">Official Notice</div>
-    <div class="modal-body" style="text-align:center;">
-      <div class="welcome-popup-text" style="margin-bottom: 12px;">
-        <p style="background:#FAE59F; color:#000; display:inline-block; padding:1px 6px; font-weight:bold; border-radius:3px; margin-bottom:8px;">BDG LOTTERY7</p><br>
-        📌 Verify platform authenticity via official domain.<br><br>
-        ✅ Official Customer Support 24/7<br>
-        ⭐ Fastest Automatic Withdrawals<br>
-        ⭐ VIP Agent Benefits & Commission<br>
-      </div>
-      <button class="activity-btn" onclick="closeModal('modal-login-welcome')">Confirm</button>
-    </div>
+  <a href="home.html" class="tab-item active">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="activity.html" class="tab-item">
+    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <span>Activity</span>
+  </a>
+  <div class="center-spin-wrap" onclick="location.href='activity.html'">
+    <div class="center-spin-btn">GO</div>
+    <span class="center-spin-lbl">Get ₹500</span>
   </div>
+  <a href="promotion.html" class="tab-item">
+    <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    <span>Promotion</span>
+  </a>
+  <a href="account.html" class="tab-item">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Account</span>
+  </a>
 </div>
 
-<!-- POPUP 2: COMPACT BONUS MODAL -->
-<div id="modal-diwali" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-head">Special Bonus</div>
-    <div class="modal-body" style="text-align:center;">
-      <div class="popup-close" onclick="closeModal('modal-diwali')">×</div>
-      <img src="./images/funjj.jpg" class="popup-img-full" alt="Bonus" onerror="this.style.display='none'">
-      <div style="margin-top:10px;">
-          <button class="activity-btn" onclick="location.href='deposit.html'">Claim Bonus</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- POPUP 3: NATIVE FIRST DEPOSIT MODAL (BUG FIXED: NO IFRAME, DIRECT REDIRECT) -->
-<div id="modal-recharge-bonus" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-head">First Deposit Bonus</div>
-    <div class="modal-body deposit-card-wrap">
-      <div class="popup-close" onclick="closeModal('modal-recharge-bonus')">×</div>
-      <div class="deposit-badge-icon" onclick="location.href='deposit.html'" style="cursor:pointer;">
-        <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      </div>
-      <div class="dep-title" onclick="location.href='deposit.html'" style="cursor:pointer;">Extra Up To +100%</div>
-      <div class="dep-desc" onclick="location.href='deposit.html'" style="cursor:pointer;">Recharge first time to receive instant cash rewards directly into your account!</div>
-      
-      <div class="dep-reward-box" onclick="location.href='deposit.html'" style="cursor:pointer;">
-        <span>Min Deposit ₹100</span>
-        <strong>Instant Extra Bonus</strong>
-      </div>
-
-      <button class="activity-btn" onclick="location.href='deposit.html'">Recharge Now</button>
-    </div>
-  </div>
-</div>
-
-<!-- POPUP 4: NEW USER REGISTRATION BONUS -->
-<div id="modal-register-bonus" class="modal-overlay">
-  <div class="modal-box" style="background:#fff; color:#333; text-align:center; padding: 8px;">
-    <div class="modal-body" style="padding: 16px 12px;">
-      <div style="width: 50px; height: 50px; border-radius: 50%; background: #fd565c; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" style="width: 25px; height: 25px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <p style="font-size: 12px; color: #777; margin-bottom: 4px;">Welcome, friend</p>
-      <h2 style="font-size: 17px; font-weight: 800; color: #222; margin-bottom: 6px;">Registration Bonus</h2>
-      <div style="font-size: 26px; font-weight: 900; color: #e6a100; margin-bottom: 15px;">₹28.00</div>
-      <button style="width: 100%; height: 38px; border-radius: 19px; background: #fd565c; color: #fff; font-size: 14px; font-weight: 700;" onclick="closeModal('modal-register-bonus')">Receive</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: NOTICE DETAILS -->
-<div id="modal-notice-details" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-head">Platform Rules</div>
-    <div class="modal-body">
-      <div class="details-popup-text">
-        <p style="margin-bottom:8px;">Welcome to <strong>BDG LOTTERY7</strong>! 100% verified gaming platform.</p>
-        <ul style="padding-left:14px; margin-bottom:10px;">
-            <li>Minimum deposit ₹100.</li>
-            <li>Minimum withdrawal ₹200.</li>
-            <li>Bonus requires 1x turnover only.</li>
-            <li>Customer support active 24/7.</li>
-        </ul>
-      </div>
-      <button class="activity-btn" onclick="closeModal('modal-notice-details')">Got it</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: CUSTOMER SERVICE -->
-<div id="modal-service" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-head">Customer Service</div>
-    <div class="modal-body">
-      <div class="cs-logo-wrap">
-        <div class="cs-logo">
-          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-        </div>
-        <div class="cs-title">Support Team</div>
-        <div class="cs-sub">We will respond on Telegram within a few minutes.</div>
-      </div>
-      <div class="cs-warn">
-        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>Enter phone number & details to connect.</span>
-      </div>
-      <input id="csPhone" class="modal-input" type="tel" inputmode="numeric" maxlength="12" placeholder="Your phone number" />
-      <textarea id="csDesc" class="modal-textarea" maxlength="600" placeholder="Problem description..."></textarea>
-      <button id="csSendBtn" class="cs-chat-btn" onclick="sendSupport()">
-        <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
-        Send to Support
-      </button>
-      <button class="modal-close-btn" onclick="closeModal('modal-service')">Close</button>
-    </div>
-  </div>
-</div>
+<div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -475,182 +567,86 @@ const firebaseConfig = {
   messagingSenderId: "568771943906",
   appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-window.showToast = (msg) => {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 2000);
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg; toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
 };
 
-window.openService = () => { document.getElementById('modal-service').classList.add('show'); };
-window.openModal = (id) => { document.getElementById(id).classList.add('show'); };
-window.closeModal = (id) => { document.getElementById(id).classList.remove('show'); };
-
-// PWA Install Logic
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-});
-
-window.triggerPWAInstall = async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            showToast('App installed!');
-        }
-        deferredPrompt = null;
-    } else {
-        showToast('App is already installed or not supported.');
-    }
-};
-
-// 1 DAY 1 POPUP LOGIC
+// Fast User Auth & Balance Fetch
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+    try {
       const snap = await getDoc(doc(db, "users", user.uid));
-      const userData = snap.data() || {};
-
-      try {
-          const s = JSON.parse(localStorage.getItem('bdg7_session') || '{}');
-          if(s.phone) document.getElementById('csPhone').value = s.phone;
-      } catch(e){}
-      
-      const today = new Date().toDateString();
-      const lastDailyPopupDate = localStorage.getItem('bdg_home_popup_day');
-
-      // Check for New Registration Bonus
-      const isNewUser = localStorage.getItem('bdg_isNewUser');
-      if (isNewUser === 'true') {
-          setTimeout(() => document.getElementById('modal-register-bonus').classList.add('show'), 600);
-          localStorage.removeItem('bdg_isNewUser');
-          localStorage.setItem('bdg_home_popup_day', today);
-      } else {
-          // Din me sirf 1 baar show hoga
-          if (lastDailyPopupDate !== today) {
-              localStorage.setItem('bdg_home_popup_day', today);
-              
-              if (userData.firstDepositDone !== true) {
-                  // Pehle first payment ka popup aayega
-                  setTimeout(() => document.getElementById('modal-recharge-bonus').classList.add('show'), 800);
-              } else {
-                  // Deposit ho chuka ho toh regular login notice
-                  setTimeout(() => document.getElementById('modal-login-welcome').classList.add('show'), 800);
-              }
-          }
+      if (snap.exists()) {
+        const d = snap.data();
+        const shortName = (d.name || d.username || 'Member' + user.uid.slice(0, 5));
+        document.getElementById('userName').textContent = shortName;
+        const bal = Number(d.balance ?? d.wallet ?? 0);
+        document.getElementById('userBalance').textContent = bal.toFixed(2);
       }
+    } catch(e){}
   }
 });
 
-// Telegram Support
-const TG_CONFIG = { BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw", CHAT_ID: "8167337368" };
-window.sendSupport = async () => {
-  const phone = document.getElementById('csPhone').value.trim();
-  const desc  = document.getElementById('csDesc').value.trim();
-  if (!phone || !desc || desc.length < 5) { showToast('Please fill details'); return; }
-
-  const btn = document.getElementById('csSendBtn');
-  btn.disabled = true;
-  btn.innerHTML = 'Sending...';
-
-  const user = auth.currentUser;
-  if (user) {
-    try {
-      const supportRef = doc(db, "support", `t_${Date.now()}_${user.uid.slice(0,6)}`);
-      await setDoc(supportRef, { uid: user.uid, phone, description: desc, status: 'new', createdAt: serverTimestamp() });
-    } catch (e) { console.warn(e); }
+// Category Switcher
+window.switchMainCat = (cat, el) => {
+  document.querySelectorAll('.cat-card, .subcat-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const lot = document.getElementById('lotterySection');
+  const orig = document.getElementById('originalSection');
+  if (cat === 'lottery') {
+    lot.style.display = 'block'; orig.style.display = 'block';
+  } else if (cat === 'original') {
+    lot.style.display = 'none'; orig.style.display = 'block';
+  } else {
+    toast(`${cat.toUpperCase()} category loading...`);
   }
+};
 
-  const msg = `🔔 *BDG LOTTERY7 — Support Request*\n\n📱 Phone: \`${phone}\`\n📝 Problem:\n${desc}\n\n🕒 ${new Date().toLocaleString()}`;
+// Sub-Lottery Filter
+window.filterLottery = (type, el) => {
+  document.querySelectorAll('.lot-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const cards = document.querySelectorAll('#lotteryGrid .game-card');
+  cards.forEach(card => {
+    if (type === 'all' || card.dataset.cat === type) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+};
 
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${TG_CONFIG.BOT_TOKEN}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: TG_CONFIG.CHAT_ID, text: msg, parse_mode: 'Markdown' })
-    });
-    const data = await res.json();
-    btn.disabled = false;
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#8f5206" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg> Send to Support`;
-    
-    if (data.ok) {
-      showToast('Sent! We will contact you.');
-      document.getElementById('csDesc').value = '';
-      closeModal('modal-service');
-    } else { showToast('Failed: ' + (data.description || 'Try again')); }
-  } catch (err) {
-    btn.disabled = false;
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#8f5206" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg> Send to Support`;
-    showToast('Network error. Please try again.');
+// Banner Carousel Slider
+let slideIdx = 0;
+const slides = document.querySelectorAll('.mySlide');
+if (slides.length > 1) {
+  setInterval(() => {
+    slides[slideIdx].classList.remove('active');
+    slideIdx = (slideIdx + 1) % slides.length;
+    slides[slideIdx].classList.add('active');
+  }, 4000);
+}
+
+// PWA Install Trigger
+let pwaPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); pwaPrompt = e;
+});
+window.triggerPWAInstall = async () => {
+  if (pwaPrompt) {
+    pwaPrompt.prompt();
+    pwaPrompt = null;
+  } else {
+    toast('App download initiated!');
   }
 };
 </script>
-
-<!-- WINNERS GENERATOR & SLIDESHOW -->
-<script>
-    const avatars = [
-        "19-2ac9fd83.png", "3-abfcc056.png", "17-bedde42f.png",
-        "7-00479cfa.png", "6-7c7f5203.png", "1-c7e4efc8.png",
-        "8-ea087ede.png"
-    ];
-    const cpIcon = "CP.png";
-    
-    function getBalls() {
-        const num = Math.floor(Math.random() * 10);
-        let colorClass = "ball-green";
-        if ([2,4,6,8].includes(num)) colorClass = "ball-red";
-        if ([0].includes(num)) colorClass = "ball-purple";
-        if ([5].includes(num)) colorClass = "ball-orange";
-        
-        return `<div class="balls">
-            <span class="${colorClass}">${num}</span>
-            <span class="ball-green">${Math.floor(Math.random() * 10)}</span>
-            <span class="ball-purple">${Math.floor(Math.random() * 10)}</span>
-        </div>`;
-    }
-
-    const container = document.getElementById('winnersContainer');
-    let html = '';
-    for (let i = 0; i < 30; i++) {
-        const avatar = avatars[i % avatars.length];
-        const name = `Mem***${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}${String.fromCharCode(65 + Math.random() * 25)}`;
-        const amount = (Math.random() * 5000 + 100).toFixed(2);
-        
-        html += `
-        <div class="winner-item">
-            <div class="winner-left">
-                <img src="./images/${avatar}" alt="avatar">
-                <div class="winner-name">${name}</div>
-            </div>
-            <div class="winner-type">
-                <img src="./images/${cpIcon}" class="cp-icon" alt="Icon">
-                ${getBalls()}
-            </div>
-            <div class="winner-amount">
-                <h4>Receive ₹${amount}</h4>
-                <span>Winning amount</span>
-            </div>
-        </div>
-        `;
-    }
-    container.innerHTML = html + html;
-
-    let slideIndex = 0;
-    showSlides();
-    function showSlides() {
-        let i;
-        const slides = document.getElementsByClassName("mySlides");
-        for (i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
-        slideIndex++;
-        if (slideIndex > slides.length) {slideIndex = 1;}    
-        slides[slideIndex-1].style.display = "block";  
-        setTimeout(showSlides, 4000);
-    }
-</script>
-
 </body>
 </html>
