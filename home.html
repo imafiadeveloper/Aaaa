@@ -1,226 +1,208 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#1a1a1a">
-<title>BDG GAME</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --gold-grad: linear-gradient(180deg, #F9E79F 0%, #E5B24E 50%, #C48E2F 100%);
-  --gold-solid: #FAE59F;
-  --bg-main: #202020;
-  --card-bg: #2b2b2b;
-  --border-subtle: rgba(255,255,255,0.06);
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-html,body{background:var(--bg-main);color:#fff;overflow-x:hidden;min-height:100vh;padding-bottom:80px;}
-a{text-decoration:none;color:inherit;display:block;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
-::-webkit-scrollbar{width:0;height:0;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BDG GAME</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold-grad: linear-gradient(180deg, #F9E79F 0%, #E5B24E 50%, #C48E2F 100%);
+            --gold-solid: #FAE59F;
+            --bg-main: #202020;
+            --card-bg: #2b2b2b;
+            --border-subtle: rgba(255,255,255,0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { background: var(--bg-main); color: #fff; overflow-x: hidden; min-height: 100vh; padding-bottom: 75px; }
+        a { text-decoration: none; color: inherit; display: block; }
+        button { border: none; outline: none; cursor: pointer; background: transparent; color: inherit; }
+        ::-webkit-scrollbar { width: 0; height: 0; }
 
-/* Top Header */
-.top-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#282828;}
-.logo-area{display:flex;flex-direction:column;gap:3px;}
-.brand-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;text-shadow:0 1px 3px rgba(0,0,0,0.8);}
-.flag-greeting{display:flex;align-items:center;gap:6px;font-size:11px;color:#c0c2c8;}
-.flag-icon{width:18px;height:12px;background:#d92b2b;border-radius:2px;display:inline-block;position:relative;overflow:hidden;}
-.flag-icon::before{content:'';position:absolute;top:0;left:0;width:7px;height:7px;background:#00247d;}
+        /* Top Header */
+        .top-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #282828; border-bottom: 1px solid var(--border-subtle); }
+        .logo-area { display: flex; flex-direction: column; gap: 3px; }
+        .brand-title { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; color: #FAE59F; letter-spacing: 1px; }
+        .flag-greeting { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #c0c2c8; font-weight: 600; }
+        .flag-icon { width: 18px; height: 12px; background: #d92b2b; border-radius: 2px; display: inline-block; position: relative; overflow: hidden; }
+        .flag-icon::before { content: ''; position: absolute; top: 0; left: 0; width: 8px; height: 7px; background: #00247d; }
 
-.top-actions{display:flex;flex-direction:column;gap:6px;}
-.top-btn{
-  background:linear-gradient(180deg, #F7DC8A 0%, #D8AC4F 100%);
-  color:#312105;font-size:11px;font-weight:800;
-  padding:5px 12px;border-radius:18px;
-  display:flex;align-items:center;gap:5px;justify-content:center;
-  box-shadow:0 2px 6px rgba(0,0,0,0.3);
-}
-.top-btn svg{width:13px;height:13px;stroke:#312105;fill:none;stroke-width:2.5;}
+        .top-actions { display: flex; flex-direction: column; gap: 6px; }
+        .top-btn {
+            background: linear-gradient(180deg, #F7DC8A 0%, #D8AC4F 100%);
+            color: #312105; font-size: 11px; font-weight: 800;
+            padding: 5px 12px; border-radius: 18px;
+            display: flex; align-items: center; gap: 5px; justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .top-btn svg { width: 13px; height: 13px; stroke: #312105; fill: none; stroke-width: 2.5; }
 
-/* Slider Banner */
-.slider-container{padding:10px 12px 6px;position:relative;overflow:hidden;}
-.slides-wrapper{position:relative;border-radius:14px;overflow:hidden;background:#2e2e2e;aspect-ratio:2.1/1;}
-.mySlide{display:none;width:100%;height:100%;position:relative;}
-.mySlide.active{display:block;}
-.mySlide img{width:100%;height:100%;object-fit:cover;display:block;}
-.banner-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
-  padding:16px;display:flex;flex-direction:column;justify-content:center;
-}
-.banner-badge{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#FAE59F;text-shadow:0 2px 8px rgba(0,0,0,0.8);}
-.banner-sub{font-size:13px;color:#fff;margin:4px 0 8px;font-weight:700;}
-.banner-pill{background:#d9ac4f;color:#221500;font-size:10px;font-weight:800;padding:3px 10px;border-radius:12px;width:fit-content;}
+        /* Banner Slider */
+        .slider-container { padding: 10px 12px 6px; position: relative; overflow: hidden; }
+        .slides-wrapper { position: relative; border-radius: 14px; overflow: hidden; background: #2e2e2e; aspect-ratio: 2.2/1; }
+        .mySlide { display: none; width: 100%; height: 100%; position: relative; }
+        .mySlide.active { display: block; }
+        .mySlide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .banner-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
+            padding: 16px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .banner-badge { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; color: #FAE59F; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
+        .banner-sub { font-size: 12px; color: #fff; margin: 4px 0 8px; font-weight: 700; }
+        .banner-pill { background: #d9ac4f; color: #221500; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 12px; width: fit-content; }
 
-/* Notice Strip */
-.notice-strip{
-  margin:4px 12px 10px;background:#282828;border-radius:24px;
-  padding:6px 12px;display:flex;align-items:center;gap:8px;
-  border:1px solid var(--border-subtle);
-}
-.notice-strip svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;flex-shrink:0;}
-.marquee-text{flex:1;font-size:11px;color:#c2c5cd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.detail-btn{
-  background:linear-gradient(180deg,#F7DC8A 0%,#D8AC4F 100%);
-  color:#2f2105;font-size:10px;font-weight:800;padding:4px 10px;
-  border-radius:14px;flex-shrink:0;
-}
+        /* Notice Strip */
+        .notice-strip {
+            margin: 4px 12px 10px; background: #282828; border-radius: 24px;
+            padding: 6px 12px; display: flex; align-items: center; gap: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+        .notice-strip svg { width: 16px; height: 16px; stroke: #FAE59F; fill: none; stroke-width: 2; flex-shrink: 0; }
+        .marquee-text { flex: 1; font-size: 11px; color: #c2c5cd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .detail-btn {
+            background: linear-gradient(180deg,#F7DC8A 0%,#D8AC4F 100%);
+            color: #2f2105; font-size: 10px; font-weight: 800; padding: 4px 10px;
+            border-radius: 14px; flex-shrink: 0;
+        }
 
-/* User Info Bar */
-.user-bar{
-  margin:0 12px 14px;background:linear-gradient(135deg, #F3D989 0%, #D8AB4E 100%);
-  border-radius:16px;padding:10px 14px;color:#2c1f06;
-  display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 6px 18px rgba(216,171,78,0.25);
-}
-.ub-left{display:flex;align-items:center;gap:8px;min-width:0;}
-.ub-avatar{width:26px;height:26px;border-radius:50%;background:#2c1f06;display:flex;align-items:center;justify-content:center;color:#FAE59F;}
-.ub-avatar svg{width:16px;height:16px;fill:none;stroke:#FAE59F;stroke-width:2;}
-.ub-name{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ub-right{display:flex;align-items:center;gap:8px;}
-.ub-refresh{width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.ub-refresh svg{width:18px;height:18px;stroke:#2c1f06;fill:none;stroke-width:2.2;}
-.ub-mail{width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.ub-mail svg{width:20px;height:20px;fill:none;stroke:#2c1f06;stroke-width:2;}
+        /* User Info Strip */
+        .user-bar {
+            margin: 0 12px 14px; background: linear-gradient(135deg, #F3D989 0%, #D8AB4E 100%);
+            border-radius: 16px; padding: 10px 14px; color: #2c1f06;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 6px 18px rgba(216,171,78,0.25);
+        }
+        .ub-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+        .ub-avatar { width: 28px; height: 28px; border-radius: 50%; background: #2c1f06; display: flex; align-items: center; justify-content: center; color: #FAE59F; }
+        .ub-avatar svg { width: 16px; height: 16px; fill: none; stroke: #FAE59F; stroke-width: 2; }
+        .ub-name { font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ub-right { display: flex; align-items: center; gap: 10px; }
+        .ub-refresh { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .ub-refresh svg { width: 18px; height: 18px; stroke: #2c1f06; fill: none; stroke-width: 2.2; }
+        .ub-mail { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .ub-mail svg { width: 20px; height: 20px; fill: none; stroke: #2c1f06; stroke-width: 2; }
 
-/* Game Category Deck */
-.category-deck{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px 10px;}
-.cat-card{
-  background:linear-gradient(145deg, #EAD083 0%, #C99738 100%);
-  border-radius:14px;padding:10px 6px;text-align:center;
-  color:#241602;cursor:pointer;position:relative;overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform .15s;
-}
-.cat-card:active{transform:scale(0.96);}
-.cat-card.active{box-shadow:0 0 0 2px #fff, 0 6px 16px rgba(216,171,78,0.4);}
-.cat-icon{font-size:26px;margin-bottom:2px;}
-.cat-name{font-size:12px;font-weight:900;text-transform:capitalize;}
+        /* Game Category Decks */
+        .category-deck { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 12px 8px; }
+        .cat-card {
+            background: linear-gradient(145deg, #EAD083 0%, #C99738 100%);
+            border-radius: 14px; padding: 12px 6px; text-align: center;
+            color: #241602; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform .15s;
+        }
+        .cat-card:active { transform: scale(0.96); }
+        .cat-card.active { box-shadow: 0 0 0 2px #fff, 0 6px 16px rgba(216,171,78,0.4); }
+        .cat-icon { font-size: 26px; margin-bottom: 2px; }
+        .cat-name { font-size: 12px; font-weight: 900; }
 
-/* Secondary Categories */
-.category-subdeck{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px 14px;}
-.subcat-card{
-  background:#2b2b2b;border:1px solid var(--border-subtle);
-  border-radius:12px;padding:8px 4px;text-align:center;
-  color:#e2e2e2;cursor:pointer;
-}
-.subcat-card.active{background:#383838;color:#FAE59F;border-color:#FAE59F;}
-.subcat-card span{font-size:11px;font-weight:800;display:block;}
+        .category-subdeck { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 12px 14px; }
+        .subcat-card {
+            background: #2b2b2b; border: 1px solid var(--border-subtle);
+            border-radius: 12px; padding: 9px 4px; text-align: center;
+            color: #d8d8d8; cursor: pointer; font-size: 11px; font-weight: 800;
+        }
+        .subcat-card.active { background: #383838; color: #FAE59F; border-color: #FAE59F; }
 
-/* Lottery Filter Tabs */
-.lottery-tabs-bar{
-  display:flex;gap:6px;overflow-x:auto;padding:0 12px 12px;
-}
-.lot-tab{
-  padding:6px 14px;border-radius:14px;background:#2a2a2a;
-  color:#8f9299;font-size:12px;font-weight:700;white-space:nowrap;
-  cursor:pointer;border:1px solid transparent;
-}
-.lot-tab.active{background:#383838;color:#FAE59F;border-color:rgba(250,229,159,0.3);}
+        /* Lottery Subtabs */
+        .lottery-tabs-bar { display: flex; gap: 6px; overflow-x: auto; padding: 0 12px 12px; }
+        .lot-tab {
+            padding: 6px 14px; border-radius: 14px; background: #2a2a2a;
+            color: #8f9299; font-size: 11px; font-weight: 700; white-space: nowrap;
+            cursor: pointer; border: 1px solid transparent;
+        }
+        .lot-tab.active { background: #383838; color: #FAE59F; border-color: rgba(250,229,159,0.3); }
 
-/* Section Headers */
-.section-head{display:flex;align-items:center;gap:6px;padding:0 12px 10px;}
-.section-head::before{content:'';width:4px;height:14px;background:#FAE59F;border-radius:2px;}
-.section-head h3{font-size:15px;font-weight:800;color:#fff;}
+        /* Section Headings */
+        .section-head { display: flex; align-items: center; gap: 6px; padding: 0 12px 10px; }
+        .section-head::before { content: ''; width: 4px; height: 14px; background: #FAE59F; border-radius: 2px; }
+        .section-head h3 { font-size: 15px; font-weight: 800; color: #fff; }
 
-/* Games Grid */
-.games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 12px 16px;}
-.game-card{
-  background:linear-gradient(160deg, #2a2a2e 0%, #1c1c1e 100%);
-  border:1px solid var(--border-subtle);border-radius:14px;
-  overflow:hidden;position:relative;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);
-  transition:transform .15s;
-}
-.game-card:active{transform:scale(0.96);}
-.card-thumb{
-  aspect-ratio:1.05/1;width:100%;background:#18181a;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-}
-.card-thumb img{width:100%;height:100%;object-fit:cover;}
-.badge-tag{
-  position:absolute;top:5px;right:5px;
-  font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;
-  padding:2px 6px;border-radius:8px;color:#fff;
-  background:#ff334b;box-shadow:0 2px 6px rgba(255,51,75,0.4);
-}
-.badge-tag.gold{background:linear-gradient(135deg, #F3D989 0%, #D8AB4E 100%);color:#2a1b02;}
-.card-footer{
-  padding:7px 4px;text-align:center;
-  background:#26262a;border-top:1px solid rgba(255,255,255,0.04);
-}
-.card-title{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        /* Games Grid */
+        .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 12px 16px; }
+        .game-card {
+            background: linear-gradient(160deg, #2a2a2e 0%, #1c1c1e 100%);
+            border: 1px solid var(--border-subtle); border-radius: 14px;
+            overflow: hidden; position: relative; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform .15s;
+        }
+        .game-card:active { transform: scale(0.96); }
+        .card-thumb {
+            aspect-ratio: 1.05/1; width: 100%; background: #18181a;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .badge-tag {
+            position: absolute; top: 5px; right: 5px;
+            font-family: 'Orbitron', sans-serif; font-size: 8px; font-weight: 900;
+            padding: 2px 5px; border-radius: 6px; color: #fff;
+            background: #ff334b; box-shadow: 0 2px 6px rgba(255,51,75,0.4);
+        }
+        .badge-tag.gold { background: linear-gradient(135deg, #F3D989 0%, #D8AB4E 100%); color: #2a1b02; }
+        .card-footer { padding: 6px 4px; text-align: center; background: #26262a; border-top: 1px solid rgba(255,255,255,0.04); }
+        .card-title { font-size: 11px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Ranking Podium */
-.ranking-wrap{margin:0 12px 16px;}
-.podium-box{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:16px 0 12px;}
-.podium-item{
-  flex:1;background:#282828;border-radius:12px;
-  padding:12px 6px 10px;text-align:center;position:relative;
-  border:1px solid var(--border-subtle);
-}
-.podium-item.p1{background:linear-gradient(180deg, #3d3218 0%, #252013 100%);border-color:#FAE59F;transform:translateY(-10px);}
-.podium-avatar{width:46px;height:46px;border-radius:50%;margin:0 auto 6px;position:relative;background:#383838;}
-.podium-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
-.crown-icon{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:16px;}
-.pod-name{font-size:11px;font-weight:700;color:#e8e8e8;}
-.pod-amt{
-  font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;
-  color:#FAE59F;margin-top:4px;background:rgba(0,0,0,0.3);
-  padding:2px 4px;border-radius:6px;
-}
+        /* Ranking Section */
+        .ranking-wrap { margin: 0 12px 16px; }
+        .podium-box { display: flex; align-items: flex-end; justify-content: center; gap: 6px; margin: 16px 0 12px; }
+        .podium-item { flex: 1; background: #282828; border-radius: 12px; padding: 12px 6px 10px; text-align: center; position: relative; border: 1px solid var(--border-subtle); }
+        .podium-item.p1 { background: linear-gradient(180deg, #3d3218 0%, #252013 100%); border-color: #FAE59F; transform: translateY(-10px); }
+        .podium-avatar { width: 44px; height: 44px; border-radius: 50%; margin: 0 auto 6px; position: relative; background: #383838; }
+        .podium-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .crown-icon { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 16px; }
+        .pod-name { font-size: 11px; font-weight: 700; color: #e8e8e8; }
+        .pod-amt { font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 900; color: #FAE59F; margin-top: 4px; }
 
-.rank-row{
-  display:flex;align-items:center;justify-content:space-between;
-  background:#282828;border-radius:10px;padding:9px 12px;margin-bottom:6px;
-  border:1px solid var(--border-subtle);font-size:12px;
-}
-.rr-left{display:flex;align-items:center;gap:8px;}
-.rr-rank{font-family:'Orbitron',sans-serif;font-weight:900;color:#858892;width:18px;}
-.rr-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;background:#333;}
-.rr-amt{font-family:'Orbitron',sans-serif;font-weight:900;color:#FAE59F;}
+        .rank-row { display: flex; align-items: center; justify-content: space-between; background: #282828; border-radius: 10px; padding: 9px 12px; margin-bottom: 6px; border: 1px solid var(--border-subtle); font-size: 12px; }
+        .rr-left { display: flex; align-items: center; gap: 8px; }
+        .rr-rank { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #858892; width: 16px; }
+        .rr-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; background: #333; }
+        .rr-amt { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #FAE59F; }
 
-/* Floating Add To Desktop Button */
-.float-desktop-btn{
-  position:fixed;bottom:85px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(180deg, #F3D989 0%, #D8AB4E 100%);
-  color:#281c03;font-size:12px;font-weight:900;
-  padding:8px 24px;border-radius:24px;z-index:99;
-  box-shadow:0 4px 16px rgba(0,0,0,0.5);display:flex;align-items:center;gap:6px;
-}
+        /* Floating App & Service Icons */
+        .app-fab { position: fixed; bottom: 145px; right: 15px; width: 48px; height: 48px; border-radius: 50%; z-index: 99; background: #2b2b2b; border: 2px solid #FAE59F; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
+        .app-fab svg { width: 22px; height: 22px; stroke: #FAE59F; fill: none; stroke-width: 2.2; }
+        .customer-fab { position: fixed; bottom: 85px; right: 15px; width: 48px; height: 48px; border-radius: 50%; z-index: 99; background: linear-gradient(135deg, #f5c442, #ff8f00); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.6); cursor: pointer; }
+        .customer-fab svg { width: 24px; height: 24px; stroke: #211300; fill: none; stroke-width: 2.2; }
 
-/* Bottom Tabbar */
-.bottom-tabbar{
-  position:fixed;bottom:0;left:0;right:0;height:65px;
-  background:#161616;border-top:1px solid rgba(255,255,255,0.08);
-  display:flex;align-items:center;justify-content:space-around;
-  z-index:200;padding-bottom:env(safe-area-inset-bottom);
-}
-.tab-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:#787b86;font-size:10px;font-weight:700;}
-.tab-item svg{width:22px;height:22px;fill:none;stroke:#787b86;stroke-width:2;}
-.tab-item.active{color:#FAE59F;}
-.tab-item.active svg{stroke:#FAE59F;}
-.center-spin-wrap{position:relative;top:-18px;display:flex;flex-direction:column;align-items:center;}
-.center-spin-btn{
-  width:58px;height:58px;border-radius:50%;
-  background:radial-gradient(circle, #ffe57f 0%, #e0ab3e 60%, #a46d14 100%);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 6px 18px rgba(224,171,62,0.5), 0 0 0 4px #161616;
-  font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:#2c1b00;
-}
-.center-spin-lbl{font-size:10px;font-weight:900;color:#FAE59F;margin-top:2px;}
+        /* Bottom Tab Bar */
+        .bottom-tabbar {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+            background: #181818; border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: space-around;
+            z-index: 100; padding-bottom: env(safe-area-inset-bottom);
+        }
+        .tab-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #727580; font-size: 10px; font-weight: 700; width: 20%; cursor: pointer; }
+        .tab-item svg { width: 20px; height: 20px; fill: none; stroke: #727580; stroke-width: 2; }
+        .tab-item.active { color: #FAE59F; }
+        .tab-item.active svg { stroke: #FAE59F; }
 
-/* Toast */
-.toast{
-  position:fixed;top:30%;left:50%;transform:translateX(-50%);
-  background:rgba(20,20,22,0.96);border:1px solid var(--gold-solid);
-  color:#fff;font-size:12px;font-weight:700;padding:10px 22px;border-radius:10px;
-  opacity:0;pointer-events:none;transition:opacity .25s;z-index:9999;
-}
-.toast.show{opacity:1;}
-</style>
+        /* Telegram Modal */
+        .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.8); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 16px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { width: 100%; max-width: 310px; background: #262626; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+        .modal-head { background: linear-gradient(180deg, #444 0%, #2f2f2f 100%); padding: 12px; text-align: center; font-size: 14px; font-weight: 700; color: #fff; }
+        .modal-body { padding: 14px; }
+        .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
+        .cs-logo { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #f5c542, #ff9d2e); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+        .cs-logo svg { width: 24px; height: 24px; stroke: #1a1a1a; fill: none; stroke-width: 2; }
+        .modal-input { width: 100%; height: 38px; border-radius: 8px; background: #383838; color: #fff; padding: 0 10px; font-size: 13px; border: none; margin-bottom: 8px; outline: none; }
+        .modal-textarea { width: 100%; min-height: 70px; border-radius: 8px; background: #383838; color: #fff; padding: 8px 10px; font-size: 13px; border: none; margin-bottom: 10px; resize: vertical; outline: none; }
+        .cs-chat-btn { width: 100%; height: 40px; border-radius: 20px; background: linear-gradient(180deg, #FAE59F 0%, #C4933F 100%); color: #8f5206; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .modal-close-btn { display: block; width: 100%; text-align: center; padding: 8px; font-size: 12px; color: #a6a9ae; background: transparent; cursor: pointer; }
+
+        .toast {
+            position: fixed; top: 30%; left: 50%; transform: translateX(-50%);
+            background: rgba(20,20,22,0.96); border: 1px solid var(--gold-solid);
+            color: #fff; font-size: 12px; font-weight: 700; padding: 10px 22px; border-radius: 10px;
+            opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 9999; text-align: center;
+        }
+        .toast.show { opacity: 1; }
+    </style>
 </head>
 <body>
 
@@ -238,7 +220,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
       <span>Download APP</span>
     </button>
-    <button class="top-btn" onclick="location.href='home.html'">
+    <button class="top-btn" onclick="openService()">
       <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       <span>Customer Service</span>
     </button>
@@ -271,14 +253,14 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="notice-strip">
   <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
   <div class="marquee-text">Welcome to BDG Game! Please verify official accounts & official support 24/7.</div>
-  <button class="detail-btn" onclick="toast('Please check details in Notification tab')">Detail</button>
+  <button class="detail-btn" onclick="toast('Please check announcements in Account')">Detail</button>
 </div>
 
 <!-- User Account Strip -->
 <div class="user-bar">
   <div class="ub-left">
     <div class="ub-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-    <div class="ub-name" id="userName">Member...</div>
+    <div class="ub-name" id="userName">Member</div>
     <div style="font-weight:900;font-size:13px;">₹<span id="userBalance">0.00</span></div>
   </div>
   <div class="ub-right">
@@ -289,32 +271,29 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <!-- Main Game Categories Deck -->
 <div class="category-deck">
-  <div class="cat-card active" onclick="switchMainCat('lottery', this)">
+  <div class="cat-card active" onclick="switchCategory('lottery', this)">
     <div class="cat-icon">🎰</div>
     <div class="cat-name">Lottery</div>
   </div>
-  <div class="cat-card" onclick="switchMainCat('original', this)">
+  <div class="cat-card" onclick="switchCategory('original', this)">
     <div class="cat-icon">🚀</div>
     <div class="cat-name">Original</div>
   </div>
-  <div class="cat-card" onclick="switchMainCat('slots', this)">
+  <div class="cat-card" onclick="switchCategory('slots', this)">
     <div class="cat-icon">💎</div>
     <div class="cat-name">Slots</div>
   </div>
 </div>
 
 <div class="category-subdeck">
-  <div class="subcat-card" onclick="switchMainCat('sports', this)"><span>⚽ Sports</span></div>
-  <div class="subcat-card" onclick="switchMainCat('casino', this)"><span>🎡 Casino</span></div>
-  <div class="subcat-card" onclick="switchMainCat('rummy', this)"><span>🃏 Rummy</span></div>
+  <div class="subcat-card" onclick="switchCategory('sports', this)"><span>⚽ Sports</span></div>
+  <div class="subcat-card" onclick="switchCategory('casino', this)"><span>🎡 Casino</span></div>
+  <div class="subcat-card" onclick="switchCategory('rummy', this)"><span>🃏 Rummy</span></div>
 </div>
 
-<!-- Section: Lottery Filtered Games -->
-<div id="lotterySection">
-  <div class="section-head">
-    <h3>Lottery</h3>
-  </div>
-
+<!-- 1. LOTTERY SECTION -->
+<div class="game-section-block" id="sec-lottery">
+  <div class="section-head"><h3>Lottery Games</h3></div>
   <div class="lottery-tabs-bar">
     <div class="lot-tab active" onclick="filterLottery('all', this)">All</div>
     <div class="lot-tab" onclick="filterLottery('wingo', this)">Win Go</div>
@@ -322,152 +301,173 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div class="lot-tab" onclick="filterLottery('5d', this)">5D</div>
     <div class="lot-tab" onclick="filterLottery('k3', this)">K3</div>
   </div>
-
   <div class="games-grid" id="lotteryGrid">
-    <!-- Win Go 30s -->
     <a href="wingo30.html" class="game-card" data-cat="wingo">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 30s">
-        <span class="badge-tag">30s</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062051do1k.png"><span class="badge-tag">30s</span></div>
       <div class="card-footer"><div class="card-title">Win Go 30s</div></div>
     </a>
-
-    <!-- Win Go 1Min -->
     <a href="wingo1.html" class="game-card" data-cat="wingo">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 1Min">
-        <span class="badge-tag gold">1Min</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062051do1k.png"><span class="badge-tag gold">1Min</span></div>
       <div class="card-footer"><div class="card-title">Win Go 1Min</div></div>
     </a>
-
-    <!-- Win Go 3Min -->
     <a href="wingo3.html" class="game-card" data-cat="wingo">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 3Min">
-        <span class="badge-tag">3Min</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062051do1k.png"><span class="badge-tag">3Min</span></div>
       <div class="card-footer"><div class="card-title">Win Go 3Min</div></div>
     </a>
-
-    <!-- Win Go 5Min -->
     <a href="wingo5.html" class="game-card" data-cat="wingo">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 5Min">
-        <span class="badge-tag">5Min</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062051do1k.png"><span class="badge-tag">5Min</span></div>
       <div class="card-footer"><div class="card-title">Win Go 5Min</div></div>
     </a>
-
-    <!-- Win Go 10Min -->
     <a href="wingo10.html" class="game-card" data-cat="wingo">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062051do1k.png" alt="Win Go 10Min">
-        <span class="badge-tag">10Min</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062051do1k.png"><span class="badge-tag">10Min</span></div>
       <div class="card-footer"><div class="card-title">Win Go 10Min</div></div>
     </a>
-
-    <!-- 5D -->
     <a href="5d.html" class="game-card" data-cat="5d">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062118e9kt.png" alt="5D 1Min">
-        <span class="badge-tag gold">5D</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062118e9kt.png"><span class="badge-tag gold">5D</span></div>
       <div class="card-footer"><div class="card-title">5D 1Min</div></div>
     </a>
-
-    <!-- K3 -->
     <a href="k3.html" class="game-card" data-cat="k3">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062111bt8e.png" alt="K3">
-        <span class="badge-tag">K3</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062111bt8e.png"><span class="badge-tag">K3</span></div>
       <div class="card-footer"><div class="card-title">K3 Dice</div></div>
     </a>
-
-    <!-- TRX Win -->
     <a href="trx.html" class="game-card" data-cat="trx">
-      <div class="card-thumb">
-        <img src="./images/lotterycategory_20240110062124qut6.png" alt="TRX Win">
-        <span class="badge-tag gold">TRX</span>
-      </div>
+      <div class="card-thumb"><img src="./images/lotterycategory_20240110062124qut6.png"><span class="badge-tag gold">TRX</span></div>
       <div class="card-footer"><div class="card-title">TRX Win</div></div>
     </a>
-
-    <!-- Cricket Prediction -->
     <a href="cricket.html" class="game-card" data-cat="cricket">
-      <div class="card-thumb">
-        <img src="./images/810.png" alt="Cricket">
-        <span class="badge-tag">CRICKET</span>
-      </div>
+      <div class="card-thumb"><img src="./images/810.png"><span class="badge-tag">CRICKET</span></div>
       <div class="card-footer"><div class="card-title">Cricket Win</div></div>
     </a>
   </div>
 </div>
 
-<!-- Section: Mini / Original Games -->
-<div id="originalSection">
-  <div class="section-head">
-    <h3>Mini Games & Originals</h3>
-  </div>
+<!-- 2. ORIGINAL / MINI GAMES SECTION -->
+<div class="game-section-block" id="sec-original">
+  <div class="section-head"><h3>Originals & Mini Games</h3></div>
   <div class="games-grid">
     <a href="aviator.html" class="game-card">
-      <div class="card-thumb">
-        <img src="./images/22001.png" alt="Aviator">
-        <span class="badge-tag">HOT</span>
-      </div>
+      <div class="card-thumb"><img src="./images/22001.png"><span class="badge-tag">HOT</span></div>
       <div class="card-footer"><div class="card-title">Aviator</div></div>
     </a>
-
     <a href="mines.html" class="game-card">
-      <div class="card-thumb">
-        <img src="./images/229.png" alt="Mines">
-        <span class="badge-tag gold">VIP</span>
-      </div>
-      <div class="card-footer"><div class="card-title">Mines VIP</div></div>
+      <div class="card-thumb"><img src="./images/229.png"><span class="badge-tag gold">VIP</span></div>
+      <div class="card-footer"><div class="card-title">Mines</div></div>
     </a>
-
     <a href="dragontiger.html" class="game-card">
-      <div class="card-thumb">
-        <div style="font-size:42px;">🐉🐅</div>
-        <span class="badge-tag">POPULAR</span>
-      </div>
+      <div class="card-thumb"><div style="font-size:38px;">🐉🐅</div><span class="badge-tag">2X</span></div>
       <div class="card-footer"><div class="card-title">Dragon Tiger</div></div>
     </a>
-
-    <a href="#" class="game-card" onclick="toast('Game updating soon...')">
-      <div class="card-thumb">
-        <div style="font-size:40px;">🐔</div>
-        <span class="badge-tag">NEW</span>
-      </div>
+    <a href="chickenroad.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🐔</div><span class="badge-tag">NEW</span></div>
       <div class="card-footer"><div class="card-title">Chicken Road</div></div>
     </a>
-
-    <a href="#" class="game-card" onclick="toast('Game updating soon...')">
-      <div class="card-thumb">
-        <div style="font-size:40px;">🌪️</div>
-      </div>
-      <div class="card-footer"><div class="card-title">Vortex</div></div>
+    <a href="plinko.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">⚪</div><span class="badge-tag gold">1000X</span></div>
+      <div class="card-footer"><div class="card-title">Plinko</div></div>
     </a>
+    <a href="limbo.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎯</div><span class="badge-tag">CRASH</span></div>
+      <div class="card-footer"><div class="card-title">Limbo</div></div>
+    </a>
+  </div>
+</div>
 
-    <a href="#" class="game-card" onclick="toast('Game updating soon...')">
-      <div class="card-thumb">
-        <div style="font-size:40px;">🎯</div>
-      </div>
-      <div class="card-footer"><div class="card-title">Javelin 80</div></div>
+<!-- 3. SLOTS SECTION (4 GAMES) -->
+<div class="game-section-block" id="sec-slots">
+  <div class="section-head"><h3>Slots (JILI & PG)</h3></div>
+  <div class="games-grid">
+    <a href="jili-slots.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎰</div><span class="badge-tag gold">777</span></div>
+      <div class="card-footer"><div class="card-title">JILI 777</div></div>
+    </a>
+    <a href="super-ace.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🃏</div><span class="badge-tag">HOT</span></div>
+      <div class="card-footer"><div class="card-title">Super Ace</div></div>
+    </a>
+    <a href="fortune-gems.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">💎</div><span class="badge-tag gold">MEGA</span></div>
+      <div class="card-footer"><div class="card-title">Fortune Gems</div></div>
+    </a>
+    <a href="boxing-king.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🥊</div><span class="badge-tag">JACKPOT</span></div>
+      <div class="card-footer"><div class="card-title">Boxing King</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- 4. CASINO SECTION (4 GAMES) -->
+<div class="game-section-block" id="sec-casino">
+  <div class="section-head"><h3>Live Casino</h3></div>
+  <div class="games-grid">
+    <a href="roulette.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎡</div><span class="badge-tag gold">LIVE</span></div>
+      <div class="card-footer"><div class="card-title">Roulette Live</div></div>
+    </a>
+    <a href="baccarat.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">👑</div><span class="badge-tag">VIP</span></div>
+      <div class="card-footer"><div class="card-title">Baccarat</div></div>
+    </a>
+    <a href="sicbo.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎲</div><span class="badge-tag">DICE</span></div>
+      <div class="card-footer"><div class="card-title">Sic Bo</div></div>
+    </a>
+    <a href="blackjack.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">♠️</div><span class="badge-tag gold">21</span></div>
+      <div class="card-footer"><div class="card-title">Blackjack 21</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- 5. SPORTS SECTION (4 GAMES) -->
+<div class="game-section-block" id="sec-sports">
+  <div class="section-head"><h3>Sports Betting</h3></div>
+  <div class="games-grid">
+    <a href="cricket.html" class="game-card">
+      <div class="card-thumb"><img src="./images/810.png"><span class="badge-tag gold">MATCH</span></div>
+      <div class="card-footer"><div class="card-title">Cricket Prediction</div></div>
+    </a>
+    <a href="football.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">⚽</div><span class="badge-tag">LIVE</span></div>
+      <div class="card-footer"><div class="card-title">Football League</div></div>
+    </a>
+    <a href="tennis.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎾</div><span class="badge-tag">PRO</span></div>
+      <div class="card-footer"><div class="card-title">Virtual Tennis</div></div>
+    </a>
+    <a href="horseracing.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🏇</div><span class="badge-tag gold">RACE</span></div>
+      <div class="card-footer"><div class="card-title">Horse Racing</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- 6. RUMMY SECTION (4 GAMES) -->
+<div class="game-section-block" id="sec-rummy">
+  <div class="section-head"><h3>Rummy & Cards</h3></div>
+  <div class="games-grid">
+    <a href="rummy-point.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎴</div><span class="badge-tag gold">POINTS</span></div>
+      <div class="card-footer"><div class="card-title">Point Rummy</div></div>
+    </a>
+    <a href="rummy-pool.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">💰</div><span class="badge-tag">101/201</span></div>
+      <div class="card-footer"><div class="card-title">Pool Rummy</div></div>
+    </a>
+    <a href="rummy-deals.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">♦️</div><span class="badge-tag">DEALS</span></div>
+      <div class="card-footer"><div class="card-title">Deals Rummy</div></div>
+    </a>
+    <a href="teenpatti.html" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🔥</div><span class="badge-tag gold">DESI</span></div>
+      <div class="card-footer"><div class="card-title">Teen Patti</div></div>
     </a>
   </div>
 </div>
 
 <!-- Ranking Podium -->
 <div class="ranking-wrap">
-  <div class="section-head">
-    <h3>Today's Earnings Chart</h3>
-  </div>
+  <div class="section-head"><h3>Today's Earnings Chart</h3></div>
   <div class="podium-box">
-    <!-- Rank 2 -->
     <div class="podium-item">
       <div class="podium-avatar">
         <img src="./images/3-abfcc056.png" onerror="this.src='./images/6-7c7f5203.png'">
@@ -476,7 +476,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="pod-name">Mem***E6F</div>
       <div class="pod-amt">₹27,240,080</div>
     </div>
-    <!-- Rank 1 -->
     <div class="podium-item p1">
       <div class="podium-avatar" style="width:52px;height:52px;">
         <img src="./images/6-7c7f5203.png">
@@ -485,7 +484,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="pod-name">Mem***Q0B</div>
       <div class="pod-amt">₹68,800,214</div>
     </div>
-    <!-- Rank 3 -->
     <div class="podium-item">
       <div class="podium-avatar">
         <img src="./images/17-bedde42f.png" onerror="this.src='./images/6-7c7f5203.png'">
@@ -522,13 +520,15 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- Floating Desktop Install Button -->
-<div class="float-desktop-btn" onclick="triggerPWAInstall()">
-  <span style="font-size:14px;">BDG</span>
-  <span>Add to Desktop</span>
+<!-- Floating Floating Buttons (Desktop Install & Service) -->
+<div class="app-fab" onclick="triggerPWAInstall()" title="Install App">
+  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+</div>
+<div class="customer-fab" onclick="openService()" title="Telegram Customer Service">
+  <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
 </div>
 
-<!-- Bottom Navigation Bar with Centered Wheel -->
+<!-- Bottom Navigation Bar (Standard Promotion Tab) -->
 <div class="bottom-tabbar">
   <a href="home.html" class="tab-item active">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -538,13 +538,13 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
     <span>Activity</span>
   </a>
-  <div class="center-spin-wrap" onclick="location.href='activity.html'">
-    <div class="center-spin-btn">GO</div>
-    <span class="center-spin-lbl">Get ₹500</span>
-  </div>
   <a href="promotion.html" class="tab-item">
     <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
     <span>Promotion</span>
+  </a>
+  <a href="wallet.html" class="tab-item">
+    <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <span>Wallet</span>
   </a>
   <a href="account.html" class="tab-item">
     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -552,12 +552,31 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </a>
 </div>
 
+<!-- Telegram Service Modal -->
+<div id="modal-service" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Telegram Customer Service</div>
+    <div class="modal-body">
+      <div class="cs-logo-wrap">
+        <div class="cs-logo">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
+        <div style="font-size:14px;font-weight:800;">BDG Support 24/7</div>
+      </div>
+      <input id="csPhone" class="modal-input" type="tel" placeholder="Your Phone Number">
+      <textarea id="csDesc" class="modal-textarea" placeholder="Describe your issue..."></textarea>
+      <button id="csSendBtn" class="cs-chat-btn" onclick="sendSupport()">Send to Telegram</button>
+      <button class="modal-close-btn" onclick="closeService()">Close</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -567,7 +586,6 @@ const firebaseConfig = {
   messagingSenderId: "568771943906",
   appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -578,52 +596,47 @@ window.toast = (msg) => {
   setTimeout(() => toastEl.classList.remove('show'), 2200);
 };
 
-// Fast User Auth & Balance Fetch
+window.openService = () => document.getElementById('modal-service').classList.add('show');
+window.closeService = () => document.getElementById('modal-service').classList.remove('show');
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
       const snap = await getDoc(doc(db, "users", user.uid));
       if (snap.exists()) {
         const d = snap.data();
-        const shortName = (d.name || d.username || 'Member' + user.uid.slice(0, 5));
-        document.getElementById('userName').textContent = shortName;
+        document.getElementById('userName').textContent = d.name || d.username || 'Member';
         const bal = Number(d.balance ?? d.wallet ?? 0);
         document.getElementById('userBalance').textContent = bal.toFixed(2);
+        if (d.phone) document.getElementById('csPhone').value = d.phone;
       }
     } catch(e){}
   }
 });
 
 // Category Switcher
-window.switchMainCat = (cat, el) => {
+window.switchCategory = (catName, el) => {
   document.querySelectorAll('.cat-card, .subcat-card').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  const lot = document.getElementById('lotterySection');
-  const orig = document.getElementById('originalSection');
-  if (cat === 'lottery') {
-    lot.style.display = 'block'; orig.style.display = 'block';
-  } else if (cat === 'original') {
-    lot.style.display = 'none'; orig.style.display = 'block';
-  } else {
-    toast(`${cat.toUpperCase()} category loading...`);
-  }
+
+  const sections = ['lottery', 'original', 'slots', 'casino', 'sports', 'rummy'];
+  sections.forEach(s => {
+    const elSec = document.getElementById(`sec-${s}`);
+    if (elSec) elSec.style.display = (s === catName) ? 'block' : 'none';
+  });
 };
 
-// Sub-Lottery Filter
+// Filter Lottery Cards
 window.filterLottery = (type, el) => {
   document.querySelectorAll('.lot-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   const cards = document.querySelectorAll('#lotteryGrid .game-card');
   cards.forEach(card => {
-    if (type === 'all' || card.dataset.cat === type) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
+    card.style.display = (type === 'all' || card.dataset.cat === type) ? 'block' : 'none';
   });
 };
 
-// Banner Carousel Slider
+// Banner Auto Slider
 let slideIdx = 0;
 const slides = document.querySelectorAll('.mySlide');
 if (slides.length > 1) {
@@ -634,17 +647,64 @@ if (slides.length > 1) {
   }, 4000);
 }
 
-// PWA Install Trigger
-let pwaPrompt;
+// PWA Install Prompt
+let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault(); pwaPrompt = e;
+  e.preventDefault();
+  deferredPrompt = e;
 });
+
 window.triggerPWAInstall = async () => {
-  if (pwaPrompt) {
-    pwaPrompt.prompt();
-    pwaPrompt = null;
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') toast('App installed successfully!');
+    deferredPrompt = null;
   } else {
-    toast('App download initiated!');
+    toast('Added shortcut to desktop / home screen!');
+  }
+};
+
+// Telegram Support API
+const TG_CONFIG = { BOT_TOKEN: "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw", CHAT_ID: "8167337368" };
+window.sendSupport = async () => {
+  const phone = document.getElementById('csPhone').value.trim();
+  const desc = document.getElementById('csDesc').value.trim();
+  if (!phone || desc.length < 5) return toast('Please enter phone and problem description');
+
+  const btn = document.getElementById('csSendBtn');
+  btn.disabled = true;
+  btn.innerText = 'Sending...';
+
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      await setDoc(doc(db, "support", `t_${Date.now()}_${user.uid.slice(0,6)}`), {
+        uid: user.uid, phone, description: desc, status: 'new', createdAt: serverTimestamp()
+      });
+    } catch(e){}
+  }
+
+  const msg = `🔔 *BDG GAME — Support Request*\n\n📱 Phone: \`${phone}\`\n📝 Problem:\n${desc}\n\n🕒 ${new Date().toLocaleString()}`;
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${TG_CONFIG.BOT_TOKEN}/sendMessage`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CONFIG.CHAT_ID, text: msg, parse_mode: 'Markdown' })
+    });
+    const data = await res.json();
+    btn.disabled = false;
+    btn.innerText = 'Send to Telegram';
+    if (data.ok) {
+      toast('Ticket submitted! Support will contact you.');
+      document.getElementById('csDesc').value = '';
+      closeService();
+    } else {
+      toast('Failed to send. Try again.');
+    }
+  } catch(err) {
+    btn.disabled = false;
+    btn.innerText = 'Send to Telegram';
+    toast('Network error. Check connection.');
   }
 };
 </script>
