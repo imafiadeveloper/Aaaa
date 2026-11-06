@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#120c18">
+<title>BDG LOTTERY7 - Teen Patti</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --card-bg: #1c1424;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #2f123d 0%, #0d0814 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(18,12,24,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.bal-card{background:linear-gradient(145deg, #251633 0%, #150d1d 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+.arena-box{margin:0 16px 14px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:20px;padding:16px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;}
+.arena-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.arena-top span{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.arena-top h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#fff;margin-top:2px;}
+.timer-pill{background:#11091a;border:1.5px solid var(--gold);padding:4px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);}
+
+/* 3-Card Hands */
+.hands-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.hand-col{background:rgba(0,0,0,0.3);border-radius:14px;padding:12px 8px;border:1px solid rgba(255,255,255,0.05);}
+.hand-lbl{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;margin-bottom:8px;}
+.hand-col.player .hand-lbl{color:#0088ff;}
+.hand-col.dealer .hand-lbl{color:#ff2a4b;}
+.cards-row{display:flex;gap:4px;justify-content:center;}
+.p-card{width:42px;height:60px;border-radius:6px;background:#fff;color:#111;padding:4px;display:flex;flex-direction:column;justify-content:space-between;font-weight:900;font-size:11px;}
+.p-card.flipped{background:linear-gradient(135deg, #3a1950, #14071f);border:1px solid var(--gold);}
+.p-card.flipped *{display:none;}
+.p-card.flipped::after{content:'🎴';font-size:18px;margin:auto;}
+.suit-red{color:#e53935;}
+.suit-black{color:#111;}
+
+/* Betting Buttons */
+.bet-deck{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 16px;}
+.bet-btn{height:75px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:0 6px 16px rgba(0,0,0,0.4);}
+.bet-btn:active{transform:scale(0.96);}
+.bet-btn.player-btn{background:linear-gradient(145deg, #1059a4, #052952);border:1.5px solid rgba(0,136,255,0.5);}
+.bet-btn.dealer-btn{background:linear-gradient(145deg, #b71c1c, #4a0000);border:1.5px solid rgba(255,42,75,0.5);}
+.bet-btn h2{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;}
+.bet-btn span{font-size:12px;font-weight:800;color:var(--gold);}
+
+/* Bet Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(8,4,12,0.85);backdrop-filter:blur(6px);z-index:999;display:none;align-items:flex-end;}
+.modal-overlay.show{display:flex;}
+.sheet{width:100%;background:#181222;border-radius:24px 24px 0 0;padding:20px 18px 24px;border-top:1.5px solid var(--border);animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.sheet-title{font-size:16px;font-weight:900;color:#fff;}
+.sheet-title span{color:var(--gold);}
+.sheet-close{font-size:24px;color:#a58fae;cursor:pointer;}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.ctrl-label{font-size:12px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:7px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:13px;font-weight:800;color:#fff;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+.qty-box{display:flex;align-items:center;background:#100918;border-radius:8px;border:1px solid var(--border);}
+.qty-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#a58fae;}
+.qty-input{width:48px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Orbitron',sans-serif;font-weight:800;}
+.btn-submit-bet{width:100%;height:48px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-top:14px;box-shadow:0 6px 20px rgba(245,196,67,0.35);}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">TEEN <span>PATTI</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="arena-box">
+  <div class="arena-top">
+    <div>
+      <span>Game Hand ID</span>
+      <h3 id="periodText">Loading...</h3>
+    </div>
+    <div class="timer-pill" id="timerClock">20s</div>
+  </div>
+
+  <div class="hands-container">
+    <div class="hand-col player">
+      <div class="hand-lbl">Player Hand</div>
+      <div class="cards-row" id="playerCards">
+        <div class="p-card flipped"></div><div class="p-card flipped"></div><div class="p-card flipped"></div>
+      </div>
+    </div>
+    <div class="hand-col dealer">
+      <div class="hand-lbl">Dealer Hand</div>
+      <div class="cards-row" id="dealerCards">
+        <div class="p-card flipped"></div><div class="p-card flipped"></div><div class="p-card flipped"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bet-deck">
+  <button class="bet-btn player-btn" onclick="openBetModal('Player', 2)">
+    <h2>PLAYER A</h2>
+    <span>2.0X Payout</span>
+  </button>
+  <button class="bet-btn dealer-btn" onclick="openBetModal('Dealer', 2)">
+    <h2>DEALER B</h2>
+    <span>2.0X Payout</span>
+  </button>
+</div>
+
+<!-- Bet Modal -->
+<div class="modal-overlay" id="betModal">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div class="sheet-title">Bet on <span id="sheetChoice">PLAYER</span></div>
+      <div class="sheet-close" onclick="closeBetModal()">×</div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Chip Amount</span>
+      <div class="chips">
+        <div class="chip active" onclick="setAmt(this,10)">₹10</div>
+        <div class="chip" onclick="setAmt(this,50)">₹50</div>
+        <div class="chip" onclick="setAmt(this,100)">₹100</div>
+        <div class="chip" onclick="setAmt(this,500)">₹500</div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Multiplier</span>
+      <div class="qty-box">
+        <button class="qty-btn" onclick="setQty(-1)">-</button>
+        <input type="number" id="qtyVal" class="qty-input" value="1" min="1" readonly>
+        <button class="qty-btn" onclick="setQty(1)">+</button>
+      </div>
+    </div>
+    <button class="btn-submit-bet" id="btnPlaceBet" onclick="placeBet()">Confirm Bet ₹<span id="totalBetSpan">10</span></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, limit, getDocs, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const BET_COLLECTION = 'bets_teenpatti';
+const SLOT_MS = 20 * 1000;
+const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
+
+let currentUser = null;
+let userBalance = 0;
+let currentPeriod = '';
+let selectedChoice = '';
+let baseAmt = 10, currentQty = 1;
+let isBettingClosed = false, soundOn = true;
+
+const cardNames = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const suits = ['♠','♥','♣','♦'];
+
+function getSlot(ms = Date.now()) { return Math.floor((ms - EPOCH) / SLOT_MS); }
+function getPeriodId(slot) {
+  const d = new Date(EPOCH + slot * SLOT_MS);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
+  return `${y}${m}${day}TP${String(slotOfDay).padStart(5, '0')}`;
+}
+
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+  startTimer();
+});
+
+function dealHands(slot) {
+  let seed = (slot * 9301 + 49297) % 233280;
+  // Controlled 20% Player Win / 80% Dealer Win
+  const pWins = (seed % 100 < 20);
+  const pScore = pWins ? 9 : 4;
+  const dScore = pWins ? 5 : 8;
+
+  const pCards = [
+    { v: (seed%13)+1, s: suits[seed%4] },
+    { v: ((seed+2)%13)+1, s: suits[(seed+1)%4] },
+    { v: ((seed+4)%13)+1, s: suits[(seed+2)%4] }
+  ];
+  const dCards = [
+    { v: ((seed+1)%13)+1, s: suits[(seed+3)%4] },
+    { v: ((seed+3)%13)+1, s: suits[(seed)%4] },
+    { v: ((seed+5)%13)+1, s: suits[(seed+1)%4] }
+  ];
+  return { pCards, dCards, winner: pWins ? 'Player' : 'Dealer' };
+}
+
+function renderHand(elemId, cards) {
+  const el = document.getElementById(elemId);
+  el.innerHTML = cards.map(c => {
+    const isRed = c.s === '♥' || c.s === '♦';
+    return `<div class="p-card ${isRed?'suit-red':'suit-black'}"><div>${cardNames[c.v]}</div><div style="font-size:14px;text-align:center;">${c.s}</div><div style="transform:rotate(180deg);">${cardNames[c.v]}</div></div>`;
+  }).join('');
+}
+
+function startTimer() {
+  let lastSlot = -1;
+  setInterval(() => {
+    const now = Date.now();
+    const slot = getSlot(now);
+    const secLeft = Math.max(0, Math.ceil((SLOT_MS - (now - (EPOCH + slot * SLOT_MS))) / 1000));
+
+    if (lastSlot !== -1 && slot !== lastSlot) {
+      const hands = dealHands(lastSlot);
+      renderHand('playerCards', hands.pCards);
+      renderHand('dealerCards', hands.dCards);
+      resolveBets(getPeriodId(lastSlot), hands.winner);
+    }
+    lastSlot = slot;
+    currentPeriod = getPeriodId(slot);
+    document.getElementById('periodText').textContent = currentPeriod;
+    document.getElementById('timerClock').textContent = `${secLeft}s`;
+
+    if (secLeft <= 4) {
+      isBettingClosed = true;
+    } else {
+      isBettingClosed = false;
+      if (secLeft > 15) {
+        document.getElementById('playerCards').innerHTML = '<div class="p-card flipped"></div><div class="p-card flipped"></div><div class="p-card flipped"></div>';
+        document.getElementById('dealerCards').innerHTML = '<div class="p-card flipped"></div><div class="p-card flipped"></div><div class="p-card flipped"></div>';
+      }
+    }
+  }, 250);
+}
+
+async function resolveBets(periodId, winner) {
+  if (!currentUser) return;
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+    const snap = await getDocs(q);
+    if (snap.empty) return;
+    let winTotal = 0;
+    const batch = [];
+    snap.forEach(d => {
+      const b = d.data();
+      if (b.status !== 'pending') return;
+      const won = (b.choice === winner);
+      let winAmt = 0;
+      if (won) {
+        const gross = b.amount * 2;
+        winAmt = gross - (gross * 0.15); // 15% owner tax
+        winTotal += winAmt;
+      }
+      batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt, winner }));
+    });
+    await Promise.all(batch);
+    if (winTotal > 0) {
+      await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
+      userBalance += winTotal;
+      document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+      toast(`You Won ₹${winTotal.toFixed(2)} on Teen Patti!`);
+    }
+  } catch(e){}
+}
+
+window.openBetModal = (choice) => {
+  if (isBettingClosed) return toast('Cards dealing! Wait for next round');
+  selectedChoice = choice;
+  document.getElementById('sheetChoice').textContent = choice;
+  document.getElementById('betModal').classList.add('show');
+  updateTotalBetSpan();
+};
+window.closeBetModal = () => document.getElementById('betModal').classList.remove('show');
+
+window.setAmt = (el, amt) => {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); baseAmt = amt; updateTotalBetSpan();
+};
+window.setQty = (delta) => {
+  currentQty = Math.max(1, currentQty + delta);
+  document.getElementById('qtyVal').value = currentQty; updateTotalBetSpan();
+};
+function updateTotalBetSpan() { document.getElementById('totalBetSpan').textContent = baseAmt * currentQty; }
+
+window.placeBet = async () => {
+  if (isBettingClosed) return toast('Betting closed for current round');
+  const total = baseAmt * currentQty;
+  if (total > userBalance) return toast('Insufficient balance');
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
+    userBalance -= total;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
+    await addDoc(collection(db, BET_COLLECTION), {
+      userId: currentUser.uid,
+      period: currentPeriod,
+      choice: selectedChoice,
+      amount: total,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+    toast(`Bet placed on ${selectedChoice}!`);
+    closeBetModal();
+  } catch(e){ toast('Error placing bet'); }
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#120c18">
+<title>BDG LOTTERY7 - Roulette Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --red: #ff2a4b;
+  --green: #00e676;
+  --card-bg: #1a1524;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #291238 0%, #0b0712 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(18,12,24,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.bal-card{background:linear-gradient(145deg, #251633 0%, #150d1d 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+/* Wheel Area */
+.wheel-card{margin:0 16px 14px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:20px;padding:16px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;position:relative;}
+.arena-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.arena-top span{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.arena-top h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#fff;margin-top:2px;}
+.timer-pill{background:#11091a;border:1.5px solid var(--gold);padding:4px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);}
+
+/* Canvas Spinning Wheel */
+.wheel-wrap{position:relative;width:240px;height:240px;margin:0 auto 10px;}
+#rouletteCanvas{width:100%;height:100%;border-radius:50%;box-shadow:0 0 25px rgba(245,196,67,0.3);border:4px solid #3d2358;}
+.wheel-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:20px solid var(--gold);z-index:10;}
+
+.result-badge{display:inline-block;padding:4px 14px;border-radius:20px;background:rgba(255,255,255,0.06);font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:#fff;}
+.result-badge strong{color:var(--gold);}
+
+/* Betting Board */
+.bet-deck{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:14px;border:1px solid var(--border);}
+.side-bets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.side-btn{height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:12px;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform .15s;}
+.side-btn:active{transform:scale(0.96);}
+.side-btn.red{background:linear-gradient(135deg, #ff2a4b, #990017);color:#fff;}
+.side-btn.green{background:linear-gradient(135deg, #00e676, #007a38);color:#fff;}
+.side-btn.black{background:linear-gradient(135deg, #2b2b2b, #121212);color:#fff;border:1px solid rgba(255,255,255,0.1);}
+
+.range-bets{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.range-btn{height:40px;border-radius:10px;background:#251936;border:1px solid var(--border);font-size:12px;font-weight:800;color:#ddd;}
+.range-btn:active{border-color:var(--gold);}
+
+.num-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
+.num-btn{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;cursor:pointer;}
+.num-btn.red-num{background:#990017;color:#fff;}
+.num-btn.black-num{background:#181818;color:#fff;border:1px solid rgba(255,255,255,0.08);}
+.num-btn.green-num{grid-column:span 6;aspect-ratio:auto;height:34px;background:#007a38;color:#fff;}
+
+/* History Tabs */
+.tabs-wrap{display:flex;margin:0 16px 10px;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--border);}
+.tab-btn{flex:1;text-align:center;padding:9px;font-size:12px;font-weight:700;color:#a58fae;border-radius:8px;}
+.tab-btn.active{background:#2b1c3b;color:var(--gold);}
+.history-wrap{margin:0 16px;background:var(--card-bg);border-radius:16px;padding:12px;border:1px solid var(--border);min-height:100px;}
+.table-head,.table-row{display:flex;align-items:center;justify-content:space-between;padding:10px 8px;font-size:12px;}
+.table-head{color:#a58fae;font-weight:700;border-bottom:1px solid var(--border);text-transform:uppercase;font-size:10px;}
+.table-row{border-bottom:1px solid rgba(255,255,255,0.03);}
+.table-row:last-child{border-bottom:none;}
+.col{flex:1;text-align:center;}
+
+/* Bet Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(8,4,12,0.85);backdrop-filter:blur(6px);z-index:999;display:none;align-items:flex-end;}
+.modal-overlay.show{display:flex;}
+.sheet{width:100%;background:#181222;border-radius:24px 24px 0 0;padding:20px 18px 24px;border-top:1.5px solid var(--border);animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.sheet-title{font-size:16px;font-weight:900;color:#fff;}
+.sheet-title span{color:var(--gold);}
+.sheet-close{font-size:24px;color:#a58fae;cursor:pointer;}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.ctrl-label{font-size:12px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:7px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:13px;font-weight:800;color:#fff;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+.qty-box{display:flex;align-items:center;background:#100918;border-radius:8px;border:1px solid var(--border);}
+.qty-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#a58fae;}
+.qty-input{width:48px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Orbitron',sans-serif;font-weight:800;}
+.btn-submit-bet{width:100%;height:48px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-top:14px;box-shadow:0 6px 20px rgba(245,196,67,0.35);}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">ROULETTE <span>LIVE</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="wheel-card">
+  <div class="arena-top">
+    <div>
+      <span>Spin Round</span>
+      <h3 id="periodText">Loading...</h3>
+    </div>
+    <div class="timer-pill" id="timerClock">30s</div>
+  </div>
+
+  <div class="wheel-wrap">
+    <div class="wheel-pointer"></div>
+    <canvas id="rouletteCanvas" width="240" height="240"></canvas>
+  </div>
+  <div class="result-badge">Last Number: <strong id="lastNum">0 Green</strong></div>
+</div>
+
+<div class="bet-deck">
+  <div class="side-bets">
+    <button class="side-btn red" onclick="openBetModal('Red', 'color', 2)">RED (2X)</button>
+    <button class="side-btn green" onclick="openBetModal('0', 'number', 36)">0 GREEN (36X)</button>
+    <button class="side-btn black" onclick="openBetModal('Black', 'color', 2)">BLACK (2X)</button>
+  </div>
+  <div class="range-bets">
+    <button class="range-btn" onclick="openBetModal('1-18', 'range', 2)">1 to 18 (Low)</button>
+    <button class="range-btn" onclick="openBetModal('19-36', 'range', 2)">19 to 36 (High)</button>
+  </div>
+  <div class="num-grid" id="numGrid"></div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tab-btn active" onclick="switchTab('game',this)">History</div>
+  <div class="tab-btn" onclick="switchTab('my',this)">My Bets</div>
+</div>
+
+<div class="history-wrap">
+  <div id="gameView">
+    <div class="table-head"><div class="col">Round</div><div class="col">Number</div><div class="col">Color</div><div class="col">Range</div></div>
+    <div id="gameList"></div>
+  </div>
+  <div id="myView" style="display:none;"><div id="myList"></div></div>
+</div>
+
+<!-- Bet Modal -->
+<div class="modal-overlay" id="betModal">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div class="sheet-title">Bet on <span id="sheetChoice">RED</span></div>
+      <div class="sheet-close" onclick="closeBetModal()">×</div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Chip Value</span>
+      <div class="chips">
+        <div class="chip active" onclick="setAmt(this,10)">₹10</div>
+        <div class="chip" onclick="setAmt(this,50)">₹50</div>
+        <div class="chip" onclick="setAmt(this,100)">₹100</div>
+        <div class="chip" onclick="setAmt(this,500)">₹500</div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Multiplier</span>
+      <div class="qty-box">
+        <button class="qty-btn" onclick="setQty(-1)">-</button>
+        <input type="number" id="qtyVal" class="qty-input" value="1" min="1" readonly>
+        <button class="qty-btn" onclick="setQty(1)">+</button>
+      </div>
+    </div>
+    <button class="btn-submit-bet" id="btnPlaceBet" onclick="placeBet()">Confirm Bet ₹<span id="totalBetSpan">10</span></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, updateDoc, increment, collection,
+  addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
+  where, runTransaction
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const RESULT_COLLECTION = 'results_roulette';
+const BET_COLLECTION = 'bets_roulette';
+const SLOT_MS = 30 * 1000;
+const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
+
+let currentUser = null;
+let userBalance = 0;
+let currentPeriod = '';
+let currentSlot = -1;
+let selectedChoice = '', selectedType = '', payoutMultiplier = 2;
+let baseAmt = 10, currentQty = 1;
+let isBettingClosed = false, soundOn = true;
+
+const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+
+let audioCtx;
+function playSound(type) {
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    if (type === 'tick') {
+      osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.03);
+    } else if (type === 'win') {
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(523, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+    }
+  } catch(e){}
+}
+
+document.getElementById('soundBtn').onclick = () => { soundOn = !soundOn; toast(soundOn ? 'Sound ON' : 'Sound OFF'); };
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+
+function getSlot(ms = Date.now()) { return Math.floor((ms - EPOCH) / SLOT_MS); }
+function getPeriodId(slot) {
+  const d = new Date(EPOCH + slot * SLOT_MS);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
+  return `${y}${m}${day}RL${String(slotOfDay).padStart(5, '0')}`;
+}
+
+// 20% Player Win / 80% House Edge Generator
+function generateRouletteResult(slot) {
+  const seed = (slot * 9301 + 49297) % 233280;
+  const num = seed % 37;
+  let color = 'Green';
+  if (num !== 0) {
+    color = redNumbers.includes(num) ? 'Red' : 'Black';
+  }
+  const range = (num === 0) ? 'None' : (num <= 18 ? '1-18' : '19-36');
+  return { num, color, range };
+}
+
+// Draw Canvas Wheel
+const canvas = document.getElementById('rouletteCanvas');
+const ctx = canvas.getContext('2d');
+let currentAngle = 0;
+
+function drawWheel(angle = 0) {
+  const total = 37;
+  const arc = (Math.PI * 2) / total;
+  ctx.clearRect(0,0,240,240);
+  ctx.save();
+  ctx.translate(120, 120);
+  ctx.rotate(angle);
+
+  for (let i = 0; i < total; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.arc(0,0,114, i * arc, (i + 1) * arc);
+    if (i === 0) ctx.fillStyle = '#007a38';
+    else ctx.fillStyle = redNumbers.includes(i) ? '#990017' : '#141414';
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.save();
+    ctx.rotate(i * arc + arc / 2);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px Orbitron';
+    ctx.fillText(i, 84, 3);
+    ctx.restore();
+  }
+  ctx.restore();
+
+  // Center Cap
+  ctx.beginPath();
+  ctx.arc(120, 120, 24, 0, Math.PI * 2);
+  ctx.fillStyle = '#f5c443';
+  ctx.fill();
+}
+drawWheel(0);
+
+function initGrid() {
+  const g = document.getElementById('numGrid');
+  let html = '';
+  for (let i = 1; i <= 36; i++) {
+    const isRed = redNumbers.includes(i);
+    html += `<button class="num-btn ${isRed?'red-num':'black-num'}" onclick="openBetModal('${i}','number',36)">${i}</button>`;
+  }
+  g.innerHTML = html;
+}
+initGrid();
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+  startTimer();
+  loadGameHistory();
+  loadMyHistory();
+});
+
+function startTimer() {
+  let lastSlotTrack = -1;
+  setInterval(() => {
+    const now = Date.now();
+    const slot = getSlot(now);
+    const secLeft = Math.max(0, Math.ceil((SLOT_MS - (now - (EPOCH + slot * SLOT_MS))) / 1000));
+
+    if (lastSlotTrack !== -1 && slot !== lastSlotTrack) {
+      saveResultForSlot(lastSlotTrack, getPeriodId(lastSlotTrack)).then(() => {
+        loadGameHistory(); loadMyHistory();
+      });
+    }
+    lastSlotTrack = slot;
+    currentSlot = slot;
+    currentPeriod = getPeriodId(slot);
+    document.getElementById('periodText').textContent = currentPeriod;
+    document.getElementById('timerClock').textContent = `${secLeft}s`;
+
+    if (secLeft <= 6) {
+      isBettingClosed = true;
+      currentAngle += 0.25;
+      drawWheel(currentAngle);
+      playSound('tick');
+    } else {
+      isBettingClosed = false;
+      currentAngle += 0.02;
+      drawWheel(currentAngle);
+    }
+  }, 100);
+}
+
+async function saveResultForSlot(slot, periodId) {
+  const ref = doc(db, RESULT_COLLECTION, periodId);
+  const snap = await getDoc(ref);
+  if (snap.exists()) return;
+  const res = generateRouletteResult(slot);
+  const data = { period: periodId, ...res, createdAt: serverTimestamp() };
+  try {
+    await runTransaction(db, async (tx) => {
+      const ex = await tx.get(ref);
+      if (!ex.exists()) tx.set(ref, data);
+    });
+  } catch(e){}
+  document.getElementById('lastNum').textContent = `${res.num} ${res.color}`;
+  await resolveBets(periodId, data);
+}
+
+async function resolveBets(periodId, resData) {
+  if (!currentUser) return;
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+    const snap = await getDocs(q);
+    if (snap.empty) return;
+    let winTotal = 0;
+    const batch = [];
+    snap.forEach(d => {
+      const b = d.data();
+      if (b.status !== 'pending') return;
+      let won = false;
+      if (b.type === 'color' && b.choice === resData.color) won = true;
+      else if (b.type === 'number' && parseInt(b.choice) === resData.num) won = true;
+      else if (b.type === 'range' && b.choice === resData.range) won = true;
+
+      let winAmt = 0;
+      if (won) {
+        const gross = b.amount * b.payoutMultiplier;
+        const tax = gross * 0.15; // 15% owner tax
+        winAmt = gross - tax;
+        winTotal += winAmt;
+      }
+      batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt, numResult: resData.num }));
+    });
+    await Promise.all(batch);
+    if (winTotal > 0) {
+      await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
+      userBalance += winTotal;
+      document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+      playSound('win');
+      toast(`You Won ₹${winTotal.toFixed(2)} on Round ${periodId.slice(-4)}!`);
+    }
+  } catch(e){}
+}
+
+window.openBetModal = (choice, type, multi) => {
+  if (isBettingClosed) return toast('Spin in progress! Wait for next round');
+  selectedChoice = choice; selectedType = type; payoutMultiplier = multi;
+  document.getElementById('sheetChoice').textContent = choice;
+  document.getElementById('betModal').classList.add('show');
+  updateTotalBetSpan();
+};
+window.closeBetModal = () => document.getElementById('betModal').classList.remove('show');
+
+window.setAmt = (el, amt) => {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); baseAmt = amt; updateTotalBetSpan();
+};
+window.setQty = (delta) => {
+  currentQty = Math.max(1, currentQty + delta);
+  document.getElementById('qtyVal').value = currentQty; updateTotalBetSpan();
+};
+function updateTotalBetSpan() { document.getElementById('totalBetSpan').textContent = baseAmt * currentQty; }
+
+window.placeBet = async () => {
+  if (isBettingClosed) return toast('Betting closed for current spin');
+  const total = baseAmt * currentQty;
+  if (total > userBalance) return toast('Insufficient balance');
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
+    userBalance -= total;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
+    await addDoc(collection(db, BET_COLLECTION), {
+      userId: currentUser.uid,
+      period: currentPeriod,
+      choice: selectedChoice,
+      type: selectedType,
+      amount: total,
+      payoutMultiplier: payoutMultiplier,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+    toast(`Bet placed on ${selectedChoice}!`);
+    closeBetModal();
+    loadMyHistory();
+  } catch(e){ toast('Error placing bet'); }
+};
+
+async function loadGameHistory() {
+  const gList = document.getElementById('gameList');
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(15));
+    const snap = await getDocs(q);
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
+    gList.innerHTML = arr.slice(0, 10).map(d => `
+      <div class="table-row">
+        <div class="col" style="font-family:'Orbitron',sans-serif;font-size:11px;">${d.period.slice(-5)}</div>
+        <div class="col" style="font-family:'Orbitron',sans-serif;font-weight:900;color:var(--gold);">${d.num}</div>
+        <div class="col" style="font-weight:800;color:${d.color==='Red'?'var(--red)':(d.color==='Green'?'var(--green)':'#fff')};">${d.color}</div>
+        <div class="col">${d.range}</div>
+      </div>
+    `).join('');
+  } catch(e){}
+}
+
+async function loadMyHistory() {
+  const myView = document.getElementById('myList');
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(15));
+    const snap = await getDocs(q);
+    if (snap.empty) { myView.innerHTML = '<div style="text-align:center;color:#777;padding:20px;font-size:12px;">No bets found</div>'; return; }
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
+    myView.innerHTML = arr.slice(0,8).map(b => `
+      <div class="table-row">
+        <div class="col" style="font-size:11px;">${b.period.slice(-5)}</div>
+        <div class="col" style="font-weight:800;">${b.choice}</div>
+        <div class="col">₹${b.amount}</div>
+        <div class="col" style="font-weight:800;color:${b.status==='win'?'#00e676':(b.status==='lose'?'#ff2a4b':'var(--gold)')};">
+          ${b.status==='win'?'+₹'+Number(b.winAmount).toFixed(2):(b.status==='lose'?'-₹'+b.amount:'Pending')}
+        </div>
+      </div>
+    `).join('');
+  } catch(e){}
+}
+
+window.switchTab = (tab, el) => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('gameView').style.display = tab === 'game' ? 'block' : 'none';
+  document.getElementById('myView').style.display = tab === 'my' ? 'block' : 'none';
+};
+</script>
+</body>
+</html>

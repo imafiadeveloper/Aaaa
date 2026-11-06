@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#120c18">
+<title>BDG LOTTERY7 - Chicken Road</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --green: #00e676;
+  --red: #ff2a4b;
+  --card-bg: #1a1622;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #291238 0%, #0c0814 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(18,12,24,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.bal-card{background:linear-gradient(145deg, #251633 0%, #150d1d 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+/* Road Track Canvas */
+.road-arena{margin:0 16px 14px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:20px;padding:20px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;}
+.road-track{display:flex;flex-direction:column-reverse;gap:8px;background:#0d0713;border-radius:14px;padding:12px;border:1px solid rgba(255,255,255,0.06);}
+.step-row{display:flex;justify-content:space-between;align-items:center;background:#180f24;border-radius:10px;padding:10px 14px;border:1.5px solid transparent;}
+.step-row.active{border-color:var(--gold);background:#2b1940;}
+.step-row.passed{border-color:var(--green);background:rgba(0,230,118,0.08);}
+.step-row.crash{border-color:var(--red);background:rgba(255,42,75,0.15);}
+.step-num{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:#fff;}
+.step-mult{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--gold);}
+
+/* Controls */
+.ctrl-card{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:16px;border:1px solid var(--border);}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.ctrl-lbl{font-size:12px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:12px;font-weight:800;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+
+.btn-act{width:100%;height:50px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:1px;box-shadow:0 6px 20px rgba(245,196,67,0.35);margin-top:6px;}
+.btn-act.cashout{background:linear-gradient(135deg, #00e676, #009640);color:#fff;}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">CHICKEN <span>ROAD</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="road-arena">
+  <div class="road-track" id="roadTrack">
+    <div class="step-row" id="s5"><span class="step-num">Step 5</span><span class="step-mult">10.0X</span></div>
+    <div class="step-row" id="s4"><span class="step-num">Step 4</span><span class="step-mult">4.50X</span></div>
+    <div class="step-row" id="s3"><span class="step-num">Step 3</span><span class="step-mult">2.60X</span></div>
+    <div class="step-row" id="s2"><span class="step-num">Step 2</span><span class="step-mult">1.80X</span></div>
+    <div class="step-row" id="s1"><span class="step-num">Step 1</span><span class="step-mult">1.25X</span></div>
+  </div>
+</div>
+
+<div class="ctrl-card">
+  <div class="ctrl-row">
+    <span class="ctrl-lbl">Bet Amount</span>
+    <div class="chips">
+      <div class="chip active" onclick="setAmt(this,10)">₹10</div>
+      <div class="chip" onclick="setAmt(this,50)">₹50</div>
+      <div class="chip" onclick="setAmt(this,100)">₹100</div>
+      <div class="chip" onclick="setAmt(this,500)">₹500</div>
+    </div>
+  </div>
+  <button class="btn-act" id="actBtn" onclick="handleAction()">Start Run</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const BET_COLLECTION = 'bets_chickenroad';
+
+let currentUser = null;
+let userBalance = 0;
+let currentBet = 10;
+let isRunning = false;
+let currentStep = 0;
+const multipliers = [0, 1.25, 1.80, 2.60, 4.50, 10.0];
+
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+});
+
+window.setAmt = (el, amt) => {
+  if (isRunning) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); currentBet = amt;
+};
+
+window.handleAction = async () => {
+  if (!isRunning) {
+    // Start Game
+    if (currentBet > userBalance) return toast('Insufficient balance');
+    isRunning = true;
+    currentStep = 0;
+    resetTrack();
+
+    try {
+      await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-currentBet) });
+      userBalance -= currentBet;
+      document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+      takeStep();
+    } catch(e){ isRunning = false; }
+  } else {
+    // Cashout
+    cashout();
+  }
+};
+
+function resetTrack() {
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById(`s${i}`);
+    el.className = 'step-row';
+  }
+}
+
+function takeStep() {
+  currentStep++;
+  const el = document.getElementById(`s${currentStep}`);
+  el.classList.add('active');
+
+  // Strict 20% Safe Crossing Rate
+  const isSafe = (Math.random() < 0.20);
+
+  setTimeout(async () => {
+    if (!isSafe) {
+      // Crashed
+      el.className = 'step-row crash';
+      toast('💥 Chicken Hit by Car! You Lost.');
+      isRunning = false;
+      document.getElementById('actBtn').className = 'btn-act';
+      document.getElementById('actBtn').textContent = 'Start Run';
+
+      await addDoc(collection(db, BET_COLLECTION), {
+        userId: currentUser.uid, amount: currentBet, step: currentStep, status: 'lose', createdAt: serverTimestamp()
+      });
+    } else {
+      // Safe step
+      el.className = 'step-row passed';
+      const curMult = multipliers[currentStep];
+      const winEst = (currentBet * curMult) * 0.85;
+
+      if (currentStep === 5) {
+        toast(`🏆 Grand Finish at 10X!`);
+        cashout();
+      } else {
+        const btn = document.getElementById('actBtn');
+        btn.className = 'btn-act cashout';
+        btn.textContent = `Cashout ₹${winEst.toFixed(2)}`;
+      }
+    }
+  }, 400);
+}
+
+async function cashout() {
+  if (!isRunning || currentStep === 0) return;
+  const mult = multipliers[currentStep];
+  const gross = currentBet * mult;
+  const net = gross - (gross - currentBet) * 0.15; // 15% owner tax
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(net) });
+    userBalance += net;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+    toast(`Cashed out ₹${net.toFixed(2)} at ${mult}X!`);
+
+    await addDoc(collection(db, BET_COLLECTION), {
+      userId: currentUser.uid, amount: currentBet, step: currentStep, multiplier: mult, winAmount: net, status: 'win', createdAt: serverTimestamp()
+    });
+  } catch(e){}
+
+  isRunning = false;
+  document.getElementById('actBtn').className = 'btn-act';
+  document.getElementById('actBtn').textContent = 'Start Run';
+}
+</script>
+</body>
+</html>
