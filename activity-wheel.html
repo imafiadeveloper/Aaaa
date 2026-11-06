@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#181818">
+<title>BDG GAME - Lucky Wheel Spin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #FAE59F;
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+
+.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+
+.wheel-container{
+  margin:16px 14px;background:#202024;border-radius:20px;padding:24px 16px;
+  border:1px solid var(--border);text-align:center;position:relative;
+}
+.wheel-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--gold);}
+.wheel-sub{font-size:11px;color:#8f929b;margin-top:4px;}
+
+.wheel-outer{
+  position:relative;width:280px;height:280px;margin:24px auto;
+  border-radius:50%;border:8px solid #332612;box-shadow:0 0 25px rgba(245,196,67,0.3);
+}
+#wheelCanvas{width:100%;height:100%;border-radius:50%;transition:transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);}
+.wheel-pointer{
+  position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;
+  border-top:24px solid #ff4757;z-index:10;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+.wheel-center-pin{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:48px;height:48px;border-radius:50%;background:radial-gradient(circle,#FAE59F,#C48E2F);
+  display:flex;align-items:center;justify-content:center;color:#221500;
+  font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;box-shadow:0 0 10px rgba(0,0,0,0.8);
+  cursor:pointer;z-index:11;
+}
+
+.spin-stats{
+  display:flex;justify-content:space-around;background:#18181a;border-radius:12px;
+  padding:12px;margin:16px 0;border:1px solid rgba(255,255,255,0.04);
+}
+.spin-stats p{font-size:11px;color:#8f929b;}
+.spin-stats strong{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);margin-top:2px;display:block;}
+
+.btn-spin{
+  width:100%;height:48px;border-radius:24px;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  color:#291a03;font-size:16px;font-weight:900;letter-spacing:1px;
+}
+.btn-spin:disabled{opacity:0.5;cursor:not-allowed;}
+
+.rules-box{margin:0 14px;background:#202024;border-radius:14px;padding:16px;font-size:12px;color:#8f929b;line-height:1.6;border:1px solid var(--border);}
+.rules-box strong{color:#fff;}
+
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-title">Invite Wheel Spin</div>
+</header>
+
+<div class="wheel-container">
+  <div class="wheel-title">LUCKY WHEEL SPIN</div>
+  <div class="wheel-sub">Spin to win Cash &amp; iPhone Duo Grand Prizes</div>
+
+  <div class="wheel-outer">
+    <div class="wheel-pointer"></div>
+    <canvas id="wheelCanvas" width="280" height="280"></canvas>
+    <div class="wheel-center-pin" onclick="spinWheel()">SPIN</div>
+  </div>
+
+  <div class="spin-stats">
+    <div>
+      <p>Available Spins</p>
+      <strong id="spinCountText">3</strong>
+    </div>
+    <div>
+      <p>Today Won</p>
+      <strong id="todayWonText">₹0.00</strong>
+    </div>
+  </div>
+
+  <button class="btn-spin" id="spinBtn" onclick="spinWheel()">START SPIN</button>
+</div>
+
+<div class="rules-box">
+  <p>1. <strong>Every valid invite or recharge</strong> unlocks lucky spin tickets.</p>
+  <p>2. Prizes range from <strong>₹10, ₹50, ₹100, ₹500, ₹2,000 to iPhone 18 Pro</strong>.</p>
+  <p>3. Winnings credit instantly to your game wallet with 1x turnover requirement.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let spinsLeft = 3;
+let isSpinning = false;
+let currentDeg = 0;
+
+const rewards = [
+  { label: '₹10', value: 10, color: '#f39c12' },
+  { label: '₹50', value: 50, color: '#2c3e50' },
+  { label: '₹100', value: 100, color: '#e74c3c' },
+  { label: '₹20', value: 20, color: '#34495e' },
+  { label: '₹500', value: 500, color: '#27ae60' },
+  { label: 'iPhone', value: 0, color: '#8e44ad' },
+  { label: '₹5', value: 5, color: '#16a085' },
+  { label: '₹200', value: 200, color: '#d35400' }
+];
+
+window.toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2000);
+};
+
+function drawWheel() {
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  const arc = (2 * Math.PI) / rewards.length;
+
+  for (let i = 0; i < rewards.length; i++) {
+    const angle = i * arc;
+    ctx.beginPath();
+    ctx.fillStyle = rewards[i].color;
+    ctx.moveTo(140, 140);
+    ctx.arc(140, 140, 140, angle, angle + arc);
+    ctx.lineTo(140, 140);
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(140, 140);
+    ctx.rotate(angle + arc / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 14px Orbitron, sans-serif';
+    ctx.fillText(rewards[i].label, 120, 5);
+    ctx.restore();
+  }
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    drawWheel();
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      spinsLeft = Number(snap.data().wheelSpins ?? 3);
+      document.getElementById('spinCountText').textContent = spinsLeft;
+    }
+  } else {
+    location.replace('index.html');
+  }
+});
+
+window.spinWheel = async () => {
+  if (isSpinning) return;
+  if (spinsLeft <= 0) return toast('No spins available! Invite friends to get spins.');
+
+  isSpinning = true;
+  document.getElementById('spinBtn').disabled = true;
+
+  // Controlled 10% high win (mostly ₹5 - ₹20)
+  const chosenIndex = Math.random() < 0.1 ? 4 : (Math.random() < 0.5 ? 0 : 6);
+  const degreesPerSlice = 360 / rewards.length;
+  const targetDegree = 360 * 5 + (360 - (chosenIndex * degreesPerSlice + degreesPerSlice / 2));
+
+  currentDeg += targetDegree;
+  const wheelEl = document.getElementById('wheelCanvas');
+  wheelEl.style.transform = `rotate(${currentDeg}deg)`;
+
+  setTimeout(async () => {
+    const reward = rewards[chosenIndex];
+    spinsLeft--;
+    document.getElementById('spinCountText').textContent = spinsLeft;
+
+    try {
+      if (reward.value > 0) {
+        await updateDoc(doc(db, 'users', currentUser.uid), {
+          balance: increment(reward.value),
+          totalBonus: increment(reward.value),
+          wheelSpins: spinsLeft
+        });
+        await addDoc(collection(db, 'transactions'), {
+          userId: currentUser.uid, type: 'bonus', title: 'Lucky Wheel Bonus', amount: reward.value, status: 'success', createdAt: serverTimestamp()
+        });
+        document.getElementById('todayWonText').textContent = `₹${reward.value}`;
+        toast(`🎉 Congratulations! You won ${reward.label}!`);
+      } else {
+        toast('Better luck next time!');
+      }
+    } catch(e) {}
+
+    isSpinning = false;
+    document.getElementById('spinBtn').disabled = false;
+  }, 4100);
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#181818">
+<title>BDG GAME - Unlimited Daily Cash Rebate</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #FAE59F;
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+
+.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+
+.banner-wrap{margin:12px 14px;}
+.top-banner{width:100%;border-radius:14px;display:block;}
+.brand-strip{text-align:center;padding:10px 0;}
+.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;}
+
+.detail-card{margin:0 14px 14px;background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);}
+.dc-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.dc-sub{font-size:11px;color:var(--gold);font-weight:700;}
+.dc-title{font-size:18px;font-weight:800;margin-top:4px;}
+.dc-desc{font-size:12px;color:#8f929b;margin-top:2px;}
+.dc-badge{text-align:right;}
+.dc-badge span{font-size:10px;color:var(--gold);font-weight:700;}
+.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:26px;color:var(--gold);line-height:1.2;}
+
+.claim-summary-card{
+  margin:0 14px 16px;background:linear-gradient(135deg, #2b2313 0%, #1c1a16 100%);
+  border-radius:14px;padding:16px;border:1px solid rgba(250,229,159,0.2);display:flex;
+  justify-content:space-between;align-items:center;
+}
+.cs-left span{font-size:11px;color:#a6a9ae;font-weight:600;}
+.cs-left h2{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);margin-top:4px;}
+.btn-claim-rebate{
+  padding:10px 20px;border-radius:20px;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  color:#291a03;font-size:13px;font-weight:800;
+}
+.btn-claim-rebate:disabled{opacity:0.4;cursor:not-allowed;}
+
+.section-label{padding:0 14px 10px;font-size:14px;font-weight:800;}
+.rebate-table{margin:0 14px;background:#202024;border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+.rt-head{display:flex;background:#28282e;padding:12px 16px;font-size:11px;color:#8f929b;font-weight:700;text-transform:uppercase;}
+.rt-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.rt-row:last-child{border-bottom:none;}
+.rt-row h3{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:800;}
+.rt-row h2{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--gold);}
+
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-title">Daily Cash Rebate</div>
+</header>
+
+<div class="banner-wrap">
+  <img src="./images/Banner_20261027220830qq7i.png" class="top-banner" onerror="this.src='./images/banner1.png'">
+</div>
+
+<div class="brand-strip">
+  <h2>BDG GAME</h2>
+</div>
+
+<div class="detail-card">
+  <div class="dc-header">
+    <div>
+      <div class="dc-sub">💳 CASH REBATE</div>
+      <div class="dc-title">Unlimited Daily Rebate</div>
+      <div class="dc-desc">Real-time settlement &amp; automatic bonus</div>
+    </div>
+    <div class="dc-badge">
+      <span>UP TO</span>
+      <h1>1.0%</h1>
+      <span style="color:#8f929b;">REBATE</span>
+    </div>
+  </div>
+</div>
+
+<div class="claim-summary-card">
+  <div class="cs-left">
+    <span>Unclaimed Rebate</span>
+    <h2 id="pendingRebateVal">₹0.00</h2>
+  </div>
+  <button class="btn-claim-rebate" id="claimRebateBtn" onclick="claimDailyRebate()">One-Click Claim</button>
+</div>
+
+<div class="section-label">🎁 Rebate Tier List</div>
+
+<div class="rebate-table">
+  <div class="rt-head">
+    <div style="flex:1;">VALID TURNOVER</div>
+    <div>RATE</div>
+  </div>
+  <div class="rt-row">
+    <div>
+      <h3>₹1,000+</h3>
+      <p style="font-size:11px;color:#8f929b;">All lottery &amp; slot games</p>
+    </div>
+    <h2>0.4%</h2>
+  </div>
+  <div class="rt-row">
+    <div>
+      <h3>₹10,000+</h3>
+      <p style="font-size:11px;color:#8f929b;">All lottery &amp; slot games</p>
+    </div>
+    <h2>0.6%</h2>
+  </div>
+  <div class="rt-row">
+    <div>
+      <h3>₹50,000+</h3>
+      <p style="font-size:11px;color:#8f929b;">All lottery &amp; slot games</p>
+    </div>
+    <h2>0.8%</h2>
+  </div>
+  <div class="rt-row">
+    <div>
+      <h3>₹200,000+</h3>
+      <p style="font-size:11px;color:#8f929b;">VIP Super Tier</p>
+    </div>
+    <h2>1.0%</h2>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let currentRebate = 0;
+
+window.toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2000);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      const data = snap.data();
+      const turnover = Number(data.totalBetTurnover || 15000);
+      currentRebate = Math.max(12.5, Number((turnover * 0.006).toFixed(2)));
+      document.getElementById('pendingRebateVal').textContent = `₹${currentRebate.toFixed(2)}`;
+    }
+  } else {
+    location.replace('index.html');
+  }
+});
+
+window.claimDailyRebate = async () => {
+  if (!currentUser) return;
+  if (currentRebate <= 0) return toast('No rebate available to claim');
+  const btn = document.getElementById('claimRebateBtn');
+  btn.disabled = true;
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(currentRebate),
+      totalBonus: increment(currentRebate),
+      todayBonus: increment(currentRebate)
+    });
+
+    await addDoc(collection(db, 'transactions'), {
+      userId: currentUser.uid,
+      type: 'bonus',
+      title: 'Daily Betting Cash Rebate',
+      amount: currentRebate,
+      status: 'success',
+      createdAt: serverTimestamp()
+    });
+
+    toast(`Rebate ₹${currentRebate.toFixed(2)} credited to balance!`);
+    currentRebate = 0;
+    document.getElementById('pendingRebateVal').textContent = '₹0.00';
+  } catch(e) {
+    toast('Claim failed. Try again.');
+    btn.disabled = false;
+  }
+};
+</script>
+</body>
+</html>

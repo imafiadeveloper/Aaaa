@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#181818">
+<title>BDG GAME - Recharge Bonus</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #FAE59F;
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+
+.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+
+.banner-wrap{margin:12px 14px;}
+.top-banner{width:100%;border-radius:14px;display:block;}
+
+.bonus-box{margin:0 14px 16px;background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);}
+.bb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.bb-row h3{font-size:16px;font-weight:800;color:#fff;}
+.bb-row span{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:900;}
+
+.table-wrap{margin:0 14px;background:#202024;border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+.tw-head{display:flex;background:#28282e;padding:12px 16px;font-size:11px;color:#8f929b;font-weight:700;}
+.tw-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.tw-row:last-child{border-bottom:none;}
+.tw-row h4{font-family:'Orbitron',sans-serif;font-size:15px;color:#fff;}
+.tw-row h3{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);}
+
+.btn-deposit{
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
+  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
+  font-size:15px;font-weight:900;
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-title">Recharge Bonus</div>
+</header>
+
+<div class="banner-wrap">
+  <img src="./images/Banner_20261027221033lv4t.png" class="top-banner" onerror="this.src='./images/banner4.png'">
+</div>
+
+<div class="bonus-box">
+  <div class="bb-row">
+    <h3>First Deposit Bonus</h3>
+    <span>+100% EXTRA</span>
+  </div>
+  <p style="font-size:12px;color:#8f929b;line-height:1.5;">Deposit and get direct cashback to your wallet instantly. Valid for all payment gateways.</p>
+</div>
+
+<div class="table-wrap">
+  <div class="tw-head">
+    <div style="flex:1;">DEPOSIT AMOUNT</div>
+    <div>EXTRA BONUS</div>
+  </div>
+  <div class="tw-row">
+    <h4>₹500</h4>
+    <h3>+₹50</h3>
+  </div>
+  <div class="tw-row">
+    <h4>₹1,000</h4>
+    <h3>+₹150</h3>
+  </div>
+  <div class="tw-row">
+    <h4>₹5,000</h4>
+    <h3>+₹800</h3>
+  </div>
+  <div class="tw-row">
+    <h4>₹10,000</h4>
+    <h3>+₹2,000</h3>
+  </div>
+</div>
+
+<button class="btn-deposit" onclick="location.href='deposit.html'">Recharge Now</button>
+
+</body>
+</html>

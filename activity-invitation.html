@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#181818">
+<title>BDG GAME - Invitation Bonus</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #FAE59F;
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+
+.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+
+.banner-wrap{margin:12px 14px;}
+.top-banner{width:100%;border-radius:14px;display:block;}
+
+.grand-card{
+  margin:0 14px 16px;background:linear-gradient(135deg,#3a2a10 0%,#18181a 100%);
+  border-radius:16px;padding:16px;border:1px solid rgba(250,229,159,0.3);text-align:center;
+}
+.grand-card p{font-size:11px;color:#a6a9ae;text-transform:uppercase;font-weight:700;}
+.grand-card h1{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);margin-top:4px;}
+
+.invite-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 16px;}
+.is-box{background:#202024;border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border);}
+.is-box span{font-size:11px;color:#8f929b;}
+.is-box h3{font-family:'Orbitron',sans-serif;font-size:20px;color:#fff;margin-top:4px;}
+
+.section-label{padding:0 14px 10px;font-size:14px;font-weight:800;}
+.tier-list{margin:0 14px;display:flex;flex-direction:column;gap:10px;}
+.tier-item{
+  background:#202024;border-radius:14px;padding:14px 16px;display:flex;
+  justify-content:space-between;align-items:center;border:1px solid var(--border);
+}
+.ti-left h4{font-size:13px;font-weight:800;color:#fff;}
+.ti-left p{font-size:11px;color:#8f929b;margin-top:2px;}
+.ti-right{text-align:right;}
+.ti-right h3{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--gold);}
+.btn-claim-tier{
+  margin-top:6px;padding:5px 14px;border-radius:14px;background:#333;color:#888;
+  font-size:11px;font-weight:700;
+}
+.btn-claim-tier.active{background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;}
+
+.btn-invite-now{
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
+  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
+  font-size:15px;font-weight:900;
+}
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-title">Invitation Bonus</div>
+</header>
+
+<div class="banner-wrap">
+  <img src="./images/Banner_2026102722090226nu.png" class="top-banner" onerror="this.src='./images/banner6.png'">
+</div>
+
+<div class="grand-card">
+  <p>Bonus up to</p>
+  <h1>₹3,655,555</h1>
+</div>
+
+<div class="invite-stats">
+  <div class="is-box">
+    <span>Invited Friends</span>
+    <h3 id="invitedCount">0</h3>
+  </div>
+  <div class="is-box">
+    <span>Earned Bonus</span>
+    <h3 id="earnedBonus">₹0.00</h3>
+  </div>
+</div>
+
+<div class="section-label">🎁 Invitation Progress Tiers</div>
+
+<div class="tier-list">
+  <div class="tier-item">
+    <div class="ti-left">
+      <h4>Invite 1 Friend</h4>
+      <p>Deposit &ge; ₹300</p>
+    </div>
+    <div class="ti-right">
+      <h3>₹55</h3>
+      <button class="btn-claim-tier" id="tierBtn1" onclick="claimTier(1, 55)">Claim</button>
+    </div>
+  </div>
+  <div class="tier-item">
+    <div class="ti-left">
+      <h4>Invite 3 Friends</h4>
+      <p>Deposit &ge; ₹300 each</p>
+    </div>
+    <div class="ti-right">
+      <h3>₹155</h3>
+      <button class="btn-claim-tier" id="tierBtn3" onclick="claimTier(3, 155)">Claim</button>
+    </div>
+  </div>
+  <div class="tier-item">
+    <div class="ti-left">
+      <h4>Invite 10 Friends</h4>
+      <p>Deposit &ge; ₹300 each</p>
+    </div>
+    <div class="ti-right">
+      <h3>₹655</h3>
+      <button class="btn-claim-tier" id="tierBtn10" onclick="claimTier(10, 655)">Claim</button>
+    </div>
+  </div>
+  <div class="tier-item">
+    <div class="ti-left">
+      <h4>Invite 30 Friends</h4>
+      <p>Deposit &ge; ₹300 each</p>
+    </div>
+    <div class="ti-right">
+      <h3>₹2,355</h3>
+      <button class="btn-claim-tier" id="tierBtn30" onclick="claimTier(30, 2355)">Claim</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn-invite-now" onclick="location.href='promotion.html'">Invite Friends Now</button>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let totalInvites = 0;
+
+window.toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2000);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    const q = query(collection(db, 'users'), where('referredBy', '==', user.uid));
+    const snap = await getDocs(q);
+    totalInvites = snap.size;
+    document.getElementById('invitedCount').textContent = totalInvites;
+
+    if (totalInvites >= 1) document.getElementById('tierBtn1').classList.add('active');
+    if (totalInvites >= 3) document.getElementById('tierBtn3').classList.add('active');
+    if (totalInvites >= 10) document.getElementById('tierBtn10').classList.add('active');
+    if (totalInvites >= 30) document.getElementById('tierBtn30').classList.add('active');
+  } else {
+    location.replace('index.html');
+  }
+});
+
+window.claimTier = async (req, amt) => {
+  if (!currentUser) return;
+  if (totalInvites < req) return toast(`Need ${req} active invites to claim!`);
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(amt),
+      totalBonus: increment(amt)
+    });
+    await addDoc(collection(db, 'transactions'), {
+      userId: currentUser.uid, type: 'bonus', title: `Tier ${req} Friends Invite Bonus`, amount: amt, status: 'success', createdAt: serverTimestamp()
+    });
+    toast(`₹${amt} Invitation Bonus Claimed!`);
+  } catch(e) {
+    toast('Claim failed');
+  }
+};
+</script>
+</body>
+</html>
