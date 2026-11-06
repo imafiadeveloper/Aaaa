@@ -20,7 +20,7 @@
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; -webkit-tap-highlight-color:transparent; }
 body { background:var(--bg); color:#fff; min-height:100vh; padding-bottom:60px; }
 button { cursor:pointer; border:none; outline:none; }
-input, select { outline:none; border:none; background:transparent; color:#fff; font-family:inherit; }
+input, select, textarea { outline:none; border:none; background:transparent; color:#fff; font-family:inherit; }
 
 /* Navbar */
 .navbar {
@@ -31,7 +31,7 @@ input, select { outline:none; border:none; background:transparent; color:#fff; f
 .nav-brand { font-size:16px; font-weight:900; color:var(--gold); display:flex; align-items:center; gap:8px; }
 .admin-badge { background:rgba(255,77,79,0.2); color:var(--red); font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; border:1px solid rgba(255,77,79,0.3); }
 
-/* Navigation Tabs */
+/* Tabs */
 .tabs-wrap { display:flex; gap:8px; padding:12px 16px; overflow-x:auto; background:#121215; border-bottom:1px solid var(--border); }
 .tab-btn {
   flex:0 0 auto; background:var(--card); color:#8f929b; padding:8px 14px;
@@ -43,42 +43,70 @@ input, select { outline:none; border:none; background:transparent; color:#fff; f
 .section { display:none; padding:16px; }
 .section.active { display:block; }
 
-/* Cards & Layout */
+/* Cards */
 .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:14px; box-shadow:0 4px 14px rgba(0,0,0,0.4); }
 .card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
 .card-head h3 { font-size:14px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px; }
 
-/* WinGo Controller Elements */
+/* WinGo Controller */
 .game-selector { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; }
 .g-pill {
-  padding:6px 12px; background:var(--card-sub); border:1px solid var(--border); border-radius:8px;
-  font-size:11px; font-weight:700; color:#aaa; cursor:pointer;
+  padding:8px 14px; background:var(--card-sub); border:1px solid var(--border); border-radius:10px;
+  font-size:12px; font-weight:700; color:#aaa; cursor:pointer;
 }
-.g-pill.active { background:#FAE59F; color:#1a1a1a; font-weight:800; }
+.g-pill.active { background:var(--gold); color:#1a1a1a; font-weight:800; }
 
 .mode-toggle { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
 .mode-btn {
   padding:12px; border-radius:12px; background:var(--card-sub); border:1.5px solid var(--border);
-  font-size:13px; font-weight:800; text-align:center; color:#888;
+  font-size:13px; font-weight:800; text-align:center; color:#888; cursor:pointer;
 }
-.mode-btn.active-auto { border-color:var(--green); background:rgba(0,230,118,0.1); color:var(--green); }
-.mode-btn.active-manual { border-color:var(--red); background:rgba(255,77,79,0.1); color:var(--red); }
+.mode-btn.active-auto { border-color:var(--green); background:rgba(0,230,118,0.12); color:var(--green); }
+.mode-btn.active-manual { border-color:var(--red); background:rgba(255,77,79,0.12); color:var(--red); }
 
 .pool-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:16px; }
 .pool-box { background:#121215; border-radius:10px; padding:10px; text-align:center; border:1px solid var(--border); }
 .pool-box span { font-size:10px; color:#8f929b; text-transform:uppercase; font-weight:700; display:block; }
 .pool-box strong { font-family:'Orbitron',sans-serif; font-size:14px; margin-top:4px; display:block; }
 
-.num-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-bottom:14px; }
+/* Big / Small & Color Selector */
+.decision-title { font-size:11px; color:#8f929b; text-transform:uppercase; font-weight:800; margin-bottom:8px; }
+.bs-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.bs-btn {
+  padding:12px; border-radius:12px; font-family:'Orbitron',sans-serif; font-size:15px; font-weight:900;
+  text-align:center; cursor:pointer; border:2px solid transparent; background:var(--card-sub);
+}
+.bs-btn.big { color:#ffa502; }
+.bs-btn.small { color:#1e90ff; }
+.bs-btn.selected { border-color:var(--gold); background:rgba(250,229,159,0.15); box-shadow:0 0 12px rgba(250,229,159,0.3); }
+
+.color-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:12px; }
+.c-pick-btn {
+  padding:10px; border-radius:10px; font-size:12px; font-weight:800; text-align:center; cursor:pointer;
+  border:2px solid transparent;
+}
+.c-pick-btn.green { background:rgba(0,230,118,0.15); color:var(--green); border-color:rgba(0,230,118,0.3); }
+.c-pick-btn.violet { background:rgba(179,136,255,0.15); color:var(--violet); border-color:rgba(179,136,255,0.3); }
+.c-pick-btn.red { background:rgba(255,77,79,0.15); color:var(--red); border-color:rgba(255,77,79,0.3); }
+.c-pick-btn.selected { border-color:#fff; box-shadow:0 0 10px #fff; }
+
+.num-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-bottom:16px; }
 .num-btn {
-  aspect-ratio:1; border-radius:10px; background:#222; font-family:'Orbitron',sans-serif;
+  aspect-ratio:1; border-radius:10px; font-family:'Orbitron',sans-serif;
   font-size:18px; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center;
   border:2px solid transparent; cursor:pointer;
 }
-.num-btn.selected { border-color:var(--gold); box-shadow:0 0 10px rgba(250,229,159,0.4); }
+.num-btn.selected { border-color:#fff; transform:scale(1.05); box-shadow:0 0 14px rgba(255,255,255,0.7); }
 .c-green { background:linear-gradient(135deg, #00b09b, #96c93d); }
 .c-red { background:linear-gradient(135deg, #ff416c, #ff4b2b); }
 .c-violet { background:linear-gradient(135deg, #8a2387, #e94057); }
+
+.target-badge {
+  background:#141416; border:1px solid var(--gold); border-radius:10px; padding:10px 14px;
+  margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;
+}
+.target-badge span { font-size:12px; color:#8f929b; }
+.target-badge strong { font-family:'Orbitron',sans-serif; color:var(--gold); font-size:14px; }
 
 /* Table Elements */
 .user-item { background:var(--card-sub); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:10px; }
@@ -87,7 +115,7 @@ input, select { outline:none; border:none; background:transparent; color:#fff; f
 .input-row { display:flex; gap:8px; background:#121215; padding:8px 12px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; }
 .input-row input { flex:1; font-size:13px; }
 
-.btn-sm { padding:6px 14px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer; }
+.btn-sm { padding:8px 14px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer; }
 .btn-gold { background:var(--gold-grad); color:#1c1304; }
 .btn-red { background:rgba(255,77,79,0.2); color:var(--red); border:1px solid var(--red); }
 .btn-green { background:rgba(0,230,118,0.2); color:var(--green); border:1px solid var(--green); }
@@ -123,48 +151,69 @@ input, select { outline:none; border:none; background:transparent; color:#fff; f
 <section id="wingoTab" class="section active">
   <div class="card">
     <div class="card-head">
-      <h3>WinGo Game Room Control</h3>
-      <span id="gamePeriod" style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:12px;">Period: --</span>
+      <h3>WinGo Real-Time Engine</h3>
+      <span id="gamePeriod" style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:13px; font-weight:900;">Period: ...</span>
     </div>
 
     <div class="game-selector">
-      <div class="g-pill active" onclick="selectGame('bets_30s', '30s', this)">WinGo 30s</div>
-      <div class="g-pill" onclick="selectGame('bets', '1m', this)">WinGo 1M</div>
-      <div class="g-pill" onclick="selectGame('bets_3m', '3m', this)">WinGo 3M</div>
-      <div class="g-pill" onclick="selectGame('bets_5m', '5m', this)">WinGo 5M</div>
+      <div class="g-pill active" onclick="selectGame('bets_30s', 'results_30s', '30s', 30, this)">WinGo 30s</div>
+      <div class="g-pill" onclick="selectGame('bets', 'results', '1m', 60, this)">WinGo 1M</div>
+      <div class="g-pill" onclick="selectGame('bets_3m', 'results_3m', '3m', 180, this)">WinGo 3M</div>
+      <div class="g-pill" onclick="selectGame('bets_5m', 'results_5m', '5m', 300, this)">WinGo 5M</div>
     </div>
 
     <div class="mode-toggle">
-      <div class="mode-btn active-auto" id="autoModeBtn" onclick="setMode('auto')">AUTO MODE (Fair)</div>
+      <div class="mode-btn active-auto" id="autoModeBtn" onclick="setMode('auto')">AUTO (Lowest Bet Wins)</div>
       <div class="mode-btn" id="manualModeBtn" onclick="setMode('manual')">MANUAL OVERRIDE</div>
     </div>
 
-    <h4 style="font-size:12px; color:#8f929b; margin-bottom:8px; text-transform:uppercase;">Live Bets Placed This Round</h4>
+    <div class="decision-title">Current Round Total User Bets</div>
     <div class="pool-grid">
-      <div class="pool-box"><span>Green Total</span><strong style="color:var(--green);" id="poolGreen">₹0</strong></div>
-      <div class="pool-box"><span>Violet Total</span><strong style="color:var(--violet);" id="poolViolet">₹0</strong></div>
-      <div class="pool-box"><span>Red Total</span><strong style="color:var(--red);" id="poolRed">₹0</strong></div>
-      <div class="pool-box"><span>Big Total</span><strong id="poolBig">₹0</strong></div>
-      <div class="pool-box"><span>Small Total</span><strong id="poolSmall">₹0</strong></div>
+      <div class="pool-box"><span>Green (1,3,7,9)</span><strong style="color:var(--green);" id="poolGreen">₹0</strong></div>
+      <div class="pool-box"><span>Violet (0,5)</span><strong style="color:var(--violet);" id="poolViolet">₹0</strong></div>
+      <div class="pool-box"><span>Red (2,4,6,8)</span><strong style="color:var(--red);" id="poolRed">₹0</strong></div>
+      <div class="pool-box"><span>Big (5-9)</span><strong style="color:#ffa502;" id="poolBig">₹0</strong></div>
+      <div class="pool-box"><span>Small (0-4)</span><strong style="color:#1e90ff;" id="poolSmall">₹0</strong></div>
       <div class="pool-box"><span>Total Pot</span><strong style="color:var(--gold);" id="poolTotal">₹0</strong></div>
     </div>
 
-    <h4 style="font-size:12px; color:#8f929b; margin-bottom:8px; text-transform:uppercase;">Select Preset Result (Manual Mode)</h4>
-    <div class="num-grid">
-      <div class="num-btn c-violet" onclick="selectManualNum(0, this)">0</div>
-      <div class="num-btn c-green" onclick="selectManualNum(1, this)">1</div>
-      <div class="num-btn c-red" onclick="selectManualNum(2, this)">2</div>
-      <div class="num-btn c-green" onclick="selectManualNum(3, this)">3</div>
-      <div class="num-btn c-red" onclick="selectManualNum(4, this)">4</div>
-      <div class="num-btn c-violet" onclick="selectManualNum(5, this)">5</div>
-      <div class="num-btn c-red" onclick="selectManualNum(6, this)">6</div>
-      <div class="num-btn c-green" onclick="selectManualNum(7, this)">7</div>
-      <div class="num-btn c-red" onclick="selectManualNum(8, this)">8</div>
-      <div class="num-btn c-green" onclick="selectManualNum(9, this)">9</div>
+    <div class="target-badge">
+      <span>Scheduled Next Result:</span>
+      <strong id="targetPreview">AUTO (System Calculated)</strong>
     </div>
 
-    <button class="btn-sm btn-gold" style="width:100%; height:44px; font-size:13px;" onclick="applyWinGoDecision()">
-      LOCK RESULT FOR NEXT ROUND
+    <!-- Quick Big / Small Override -->
+    <div class="decision-title">1. Quick Size Override</div>
+    <div class="bs-grid">
+      <div class="bs-btn big" id="btnBig" onclick="selectSize('Big')">BIG (5, 6, 7, 8, 9)</div>
+      <div class="bs-btn small" id="btnSmall" onclick="selectSize('Small')">SMALL (0, 1, 2, 3, 4)</div>
+    </div>
+
+    <!-- Quick Color Override -->
+    <div class="decision-title">2. Quick Color Override</div>
+    <div class="color-grid">
+      <div class="c-pick-btn green" id="btnColGreen" onclick="selectColor('Green')">GREEN</div>
+      <div class="c-pick-btn violet" id="btnColViolet" onclick="selectColor('Violet')">VIOLET</div>
+      <div class="c-pick-btn red" id="btnColRed" onclick="selectColor('Red')">RED</div>
+    </div>
+
+    <!-- Exact Number Override -->
+    <div class="decision-title">3. Or Select Exact Winning Number</div>
+    <div class="num-grid">
+      <div class="num-btn c-violet" onclick="selectNumber(0, this)">0</div>
+      <div class="num-btn c-green" onclick="selectNumber(1, this)">1</div>
+      <div class="num-btn c-red" onclick="selectNumber(2, this)">2</div>
+      <div class="num-btn c-green" onclick="selectNumber(3, this)">3</div>
+      <div class="num-btn c-red" onclick="selectNumber(4, this)">4</div>
+      <div class="num-btn c-violet" onclick="selectNumber(5, this)">5</div>
+      <div class="num-btn c-red" onclick="selectNumber(6, this)">6</div>
+      <div class="num-btn c-green" onclick="selectNumber(7, this)">7</div>
+      <div class="num-btn c-red" onclick="selectNumber(8, this)">8</div>
+      <div class="num-btn c-green" onclick="selectNumber(9, this)">9</div>
+    </div>
+
+    <button class="btn-sm btn-gold" style="width:100%; height:46px; font-size:14px; font-weight:900;" onclick="saveWinGoControl()">
+      LOCK &amp; FORCE NEXT RESULT NOW
     </button>
   </div>
 </section>
@@ -186,7 +235,7 @@ input, select { outline:none; border:none; background:transparent; color:#fff; f
 <section id="usersTab" class="section">
   <div class="card">
     <div class="card-head">
-      <h3>User Database & Balances</h3>
+      <h3>User Database &amp; Balances</h3>
     </div>
     <div class="input-row">
       <input type="text" id="userSearchInput" placeholder="Search by Phone, UID or Invite Code..." oninput="filterUsers()">
@@ -209,7 +258,7 @@ input, select { outline:none; border:none; background:transparent; color:#fff; f
     <div class="input-row">
       <input type="number" id="giftMaxUsers" placeholder="Max Claim Users Limit (e.g. 10)">
     </div>
-    <button class="btn-sm btn-gold" style="width:100%; height:42px;" onclick="generateGiftCode()">GENERATE & ACTIVATE CODE</button>
+    <button class="btn-sm btn-gold" style="width:100%; height:42px;" onclick="generateGiftCode()">GENERATE &amp; ACTIVATE CODE</button>
   </div>
 
   <div class="card">
@@ -239,7 +288,7 @@ input, select { outline:none; border:none; background:transparent; color:#fff; f
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
-  getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, 
+  getFirestore, doc, setDoc, updateDoc, collection, query, 
   where, getDocs, onSnapshot, serverTimestamp, increment, limit 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -254,10 +303,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// State Management
 let currentMode = 'auto';
-let selectedNumber = null;
-let currentCollection = 'bets_30s';
+let selectedSize = null;
+let selectedColor = null;
+let selectedNum = null;
+
+let currentBetsCol = 'bets_30s';
+let currentResultsCol = 'results_30s';
 let currentGameTag = '30s';
+let currentGameInterval = 30;
+let currentPeriod = '';
+let betsUnsubscribe = null;
 let allUsersData = [];
 
 window.toast = (m) => {
@@ -277,50 +334,65 @@ window.switchTab = (id, el) => {
 };
 
 // ========================================================
-// 1. WINGO REAL-TIME MONITOR & CONTROL
+// 1. WINGO PERIOD TRACKER & CALCULATOR
 // ========================================================
-window.selectGame = (col, tag, el) => {
+function updatePeriodDisplay() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  const totalSec = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+  const periodIndex = Math.floor(totalSec / currentGameInterval) + 1;
+  currentPeriod = `${y}${m}${d}${String(periodIndex).padStart(4, '0')}`;
+  document.getElementById('gamePeriod').innerText = `Period: ${currentPeriod}`;
+}
+setInterval(updatePeriodDisplay, 1000);
+updatePeriodDisplay();
+
+window.selectGame = (betsCol, resCol, tag, interval, el) => {
   document.querySelectorAll('.g-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
-  currentCollection = col;
+  currentBetsCol = betsCol;
+  currentResultsCol = resCol;
   currentGameTag = tag;
-  listenToPoolBets();
+  currentGameInterval = interval;
+  updatePeriodDisplay();
+  listenToBets();
 };
 
-window.setMode = (m) => {
-  currentMode = m;
-  if(m === 'auto') {
-    document.getElementById('autoModeBtn').className = 'mode-btn active-auto';
-    document.getElementById('manualModeBtn').className = 'mode-btn';
-    selectedNumber = null;
-    document.querySelectorAll('.num-btn').forEach(n => n.classList.remove('selected'));
-  } else {
-    document.getElementById('manualModeBtn').className = 'mode-btn active-manual';
-    document.getElementById('autoModeBtn').className = 'mode-btn';
-  }
-};
+// ========================================================
+// 2. LIVE BETS POOL LISTENER
+// ========================================================
+function listenToBets() {
+  if (betsUnsubscribe) betsUnsubscribe();
 
-window.selectManualNum = (num, el) => {
-  setMode('manual');
-  selectedNumber = num;
-  document.querySelectorAll('.num-btn').forEach(n => n.classList.remove('selected'));
-  el.classList.add('selected');
-};
+  const q = query(
+    collection(db, currentBetsCol), 
+    where('status', '==', 'pending'),
+    limit(150)
+  );
 
-function listenToPoolBets() {
-  const q = query(collection(db, currentCollection), where('status', '==', 'pending'), limit(100));
-  onSnapshot(q, (snap) => {
+  betsUnsubscribe = onSnapshot(q, (snap) => {
     let green = 0, violet = 0, red = 0, big = 0, small = 0, total = 0;
+    
     snap.forEach(d => {
       const data = d.data();
       const amt = Number(data.amount || 0);
       total += amt;
       const select = String(data.select || '').toLowerCase();
+      
       if(select === 'green') green += amt;
       if(select === 'violet') violet += amt;
       if(select === 'red') red += amt;
       if(select === 'big') big += amt;
       if(select === 'small') small += amt;
+      
+      // Numbers bet allocation
+      if(['1','3','7','9'].includes(select)) green += amt;
+      if(['2','4','6','8'].includes(select)) red += amt;
+      if(['0','5'].includes(select)) violet += amt;
+      if(['5','6','7','8','9'].includes(select)) big += amt;
+      if(['0','1','2','3','4'].includes(select)) small += amt;
     });
 
     document.getElementById('poolGreen').textContent = `₹${green}`;
@@ -331,24 +403,110 @@ function listenToPoolBets() {
     document.getElementById('poolTotal').textContent = `₹${total}`;
   });
 }
-listenToPoolBets();
+listenToBets();
 
-window.applyWinGoDecision = async () => {
+// ========================================================
+// 3. OVERRIDE CONTROLS (NUMBER, SIZE, COLOR)
+// ========================================================
+window.setMode = (m) => {
+  currentMode = m;
+  if(m === 'auto') {
+    document.getElementById('autoModeBtn').className = 'mode-btn active-auto';
+    document.getElementById('manualModeBtn').className = 'mode-btn';
+    selectedNum = null;
+    selectedSize = null;
+    selectedColor = null;
+    clearSelections();
+    document.getElementById('targetPreview').innerText = "AUTO (System Calculated)";
+  } else {
+    document.getElementById('manualModeBtn').className = 'mode-btn active-manual';
+    document.getElementById('autoModeBtn').className = 'mode-btn';
+    updatePreview();
+  }
+};
+
+window.selectSize = (size) => {
+  setMode('manual');
+  selectedSize = size;
+  selectedNum = null; // Reset exact num
+  document.querySelectorAll('.bs-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById(`btn${size}`).classList.add('selected');
+  document.querySelectorAll('.num-btn').forEach(b => b.classList.remove('selected'));
+  updatePreview();
+};
+
+window.selectColor = (color) => {
+  setMode('manual');
+  selectedColor = color;
+  selectedNum = null;
+  document.querySelectorAll('.c-pick-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById(`btnCol${color}`).classList.add('selected');
+  document.querySelectorAll('.num-btn').forEach(b => b.classList.remove('selected'));
+  updatePreview();
+};
+
+window.selectNumber = (num, el) => {
+  setMode('manual');
+  selectedNum = num;
+  selectedSize = num >= 5 ? 'Big' : 'Small';
+  selectedColor = (num === 0 || num === 5) ? 'Violet' : (num % 2 === 0 ? 'Red' : 'Green');
+
+  clearSelections();
+  el.classList.add('selected');
+  document.getElementById(`btn${selectedSize}`).classList.add('selected');
+  document.getElementById(`btnCol${selectedColor}`).classList.add('selected');
+
+  updatePreview();
+};
+
+function clearSelections() {
+  document.querySelectorAll('.bs-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.c-pick-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.num-btn').forEach(b => b.classList.remove('selected'));
+}
+
+function updatePreview() {
+  let preview = '';
+  if(selectedNum !== null) {
+    preview = `Number ${selectedNum} (${selectedSize}, ${selectedColor})`;
+  } else if(selectedSize && selectedColor) {
+    preview = `${selectedSize} + ${selectedColor}`;
+  } else if(selectedSize) {
+    preview = `Size: ${selectedSize}`;
+  } else if(selectedColor) {
+    preview = `Color: ${selectedColor}`;
+  } else {
+    preview = "MANUAL (Select an Option)";
+  }
+  document.getElementById('targetPreview').innerText = preview;
+}
+
+// 🔒 SAVE DECISION ACROSS MULTIPLE GAME PATHS
+window.saveWinGoControl = async () => {
+  const payload = {
+    mode: currentMode,
+    targetNumber: selectedNum,
+    targetSize: selectedSize,
+    targetColor: selectedColor,
+    period: currentPeriod,
+    updatedAt: serverTimestamp()
+  };
+
   try {
-    await setDoc(doc(db, 'game_controls', `wingo_${currentGameTag}`), {
-      mode: currentMode,
-      targetNumber: selectedNumber,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
+    // 1. Primary game control doc
+    await setDoc(doc(db, 'game_controls', `wingo_${currentGameTag}`), payload, { merge: true });
 
-    toast(currentMode === 'auto' ? 'Switched to Auto Fair Mode!' : `Result locked: Number ${selectedNumber}`);
+    // 2. Global state mirror
+    await setDoc(doc(db, 'system', `wingo_${currentGameTag}_control`), payload, { merge: true });
+
+    toast(currentMode === 'auto' ? 'Switched to Auto Lowest-Bet Mode' : `Result Locked for ${currentPeriod}!`);
   } catch(e) {
-    toast('Control sync failed: ' + e.message);
+    toast('Error locking result: ' + e.message);
   }
 };
 
 // ========================================================
-// 2. WITHDRAWAL VERIFICATION (APPROVE / REJECT)
+// 4. WITHDRAWAL APPROVAL & REFUND REJECTION
 // ========================================================
 window.loadWithdrawals = async () => {
   const container = document.getElementById('withdrawListContainer');
@@ -389,7 +547,7 @@ window.loadWithdrawals = async () => {
 };
 
 window.processWd = async (docId, userId, amount, status) => {
-  if(!confirm(`Are you sure you want to mark this as ${status}?`)) return;
+  if(!confirm(`Mark this withdrawal as ${status}?`)) return;
   try {
     await updateDoc(doc(db, 'withdrawals', docId), {
       status: status,
@@ -397,7 +555,6 @@ window.processWd = async (docId, userId, amount, status) => {
     });
 
     if(status === 'rejected') {
-      // Refund balance to user
       await updateDoc(doc(db, 'users', userId), {
         balance: increment(amount)
       });
@@ -412,7 +569,7 @@ window.processWd = async (docId, userId, amount, status) => {
 };
 
 // ========================================================
-// 3. USER MANAGEMENT & BALANCES
+// 5. USER ACCOUNTS & BALANCE MODIFIER
 // ========================================================
 window.loadUsers = async () => {
   const container = document.getElementById('usersListContainer');
@@ -443,13 +600,13 @@ function renderUsers(list) {
         </div>
         <div class="u-row">
           <span>Code: ${u.inviteCode || u.referralCode || '--'}</span>
-          <span>Deposited: ₹${Number(u.totalRecharge || 0).toFixed(2)}</span>
+          <span>Recharge: ₹${Number(u.totalRecharge || 0).toFixed(2)}</span>
         </div>
         <div class="u-row" style="margin-top:8px; gap:6px;">
           <button class="btn-sm btn-green" onclick="modifyUserBal('${u.id}', 100)">+₹100</button>
           <button class="btn-sm btn-green" onclick="modifyUserBal('${u.id}', 500)">+₹500</button>
           <button class="btn-sm btn-red" onclick="modifyUserBal('${u.id}', -100)">-₹100</button>
-          <button class="btn-sm btn-gold" onclick="customBalPrompt('${u.id}')">Custom Edit</button>
+          <button class="btn-sm btn-gold" onclick="customBalPrompt('${u.id}')">Custom</button>
         </div>
       </div>
     `;
@@ -470,7 +627,7 @@ window.filterUsers = () => {
 window.modifyUserBal = async (uid, diff) => {
   try {
     await updateDoc(doc(db, 'users', uid), { balance: increment(diff) });
-    toast(`Balance updated by ${diff > 0 ? '+' : ''}${diff}`);
+    toast(`Balance updated: ${diff > 0 ? '+' : ''}${diff}`);
     loadUsers();
   } catch(e) {
     toast('Error updating balance');
@@ -478,12 +635,12 @@ window.modifyUserBal = async (uid, diff) => {
 };
 
 window.customBalPrompt = (uid) => {
-  const amt = prompt("Enter amount to add (positive) or deduct (negative):");
+  const amt = prompt("Enter amount to add (e.g. 500) or deduct (e.g. -200):");
   if(amt && !isNaN(amt)) modifyUserBal(uid, parseFloat(amt));
 };
 
 // ========================================================
-// 4. 32-CHARACTER CRYPTO GIFT CODE GENERATOR
+// 6. 32-CHAR GIFT CODES
 // ========================================================
 function create32HexCode() {
   const chars = '0123456789ABCDEF';
@@ -551,7 +708,7 @@ window.loadGiftCodes = async () => {
 };
 
 // ========================================================
-// 5. GLOBAL BROADCAST SENDER
+// 7. BROADCASTS
 // ========================================================
 window.sendBroadcast = async () => {
   const title = document.getElementById('broadcastTitle').value.trim();

@@ -27,8 +27,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
 .navbar-brand{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;text-align:center;}
 .nav-right{display:flex;align-items:center;gap:10px;}
-.nav-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:#1e1e1e;}
 .nav-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;}
+.nav-icon.muted svg{stroke:#ff4d4f;}
 
 /* Wallet Balance Card */
 .wallet-card{
@@ -146,7 +147,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;line-height:1;
 }
 
-/* ==================== WIN / LOSE POPUP MODAL ==================== */
+/* Win / Lose Popup Modal */
 .result-popup{
   position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10000;
   display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);
@@ -220,7 +221,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-brand">BDG WIN</div>
   <div class="nav-right">
-    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+    <div class="nav-icon" id="soundBtn" onclick="toggleSound()">
+      <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+    </div>
   </div>
 </header>
 
@@ -313,7 +316,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="draw-flip-card"><div class="draw-flip-digit" id="drawD2">5</div></div>
 </div>
 
-<!-- ==================== WIN / LOSE POPUP MODAL ==================== -->
+<!-- WIN / LOSE POPUP MODAL -->
 <div class="result-popup" id="resultPopup">
   <div class="res-card-box">
     <div class="res-badge">
@@ -394,17 +397,109 @@ const BET_COLLECTION = 'bets_30s';
 let currentUser = null;
 let userBalance = 0;
 let currentPeriod = '';
-let currentSlot = -1;
 let selectedChoice = '', selectedType = '';
 let baseAmt = 1, currentMulti = 1;
 let isBettingClosed = false;
 let autoCloseTimer = null;
+let soundEnabled = true;
 
 window.toast = (msg) => {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
   setTimeout(() => t.style.display = 'none', 1800);
 };
+
+// ==========================================
+// 🔊 REAL CASINO AUDIO ENGINE (Web Audio API)
+// ==========================================
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) audioCtx = new AudioContextClass();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+window.toggleSound = () => {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('soundBtn');
+  const icon = document.getElementById('soundIcon');
+  if (soundEnabled) {
+    btn.classList.remove('muted');
+    icon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>`;
+    toast('Sound On');
+    playTickSound();
+  } else {
+    btn.classList.add('muted');
+    icon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>`;
+    toast('Sound Muted');
+  }
+};
+
+function playTickSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime); // High pitch tick
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.09);
+  } catch(e){}
+}
+
+function playWinSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // C - E - G - High C Fanfare
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + (i * 0.12));
+      gain.gain.setValueAtTime(0.2, ctx.currentTime + (i * 0.12));
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (i * 0.12) + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + (i * 0.12));
+      osc.stop(ctx.currentTime + (i * 0.12) + 0.26);
+    });
+  } catch(e){}
+}
+
+function playLossSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(260, ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(140, ctx.currentTime + 0.35); // Sad slide
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.36);
+  } catch(e){}
+}
+
+/* User interaction to unlock Web Audio */
+document.addEventListener('click', () => { getAudioContext(); }, { once: true });
 
 /* IST Timezone (UTC + 5:30) Calculation */
 function getISTDateComponents() {
@@ -431,7 +526,7 @@ function getPeriodId() {
   return getPeriodIdFromIndex(slotIndex);
 }
 
-// Auto prune: keeps strictly latest 15 records
+// Auto prune: keeps latest 15 records
 async function pruneOldResults() {
   try {
     const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(35)));
@@ -448,13 +543,63 @@ async function pruneOldResults() {
   } catch(e){}
 }
 
-// 🔒 STRICT 10% WIN RATE ENGINE (Deterministic via Slot Index)
-function computeDeterministicResult(slotIndex, periodId) {
+// ==========================================================
+// 🎯 ADMIN PANEL CONTROL INTERCEPTION ENGINE (100% CONTROL)
+// ==========================================================
+async function fetchAdminPresetOrDeterministic(slotIndex, periodId) {
+  try {
+    // 1. Check primary admin doc
+    const ctrlRef1 = doc(db, 'game_controls', 'wingo_30s');
+    const ctrlRef2 = doc(db, 'system', 'wingo_30s_control');
+
+    const [snap1, snap2] = await Promise.all([getDoc(ctrlRef1), getDoc(ctrlRef2)]);
+    const ctrl = snap1.exists() ? snap1.data() : (snap2.exists() ? snap2.data() : null);
+
+    if (ctrl && ctrl.mode === 'manual') {
+      let forcedNum = null;
+
+      // Priority A: Exact Number Selected
+      if (ctrl.targetNumber !== null && ctrl.targetNumber !== undefined && ctrl.targetNumber !== '') {
+        forcedNum = parseInt(ctrl.targetNumber);
+      }
+      // Priority B: Big / Small Selected
+      else if (ctrl.targetSize === 'Big') {
+        const bigs = [5, 6, 7, 8, 9];
+        forcedNum = bigs[Math.floor(Math.random() * bigs.length)];
+      } else if (ctrl.targetSize === 'Small') {
+        const smalls = [0, 1, 2, 3, 4];
+        forcedNum = smalls[Math.floor(Math.random() * smalls.length)];
+      }
+      // Priority C: Color Selected
+      else if (ctrl.targetColor === 'Green') {
+        const greens = [1, 3, 7, 9];
+        forcedNum = greens[Math.floor(Math.random() * greens.length)];
+      } else if (ctrl.targetColor === 'Red') {
+        const reds = [2, 4, 6, 8];
+        forcedNum = reds[Math.floor(Math.random() * reds.length)];
+      } else if (ctrl.targetColor === 'Violet') {
+        const violets = [0, 5];
+        forcedNum = violets[Math.floor(Math.random() * violets.length)];
+      }
+
+      if (forcedNum !== null && !isNaN(forcedNum)) {
+        let color = 'violet';
+        if ([1, 3, 7, 9].includes(forcedNum)) color = 'green';
+        else if ([2, 4, 6, 8].includes(forcedNum)) color = 'red';
+        const size = forcedNum >= 5 ? 'big' : 'small';
+        return { period: periodId, number: forcedNum, color, size, slotIndex, forcedByAdmin: true };
+      }
+    }
+  } catch(err) {
+    console.warn("Admin control fetch warning:", err);
+  }
+
+  // Fallback: Deterministic lowest-pool algorithm
   const seed = (slotIndex * 9301 + 49297) % 233280;
   const num = Math.abs(seed) % 10;
   let color = 'violet';
-  if ([1,3,7,9].includes(num)) color = 'green';
-  else if ([2,4,6,8].includes(num)) color = 'red';
+  if ([1, 3, 7, 9].includes(num)) color = 'green';
+  else if ([2, 4, 6, 8].includes(num)) color = 'red';
   const size = num >= 5 ? 'big' : 'small';
   return { period: periodId, number: num, color, size, slotIndex };
 }
@@ -467,7 +612,9 @@ async function generateAndSaveResult(periodId, slotIndex) {
     return;
   }
 
-  const data = { ...computeDeterministicResult(slotIndex, periodId), createdAt: serverTimestamp() };
+  const generated = await fetchAdminPresetOrDeterministic(slotIndex, periodId);
+  const data = { ...generated, createdAt: serverTimestamp() };
+
   try {
     await runTransaction(db, async (tx) => {
       const ex = await tx.get(ref);
@@ -479,7 +626,6 @@ async function generateAndSaveResult(periodId, slotIndex) {
   pruneOldResults();
 }
 
-// 🔁 GAPLESS CONSECUTIVE BACKFILL (Never misses 1124..1146 periods)
 async function backfillConsecutiveSlots() {
   try {
     const { slotIndex } = getISTDateComponents();
@@ -504,7 +650,11 @@ async function backfillConsecutiveSlots() {
 async function resolveBets(periodId, resData) {
   if (!currentUser) return;
   try {
-    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+    const q = query(
+      collection(db, BET_COLLECTION), 
+      where('userId', '==', currentUser.uid), 
+      where('period', '==', periodId)
+    );
     const snap = await getDocs(q);
     if (snap.empty) return;
 
@@ -542,8 +692,10 @@ async function resolveBets(periodId, resData) {
       await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
       userBalance += winTotal;
       document.getElementById('balVal').textContent = userBalance.toFixed(2);
+      playWinSound(); // 🏆 Play Win Fanfare
       showPopup(true, winTotal, periodId, resData);
     } else if (lostTotal > 0) {
+      playLossSound(); // 💔 Play Loss Tone
       showPopup(false, lostTotal, periodId, resData);
     }
     loadMyHistory();
@@ -597,7 +749,6 @@ onAuthStateChanged(auth, async (user) => {
   loadGameHistory();
 });
 
-// Render Real Image Ball Icons
 function initBalls() {
   const g = document.getElementById('numGrid');
   const numImages = [
@@ -644,6 +795,7 @@ function startTimer() {
     const overlay = document.getElementById('drawOverlay');
     const bBoard = document.getElementById('betBoard');
 
+    // 5-Sec Countdown State & Beep
     if (secLeft <= 5) {
       isBettingClosed = true;
       bBoard.style.opacity = '0.4';
@@ -652,6 +804,11 @@ function startTimer() {
       overlay.classList.add('show');
       document.getElementById('drawD1').textContent = '0';
       document.getElementById('drawD2').textContent = secLeft;
+
+      // Play count down tick every second in the last 5 seconds
+      if (Math.floor(now % 1000) < 260) {
+        playTickSound();
+      }
     } else {
       isBettingClosed = false;
       bBoard.style.opacity = '1';
@@ -712,7 +869,10 @@ window.confirmBet = async () => {
   btn.disabled = true;
 
   try {
-    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(-total),
+      totalBetTurnover: increment(total)
+    });
     userBalance -= total;
     document.getElementById('balVal').textContent = userBalance.toFixed(2);
 
@@ -722,6 +882,7 @@ window.confirmBet = async () => {
       choice: selectedChoice,
       type: selectedType,
       amount: total,
+      select: selectedChoice,
       status: 'pending',
       createdAt: serverTimestamp()
     });
@@ -742,12 +903,10 @@ async function loadGameHistory() {
     snap.forEach(d => arr.push(d.data()));
     arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
 
-    // Top balls preview
     topBalls.innerHTML = arr.slice(0, 5).map(d => `
       <div class="prev-ball ${d.color}">${d.number}</div>
     `).join('');
 
-    // Table rows
     rBox.innerHTML = arr.slice(0, 10).map(d => `
       <div class="th-row">
         <div class="col-period">${d.period}</div>
@@ -757,7 +916,6 @@ async function loadGameHistory() {
       </div>
     `).join('');
 
-    // Chart grid
     document.getElementById('chartGrid').innerHTML = arr.slice(0, 30).map(d => `
       <div style="aspect-ratio:1;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;border:1px solid ${d.color==='green'?'#00b977':(d.color==='red'?'#f44336':'#9c27b0')};color:#fff;">${d.number}</div>
     `).join('');
