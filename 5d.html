@@ -80,7 +80,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .draw-flip-card{width:110px;height:160px;background:#424242;border-radius:16px;display:flex;align-items:center;justify-content:center;}
 .draw-count{font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;}
 
-/* WIN / LOSE POPUP MODAL */
+/* WIN / LOSE POPUP */
 .result-popup{
   position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10000;
   display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);
@@ -340,6 +340,7 @@ window.toast = (msg) => {
   setTimeout(() => t.style.display = 'none', 1800);
 };
 
+/* IST Timezone (UTC + 5:30) Calculation */
 function getISTDateComponents() {
   const now = new Date();
   const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -407,6 +408,31 @@ async function generateAndSaveResult(periodId, slotIndex) {
   pruneOldResults();
 }
 
+/* 🔁 GAPLESS CONSECUTIVE BACKFILL (Prevents Missing Periods Forever) */
+async function backfillConsecutiveSlots() {
+  try {
+    const { slotIndex } = getISTDateComponents();
+    const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(15)));
+    let maxKnownIndex = slotIndex - 10;
+
+    snap.forEach(d => {
+      const p = d.data().period;
+      if (p && p.includes('5D')) {
+        const parts = p.split('5D');
+        if (parts[1]) {
+          const idx = parseInt(parts[1]) - 10000;
+          if (!isNaN(idx) && idx > maxKnownIndex) maxKnownIndex = idx;
+        }
+      }
+    });
+
+    for (let s = maxKnownIndex + 1; s < slotIndex; s++) {
+      const pId = getPeriodIdFromIndex(s);
+      await generateAndSaveResult(pId, s);
+    }
+  } catch(e){}
+}
+
 async function resolveBets(periodId, resData) {
   if (!currentUser) return;
   try {
@@ -444,7 +470,7 @@ async function resolveBets(periodId, resData) {
       let winAmt = 0;
       if (won) {
         const gross = bet.amount * bet.multi;
-        winAmt = gross - (gross * 0.15); // 15% platform commission
+        winAmt = gross - (gross * 0.15); // 15% platform owner commission
         winTotal += winAmt;
       } else {
         lostTotal += bet.amount;
@@ -507,6 +533,7 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('balVal').textContent = userBalance.toFixed(2);
   }
   initNumGrid();
+  await backfillConsecutiveSlots();
   startTimer();
   loadGameHistory();
 });
