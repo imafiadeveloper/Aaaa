@@ -205,7 +205,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-brand">BDG WIN</div>
   <div class="nav-right">
-    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24" id="soundIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
   </div>
 </header>
 
@@ -348,6 +348,10 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="toast" id="toast"></div>
 
+<!-- 5-Sec Ticking Sounds -->
+<audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
+<audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -380,6 +384,33 @@ let selectedChoice = '', selectedType = '';
 let baseAmt = 1, currentMulti = 1;
 let isBettingClosed = false;
 let autoCloseTimer = null;
+let isSoundOn = true;
+let lastPlayedSec = -1;
+
+const snd1 = document.getElementById('soundDi1');
+const snd2 = document.getElementById('soundDi2');
+
+function playTick(isLast3Sec) {
+  if (!isSoundOn) return;
+  try {
+    if (isLast3Sec) { snd2.currentTime = 0; snd2.play().catch(()=>{}); }
+    else { snd1.currentTime = 0; snd1.play().catch(()=>{}); }
+  } catch(e) {}
+}
+
+document.getElementById('soundBtn').addEventListener('click', () => {
+  isSoundOn = !isSoundOn;
+  const icon = document.getElementById('soundIcon');
+  if (isSoundOn) {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
+    icon.style.stroke = '#fff';
+    toast('Sound ON');
+  } else {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    icon.style.stroke = '#666';
+    toast('Sound OFF');
+  }
+});
 
 window.toast = (msg) => {
   const t = document.getElementById('toast');
@@ -626,13 +657,19 @@ function startTimer() {
       overlay.classList.add('show');
       document.getElementById('drawD1').textContent = '0';
       document.getElementById('drawD2').textContent = secLeft;
+
+      if (lastPlayedSec !== secLeft) {
+        lastPlayedSec = secLeft;
+        playTick(secLeft <= 3);
+      }
     } else {
       isBettingClosed = false;
       bBoard.style.opacity = '1';
       bBoard.style.pointerEvents = 'auto';
       overlay.classList.remove('show');
+      lastPlayedSec = -1;
     }
-  }, 250);
+  }, 200);
 }
 
 window.openBet = (choice, type) => {
