@@ -304,7 +304,7 @@
     }
     const sound = new SoundController();
 
-    // --- Game State ---
+    // --- Game State & Controlled Algorithm ---
     const STATE_WAITING = 'WAITING'; const STATE_FLYING = 'FLYING'; const STATE_CRASHED = 'CRASHED';
     let gameState = STATE_WAITING;
     let multiplier = 1.00; let crashMultiplier = 1.00;
@@ -312,7 +312,8 @@
     const WAIT_DURATION = 5000;
     let lastTimestamp = 0;
 
-    let history = [1.25, 1.84, 15.60, 2.14, 1.08, 4.30, 1.55, 1.10, 8.92, 1.35];
+    let history = [1.12, 1.34, 1.03, 1.84, 1.22, 1.05, 2.45, 1.15, 1.02, 1.60];
+    let roundCounter = 0; // Tracks game round cycles
 
     const bets = {
       1: { active: false, cashedOut: false, amount: 10, cashoutMult: 0, profit: 0, betId: null },
@@ -355,23 +356,41 @@
       document.getElementById('user-balance').innerText = globalBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
+    // --- CUSTOM TIGHT CONTROLLED CRASH LOGIC ---
     function generateCrashMultiplier() {
-      const rand = Math.random();
-      if (rand < 0.04) return 1.00 + (Math.random() * 0.05);
-      const r = Math.random();
-      let point = 0.97 / (1.0 - r);
-      point = Math.max(1.00, point);
-      if (point > 150) point = 150;
-      return parseFloat(point.toFixed(2));
+      roundCounter++;
+      
+      // Har 11 rounds ke baad sirf 1 round thoda achha (5x se 10x) ud sakega
+      if (roundCounter % 11 === 0) {
+        const bigFly = 4.5 + Math.random() * 5.5; // 4.50x to 10.00x
+        return parseFloat(bigFly.toFixed(2));
+      }
+
+      // Baaki 10 baar 0 se 2x ke andar strict crash (with occasional 3x)
+      const roll = Math.random();
+
+      if (roll < 0.35) {
+        // 35% chance: Starting me hi crash (1.00x - 1.25x)
+        const instantCrash = 1.00 + (Math.random() * 0.25);
+        return parseFloat(instantCrash.toFixed(2));
+      } else if (roll < 0.85) {
+        // 50% chance: 1.26x se 1.95x ke beech crash (2x nahi pohochne dega)
+        const lowCrash = 1.25 + (Math.random() * 0.70);
+        return parseFloat(lowCrash.toFixed(2));
+      } else {
+        // 15% chance: Maximum 2x - 3.20x tak thoda dikhane ke liye
+        const midCrash = 2.05 + (Math.random() * 1.15);
+        return parseFloat(midCrash.toFixed(2));
+      }
     }
 
     function renderHistory() {
       const container = document.getElementById('history-container');
       container.innerHTML = '';
       history.slice(-14).reverse().forEach(mult => {
-        let bgStyle = mult < 1.5 ? 'text-blue-400 bg-blue-950/50' : mult < 3.0 ? 'text-purple-400 bg-purple-950/50' : mult < 10.0 ? 'text-amber-400 bg-amber-950/50' : 'text-rose-400 bg-rose-950/60 font-extrabold';
+        let bgStyle = mult < 1.3 ? 'text-rose-400 bg-rose-950/60 font-bold' : mult < 2.0 ? 'text-blue-400 bg-blue-950/50' : mult < 3.0 ? 'text-purple-400 bg-purple-950/50' : 'text-amber-400 bg-amber-950/50 font-extrabold';
         const badge = document.createElement('div');
-        badge.className = `px-2 py-0.5 rounded text-[10px] font-num font-bold ${bgStyle}`;
+        badge.className = `px-2 py-0.5 rounded text-[10px] font-num ${bgStyle}`;
         badge.innerText = mult.toFixed(2) + 'x';
         container.appendChild(badge);
       });
@@ -453,7 +472,7 @@
           if (isNaN(val) || val < 10) return showToast("Minimum bet ₹10", "error");
           if (val > globalBalance) return showToast("Insufficient balance!", "error");
 
-          await updateDatabaseBalance(val, true); // Deduct DB
+          await updateDatabaseBalance(val, true);
           
           betState.active = true; betState.amount = val; betState.cashedOut = false; betState.profit = 0;
           
@@ -466,7 +485,7 @@
           
           updatePanelButton(panelNum);
         } else {
-          await updateDatabaseBalance(betState.amount, false); // Refund DB
+          await updateDatabaseBalance(betState.amount, false);
           betState.active = false;
           updatePanelButton(panelNum);
         }
@@ -484,7 +503,7 @@
       betState.profit = betState.amount * mult;
 
       sound.playCashout();
-      await updateDatabaseBalance(betState.profit, false); // Add Winnings to DB
+      await updateDatabaseBalance(betState.profit, false);
       
       if(betState.betId) {
         updateDoc(doc(db, 'bets_aviator', betState.betId), {
@@ -559,7 +578,10 @@
     }
 
     function takeoff() {
-      gameState = STATE_FLYING; flightStartTime = performance.now(); crashMultiplier = generateCrashMultiplier(); multiplier = 1.00;
+      gameState = STATE_FLYING; flightStartTime = performance.now(); 
+      crashMultiplier = generateCrashMultiplier(); 
+      multiplier = 1.00;
+      
       document.getElementById('countdown-card').classList.add('hidden');
       document.getElementById('status-subtext').innerText = "PLANE IS FLYING";
       document.getElementById('status-subtext').className = "text-xs font-bold uppercase tracking-widest text-emerald-400 mt-1";
@@ -576,7 +598,6 @@
 
       history.push(multiplier); renderHistory(); syncBothPanelButtons();
       
-      // Save History to DB
       try { addDoc(collection(db, 'history_aviator'), { crashPoint: multiplier, createdAt: serverTimestamp() }); } catch(e){}
 
       setTimeout(() => startWaitingRound(), 3000);
@@ -597,7 +618,7 @@
         if (elapsed >= WAIT_DURATION) takeoff();
       } else if (gameState === STATE_FLYING) {
         const flightTimeSec = (timestamp - flightStartTime) / 1000;
-        multiplier = Math.max(1.00, Math.pow(Math.E, 0.065 * Math.pow(flightTimeSec, 1.25)));
+        multiplier = Math.max(1.00, Math.pow(Math.E, 0.07 * Math.pow(flightTimeSec, 1.25)));
         const multDisplay = document.getElementById('multiplier-text');
         multDisplay.innerText = multiplier.toFixed(2) + 'x';
         if (multiplier > 2.0 && multiplier < 10.0) multDisplay.className = "text-6xl sm:text-7xl font-black font-num text-amber-300 tracking-tight glow-gold";
@@ -607,7 +628,9 @@
 
         [1, 2].forEach(p => { if (bets[p].active && !bets[p].cashedOut) document.getElementById(`btn-amount-${p}`).innerText = `₹${(bets[p].amount * multiplier).toFixed(2)}`; });
 
-        const curveProgress = Math.min(1.0, flightTimeSec / 9.0); const targetX = 35 + (w - 120) * Math.min(1.0, Math.pow(curveProgress, 0.8)); const targetY = (h - 35) - (h - 90) * Math.min(1.0, Math.pow(curveProgress, 1.3));
+        const curveProgress = Math.min(1.0, flightTimeSec / 8.0); 
+        const targetX = 35 + (w - 120) * Math.min(1.0, Math.pow(curveProgress, 0.8)); 
+        const targetY = (h - 35) - (h - 90) * Math.min(1.0, Math.pow(curveProgress, 1.3));
         const wave = Math.sin(timestamp * 0.006) * 4;
         plane.x = targetX; plane.y = targetY + wave; plane.angle = -Math.atan2(h - 90, w - 120) * 0.65; plane.propellerAngle += 0.8;
 

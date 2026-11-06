@@ -36,15 +36,69 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
 
-/* Road Track Canvas */
-.road-arena{margin:0 16px 14px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:20px;padding:20px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;}
-.road-track{display:flex;flex-direction:column-reverse;gap:8px;background:#0d0713;border-radius:14px;padding:12px;border:1px solid rgba(255,255,255,0.06);}
-.step-row{display:flex;justify-content:space-between;align-items:center;background:#180f24;border-radius:10px;padding:10px 14px;border:1.5px solid transparent;}
-.step-row.active{border-color:var(--gold);background:#2b1940;}
-.step-row.passed{border-color:var(--green);background:rgba(0,230,118,0.08);}
-.step-row.crash{border-color:var(--red);background:rgba(255,42,75,0.15);}
+/* Road Track Canvas & Steps */
+.road-arena{margin:0 16px 14px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:20px;padding:16px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;}
+.road-track{display:flex;flex-direction:column-reverse;gap:10px;background:#0b0612;border-radius:16px;padding:14px;border:1.5px solid rgba(255,255,255,0.08);position:relative;overflow:hidden;}
+
+/* Road Center Striping */
+.road-track::before{
+  content:'';position:absolute;top:0;bottom:0;left:50%;width:4px;
+  background:repeating-linear-gradient(to bottom, rgba(245,196,67,0.3) 0, rgba(245,196,67,0.3) 12px, transparent 12px, transparent 24px);
+  transform:translateX(-50%);pointer-events:none;
+}
+
+.step-row{
+  display:flex;justify-content:space-between;align-items:center;background:#180f24;border-radius:12px;padding:12px 16px;
+  border:1.5px solid rgba(255,255,255,0.05);position:relative;transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+
+.step-info{display:flex;align-items:center;gap:10px;z-index:2;}
 .step-num{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:#fff;}
-.step-mult{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--gold);}
+.step-mult{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);z-index:2;}
+
+/* Step States */
+.step-row.active{
+  border-color:var(--gold);background:radial-gradient(circle at 50% 50%, #3a1e58 0%, #201033 100%);
+  box-shadow:0 0 20px rgba(245,196,67,0.35);transform:scale(1.02);
+}
+.step-row.passed{
+  border-color:var(--green);background:linear-gradient(90deg, rgba(0,230,118,0.15) 0%, rgba(20,13,28,0.9) 100%);
+}
+.step-row.crash{
+  border-color:var(--red);background:linear-gradient(90deg, rgba(255,42,75,0.25) 0%, rgba(30,10,20,0.95) 100%);
+  box-shadow:0 0 25px rgba(255,42,75,0.5);animation:shake 0.4s ease;
+}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%,60%{transform:translateX(-8px);}
+  40%,80%{transform:translateX(8px);}
+}
+
+/* Chicken / Hazard Token */
+.step-avatar{
+  position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);font-size:26px;z-index:5;
+  display:none;transition:all 0.3s;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+}
+.step-row.active .step-avatar{display:block;animation:bounceChicken 0.6s infinite alternate;}
+.step-row.passed .step-avatar{display:block;font-size:20px;}
+.step-row.crash .step-avatar{display:block;font-size:28px;animation:spinCrash 0.5s ease;}
+
+@keyframes bounceChicken{
+  0%{transform:translate(-50%, -45%) scale(1);}
+  100%{transform:translate(-50%, -65%) scale(1.15);}
+}
+@keyframes spinCrash{
+  0%{transform:translate(-50%, -50%) rotate(0deg) scale(1.4);}
+  100%{transform:translate(-50%, -50%) rotate(180deg) scale(1);}
+}
+
+/* Starting Line */
+.start-line{
+  background:#120a1c;border:1px dashed rgba(245,196,67,0.4);border-radius:10px;padding:8px;
+  font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;color:#a58fae;letter-spacing:1px;
+}
 
 /* Controls */
 .ctrl-card{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:16px;border:1px solid var(--border);}
@@ -54,8 +108,15 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .chip{padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:12px;font-weight:800;cursor:pointer;}
 .chip.active{background:var(--gold-grad);color:#211400;border:none;}
 
-.btn-act{width:100%;height:50px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:1px;box-shadow:0 6px 20px rgba(245,196,67,0.35);margin-top:6px;}
-.btn-act.cashout{background:linear-gradient(135deg, #00e676, #009640);color:#fff;}
+.btn-group{display:flex;gap:10px;margin-top:8px;}
+.btn-act{
+  flex:1;height:52px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;
+  font-weight:900;text-transform:uppercase;letter-spacing:0.8px;box-shadow:0 6px 20px rgba(245,196,67,0.35);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-act:active{transform:scale(0.98);}
+.btn-act.step-btn{background:linear-gradient(135deg, #ff9800, #f57c00);color:#fff;box-shadow:0 6px 20px rgba(255,152,0,0.4);}
+.btn-act.cashout-btn{background:linear-gradient(135deg, #00e676, #009640);color:#fff;box-shadow:0 6px 20px rgba(0,230,118,0.4);}
 
 .toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
 </style>
@@ -80,12 +141,33 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="road-arena">
   <div class="road-track" id="roadTrack">
-    <div class="step-row" id="s5"><span class="step-num">Step 5</span><span class="step-mult">10.0X</span></div>
-    <div class="step-row" id="s4"><span class="step-num">Step 4</span><span class="step-mult">4.50X</span></div>
-    <div class="step-row" id="s3"><span class="step-num">Step 3</span><span class="step-mult">2.60X</span></div>
-    <div class="step-row" id="s2"><span class="step-num">Step 2</span><span class="step-mult">1.80X</span></div>
-    <div class="step-row" id="s1"><span class="step-num">Step 1</span><span class="step-mult">1.25X</span></div>
+    <div class="step-row" id="s5">
+      <div class="step-info"><span class="step-num">Step 5</span></div>
+      <div class="step-avatar" id="avatar5">🐔</div>
+      <div class="step-mult">10.0X 🏆</div>
+    </div>
+    <div class="step-row" id="s4">
+      <div class="step-info"><span class="step-num">Step 4</span></div>
+      <div class="step-avatar" id="avatar4">🐔</div>
+      <div class="step-mult">4.50X</div>
+    </div>
+    <div class="step-row" id="s3">
+      <div class="step-info"><span class="step-num">Step 3</span></div>
+      <div class="step-avatar" id="avatar3">🐔</div>
+      <div class="step-mult">2.60X</div>
+    </div>
+    <div class="step-row" id="s2">
+      <div class="step-info"><span class="step-num">Step 2</span></div>
+      <div class="step-avatar" id="avatar2">🐔</div>
+      <div class="step-mult">1.80X</div>
+    </div>
+    <div class="step-row" id="s1">
+      <div class="step-info"><span class="step-num">Step 1</span></div>
+      <div class="step-avatar" id="avatar1">🐔</div>
+      <div class="step-mult">1.25X</div>
+    </div>
   </div>
+  <div class="start-line" id="startLine" style="margin-top:10px;">🏁 SAFE START ZONE 🏁</div>
 </div>
 
 <div class="ctrl-card">
@@ -98,7 +180,15 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="chip" onclick="setAmt(this,500)">₹500</div>
     </div>
   </div>
-  <button class="btn-act" id="actBtn" onclick="handleAction()">Start Run</button>
+
+  <div id="idleControls">
+    <button class="btn-act" id="startBtn" onclick="startGame()">Start Run 🐔</button>
+  </div>
+
+  <div id="liveControls" class="btn-group" style="display:none;">
+    <button class="btn-act step-btn" id="nextStepBtn" onclick="takeStep()">Step 👟</button>
+    <button class="btn-act cashout-btn" id="cashoutBtn" onclick="cashout()">Cashout</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -127,9 +217,47 @@ let userBalance = 0;
 let currentBet = 10;
 let isRunning = false;
 let currentStep = 0;
+let soundOn = true;
 const multipliers = [0, 1.25, 1.80, 2.60, 4.50, 10.0];
 
-window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+// Audio FX
+let audioCtx;
+function playSound(type) {
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+
+    if (type === 'step') {
+      osc.type = 'sine'; osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(540, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+    } else if (type === 'crash') {
+      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.35);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+    } else if (type === 'win') {
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(780, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+    }
+  } catch(e){}
+}
+
+document.getElementById('soundBtn').onclick = () => {
+  soundOn = !soundOn; toast(soundOn ? 'Sound ON' : 'Sound OFF');
+};
+
+window.toast = (msg) => { 
+  const t = document.getElementById('toast'); 
+  t.textContent = msg; t.style.display = 'block'; 
+  setTimeout(() => t.style.display = 'none', 1800); 
+};
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) return location.replace('index.html');
@@ -147,91 +275,132 @@ window.setAmt = (el, amt) => {
   el.classList.add('active'); currentBet = amt;
 };
 
-window.handleAction = async () => {
-  if (!isRunning) {
-    // Start Game
-    if (currentBet > userBalance) return toast('Insufficient balance');
+function resetTrack() {
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById(`s${i}`);
+    const av = document.getElementById(`avatar${i}`);
+    el.className = 'step-row';
+    av.textContent = '🐔';
+  }
+  document.getElementById('startLine').textContent = '🏁 SAFE START ZONE 🏁';
+}
+
+window.startGame = async () => {
+  if (isRunning) return;
+  if (currentBet > userBalance) return toast('Insufficient balance');
+
+  const startBtn = document.getElementById('startBtn');
+  startBtn.disabled = true; startBtn.textContent = 'STARTING...';
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-currentBet) });
+    userBalance -= currentBet;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
     isRunning = true;
     currentStep = 0;
     resetTrack();
 
-    try {
-      await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-currentBet) });
-      userBalance -= currentBet;
-      document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
-      takeStep();
-    } catch(e){ isRunning = false; }
-  } else {
-    // Cashout
-    cashout();
+    document.getElementById('idleControls').style.display = 'none';
+    document.getElementById('liveControls').style.display = 'flex';
+    document.getElementById('startLine').textContent = '🐔 RUNNING ON ROAD...';
+
+    // Auto take first step
+    takeStep();
+  } catch(e) {
+    isRunning = false;
+    toast('Error starting game');
+  } finally {
+    startBtn.disabled = false;
+    startBtn.textContent = 'Start Run 🐔';
   }
 };
 
-function resetTrack() {
-  for (let i = 1; i <= 5; i++) {
-    const el = document.getElementById(`s${i}`);
-    el.className = 'step-row';
+window.takeStep = () => {
+  if (!isRunning || currentStep >= 5) return;
+  
+  const nextBtn = document.getElementById('nextStepBtn');
+  nextBtn.disabled = true;
+
+  if (currentStep > 0) {
+    const prevRow = document.getElementById(`s${currentStep}`);
+    prevRow.className = 'step-row passed';
+    document.getElementById(`avatar${currentStep}`).textContent = '🪙';
   }
-}
 
-function takeStep() {
   currentStep++;
-  const el = document.getElementById(`s${currentStep}`);
-  el.classList.add('active');
+  playSound('step');
 
-  // Strict 20% Safe Crossing Rate
-  const isSafe = (Math.random() < 0.20);
+  const activeRow = document.getElementById(`s${currentStep}`);
+  activeRow.className = 'step-row active';
+  document.getElementById(`avatar${currentStep}`).textContent = '🐔';
+
+  // Strict controlled crossing probability: 
+  // Step 1: 50%, Step 2: 35%, Step 3: 20%, Step 4: 15%, Step 5: 10%
+  const passChances = [0, 0.50, 0.35, 0.20, 0.15, 0.10];
+  const isSafe = (Math.random() < passChances[currentStep]);
 
   setTimeout(async () => {
     if (!isSafe) {
-      // Crashed
-      el.className = 'step-row crash';
-      toast('💥 Chicken Hit by Car! You Lost.');
-      isRunning = false;
-      document.getElementById('actBtn').className = 'btn-act';
-      document.getElementById('actBtn').textContent = 'Start Run';
+      // Hit by car
+      playSound('crash');
+      activeRow.className = 'step-row crash';
+      document.getElementById(`avatar${currentStep}`).textContent = '💥🚗';
+      toast(`💥 Chicken Hit by Car at Step ${currentStep}!`);
+      
+      endGame();
 
       await addDoc(collection(db, BET_COLLECTION), {
         userId: currentUser.uid, amount: currentBet, step: currentStep, status: 'lose', createdAt: serverTimestamp()
       });
     } else {
-      // Safe step
-      el.className = 'step-row passed';
+      // Survived step
+      activeRow.className = 'step-row passed';
+      document.getElementById(`avatar${currentStep}`).textContent = '✨🐔';
+
       const curMult = multipliers[currentStep];
-      const winEst = (currentBet * curMult) * 0.85;
+      const winEst = (currentBet * curMult) * 0.85; // after 15% owner deduction
+
+      const cBtn = document.getElementById('cashoutBtn');
+      cBtn.textContent = `Cashout ₹${winEst.toFixed(2)}`;
 
       if (currentStep === 5) {
-        toast(`🏆 Grand Finish at 10X!`);
+        toast('🏆 Reached Safe Ground! Auto Cashing Out 10X!');
         cashout();
       } else {
-        const btn = document.getElementById('actBtn');
-        btn.className = 'btn-act cashout';
-        btn.textContent = `Cashout ₹${winEst.toFixed(2)}`;
+        nextBtn.disabled = false;
       }
     }
-  }, 400);
-}
+  }, 450);
+};
 
-async function cashout() {
+window.cashout = async () => {
   if (!isRunning || currentStep === 0) return;
   const mult = multipliers[currentStep];
   const gross = currentBet * mult;
   const net = gross - (gross - currentBet) * 0.15; // 15% owner tax
 
+  playSound('win');
   try {
     await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(net) });
     userBalance += net;
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
-    toast(`Cashed out ₹${net.toFixed(2)} at ${mult}X!`);
+    toast(`Cashed out ₹${net.toFixed(2)} at ${mult}X! 🏆`);
 
     await addDoc(collection(db, BET_COLLECTION), {
       userId: currentUser.uid, amount: currentBet, step: currentStep, multiplier: mult, winAmount: net, status: 'win', createdAt: serverTimestamp()
     });
   } catch(e){}
 
+  endGame();
+};
+
+function endGame() {
   isRunning = false;
-  document.getElementById('actBtn').className = 'btn-act';
-  document.getElementById('actBtn').textContent = 'Start Run';
+  document.getElementById('nextStepBtn').disabled = false;
+  document.getElementById('idleControls').style.display = 'block';
+  document.getElementById('liveControls').style.display = 'none';
+  document.getElementById('startLine').textContent = '🏁 SAFE START ZONE 🏁';
 }
 </script>
 </body>
