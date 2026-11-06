@@ -8,18 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
+:root{
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;width:100%;background:#141416;font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;}
+html,body{height:100%;width:100%;background:var(--bg-main);font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;}
 a{text-decoration:none;color:inherit;}
 button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 input{font-family:inherit;outline:none;border:none;background:transparent;color:#fff;}
 ::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.06);}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
 .navbar-left{width:38px;height:38px;display:flex;align-items:center;cursor:pointer;}
 .navbar-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
 .navbar-title{font-size:16px;font-weight:700;}
-.navbar-right{font-size:12px;font-weight:700;color:#FAE59F;cursor:pointer;}
+.navbar-right{font-size:12px;font-weight:700;color:var(--gold);cursor:pointer;}
 
 .gold-banner{margin:14px 16px;background:linear-gradient(135deg,#FFE793 0%,#E5B24E 50%,#C48E2F 100%);border-radius:18px;padding:20px;color:#291a03;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.45);}
 .gb-title{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
@@ -28,67 +35,68 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
 
 .section-title{font-size:13px;font-weight:700;color:#8f929b;margin:16px 16px 8px;text-transform:uppercase;letter-spacing:0.5px;}
 .methods-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 16px;}
-.method-item{background:#202024;border:1.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
-.method-item.active{border-color:#FAE59F;background:rgba(250,229,159,0.08);}
-.method-item svg{width:26px;height:26px;stroke:#FAE59F;}
+.method-item{background:#202024;border:1.5px solid var(--border);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+.method-item.active{border-color:var(--gold);background:rgba(250,229,159,0.08);}
+.method-item svg{width:26px;height:26px;stroke:var(--gold);}
 .method-item span{font-size:11px;font-weight:700;color:#e8e8e8;}
 
-.amount-box{margin:14px 16px;background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:16px;}
+.amount-box{margin:14px 16px;background:#202024;border:1px solid var(--border);border-radius:18px;padding:16px;}
 .amount-input-wrap{display:flex;align-items:center;background:#141416;border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;margin-bottom:14px;}
-.amount-input-wrap span{font-size:18px;font-weight:900;color:#FAE59F;margin-right:10px;}
+.amount-input-wrap span{font-size:18px;font-weight:900;color:var(--gold);margin-right:10px;}
 .amount-input-wrap input{font-size:16px;font-weight:700;flex:1;}
 .quick-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .qa-btn{background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 0;text-align:center;font-size:13px;font-weight:700;color:#d1d1d1;cursor:pointer;}
-.qa-btn.active{border-color:#FAE59F;color:#FAE59F;background:rgba(250,229,159,0.05);}
+.qa-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(250,229,159,0.05);}
 
-.instructions{margin:14px 16px 90px;background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:16px;}
+.instructions{margin:14px 16px 90px;background:#202024;border:1px solid var(--border);border-radius:18px;padding:16px;}
 .ins-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;margin-bottom:10px;color:#fff;}
-.ins-title svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;}
+.ins-title svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2;}
 .ins-list{font-size:11px;color:#8f929b;line-height:1.6;padding-left:14px;}
 
-.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#111113;border-top:1px solid rgba(255,255,255,0.06);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100;}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#111113;border-top:1px solid var(--border);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100;}
 .bb-info{font-size:11px;color:#858892;}
 .bb-info span{display:block;font-size:14px;font-weight:800;color:#fff;}
-.btn-deposit{background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;font-size:14px;font-weight:900;padding:12px 28px;border-radius:24px;box-shadow:0 4px 15px rgba(196,147,63,0.3);}
+.btn-deposit{background:var(--gold-grad);color:#291a03;font-size:14px;font-weight:900;padding:12px 28px;border-radius:24px;box-shadow:0 4px 15px rgba(196,147,63,0.3);}
 .btn-deposit:disabled{background:#383838;color:#777;box-shadow:none;}
 
 /* Modals */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:16px;}
 .modal-overlay.show{display:flex;}
 .modal-content{background:#202024;border:1px solid rgba(255,255,255,0.1);border-radius:20px;width:100%;max-width:360px;overflow:hidden;animation:pop .25s ease;}
 @keyframes pop{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
-.modal-header{background:#2a2a30;padding:14px 16px;color:#fff;text-align:center;font-weight:800;font-size:14px;position:relative;border-bottom:1px solid rgba(255,255,255,0.06);}
-.modal-close{position:absolute;right:14px;top:12px;cursor:pointer;color:#aaa;}
+.modal-header{background:#2a2a30;padding:14px 16px;color:#fff;text-align:center;font-weight:800;font-size:14px;position:relative;border-bottom:1px solid var(--border);}
+.modal-close{position:absolute;right:14px;top:12px;cursor:pointer;color:#aaa;font-size:18px;}
 .modal-body{padding:16px;}
-.order-box{background:#141416;border-radius:12px;padding:12px;margin-bottom:14px;}
+.order-box{background:#141416;border-radius:12px;padding:12px;margin-bottom:14px;border:1px solid var(--border);}
 .order-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;}
 .order-row:last-child{margin-bottom:0;}
 .order-label{color:#8f929b;}
 .order-val{font-weight:700;color:#fff;}
-.btn-primary{width:100%;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;font-size:14px;font-weight:900;padding:12px;border-radius:24px;margin-bottom:8px;}
-.btn-outline{width:100%;background:transparent;border:1px solid #C48E2F;color:#FAE59F;font-size:13px;font-weight:700;padding:12px;border-radius:24px;margin-bottom:12px;}
+.btn-primary{width:100%;background:var(--gold-grad);color:#291a03;font-size:14px;font-weight:900;padding:12px;border-radius:24px;margin-bottom:8px;}
+.btn-outline{width:100%;background:transparent;border:1px solid #C48E2F;color:var(--gold);font-size:13px;font-weight:700;padding:12px;border-radius:24px;margin-bottom:12px;}
 
-.payment-amt-box{display:flex;justify-content:space-between;align-items:center;background:#141416;padding:12px 14px;border-radius:12px;margin-bottom:14px;}
-.pa-amount{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:#FAE59F;}
+.payment-amt-box{display:flex;justify-content:space-between;align-items:center;background:#141416;padding:12px 14px;border-radius:12px;margin-bottom:14px;border:1px solid var(--border);}
+.pa-amount{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--gold);}
 .timer{color:#ff4d4f;font-weight:800;font-size:13px;}
-.upi-apps{display:flex;gap:10px;margin-bottom:14px;}
-.upi-app-btn{flex:1;background:#2a2a30;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:700;cursor:pointer;}
+.upi-apps{display:flex;gap:8px;margin-bottom:14px;}
+.upi-app-btn{flex:1;background:#2a2a30;border:1px solid var(--border);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;}
+.upi-app-btn:active{transform:scale(0.96);}
 .qr-container{text-align:center;background:#fff;padding:12px;border-radius:12px;margin:0 auto 12px;display:inline-block;}
-.utr-input-box{background:#141416;border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.1);margin-bottom:8px;}
-.utr-input-box input{width:100%;font-size:14px;color:#fff;font-weight:700;}
-.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(20,20,22,0.96);border:1px solid rgba(250,229,159,0.3);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;}
+.utr-input-box{background:#141416;border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.12);margin-bottom:10px;}
+.utr-input-box input{width:100%;font-size:14px;color:#fff;font-weight:700;letter-spacing:1px;}
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<div class="navbar">
+<header class="navbar">
   <div class="navbar-left" onclick="location.href='wallet.html'">
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
   </div>
   <div class="navbar-title">Deposit</div>
   <div class="navbar-right" onclick="location.href='deposit-history.html'">History</div>
-</div>
+</header>
 
 <div class="gold-banner">
   <div class="gb-title">Available Balance</div>
@@ -124,9 +132,9 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
     Recharge Instructions
   </div>
   <ul class="ins-list">
-    <li>Scan QR or pay directly using PhonePe or Paytm.</li>
-    <li>Input the exact 12-digit UTR number after transferring funds.</li>
-    <li>Do not reuse expired QR codes or previous orders.</li>
+    <li>Scan QR or pay directly using PhonePe, Paytm, or Google Pay.</li>
+    <li>Input the exact 12-digit UTR/Ref number immediately after payment.</li>
+    <li>Once your UTR is detected by our automatic system, your balance updates in seconds.</li>
   </ul>
 </div>
 
@@ -142,7 +150,7 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
     <div class="modal-body">
       <div class="order-box">
         <div class="order-row"><span class="order-label">Order ID:</span><span class="order-val" id="pendingOrderId">...</span></div>
-        <div class="order-row"><span class="order-label">Amount:</span><span class="order-val" id="pendingAmt" style="color:#FAE59F;">₹0.00</span></div>
+        <div class="order-row"><span class="order-label">Amount:</span><span class="order-val" id="pendingAmt" style="color:var(--gold);">₹0.00</span></div>
         <div class="order-row"><span class="order-label">Time left:</span><span class="order-val" id="pendingTimer" style="color:#ff4d4f;">15:00</span></div>
       </div>
       <button class="btn-primary" id="continueBtn">Continue Payment</button>
@@ -158,7 +166,7 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
 <div class="modal-overlay" id="paymentModal">
   <div class="modal-content">
     <div class="modal-header">
-      <span>UPI Scan & Pay</span>
+      <span>UPI Scan &amp; Pay</span>
       <span class="modal-close" onclick="closeModal('paymentModal')">×</span>
     </div>
     <div class="modal-body" style="text-align:center;">
@@ -170,12 +178,13 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
       <div class="upi-apps">
         <div class="upi-app-btn" id="paytmBtn">Paytm</div>
         <div class="upi-app-btn" id="phonepeBtn">PhonePe</div>
+        <div class="upi-app-btn" id="gpayBtn">GPay</div>
       </div>
 
       <div class="qr-container" id="qrcode"></div>
       
       <div class="utr-input-box">
-        <input type="number" id="utrInput" placeholder="Input 12-digit UTR here" maxlength="12">
+        <input type="text" id="utrInput" placeholder="Input 12-digit UTR here" maxlength="12" inputmode="numeric">
       </div>
 
       <button class="btn-primary" id="submitUtrBtn">Submit UTR</button>
@@ -188,7 +197,10 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, serverTimestamp, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, 
+  where, getDocs, serverTimestamp, onSnapshot 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -207,9 +219,10 @@ const YOUR_UPI_ID = "aman.1930@superyes";
 const YOUR_NAME = "BDG LOTTERY7";
 
 let currentUser = null;
-let pendingOrderDocId = null;
+let currentPendingOrderId = null;
+let currentPendingAmount = 0;
 let timerInterval = null;
-let paymentTimerInterval = null;
+let statusUnsubscribe = null;
 
 const toastEl = document.getElementById('toast');
 window.toast = (msg) => {
@@ -247,11 +260,14 @@ onAuthStateChanged(auth, async (user) => {
   if(!user) return location.replace('index.html');
   currentUser = user;
   
-  const snap = await getDoc(doc(db,'users',user.uid));
-  if(snap.exists()) {
-    const bal = snap.data().balance || 0;
-    document.getElementById('headerBal').textContent = '₹' + Number(bal).toFixed(2);
-  }
+  // Real-time balance sync
+  onSnapshot(doc(db, 'users', user.uid), (snap) => {
+    if(snap.exists()) {
+      const bal = snap.data().balance || 0;
+      document.getElementById('headerBal').textContent = '₹' + Number(bal).toFixed(2);
+    }
+  });
+
   checkPendingOrder();
 });
 
@@ -260,23 +276,26 @@ async function checkPendingOrder() {
     const q = query(
       collection(db, 'deposits'), 
       where('userId', '==', currentUser.uid), 
-      where('status', '==', 'pending')
+      where('status', 'in', ['pending', 'processing'])
     );
     const snap = await getDocs(q);
     
     if(!snap.empty) {
-      const docSnap = snap.docs[0];
-      const docData = docSnap.data();
-      pendingOrderDocId = docSnap.id;
+      // Find latest pending order
+      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      docs.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+      const activeOrder = docs[0];
       
-      document.getElementById('pendingOrderId').innerText = docData.orderId || 'ORD-N/A';
-      document.getElementById('pendingAmt').innerText = '₹' + Number(docData.amount).toFixed(2);
+      currentPendingOrderId = activeOrder.orderId || activeOrder.id;
+      currentPendingAmount = Number(activeOrder.amount || 0);
+
+      document.getElementById('pendingOrderId').innerText = currentPendingOrderId;
+      document.getElementById('pendingAmt').innerText = '₹' + currentPendingAmount.toFixed(2);
       document.getElementById('pendingModal').classList.add('show');
       
       let timeLeft = 15 * 60;
-      if(docData.createdAt) {
-        const created = docData.createdAt.toDate();
-        const diff = Math.floor((new Date() - created) / 1000);
+      if(activeOrder.createdAt && activeOrder.createdAt.toDate) {
+        const diff = Math.floor((new Date() - activeOrder.createdAt.toDate()) / 1000);
         timeLeft = Math.max(0, (15 * 60) - diff);
       }
       
@@ -298,14 +317,18 @@ async function checkPendingOrder() {
 
 btnDeposit.addEventListener('click', async () => {
   const amt = parseFloat(amountInput.value);
-  if(!(amt >= 100 && amt <= 50000)) return toast('Amount must be between 100 and 50000');
+  if(!(amt >= 100 && amt <= 50000)) return toast('Amount must be between ₹100 and ₹50,000');
   
   btnDeposit.disabled = true;
   btnDeposit.innerText = "Connecting...";
   
   try {
     const orderId = 'RC' + Date.now();
-    const docRef = await addDoc(collection(db, 'deposits'), {
+    currentPendingOrderId = orderId;
+    currentPendingAmount = amt;
+
+    // Temporary staging record
+    await setDoc(doc(db, 'deposits', orderId), {
       userId: currentUser.uid,
       orderId: orderId,
       amount: amt,
@@ -313,13 +336,12 @@ btnDeposit.addEventListener('click', async () => {
       createdAt: serverTimestamp()
     });
     
-    pendingOrderDocId = docRef.id;
     document.getElementById('pendingAmt').innerText = '₹' + amt.toFixed(2);
     document.getElementById('pendingOrderId').innerText = orderId;
     
     showPaymentModal();
   } catch(err) {
-    toast('Deposit failed. Try again.');
+    toast('Deposit initialization failed');
   } finally {
     btnDeposit.disabled = false;
     btnDeposit.innerText = "Deposit";
@@ -335,10 +357,10 @@ window.showPaymentModal = function() {
   document.getElementById('pendingModal').classList.remove('show');
   document.getElementById('paymentModal').classList.add('show');
   
-  const amt = document.getElementById('pendingAmt').innerText.replace('₹', '').trim();
+  const amt = currentPendingAmount || parseFloat(document.getElementById('amountInput').value) || 100;
   document.getElementById('payModalAmt').innerText = amt;
   
-  const upiLink = `upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
+  const upiLink = `upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR&tn=${encodeURIComponent(currentPendingOrderId || 'Recharge')}`;
   
   const qrContainer = document.getElementById('qrcode');
   qrContainer.innerHTML = '';
@@ -353,54 +375,102 @@ window.showPaymentModal = function() {
 
   document.getElementById('paytmBtn').onclick = () => window.location.href = `paytmmp://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
   document.getElementById('phonepeBtn').onclick = () => window.location.href = `phonepe://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
+  document.getElementById('gpayBtn').onclick = () => window.location.href = `tez://upi/pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
 };
 
+// 🚀 UTR SUBMISSION ENGINE (Mapped Directly with Automatic MacroDroid Matcher)
 document.getElementById('submitUtrBtn').addEventListener('click', async () => {
   const utr = document.getElementById('utrInput').value.trim();
-  if(utr.length < 12) return toast('Please enter valid 12-digit UTR');
-  if(!pendingOrderDocId) return toast('Order not found');
+  
+  if(!/^\d{12}$/.test(utr)) {
+    return toast('Please enter a valid 12-digit numeric UTR/Ref No.');
+  }
 
   const btn = document.getElementById('submitUtrBtn');
   btn.disabled = true;
-  btn.innerText = "Submitting...";
+  btn.innerText = "Verifying UTR...";
 
   try {
-    await updateDoc(doc(db, 'deposits', pendingOrderDocId), {
-      status: 'processing',
+    const utrDocRef = doc(db, 'deposits', utr);
+    const existingCheck = await getDoc(utrDocRef);
+
+    // If UTR was already submitted and successfully processed
+    if(existingCheck.exists() && existingCheck.data().status === 'success') {
+      toast('This UTR has already been credited!');
+      btn.disabled = false;
+      btn.innerText = "Submit UTR";
+      return;
+    }
+
+    const amt = currentPendingAmount || parseFloat(document.getElementById('payModalAmt').innerText);
+
+    // Write primary record where doc.id === UTR
+    // This allows MacroDroid Webhook to instantly find and credit the deposit
+    await setDoc(utrDocRef, {
+      userId: currentUser.uid,
+      orderId: currentPendingOrderId || ('RC' + Date.now()),
+      amount: amt,
       utr: utr,
-      submittedAt: serverTimestamp()
+      status: 'pending',
+      submittedAt: serverTimestamp(),
+      createdAt: serverTimestamp()
     });
 
-    // Create tracking transaction
-    await addDoc(collection(db, 'transactions'), {
+    // Cleanup old temporary order if exists
+    if(currentPendingOrderId && currentPendingOrderId !== utr) {
+      updateDoc(doc(db, 'deposits', currentPendingOrderId), {
+        status: 'replaced_by_utr',
+        targetUtr: utr
+      }).catch(()=>{});
+    }
+
+    // Ledger Transaction Record
+    await setDoc(doc(db, 'transactions', `dep_${utr}`), {
       userId: currentUser.uid,
       type: 'deposit',
-      title: 'Recharge Pending',
-      amount: parseFloat(document.getElementById('payModalAmt').innerText),
+      title: 'UPI Fast Recharge',
+      amount: amt,
+      utr: utr,
       status: 'pending',
       createdAt: serverTimestamp()
     });
-    
-    toast('UTR submitted! Waiting for approval.');
-    setTimeout(() => location.href = 'deposit-history.html', 1200);
+
+    toast('UTR submitted! Auto-crediting in a few seconds...');
+
+    // ⚡ Real-time listener: Listen for webhook auto-credit
+    if(statusUnsubscribe) statusUnsubscribe();
+    statusUnsubscribe = onSnapshot(utrDocRef, (snap) => {
+      if(snap.exists() && snap.data().status === 'success') {
+        toast('🎉 Payment Received! ₹' + amt + ' added to balance.');
+        setTimeout(() => location.href = 'wallet.html', 1200);
+      }
+    });
+
+    setTimeout(() => {
+      if(btn) {
+        btn.disabled = false;
+        btn.innerText = "Waiting for bank match...";
+      }
+    }, 4000);
+
   } catch(err) {
-    toast('Submission error');
+    toast('Submission error: ' + err.message);
     btn.disabled = false;
     btn.innerText = "Submit UTR";
   }
 });
 
 window.cancelCurrentOrder = async function() {
-  if(!pendingOrderDocId) return;
+  if(!currentPendingOrderId) return;
   try {
-    await updateDoc(doc(db, 'deposits', pendingOrderDocId), {
+    await updateDoc(doc(db, 'deposits', currentPendingOrderId), {
       status: 'cancelled',
       cancelledAt: serverTimestamp()
     });
     toast('Order cancelled');
-    location.reload();
+    setTimeout(() => location.reload(), 600);
   } catch(e) {
-    toast('Failed to cancel');
+    toast('Failed to cancel order');
   }
 };
 </script>
