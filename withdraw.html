@@ -6,37 +6,74 @@
 <title>Withdraw - BDG LOTTERY7</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
+:root{
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#141416;color:#fff;min-height:100vh;padding-bottom:50px;}
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);border-bottom:1px solid rgba(255,255,255,0.06);}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:50px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);border-bottom:1px solid var(--border);}
 .nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
 .nav-title{font-size:16px;font-weight:700;}
-.nav-right{font-size:12px;font-weight:700;color:#FAE59F;cursor:pointer;}
+.nav-right{font-size:12px;font-weight:700;color:var(--gold);cursor:pointer;}
 
 .banner{margin:14px 16px;background:linear-gradient(135deg,#FFE793 0%,#E5B24E 50%,#C48E2F 100%);border-radius:18px;padding:18px;color:#291a03;}
 .banner .label{font-size:12px;font-weight:700;}
 .banner .amt{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;margin-top:6px;display:flex;align-items:center;gap:10px;}
 .banner .amt svg{width:18px;height:18px;stroke:#291a03;fill:none;stroke-width:2.5;cursor:pointer;}
 
-.section-title{font-size:12px;font-weight:700;margin:14px 16px 8px;color:#8f929b;text-transform:uppercase;}
-.methods{display:flex;gap:10px;margin:0 16px;}
-.method{flex:1;background:#202024;border-radius:12px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid transparent;}
-.method.active{border-color:#FAE59F;background:rgba(250,229,159,0.06);}
-.method svg{width:24px;height:24px;stroke:#FAE59F;fill:none;stroke-width:2;}
+/* Wager / Turnover Box */
+.wager-card{
+  margin:0 16px 14px;background:var(--card-bg);border-radius:16px;padding:16px;
+  border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,0.3);
+}
+.wager-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.wager-head h4{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px;}
+.wager-badge{font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px;}
+.wager-badge.locked{background:rgba(255,77,79,0.15);color:#ff4d4f;border:1px solid rgba(255,77,79,0.3);}
+.wager-badge.unlocked{background:rgba(0,230,118,0.15);color:#00e676;border:1px solid rgba(0,230,118,0.3);}
 
-.input-box{margin:14px 16px;background:#202024;border-radius:16px;padding:16px;border:1px solid rgba(255,255,255,0.06);}
-.amt-input{display:flex;align-items:center;background:#141416;border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1.5px solid rgba(255,255,255,0.08);}
-.amt-input span{font-size:18px;color:#FAE59F;margin-right:10px;font-weight:800;}
-.amt-input input{flex:1;background:transparent;border:none;color:#fff;font-size:16px;font-weight:700;outline:none;}
+.wager-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.wager-box{background:#18181a;border-radius:10px;padding:10px;border:1px solid var(--border);}
+.wager-box span{font-size:10px;color:#8f929b;text-transform:uppercase;font-weight:700;}
+.wager-box h3{font-family:'Orbitron',sans-serif;font-size:15px;color:#fff;margin-top:4px;font-weight:800;}
+
+.progress-track{width:100%;height:8px;background:#18181a;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.progress-fill{height:100%;background:linear-gradient(90deg,#FFE793,#00e676);border-radius:10px;width:0%;transition:width 0.4s ease;}
+.wager-tip{font-size:11px;color:#8f929b;margin-top:8px;line-height:1.4;}
+
+/* Input Details Card */
+.input-box{margin:0 16px 14px;background:var(--card-bg);border-radius:16px;padding:16px;border:1px solid var(--border);}
+.amt-input{display:flex;align-items:center;background:#141416;border-radius:12px;padding:12px 14px;margin-bottom:12px;border:1.5px solid rgba(255,255,255,0.08);}
+.amt-input span{font-size:18px;color:var(--gold);margin-right:10px;font-weight:800;}
+.amt-input input{flex:1;background:transparent;border:none;color:#fff;font-size:15px;font-weight:700;outline:none;}
+
+/* QR Upload Box */
+.qr-upload-area{
+  border:1.5px dashed rgba(250,229,159,0.3);border-radius:12px;padding:14px;text-align:center;
+  background:#18181a;margin-bottom:14px;cursor:pointer;position:relative;
+}
+.qr-upload-area svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:2;margin-bottom:6px;}
+.qr-upload-area p{font-size:12px;color:#a6a9ae;font-weight:600;}
+.qr-upload-area span{font-size:10px;color:#666;margin-top:2px;display:block;}
+#qrFileInput{display:none;}
+.qr-preview-img{width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--gold);display:none;margin:8px auto 0;}
+
 .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px;color:#8f929b;}
-.row span:last-child{color:#FAE59F;font-weight:700;}
-.all-btn{background:transparent;border:1px solid #FAE59F;color:#FAE59F;padding:3px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;}
+.row span:last-child{color:var(--gold);font-weight:700;}
+.all-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:3px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;}
 
-.btn-withdraw{width:100%;height:46px;border-radius:23px;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;font-size:14px;font-weight:900;border:none;margin-top:14px;cursor:pointer;letter-spacing:0.5px;}
+.btn-withdraw{width:100%;height:46px;border-radius:23px;background:var(--gold-grad);color:#291a03;font-size:14px;font-weight:900;border:none;margin-top:14px;cursor:pointer;letter-spacing:0.5px;}
 .btn-withdraw:disabled{background:#383838;color:#777;cursor:not-allowed;}
 
-.rules{margin:14px 16px;border:1px solid rgba(255,255,255,0.06);background:#202024;border-radius:14px;padding:14px;}
+.rules{margin:0 16px 14px;border:1px solid var(--border);background:var(--card-bg);border-radius:14px;padding:14px;}
 .rules p{font-size:11px;color:#8f929b;line-height:1.7;margin-bottom:4px;}
 .rules .red{color:#ff4d4f;font-weight:700;}
 
@@ -45,6 +82,7 @@ body{background:#141416;color:#fff;min-height:100vh;padding-bottom:50px;}
 </style>
 </head>
 <body>
+
 <div class="navbar">
   <div class="nav-left" onclick="location.href='wallet.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="nav-title">Withdraw</div>
@@ -56,11 +94,26 @@ body{background:#141416;color:#fff;min-height:100vh;padding-bottom:50px;}
   <div class="amt"><span id="availBal">₹0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
 </div>
 
-<div class="section-title">Payment Method</div>
-<div class="methods">
-  <div class="method active">
-    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> UPI
+<!-- Wager / Turnover Requirement Section -->
+<div class="wager-card">
+  <div class="wager-head">
+    <h4><span>🎯</span> Turnover Requirements</h4>
+    <span class="wager-badge locked" id="wagerBadge">Wager Pending</span>
   </div>
+  <div class="wager-grid">
+    <div class="wager-box">
+      <span>Completed Bet</span>
+      <h3 id="completedWagerText">₹0.00</h3>
+    </div>
+    <div class="wager-box">
+      <span>Remaining Bet</span>
+      <h3 id="remainingWagerText" style="color:#ff4d4f;">₹0.00</h3>
+    </div>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="wagerProgress"></div>
+  </div>
+  <div class="wager-tip" id="wagerTip">You need to bet remaining amount on games before submitting a withdrawal request.</div>
 </div>
 
 <div class="input-box">
@@ -68,9 +121,19 @@ body{background:#141416;color:#fff;min-height:100vh;padding-bottom:50px;}
     <span>₹</span>
     <input type="number" id="amtInput" placeholder="Enter withdrawal amount" oninput="checkAmt()">
   </div>
-  <div class="amt-input" style="margin-bottom:12px;">
-    <input type="text" id="upiInput" placeholder="Enter UPI ID (e.g. mobile@upi)" style="width:100%;font-size:13px;">
+  <div class="amt-input">
+    <input type="text" id="upiInput" placeholder="Enter UPI ID (e.g. yourname@upi)" style="width:100%;font-size:13px;">
   </div>
+
+  <!-- QR Upload Section -->
+  <div class="qr-upload-area" onclick="document.getElementById('qrFileInput').click()">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    <p id="qrUploadStatus">Upload Payment QR Code</p>
+    <span>Tap to select QR image (JPG / PNG)</span>
+    <img id="qrPreview" class="qr-preview-img" alt="QR Preview">
+  </div>
+  <input type="file" id="qrFileInput" accept="image/*" onchange="handleQRSelect(event)">
+
   <div class="row">
     <span>Withdrawable: ₹<span id="wdBal">0.00</span></span>
     <button class="all-btn" onclick="setAll()">All</button>
@@ -85,7 +148,8 @@ body{background:#141416;color:#fff;min-height:100vh;padding-bottom:50px;}
 <div class="rules">
   <p>Withdrawal range: <span class="red">₹110.00 - ₹50,000.00</span></p>
   <p>Service fee: <span class="red">0%</span></p>
-  <p>Please double check UPI ID before submitting.</p>
+  <p>Turnover rule: <span class="red">1.0x deposit wager required</span></p>
+  <p>Uploaded QR code and UPI details will be verified by management.</p>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -103,9 +167,16 @@ const firebaseConfig = {
   messagingSenderId: "568771943906",
   appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// ==========================================
+// 🤖 TELEGRAM BOT CONFIGURATION
+// ==========================================
+const TELEGRAM_BOT_TOKEN = "7737213853:AAGY31jJ22Xo0Jd9sA7bUqWdYQ5x7Z8g1hM"; // Replace with your Bot Token
+const TELEGRAM_CHAT_ID = "-1002345678901"; // Replace with your Admin / Channel Chat ID
 
 const toastEl = document.getElementById('toast');
 window.toast = (msg) => {
@@ -116,6 +187,10 @@ window.toast = (msg) => {
 
 let currentUser = null;
 let userBalance = 0;
+let requiredWager = 0;
+let completedWager = 0;
+let remainingWager = 0;
+let selectedQRFile = null;
 const MIN_WD = 110;
 
 onAuthStateChanged(auth, async (user) => {
@@ -124,17 +199,60 @@ onAuthStateChanged(auth, async (user) => {
   
   const snap = await getDoc(doc(db,'users',user.uid));
   if(snap.exists()) {
-    userBalance = Number(snap.data().balance || 0);
+    const data = snap.data();
+    userBalance = Number(data.balance || 0);
+    
+    // Wager Logic: total deposits create 1.0x required wager turnover
+    const totalDeposits = Number(data.totalRecharge || data.totalDeposit || 0);
+    completedWager = Number(data.totalBetTurnover || data.totalBetsAmount || 0);
+    requiredWager = Number(data.requiredWager ?? totalDeposits);
+    remainingWager = Math.max(0, requiredWager - completedWager);
+
     document.getElementById('availBal').textContent = '₹' + userBalance.toFixed(2);
     document.getElementById('wdBal').textContent = userBalance.toFixed(2);
+    document.getElementById('completedWagerText').textContent = '₹' + completedWager.toFixed(2);
+    document.getElementById('remainingWagerText').textContent = '₹' + remainingWager.toFixed(2);
+
+    const progressPct = requiredWager > 0 ? Math.min(100, (completedWager / requiredWager) * 100) : 100;
+    document.getElementById('wagerProgress').style.width = `${progressPct}%`;
+
+    const badge = document.getElementById('wagerBadge');
+    const tip = document.getElementById('wagerTip');
+    if (remainingWager <= 0) {
+      badge.textContent = 'Unlocked ✓';
+      badge.className = 'wager-badge unlocked';
+      tip.innerHTML = '<span style="color:#00e676;">Turnover requirement fulfilled! You can withdraw anytime.</span>';
+    } else {
+      badge.textContent = 'Locked ✕';
+      badge.className = 'wager-badge locked';
+      tip.innerHTML = `Please place <strong>₹${remainingWager.toFixed(2)}</strong> more bets on games to unlock withdrawal.`;
+    }
   }
 });
+
+window.handleQRSelect = function(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  selectedQRFile = file;
+
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const img = document.getElementById('qrPreview');
+    img.src = evt.target.result;
+    img.style.display = 'block';
+    document.getElementById('qrUploadStatus').textContent = 'QR Code Selected ✓';
+  };
+  reader.readAsDataURL(file);
+};
 
 window.checkAmt = function() {
   const val = parseFloat(document.getElementById('amtInput').value) || 0;
   const btn = document.getElementById('wdBtn');
   document.getElementById('recvAmt').textContent = '₹' + val.toFixed(2);
-  btn.disabled = !(val >= MIN_WD && val <= userBalance);
+
+  // Wager must be 0 and amount valid
+  const canWithdraw = (val >= MIN_WD && val <= userBalance && remainingWager <= 0);
+  btn.disabled = !canWithdraw;
 };
 
 window.setAll = function() {
@@ -142,22 +260,69 @@ window.setAll = function() {
   checkAmt();
 };
 
+// ==========================================
+// 🚀 TELEGRAM NOTIFICATION SENDER
+// ==========================================
+async function sendTelegramWithdrawAlert(orderId, amount, upiId, qrFile) {
+  const messageText = 
+`🚨 *NEW WITHDRAWAL REQUEST* 🚨
+━━━━━━━━━━━━━━━━━━━━
+🆔 *Order ID:* \`${orderId}\`
+👤 *User UID:* \`${currentUser.uid}\`
+💰 *Amount:* ₹${Number(amount).toFixed(2)}
+💳 *UPI ID:* \`${upiId}\`
+🎯 *Wager Completed:* ₹${completedWager.toFixed(2)}
+⏰ *Time:* ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+━━━━━━━━━━━━━━━━━━━━
+📌 *Status:* Pending Admin Approval`;
+
+  try {
+    if (qrFile) {
+      // Send photo with caption
+      const formData = new FormData();
+      formData.append('chat_id', TELEGRAM_CHAT_ID);
+      formData.append('caption', messageText);
+      formData.append('parse_mode', 'Markdown');
+      formData.append('photo', qrFile);
+
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+        method: 'POST',
+        body: formData
+      });
+    } else {
+      // Send text only
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: messageText,
+          parse_mode: 'Markdown'
+        })
+      });
+    }
+  } catch(err) {
+    console.error('Telegram notification error:', err);
+  }
+}
+
 window.submitWithdraw = async function() {
   const amt = parseFloat(document.getElementById('amtInput').value);
   const upiId = document.getElementById('upiInput').value.trim();
   
+  if(remainingWager > 0) return toast(`Bet turnover pending: ₹${remainingWager.toFixed(2)} remaining`);
   if(amt < MIN_WD) return toast(`Min withdraw is ₹${MIN_WD}`);
   if(amt > userBalance) return toast('Insufficient balance');
   if(!upiId || !upiId.includes('@')) return toast('Enter valid UPI ID');
   
   const btn = document.getElementById('wdBtn');
   btn.disabled = true;
-  btn.innerText = 'Processing...';
+  btn.innerText = 'Submitting...';
 
   try {
     const orderId = 'WD' + Date.now();
     
-    // 1. Deduct balance immediately
+    // 1. Deduct balance from Firestore
     await updateDoc(doc(db, 'users', currentUser.uid), {
       balance: increment(-amt)
     });
@@ -172,7 +337,7 @@ window.submitWithdraw = async function() {
       createdAt: serverTimestamp()
     });
 
-    // 3. Add transaction record
+    // 3. Add transaction ledger record
     await addDoc(collection(db, 'transactions'), {
       userId: currentUser.uid,
       type: 'withdraw',
@@ -182,8 +347,11 @@ window.submitWithdraw = async function() {
       createdAt: serverTimestamp()
     });
 
-    toast('Withdrawal request submitted!');
-    setTimeout(() => location.href = 'withdraw-history.html', 1200);
+    // 4. Send instant alert to Telegram Bot
+    await sendTelegramWithdrawAlert(orderId, amt, upiId, selectedQRFile);
+
+    toast('Withdrawal request submitted to admin!');
+    setTimeout(() => location.href = 'withdraw-history.html', 1400);
     
   } catch(err) {
     toast('Withdrawal failed. Try again.');
