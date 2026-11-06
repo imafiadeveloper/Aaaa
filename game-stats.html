@@ -2,62 +2,288 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Statistics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1A1A1A">
+<title>BDG GAME - Game Statistics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-body{background:#1A1A1A;color:#fff;font-family:'Inter',sans-serif;margin:0;}
-.navbar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
-.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;cursor:pointer;}
-.nav-title{font-size:16px;font-weight:600;}
-.tabs{display:flex;padding:16px;gap:10px;overflow-x:auto;}
-.tab{background:#262626;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;color:#a6a9ae;white-space:nowrap;}
-.tab.active{background:linear-gradient(90deg,#FAE59F,#C4933F);color:#3a2a10;}
-.stats-card{background:#262626;margin:0 16px 16px;border-radius:12px;padding:16px;text-align:center;}
-.stats-card h2{font-size:20px;color:#FAE59F;margin-bottom:4px;}
-.stats-card p{font-size:12px;color:#a6a9ae;}
-.game-list{background:#262626;margin:0 16px;border-radius:12px;padding:16px;}
-.game-item{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
-.game-icon{width:40px;height:40px;background:#333;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+:root{
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg, #FFE793 0%, #C48E2F 100%);
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+/* Navbar */
+.navbar{position:sticky;top:0;z-index:100;height:54px;background:#18181a;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.nav-title{font-size:16px;font-weight:700;}
+.nav-right{width:36px;height:36px;display:flex;align-items:center;justify-content:flex-end;cursor:pointer;}
+.nav-right svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+/* Filter Tabs */
+.tabs{display:flex;padding:12px 16px;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.tab{flex:0 0 auto;background:#202024;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;color:#8f929b;cursor:pointer;border:1px solid var(--border);transition:all .2s;}
+.tab.active{background:var(--gold-grad);color:#291a03;border-color:transparent;}
+
+/* Overall Stats Card */
+.stats-card{
+  margin:0 16px 16px;background:linear-gradient(135deg, #2c2415 0%, #171618 100%);
+  border-radius:18px;padding:18px 16px;border:1px solid rgba(250,229,159,0.25);
+  box-shadow:0 8px 24px rgba(0,0,0,0.5);text-align:center;position:relative;
+}
+.stats-card h2{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--gold);margin-bottom:4px;}
+.stats-card p{font-size:12px;color:#a6a9ae;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+
+.summary-sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.08);}
+.sub-stat-box span{font-size:11px;color:#8f929b;display:block;}
+.sub-stat-box strong{font-family:'Orbitron',sans-serif;font-size:15px;color:#fff;margin-top:3px;display:block;}
+
+/* Game Categories Breakdown */
+.game-list{margin:0 16px;display:flex;flex-direction:column;gap:12px;}
+.game-item{
+  background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);
+  display:flex;gap:14px;align-items:flex-start;box-shadow:0 4px 14px rgba(0,0,0,0.3);
+}
+.game-icon{
+  width:46px;height:46px;background:#18181a;border-radius:12px;display:flex;
+  align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border);flex-shrink:0;
+}
 .game-details{flex:1;}
-.gd-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;color:#a6a9ae;}
-.gd-row span:last-child{color:#fff;font-weight:500;}
+.game-name{font-size:14px;font-weight:800;color:#fff;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;display:flex;justify-content:space-between;align-items:center;}
+.game-name span{font-size:10px;color:var(--gold);background:rgba(250,229,159,0.1);padding:2px 8px;border-radius:6px;border:1px solid rgba(250,229,159,0.2);}
+.gd-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;color:#8f929b;}
+.gd-row span:last-child{color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;}
+.win-color{color:#00e676 !important;}
+
+/* Loading State */
+.loading-box{text-align:center;padding:40px 20px;color:#777;font-size:13px;font-weight:600;}
+
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;text-align:center;}
 </style>
 </head>
 <body>
-<div class="navbar">
-  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+
+<header class="navbar">
+  <div class="nav-left" onclick="history.back() || (location.href='account.html')">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
   <div class="nav-title">Game statistics</div>
-  <div style="width:24px;"></div>
-</div>
+  <div class="nav-right" onclick="refreshStats()">
+    <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+  </div>
+</header>
+
 <div class="tabs">
-  <div class="tab active">Today</div>
-  <div class="tab">Yesterday</div>
-  <div class="tab">This week</div>
-  <div class="tab">This month</div>
+  <div class="tab active" onclick="changePeriod('today', this)">Today</div>
+  <div class="tab" onclick="changePeriod('yesterday', this)">Yesterday</div>
+  <div class="tab" onclick="changePeriod('week', this)">This week</div>
+  <div class="tab" onclick="changePeriod('month', this)">This month</div>
 </div>
+
 <div class="stats-card">
-  <h2>₹0.00</h2>
+  <h2 id="totalBetAll">₹0.00</h2>
   <p>Total bet</p>
-</div>
-<div class="game-list">
-  <div class="game-item">
-    <div class="game-icon">🎰</div>
-    <div class="game-details">
-      <div style="font-size:14px;font-weight:600;margin-bottom:8px;">lottery</div>
-      <div class="gd-row"><span>Total bet</span><span>₹0.00</span></div>
-      <div class="gd-row"><span>Number of bets</span><span>0</span></div>
-      <div class="gd-row"><span>Winning amount</span><span>₹0.00</span></div>
+  <div class="summary-sub-grid">
+    <div class="sub-stat-box">
+      <span>Total Won</span>
+      <strong id="totalWinAll" class="win-color">₹0.00</strong>
     </div>
-  </div>
-  <div class="game-item">
-    <div class="game-icon">📺</div>
-    <div class="game-details">
-      <div style="font-size:14px;font-weight:600;margin-bottom:8px;">video</div>
-      <div class="gd-row"><span>Total bet</span><span>₹0.00</span></div>
-      <div class="gd-row"><span>Number of bets</span><span>0</span></div>
-      <div class="gd-row"><span>Winning amount</span><span>₹0.00</span></div>
+    <div class="sub-stat-box">
+      <span>Total Bets Count</span>
+      <strong id="totalCountAll">0</strong>
     </div>
   </div>
 </div>
+
+<main class="game-list" id="categoryContainer">
+  <div class="loading-box">Syncing game statistics...</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let currentFilter = 'today';
+let cachedBets = [];
+
+// EXACT MATCH WITH YOUR FIRESTORE RULES
+const COLLECTIONS = [
+  { name: 'bets_30s', cat: 'Lottery', label: 'WinGo 30s' },
+  { name: 'bets', cat: 'Lottery', label: 'WinGo 1 Min' },
+  { name: 'bets_3m', cat: 'Lottery', label: 'WinGo 3 Min' },
+  { name: 'bets_5m', cat: 'Lottery', label: 'WinGo 5 Min' },
+  { name: 'bets_10m', cat: 'Lottery', label: 'WinGo 10 Min' },
+  { name: 'bets_k3', cat: 'Lottery', label: 'K3 Dice' },
+  { name: 'bets_5d', cat: 'Lottery', label: '5D Lottery' },
+  { name: 'bets_trx', cat: 'Lottery', label: 'TRX Win' },
+  { name: 'bets_aviator', cat: 'Original', label: 'Aviator' },
+  { name: 'bets_dragontiger', cat: 'Casino', label: 'Dragon Tiger' },
+  { name: 'bets_andarbahar', cat: 'Casino', label: 'Andar Bahar' },
+  { name: 'bets_roulette', cat: 'Casino', label: 'Roulette' },
+  { name: 'bets_plinko', cat: 'Original', label: 'Plinko' },
+  { name: 'bets_limbo', cat: 'Original', label: 'Limbo' },
+  { name: 'bets_mines', cat: 'Original', label: 'Mines' }
+];
+
+window.toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 1800);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    await fetchAllBets();
+  } else {
+    location.replace('index.html');
+  }
+});
+
+async function fetchAllBets() {
+  const container = document.getElementById('categoryContainer');
+  container.innerHTML = `<div class="loading-box">Syncing game statistics...</div>`;
+  cachedBets = [];
+
+  try {
+    const fetchPromises = COLLECTIONS.map(async (c) => {
+      try {
+        const q = query(collection(db, c.name), where('userId', '==', currentUser.uid), limit(50));
+        const snap = await getDocs(q);
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          let ts = Date.now();
+          if (d.createdAt && d.createdAt.toMillis) ts = d.createdAt.toMillis();
+          else if (d.createdAt && d.createdAt.seconds) ts = d.createdAt.seconds * 1000;
+
+          cachedBets.push({
+            category: c.cat,
+            game: c.label,
+            amount: Number(d.amount || 0),
+            winAmount: Number(d.winAmount || 0),
+            status: d.status || 'pending',
+            timestamp: ts
+          });
+        });
+      } catch(e) {}
+    });
+
+    await Promise.all(fetchPromises);
+    renderStats();
+  } catch(e) {
+    container.innerHTML = `<div class="loading-box">Failed to load statistics</div>`;
+  }
+}
+
+function getTimeRange(filter) {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  
+  if (filter === 'today') {
+    return { start: todayStart, end: now.getTime() };
+  } else if (filter === 'yesterday') {
+    const yStart = todayStart - (24 * 60 * 60 * 1000);
+    return { start: yStart, end: todayStart };
+  } else if (filter === 'week') {
+    const dayOfWeek = now.getDay() || 7;
+    const weekStart = todayStart - ((dayOfWeek - 1) * 24 * 60 * 60 * 1000);
+    return { start: weekStart, end: now.getTime() };
+  } else if (filter === 'month') {
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    return { start: monthStart, end: now.getTime() };
+  }
+  return { start: 0, end: now.getTime() };
+}
+
+function renderStats() {
+  const { start, end } = getTimeRange(currentFilter);
+  const filtered = cachedBets.filter(b => b.timestamp >= start && b.timestamp <= end);
+
+  let totalBetSum = 0;
+  let totalWinSum = 0;
+  let totalBetsCount = filtered.length;
+
+  const categories = {
+    'Lottery': { icon: '🎰', bet: 0, count: 0, win: 0, tag: 'WinGo/K3/5D' },
+    'Casino': { icon: '🃏', bet: 0, count: 0, win: 0, tag: 'Table/Cards' },
+    'Original': { icon: '🚀', bet: 0, count: 0, win: 0, tag: 'Aviator/Mines' }
+  };
+
+  filtered.forEach(b => {
+    totalBetSum += b.amount;
+    totalWinSum += b.winAmount;
+
+    if (categories[b.category]) {
+      categories[b.category].bet += b.amount;
+      categories[b.category].count += 1;
+      categories[b.category].win += b.winAmount;
+    }
+  });
+
+  // Top Cards Update
+  document.getElementById('totalBetAll').textContent = `₹${totalBetSum.toFixed(2)}`;
+  document.getElementById('totalWinAll').textContent = `₹${totalWinSum.toFixed(2)}`;
+  document.getElementById('totalCountAll').textContent = totalBetsCount;
+
+  // Render List
+  const container = document.getElementById('categoryContainer');
+  let html = '';
+
+  for (const [key, val] of Object.entries(categories)) {
+    html += `
+      <div class="game-item">
+        <div class="game-icon">${val.icon}</div>
+        <div class="game-details">
+          <div class="game-name">
+            <strong>${key}</strong>
+            <span>${val.tag}</span>
+          </div>
+          <div class="gd-row"><span>Total bet</span><span>₹${val.bet.toFixed(2)}</span></div>
+          <div class="gd-row"><span>Number of bets</span><span>${val.count}</span></div>
+          <div class="gd-row"><span>Winning amount</span><span class="${val.win > 0 ? 'win-color' : ''}">₹${val.win.toFixed(2)}</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+}
+
+window.changePeriod = (period, el) => {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = period;
+  renderStats();
+};
+
+window.refreshStats = () => {
+  toast('Refreshing statistics...');
+  fetchAllBets();
+};
+</script>
 </body>
 </html>
