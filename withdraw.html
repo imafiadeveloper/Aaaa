@@ -29,7 +29,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .banner .amt{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;margin-top:6px;display:flex;align-items:center;gap:10px;}
 .banner .amt svg{width:18px;height:18px;stroke:#291a03;fill:none;stroke-width:2.5;cursor:pointer;}
 
-/* Wager Card */
+/* Wager / Turnover Box */
 .wager-card{
   margin:0 16px 14px;background:var(--card-bg);border-radius:16px;padding:16px;
   border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,0.3);
@@ -94,6 +94,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="amt"><span id="availBal">₹0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
 </div>
 
+<!-- Wager / Turnover Requirement Section -->
 <div class="wager-card">
   <div class="wager-head">
     <h4><span>🎯</span> Turnover Requirements</h4>
@@ -146,8 +147,8 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="rules">
   <p>Withdrawal range: <span class="red">₹110.00 - ₹50,000.00</span></p>
   <p>Service fee: <span class="red">0%</span></p>
-  <p>Turnover rule: <span class="red">1.0x deposit wager required</span></p>
-  <p>Uploaded QR code and UPI details will be verified by management.</p>
+  <p>Turnover rule: <span class="red">1.0x gameplay bet required on all deposits &amp; bonuses</span></p>
+  <p>Bonus amount cannot be withdrawn without betting.</p>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -170,11 +171,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ==========================================
-// 🤖 CONFIGURED DIRECTLY WITH YOUR BOT & ID
-// ==========================================
+// Telegram Bot Details
 const TELEGRAM_BOT_TOKEN = "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw";
-const TELEGRAM_CHAT_ID = "8167337368"; // Aapka direct Personal User ID
+const TELEGRAM_CHAT_ID = "8167337368";
 
 const toastEl = document.getElementById('toast');
 window.toast = (msg) => {
@@ -200,9 +199,27 @@ onAuthStateChanged(auth, async (user) => {
     const data = snap.data();
     userBalance = Number(data.balance || 0);
     
-    const totalDeposits = Number(data.totalRecharge || data.totalDeposit || 0);
+    // Total Completed Bets
     completedWager = Number(data.totalBetTurnover || data.totalBetsAmount || 0);
-    requiredWager = Number(data.requiredWager ?? totalDeposits);
+
+    // Total Deposits & Bonuses
+    const totalDeposits = Number(data.totalRecharge || data.totalDeposit || 0);
+    const totalBonus = Number(data.totalBonus || 0);
+
+    // 🔒 STRICT BONUS LOCK ENGINE:
+    // Required wager must cover all deposits AND all received bonuses
+    if (data.requiredWager !== undefined && data.requiredWager !== null) {
+      requiredWager = Number(data.requiredWager);
+    } else {
+      requiredWager = totalDeposits + totalBonus;
+    }
+
+    // Agar user ne koi bet nahi lagayi hai (completedWager == 0) aur uske paas balance hai (bonus/balance),
+    // toh requiredWager kam se kam uske balance jitna hona chahiye taaki direct bonus withdraw na ho sake!
+    if (completedWager === 0 && userBalance > 0) {
+      requiredWager = Math.max(requiredWager, userBalance);
+    }
+
     remainingWager = Math.max(0, requiredWager - completedWager);
 
     document.getElementById('availBal').textContent = '₹' + userBalance.toFixed(2);
@@ -210,19 +227,22 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('completedWagerText').textContent = '₹' + completedWager.toFixed(2);
     document.getElementById('remainingWagerText').textContent = '₹' + remainingWager.toFixed(2);
 
-    const progressPct = requiredWager > 0 ? Math.min(100, (completedWager / requiredWager) * 100) : 100;
+    const progressPct = requiredWager > 0 ? Math.min(100, (completedWager / requiredWager) * 100) : (userBalance > 0 ? 0 : 100);
     document.getElementById('wagerProgress').style.width = `${progressPct}%`;
 
     const badge = document.getElementById('wagerBadge');
     const tip = document.getElementById('wagerTip');
-    if (remainingWager <= 0) {
+    
+    if (remainingWager <= 0 && userBalance > 0 && completedWager > 0) {
       badge.textContent = 'Unlocked ✓';
       badge.className = 'wager-badge unlocked';
-      tip.innerHTML = '<span style="color:#00e676;">Turnover requirement fulfilled! You can withdraw anytime.</span>';
+      document.getElementById('remainingWagerText').style.color = '#00e676';
+      tip.innerHTML = '<span style="color:#00e676;">Turnover requirement fulfilled! You can withdraw now.</span>';
     } else {
       badge.textContent = 'Locked ✕';
       badge.className = 'wager-badge locked';
-      tip.innerHTML = `Please place <strong>₹${remainingWager.toFixed(2)}</strong> more bets on games to unlock withdrawal.`;
+      document.getElementById('remainingWagerText').style.color = '#ff4d4f';
+      tip.innerHTML = `You must bet at least <strong style="color:var(--gold);">₹${remainingWager.toFixed(2)}</strong> on games to unlock withdrawal. Bonus cannot be directly withdrawn.`;
     }
   }
 });
@@ -246,7 +266,9 @@ window.checkAmt = function() {
   const val = parseFloat(document.getElementById('amtInput').value) || 0;
   const btn = document.getElementById('wdBtn');
   document.getElementById('recvAmt').textContent = '₹' + val.toFixed(2);
-  const canWithdraw = (val >= MIN_WD && val <= userBalance && remainingWager <= 0);
+
+  // Strict: remaining wager must be 0, user must have completed bets, and balance sufficient
+  const canWithdraw = (val >= MIN_WD && val <= userBalance && remainingWager <= 0 && completedWager > 0);
   btn.disabled = !canWithdraw;
 };
 
@@ -255,7 +277,6 @@ window.setAll = function() {
   checkAmt();
 };
 
-// Direct Telegram Messenger to your User ID
 async function notifyTelegramBot(orderId, amount, upiId, qrBlob) {
   const textMsg = 
 `🚨 *NEW WITHDRAWAL SUBMITTED* 🚨
@@ -269,9 +290,8 @@ async function notifyTelegramBot(orderId, amount, upiId, qrBlob) {
 ━━━━━━━━━━━━━━━━━━━━
 📌 *Status:* Pending Admin Approval`;
 
-  // 1. Text Message Send
   try {
-    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -280,27 +300,22 @@ async function notifyTelegramBot(orderId, amount, upiId, qrBlob) {
         parse_mode: 'Markdown'
       })
     });
-    const json = await res.json();
-    console.log("Telegram text response:", json);
   } catch(e) {
     console.error("Telegram text error:", e);
   }
 
-  // 2. Photo Send (If uploaded)
   if (qrBlob) {
     try {
       const formData = new FormData();
       formData.append('chat_id', TELEGRAM_CHAT_ID);
       formData.append('photo', qrBlob, `${orderId}_qr.jpg`);
-      formData.append('caption', `QR for Order \`${orderId}\` | ₹${amount}`);
+      formData.append('caption', `Payment QR for Order \`${orderId}\` | ₹${amount}`);
       formData.append('parse_mode', 'Markdown');
 
-      const resPhoto = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
         method: 'POST',
         body: formData
       });
-      const jsonPhoto = await resPhoto.json();
-      console.log("Telegram photo response:", jsonPhoto);
     } catch(e) {
       console.error("Telegram photo error:", e);
     }
@@ -311,7 +326,12 @@ window.submitWithdraw = async function() {
   const amt = parseFloat(document.getElementById('amtInput').value);
   const upiId = document.getElementById('upiInput').value.trim();
   
-  if(remainingWager > 0) return toast(`Turnover pending: ₹${remainingWager.toFixed(2)} remaining`);
+  if(completedWager === 0) {
+    return toast(`Bonus abuse detected! Play games first to unlock withdrawal.`);
+  }
+  if(remainingWager > 0) {
+    return toast(`Bet turnover pending: ₹${remainingWager.toFixed(2)} remaining`);
+  }
   if(amt < MIN_WD) return toast(`Min withdraw is ₹${MIN_WD}`);
   if(amt > userBalance) return toast('Insufficient balance');
   if(!upiId || !upiId.includes('@')) return toast('Enter valid UPI ID');
@@ -352,7 +372,7 @@ window.submitWithdraw = async function() {
     await notifyTelegramBot(orderId, amt, upiId, selectedQRBlob);
 
     toast('Withdrawal request submitted!');
-    setTimeout(() => location.href = 'withdraw-history.html', 1400);
+    setTimeout(() => location.href = 'withdraw-history.html', 1200);
     
   } catch(err) {
     toast('Withdrawal failed. Try again.');
