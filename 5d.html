@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#1a1a1a">
-<title>BDG WIN - 5D Game</title>
+<title>BDG 5D GAME</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -45,9 +45,8 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .tc-colon{color:#111;font-weight:900;line-height:24px;}
 .tc-5d-balls{display:flex;gap:5px;margin-top:10px;}
 .ball-5d{width:24px;height:24px;border-radius:50%;background:#e53935;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;}
-.tc-period{position:absolute;bottom:10px;right:14px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;}
+.tc-period{margin-top:10px;text-align:right;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.5px;}
 
-/* 5D Betting */
 .bet-board{margin:0 12px 14px;background:#262626;border-radius:18px;padding:14px;}
 .row-5d-label{font-size:12px;font-weight:700;color:#a6a9ae;margin-bottom:8px;}
 .pos-bar{display:flex;gap:6px;margin-bottom:12px;}
@@ -65,17 +64,15 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 .hist-table{margin:0 12px;background:#242424;border-radius:12px;overflow:hidden;}
 .th-head{display:flex;background:#2f3440;padding:10px 0;font-size:11px;color:#9aa0ad;font-weight:700;}
-.th-row{display:flex;padding:10px 0;font-size:12px;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
+.th-row{display:flex;padding:12px 0;font-size:12px;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
 .col{flex:1;text-align:center;}
 .col-period{flex:1.4;font-family:'Orbitron',sans-serif;font-size:11px;color:#ddd;}
 
-/* Draw Overlay */
 .exact-draw-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(3px);z-index:9999;display:none;align-items:center;justify-content:center;gap:16px;}
 .exact-draw-overlay.show{display:flex;}
 .draw-flip-card{width:110px;height:160px;background:#424242;border-radius:16px;display:flex;align-items:center;justify-content:center;}
 .draw-flip-digit{font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;}
 
-/* Bet Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
 .sheet{width:100%;background:#262626;border-radius:20px 20px 0 0;padding:18px 16px 24px;}
@@ -110,7 +107,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="tc-top">
     <div>
       <div class="tc-mode-title">5D 1 Min</div>
-      <div class="tc-5d-balls" id="top5dPrev"></div>
+      <div class="tc-5d-balls" id="top5dPrev">
+        <div class="ball-5d">1</div><div class="ball-5d">2</div><div class="ball-5d">3</div><div class="ball-5d">4</div><div class="ball-5d">5</div>
+      </div>
     </div>
     <div>
       <div class="tc-boxes">
@@ -188,7 +187,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// EXACT RULES MATCH
 const RESULT_COLLECTION = 'results_5d';
 const BET_COLLECTION = 'bets_5d';
 const SLOT_DURATION_SEC = 60;
@@ -237,11 +235,11 @@ async function pruneOldResults() {
 
 function computeDeterministicResult(slotIndex, periodId) {
   const seed = (slotIndex * 9301 + 49297) % 233280;
-  const a = seed % 10;
-  const b = (seed * 2) % 10;
-  const c = (seed * 3) % 10;
-  const d = (seed * 4) % 10;
-  const e = (seed * 5) % 10;
+  const a = Math.abs(seed) % 10;
+  const b = Math.abs(seed * 2) % 10;
+  const c = Math.abs(seed * 3) % 10;
+  const d = Math.abs(seed * 4) % 10;
+  const e = Math.abs(seed * 5) % 10;
   const sum = a + b + c + d + e;
   return { period: periodId, a, b, c, d, e, sum, slotIndex };
 }
@@ -288,7 +286,7 @@ async function resolveBets(periodId, resData) {
       let winAmt = 0;
       if (won) {
         const gross = b.amount * b.multi;
-        winAmt = gross - (gross * 0.15);
+        winAmt = gross - (gross * 0.15); // 15% owner commission
         winTotal += winAmt;
       }
       batch.push(updateDoc(doc(db, BET_COLLECTION, docSnap.id), { status: won ? 'win' : 'lose', winAmount: winAmt }));
@@ -405,16 +403,28 @@ async function loadGameHistory() {
     arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
 
     if (arr[0]) {
-      topBalls.innerHTML = `<div class="ball-5d">${arr[0].a}</div><div class="ball-5d">${arr[0].b}</div><div class="ball-5d">${arr[0].c}</div><div class="ball-5d">${arr[0].d}</div><div class="ball-5d">${arr[0].e}</div>`;
+      const a = arr[0].a ?? 1;
+      const b = arr[0].b ?? 2;
+      const c = arr[0].c ?? 3;
+      const d = arr[0].d ?? 4;
+      const e = arr[0].e ?? 5;
+      topBalls.innerHTML = `<div class="ball-5d">${a}</div><div class="ball-5d">${b}</div><div class="ball-5d">${c}</div><div class="ball-5d">${d}</div><div class="ball-5d">${e}</div>`;
     }
 
-    rBox.innerHTML = arr.slice(0, 10).map(d => `
-      <div class="th-row">
-        <div class="col-period">${d.period}</div>
-        <div class="col" style="letter-spacing:2px;font-weight:900;">${d.a} ${d.b} ${d.c} ${d.d} ${d.e}</div>
-        <div class="col" style="color:var(--gold);font-weight:900;">${d.sum}</div>
-      </div>
-    `).join('');
+    rBox.innerHTML = arr.slice(0, 10).map(d => {
+      const a = d.a ?? (d.number ? (d.number % 10) : 0);
+      const b = d.b ?? ((a + 1) % 10);
+      const c = d.c ?? ((b + 2) % 10);
+      const dVal = d.d ?? ((c + 3) % 10);
+      const e = d.e ?? ((dVal + 4) % 10);
+      const sum = d.sum ?? (a + b + c + dVal + e);
+      return `
+        <div class="th-row">
+          <div class="col-period">${d.period}</div>
+          <div class="col" style="letter-spacing:2px;font-weight:900;">${a} ${b} ${c} ${dVal} ${e}</div>
+          <div class="col" style="color:var(--gold);font-weight:900;">${sum}</div>
+        </div>`;
+    }).join('');
   } catch(e){}
 }
 </script>
