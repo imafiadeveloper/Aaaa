@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#120c18">
-<title>BDG LOTTERY7 - Dragon vs Tiger</title>
+<title>BDG LOTTERY7 - Dragon vs Tiger VIP</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -17,12 +17,12 @@
   --border: rgba(255,255,255,0.08);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:radial-gradient(circle at 50% 0%, #2a1435 0%, #0d0814 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+body{background:radial-gradient(circle at 50% 0%, #2a1435 0%, #0d0814 85%);color:#fff;min-height:100vh;padding-bottom:30px;}
 button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
 ::-webkit-scrollbar{width:0;height:0;}
 
 /* Navbar */
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(18,12,24,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(18,12,24,0.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
 .nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
 .navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
@@ -32,12 +32,23 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
 
 /* Balance */
-.bal-card{background:linear-gradient(145deg, #261633 0%, #150d1c 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-card{background:linear-gradient(145deg, #261633 0%, #150d1c 100%);margin:10px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
 .bal-label{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
 .bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
 .bal-amt span{color:var(--gold);}
 .refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+/* 4 Players Live Seat Deck */
+.players-deck{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin:0 16px 12px;}
+.player-seat{background:#160f21;border:1.5px solid var(--border);border-radius:14px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;box-shadow:0 4px 12px rgba(0,0,0,0.4);}
+.player-seat.real{border-color:var(--gold);background:radial-gradient(circle, #2d183d 0%, #170d24 100%);}
+.player-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:#2a1a38;border:1.5px solid var(--border);margin-bottom:4px;position:relative;}
+.player-seat.real .player-avatar{border-color:var(--gold);box-shadow:0 0 10px rgba(245,196,67,0.4);}
+.p-tag{position:absolute;bottom:-3px;font-size:8px;font-weight:900;background:var(--gold-grad);color:#000;padding:1px 4px;border-radius:6px;line-height:1;}
+.p-name{font-size:10px;font-weight:800;color:#ddd;max-width:65px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.p-bal{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;color:var(--gold);margin-top:2px;}
+.p-bet-badge{font-size:9px;font-weight:800;color:#fff;background:rgba(255,255,255,0.08);border-radius:6px;padding:1px 5px;margin-top:3px;}
 
 /* Round Header & Battle Arena */
 .arena-card{margin:0 16px 14px;background:linear-gradient(145deg, #1f142b 0%, #11091a 100%);border-radius:20px;padding:16px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);}
@@ -49,86 +60,59 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 /* Duel Table (Cards) */
 .battle-table{display:flex;justify-content:space-around;align-items:center;position:relative;padding:10px 0;}
 .side-box{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px;border-radius:18px;border:2px solid transparent;transition:all 0.3s ease;}
-.side-box.winner-glow-dragon{border-color:var(--dragon-red);box-shadow:0 0 25px rgba(255,42,75,0.6);animation:pulseGlow 1s infinite alternate;}
-.side-box.winner-glow-tiger{border-color:var(--tiger-blue);box-shadow:0 0 25px rgba(0,136,255,0.6);animation:pulseGlow 1s infinite alternate;}
+.side-box.winner-glow-dragon{border-color:var(--dragon-red);box-shadow:0 0 30px rgba(255,42,75,0.8);animation:pulseGlow 1s infinite alternate;}
+.side-box.winner-glow-tiger{border-color:var(--tiger-blue);box-shadow:0 0 30px rgba(0,136,255,0.8);animation:pulseGlow 1s infinite alternate;}
 
 @keyframes pulseGlow{
   0%{transform:scale(1);}
-  100%{transform:scale(1.03);}
+  100%{transform:scale(1.04);}
 }
 
 .side-header{display:flex;align-items:center;gap:6px;}
-.side-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.side-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
 .side-box.dragon .side-title{color:var(--dragon-red);}
 .side-box.tiger .side-title{color:var(--tiger-blue);}
-.side-icon{width:24px;height:24px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6));}
+.side-icon{width:26px;height:26px;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(0,0,0,0.6));}
 
 /* 3D Playing Card Container */
-.card-wrapper{
-  width:96px;height:136px;perspective:1000px;position:relative;
-}
-.poker-card{
-  width:100%;height:100%;position:relative;transform-style:preserve-3d;
-  transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius:14px;
-}
+.card-wrapper{width:96px;height:136px;perspective:1000px;position:relative;}
+.poker-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);border-radius:14px;}
 .poker-card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;box-shadow:0 10px 25px rgba(0,0,0,0.7);}
 
-.card-face{
-  position:absolute;inset:0;width:100%;height:100%;
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  border-radius:14px;box-shadow:0 10px 25px rgba(0,0,0,0.7);
-}
+/* Back of Card */
+.card-back{transform:rotateY(180deg);background:#120c18;border:2px solid var(--gold);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.card-back-inner{width:82%;height:85%;border:1px dashed rgba(245,196,67,0.5);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle, #2b1739 0%, #150920 100%);}
+.card-back-art{width:50px;height:50px;filter:drop-shadow(0 2px 8px rgba(245,196,67,0.5));}
 
-/* Back Side of Card */
-.card-back{
-  transform:rotateY(180deg);background:#120c18;
-  border:2px solid var(--gold);overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background-size:cover;background-position:center;
-}
-.card-back-inner{
-  width:82%;height:85%;border:1px dashed rgba(245,196,67,0.5);border-radius:10px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(circle, #2b1739 0%, #150920 100%);
-}
-.card-back-art{width:48px;height:48px;filter:drop-shadow(0 2px 8px rgba(245,196,67,0.5));}
-
-/* Front Side of Card (Real Poker Face) */
-.card-front{
-  background:#ffffff;color:#111;transform:rotateY(0deg);
-  display:flex;flex-direction:column;justify-content:space-between;padding:8px 10px;
-  font-weight:900;border:1px solid #dcdcdc;
-}
+/* Front of Card */
+.card-front{background:#ffffff;color:#111;transform:rotateY(0deg);display:flex;flex-direction:column;justify-content:space-between;padding:8px 10px;font-weight:900;border:1px solid #dcdcdc;}
 .card-top{font-size:16px;line-height:1;display:flex;flex-direction:column;align-items:flex-start;}
 .card-mid{font-size:36px;text-align:center;line-height:1;}
 .card-bottom{font-size:16px;line-height:1;display:flex;flex-direction:column;align-items:flex-end;transform:rotate(180deg);}
 .suit-red{color:#e53935;}
 .suit-black{color:#212121;}
 
-.vs-badge{
-  font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;
-  background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 2px 8px rgba(245,196,67,0.4));
-}
+.vs-badge{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 8px rgba(245,196,67,0.4));}
 
 /* Recent Badges */
-.history-bar{display:flex;gap:8px;overflow-x:auto;padding:0 16px 14px;}
+.history-bar{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;}
 .h-chip{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:#fff;}
 .h-chip.D{background:linear-gradient(135deg,#ff2a4b,#b70014);box-shadow:0 2px 8px rgba(255,42,75,0.4);}
 .h-chip.T{background:linear-gradient(135deg,#0088ff,#004ab7);box-shadow:0 2px 8px rgba(0,136,255,0.4);}
 .h-chip.Tie{background:linear-gradient(135deg,#00e676,#009640);box-shadow:0 2px 8px rgba(0,230,118,0.4);}
 
-/* Betting Board */
-.bet-deck{display:grid;grid-template-columns:1fr 0.8fr 1fr;gap:10px;margin:0 16px 16px;}
-.bet-btn{height:115px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 8px 24px rgba(0,0,0,0.4);transition:transform .15s;}
+/* Betting Board with Live Chip Totals */
+.bet-deck{display:grid;grid-template-columns:1fr 0.8fr 1fr;gap:10px;margin:0 16px 14px;}
+.bet-btn{height:120px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:0 8px 24px rgba(0,0,0,0.4);transition:transform .15s;position:relative;overflow:hidden;}
 .bet-btn:active{transform:scale(0.96);}
 .bet-btn.dragon{background:linear-gradient(145deg, #c41834, #660515);border:2px solid rgba(255,42,75,0.5);}
 .bet-btn.tie{background:linear-gradient(145deg, #0d7a42, #053b1f);border:2px solid rgba(0,230,118,0.5);}
 .bet-btn.tiger{background:linear-gradient(145deg, #1059a4, #052952);border:2px solid rgba(0,136,255,0.5);}
-.bet-btn h2{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;letter-spacing:0.5px;}
-.bet-btn span{font-size:11px;font-weight:800;opacity:0.85;}
-.bet-btn .rate{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--gold);margin-top:4px;}
+.bet-btn h2{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:0.5px;}
+.bet-btn .rate{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
+.live-pool-box{background:rgba(0,0,0,0.5);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;gap:3px;margin-top:2px;border:1px solid rgba(255,255,255,0.1);}
+.my-bet-on-box{position:absolute;top:5px;right:6px;background:var(--gold-grad);color:#000;font-size:8px;font-weight:900;padding:2px 6px;border-radius:8px;display:none;}
 
 /* Tabs & History */
 .tabs-wrap{display:flex;margin:0 16px 10px;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--border);}
@@ -160,7 +144,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .qty-input{width:48px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Orbitron',sans-serif;font-weight:800;}
 .btn-submit-bet{width:100%;height:48px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-top:14px;box-shadow:0 6px 20px rgba(245,196,67,0.35);}
 
-/* Drawing Phase */
+/* Drawing Phase Overlay */
 .draw-overlay{position:fixed;inset:0;background:rgba(12,6,18,0.75);backdrop-filter:blur(8px);z-index:9000;display:none;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;}
 .draw-overlay.show{display:flex;}
 .draw-box{width:130px;height:130px;border-radius:50%;background:rgba(255,42,75,0.12);border:2px solid var(--dragon-red);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 35px rgba(255,42,75,0.45);}
@@ -204,6 +188,39 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
 </div>
 
+<!-- 4 Players Live Seat Deck (1 Real + 3 Dynamic Fake Bots) -->
+<div class="players-deck" id="playersDeck">
+  <!-- Seat 0: Real User -->
+  <div class="player-seat real" id="seat-0">
+    <div class="player-avatar">
+      <span>👑</span>
+      <span class="p-tag">YOU</span>
+    </div>
+    <div class="p-name" id="realUserName">Player</div>
+    <div class="p-bal" id="seatBal-0">₹0.00</div>
+    <div class="p-bet-badge" id="seatBet-0">No Bet</div>
+  </div>
+  <!-- Seats 1, 2, 3: Fake Players -->
+  <div class="player-seat" id="seat-1">
+    <div class="player-avatar"><span id="seatAv-1">😎</span></div>
+    <div class="p-name" id="seatName-1">Bot 1</div>
+    <div class="p-bal" id="seatBal-1">₹0.00</div>
+    <div class="p-bet-badge" id="seatBet-1">No Bet</div>
+  </div>
+  <div class="player-seat" id="seat-2">
+    <div class="player-avatar"><span id="seatAv-2">🤠</span></div>
+    <div class="p-name" id="seatName-2">Bot 2</div>
+    <div class="p-bal" id="seatBal-2">₹0.00</div>
+    <div class="p-bet-badge" id="seatBet-2">No Bet</div>
+  </div>
+  <div class="player-seat" id="seat-3">
+    <div class="player-avatar"><span id="seatAv-3">🔥</span></div>
+    <div class="p-name" id="seatName-3">Bot 3</div>
+    <div class="p-bal" id="seatBal-3">₹0.00</div>
+    <div class="p-bet-badge" id="seatBet-3">No Bet</div>
+  </div>
+</div>
+
 <div class="arena-card">
   <div class="arena-meta">
     <div>
@@ -217,21 +234,22 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <!-- Dragon Card Side -->
     <div class="side-box dragon" id="dragonBox">
       <div class="side-header">
-        <svg class="side-icon" viewBox="0 0 64 64" fill="#00e676">
+        <svg class="side-icon" viewBox="0 0 64 64" fill="#ff2a4b">
           <path d="M48 10c-3-2-7 1-10 4-4 4-8 10-14 10-4 0-7-2-10 1-4 4-2 11 3 13 4 2 8 0 12-2 5-3 10-7 16-8 4-1 9 1 11-3 2-4 0-9-8-15z"/>
-          <circle cx="44" cy="16" r="2" fill="#fff"/>
+          <circle cx="44" cy="16" r="2.5" fill="#fff"/>
         </svg>
         <div class="side-title">Dragon</div>
       </div>
       
       <div class="card-wrapper">
         <div class="poker-card flipped" id="dragonCard">
-          <!-- Back of Card -->
+          <!-- Back of Card with Dragon Emblem -->
           <div class="card-face card-back">
             <div class="card-back-inner">
               <svg class="card-back-art" viewBox="0 0 64 64">
-                <circle cx="32" cy="32" r="20" fill="#ff2a4b"/>
-                <path d="M20 44l12-16 12 16z" fill="#f5c443"/>
+                <circle cx="32" cy="32" r="22" fill="#ff2a4b" opacity="0.85"/>
+                <path d="M22 42l10-18 10 18z" fill="#f5c443"/>
+                <circle cx="32" cy="22" r="4" fill="#fff"/>
               </svg>
             </div>
           </div>
@@ -246,23 +264,24 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <!-- Tiger Card Side -->
     <div class="side-box tiger" id="tigerBox">
       <div class="side-header">
-        <svg class="side-icon" viewBox="0 0 64 64" fill="#f5c443">
+        <svg class="side-icon" viewBox="0 0 64 64" fill="#0088ff">
           <circle cx="32" cy="32" r="22" fill="#ff9800"/>
-          <circle cx="24" cy="28" r="3" fill="#111"/>
-          <circle cx="40" cy="28" r="3" fill="#111"/>
-          <path d="M28 38c2 2 6 2 8 0" stroke="#111" stroke-width="2.5" fill="none"/>
+          <circle cx="23" cy="28" r="3" fill="#111"/>
+          <circle cx="41" cy="28" r="3" fill="#111"/>
+          <path d="M26 38c3 3 9 3 12 0" stroke="#111" stroke-width="2.5" fill="none"/>
         </svg>
         <div class="side-title">Tiger</div>
       </div>
 
       <div class="card-wrapper">
         <div class="poker-card flipped" id="tigerCard">
-          <!-- Back of Card -->
+          <!-- Back of Card with Tiger Emblem -->
           <div class="card-face card-back">
             <div class="card-back-inner">
               <svg class="card-back-art" viewBox="0 0 64 64">
-                <circle cx="32" cy="32" r="20" fill="#0088ff"/>
-                <path d="M20 44l12-16 12 16z" fill="#f5c443"/>
+                <circle cx="32" cy="32" r="22" fill="#0088ff" opacity="0.85"/>
+                <path d="M22 42l10-18 10 18z" fill="#f5c443"/>
+                <circle cx="32" cy="22" r="4" fill="#fff"/>
               </svg>
             </div>
           </div>
@@ -276,22 +295,31 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="history-bar" id="recentBar"></div>
 
-<!-- 3 Betting Options -->
+<!-- 3 Betting Options with Live Pool Counters -->
 <div class="bet-deck">
   <button class="bet-btn dragon" onclick="openBetModal('Dragon', 2)">
+    <div class="my-bet-on-box" id="myBetBadgeDragon">0</div>
     <h2>DRAGON</h2>
-    <span>Dragon Wins</span>
     <div class="rate">2.0X</div>
+    <div class="live-pool-box">
+      <span>🪙</span><span id="poolDragon">₹0</span>
+    </div>
   </button>
   <button class="bet-btn tie" onclick="openBetModal('Tie', 9)">
+    <div class="my-bet-on-box" id="myBetBadgeTie">0</div>
     <h2>TIE</h2>
-    <span>Equal Cards</span>
     <div class="rate">9.0X</div>
+    <div class="live-pool-box">
+      <span>🪙</span><span id="poolTie">₹0</span>
+    </div>
   </button>
   <button class="bet-btn tiger" onclick="openBetModal('Tiger', 2)">
+    <div class="my-bet-on-box" id="myBetBadgeTiger">0</div>
     <h2>TIGER</h2>
-    <span>Tiger Wins</span>
     <div class="rate">2.0X</div>
+    <div class="live-pool-box">
+      <span>🪙</span><span id="poolTiger">₹0</span>
+    </div>
   </button>
 </div>
 
@@ -379,7 +407,7 @@ const db = getFirestore(app);
 
 const RESULT_COLLECTION = 'results_dragontiger';
 const BET_COLLECTION = 'bets_dragontiger';
-const SLOT_MS = 15 * 1000; // 15 Seconds Round
+const SLOT_MS = 15 * 1000;
 const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
 
 let currentUser = null;
@@ -390,10 +418,92 @@ let selectedChoice = '', payoutMultiplier = 2;
 let baseAmt = 10, currentQty = 1;
 let isBettingClosed = false, soundOn = true;
 
+// Active Table Pool Counters & Real User Choice tracker
+let tablePool = { Dragon: 0, Tiger: 0, Tie: 0 };
+let myCurrentBet = { choice: null, amount: 0 };
+
+// 50+ Fake Bot Profiles
+const fakeBotsDatabase = [
+  { name: 'Aarav Kumar', av: '🦁' }, { name: 'Rohan Sharma', av: '⚡' }, { name: 'Vikram Singh', av: '🔥' },
+  { name: 'Deepak Patel', av: '👑' }, { name: 'Pooja Verma', av: '🌸' }, { name: 'Anjali Gupta', av: '✨' },
+  { name: 'Suresh Raina', av: '🏏' }, { name: 'Karan Mehra', av: '🚀' }, { name: 'Neha Reddy', av: '💎' },
+  { name: 'Rahul Roy', av: '🎯' }, { name: 'Manish Yadav', av: '🤠' }, { name: 'Simran Kaur', av: '🌺' },
+  { name: 'Amit Tyagi', av: '💪' }, { name: 'Ravi Teja', av: '🕶️' }, { name: 'Sunil Nair', av: '🎩' },
+  { name: 'Pankaj Tripathi', av: '🦁' }, { name: 'Gaurav Gill', av: '🏎️' }, { name: 'Rajesh Khanna', av: '🎲' },
+  { name: 'Shreya Roy', av: '🎀' }, { name: 'Arjun Das', av: '🏹' }, { name: 'Kavita Sen', av: '🍁' },
+  { name: 'Naveen Kumar', av: '🐅' }, { name: 'Sanjay Dutt', av: '🥊' }, { name: 'Harsh Vardhan', av: '🦅' },
+  { name: 'Tanvi Shah', av: '🦋' }, { name: 'Ajay Dev', av: '⚡' }, { name: 'Divya Rao', av: '🌹' },
+  { name: 'Vijay Sethi', av: '🏆' }, { name: 'Kunal Kapoor', av: '🕶️' }, { name: 'Preeti Jha', av: '🌷' },
+  { name: 'Abhishek Pal', av: '🔥' }, { name: 'Sachin Joshi', av: '🏏' }, { name: 'Rishi Jain', av: '💎' },
+  { name: 'Priya Mani', av: '✨' }, { name: 'Nitin Gadkari', av: '🚘' }, { name: 'Mohit Suri', av: '🎬' },
+  { name: 'Varun Dhawan', av: '🕺' }, { name: 'Aniket Basu', av: '🎯' }, { name: 'Sneha Ullal', av: '🌸' },
+  { name: 'Tarun Sagar', av: '🌊' }, { name: 'Lalit Modi', av: '💰' }, { name: 'Umesh Yadav', av: '⚡' },
+  { name: 'Kritika Roy', av: '👑' }, { name: 'Bhavin Shah', av: '🚀' }, { name: 'Chirag Seth', av: '🎩' },
+  { name: 'Hemant Soni', av: '🎲' }, { name: 'Ishita Paul', av: '🌺' }, { name: 'Jatin Anand', av: '🦁' },
+  { name: 'Mayank Agarwal', av: '🏏' }, { name: 'Yashwardhan', av: '🏆' }
+];
+
+let activeBots = [];
+
+function refreshFakeBots() {
+  const shuffled = [...fakeBotsDatabase].sort(() => 0.5 - Math.random());
+  activeBots = [
+    { ...shuffled[0], balance: Math.floor(Math.random() * 8000) + 1200, betChoice: null, betAmt: 0 },
+    { ...shuffled[1], balance: Math.floor(Math.random() * 15000) + 2500, betChoice: null, betAmt: 0 },
+    { ...shuffled[2], balance: Math.floor(Math.random() * 50000) + 5000, betChoice: null, betAmt: 0 }
+  ];
+
+  activeBots.forEach((b, i) => {
+    const idx = i + 1;
+    document.getElementById(`seatAv-${idx}`).textContent = b.av;
+    document.getElementById(`seatName-${idx}`).textContent = b.name;
+    document.getElementById(`seatBal-${idx}`).textContent = `₹${b.balance.toLocaleString('en-IN')}`;
+    document.getElementById(`seatBet-${idx}`).textContent = 'Waiting';
+  });
+
+  // Base Pool
+  tablePool = {
+    Dragon: Math.floor(Math.random() * 800) + 400,
+    Tiger: Math.floor(Math.random() * 800) + 400,
+    Tie: Math.floor(Math.random() * 200) + 50
+  };
+  updatePoolUI();
+}
+
+function simulateBotsBetting() {
+  const choices = ['Dragon', 'Tiger', 'Tie'];
+  const chipOptions = [10, 50, 100, 500, 1000];
+
+  activeBots.forEach((bot, i) => {
+    const idx = i + 1;
+    setTimeout(() => {
+      if (isBettingClosed) return;
+      const ch = Math.random() < 0.46 ? 'Dragon' : (Math.random() < 0.92 ? 'Tiger' : 'Tie');
+      const amt = chipOptions[Math.floor(Math.random() * chipOptions.length)];
+      bot.betChoice = ch;
+      bot.betAmt = amt;
+      bot.balance = Math.max(0, bot.balance - amt);
+
+      document.getElementById(`seatBal-${idx}`).textContent = `₹${bot.balance.toLocaleString('en-IN')}`;
+      document.getElementById(`seatBet-${idx}`).textContent = `${ch.toUpperCase()} ₹${amt}`;
+
+      tablePool[ch] += amt;
+      updatePoolUI();
+      playSound('chip');
+    }, (i + 1) * 1200 + Math.random() * 1000);
+  });
+}
+
+function updatePoolUI() {
+  document.getElementById('poolDragon').textContent = `₹${tablePool.Dragon.toLocaleString('en-IN')}`;
+  document.getElementById('poolTiger').textContent = `₹${tablePool.Tiger.toLocaleString('en-IN')}`;
+  document.getElementById('poolTie').textContent = `₹${tablePool.Tie.toLocaleString('en-IN')}`;
+}
+
 const cardNames = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 const suits = ['♠','♥','♣','♦'];
 
-// Audio
+// Audio FX
 let audioCtx;
 function playSound(type) {
   if (!soundOn) return;
@@ -406,6 +516,11 @@ function playSound(type) {
       osc.type = 'sine'; osc.frequency.setValueAtTime(700, audioCtx.currentTime);
       gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
       osc.start(); osc.stop(audioCtx.currentTime + 0.04);
+    } else if (type === 'chip') {
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.06);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.06);
     } else if (type === 'win') {
       osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime);
       osc.frequency.setValueAtTime(660, audioCtx.currentTime + 0.1);
@@ -440,14 +555,24 @@ function getPeriodId(slot) {
   return `${y}${m}${day}DT${String(slotOfDay).padStart(5, '0')}`;
 }
 
-// Pseudo-Random Card Deal
-function generateDuelResult(slot) {
+// 10% Real Player Win Rate Controlled Dealer
+function generateDuelResult(slot, forcedWinner = null) {
   let seed = (slot * 9301 + 49297) % 233280;
-  const dVal = (seed % 13) + 1;
+  let dVal = (seed % 13) + 1;
   const dSuit = suits[seed % 4];
   seed = (seed * 9301 + 49297) % 233280;
-  const tVal = (seed % 13) + 1;
+  let tVal = (seed % 13) + 1;
   const tSuit = suits[seed % 4];
+
+  if (forcedWinner === 'Dragon') {
+    if (dVal <= tVal) dVal = Math.min(13, tVal + 1);
+    if (dVal === tVal) dVal = 13;
+  } else if (forcedWinner === 'Tiger') {
+    if (tVal <= dVal) tVal = Math.min(13, dVal + 1);
+    if (dVal === tVal) tVal = 13;
+  } else if (forcedWinner === 'Tie') {
+    tVal = dVal;
+  }
 
   let winner = 'Tie';
   if (dVal > tVal) winner = 'Dragon';
@@ -456,7 +581,7 @@ function generateDuelResult(slot) {
   return { dVal, dSuit, tVal, tSuit, winner };
 }
 
-/* 🧹 24h Auto-Cleanup Results */
+/* 24h Auto-Cleanup Results */
 async function cleanupOldResults() {
   try {
     const q = query(collection(db, RESULT_COLLECTION), limit(100));
@@ -499,7 +624,22 @@ async function saveResultForSlot(slot, periodId) {
   const ref = doc(db, RESULT_COLLECTION, periodId);
   const snap = await getDoc(ref);
   if (snap.exists()) return;
-  const duel = generateDuelResult(slot);
+
+  // Real player win-loss control: strict 10% chance to win
+  let forcedWinner = null;
+  if (myCurrentBet.choice) {
+    const isPlayerLucky = (Math.random() < 0.10); // 10% Win Rate Cap
+    if (!isPlayerLucky) {
+      // Force opposite side to win
+      if (myCurrentBet.choice === 'Dragon') forcedWinner = 'Tiger';
+      else if (myCurrentBet.choice === 'Tiger') forcedWinner = 'Dragon';
+      else forcedWinner = (Math.random() < 0.5 ? 'Dragon' : 'Tiger');
+    } else {
+      forcedWinner = myCurrentBet.choice;
+    }
+  }
+
+  const duel = generateDuelResult(slot, forcedWinner);
   const data = { period: periodId, ...duel, createdAt: serverTimestamp() };
   try {
     await runTransaction(db, async (tx) => {
@@ -551,6 +691,7 @@ async function resolveBets(periodId, resData) {
       await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
       userBalance += winTotal;
       document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+      document.getElementById('seatBal-0').textContent = `₹${userBalance.toFixed(2)}`;
       showResultModal(true, winTotal, resData.winner);
     } else if (lostTotal > 0) {
       showResultModal(false, lostTotal, resData.winner);
@@ -564,10 +705,14 @@ onAuthStateChanged(auth, async (user) => {
   const snap = await getDoc(doc(db, 'users', user.uid));
   if (snap.exists()) {
     userBalance = Number(snap.data().balance || 0);
+    const uData = snap.data();
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+    document.getElementById('seatBal-0').textContent = `₹${userBalance.toFixed(2)}`;
+    document.getElementById('realUserName').textContent = (uData.name || uData.username || 'YOU').slice(0, 8);
   }
   await cleanupOldResults();
   await backfillMissingPeriods();
+  refreshFakeBots();
   startTimer();
   loadGameHistory();
   loadMyHistory();
@@ -586,7 +731,7 @@ function renderCardUI(cardId, frontId, val, suit) {
     <div class="card-mid ${colorClass}">${suit}</div>
     <div class="card-bottom ${colorClass}"><span class="c-val">${name}</span><span class="c-suit">${suit}</span></div>
   `;
-  cardEl.classList.remove('flipped'); // Unflip to show face
+  cardEl.classList.remove('flipped');
 }
 
 function startTimer() {
@@ -597,27 +742,35 @@ function startTimer() {
     const secLeft = Math.max(0, Math.ceil((SLOT_MS - (now - (EPOCH + slot * SLOT_MS))) / 1000));
 
     if (lastSlotTrack !== -1 && slot !== lastSlotTrack) {
-      // Flip Cards and Show Round Result
+      // Reveal Cards
       const res = generateDuelResult(lastSlotTrack);
       renderCardUI('dragonCard', 'dragonCardFront', res.dVal, res.dSuit);
       renderCardUI('tigerCard', 'tigerCardFront', res.tVal, res.tSuit);
 
-      // Glowing effect on winner box
       const dBox = document.getElementById('dragonBox');
       const tBox = document.getElementById('tigerBox');
       dBox.className = 'side-box dragon';
       tBox.className = 'side-box tiger';
 
-      if (res.winner === 'Dragon') {
-        dBox.classList.add('winner-glow-dragon');
-      } else if (res.winner === 'Tiger') {
-        tBox.classList.add('winner-glow-tiger');
-      }
+      if (res.winner === 'Dragon') dBox.classList.add('winner-glow-dragon');
+      else if (res.winner === 'Tiger') tBox.classList.add('winner-glow-tiger');
+
+      // Bot Payout Simulation
+      activeBots.forEach((b, i) => {
+        if (b.betChoice === res.winner) {
+          b.balance += (b.betAmt * (res.winner === 'Tie' ? 9 : 2));
+          document.getElementById(`seatBal-${i+1}`).textContent = `₹${b.balance.toLocaleString('en-IN')}`;
+          document.getElementById(`seatBet-${i+1}`).textContent = `WON!`;
+        } else if (b.betChoice) {
+          document.getElementById(`seatBet-${i+1}`).textContent = `LOST`;
+        }
+      });
 
       saveResultForSlot(lastSlotTrack, getPeriodId(lastSlotTrack)).then(() => {
         loadGameHistory(); loadMyHistory();
       });
     }
+
     lastSlotTrack = slot;
     currentSlot = slot;
     currentPeriod = getPeriodId(slot);
@@ -632,12 +785,21 @@ function startTimer() {
     } else {
       isBettingClosed = false;
       document.getElementById('drawOverlay').classList.remove('show');
-      if (secLeft > 10) {
-        // Reset card back flip for next round
+      if (secLeft >= 13) {
+        // Reset table for new round
         document.getElementById('dragonCard').classList.add('flipped');
         document.getElementById('tigerCard').classList.add('flipped');
         document.getElementById('dragonBox').className = 'side-box dragon';
         document.getElementById('tigerBox').className = 'side-box tiger';
+
+        ['Dragon', 'Tiger', 'Tie'].forEach(c => {
+          document.getElementById(`myBetBadge${c}`).style.display = 'none';
+        });
+        document.getElementById('seatBet-0').textContent = 'No Bet';
+        myCurrentBet = { choice: null, amount: 0 };
+
+        refreshFakeBots();
+        simulateBotsBetting();
       }
     }
   }, 250);
@@ -676,6 +838,19 @@ window.placeBet = async () => {
     await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
     userBalance -= total;
     document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+    document.getElementById('seatBal-0').textContent = `₹${userBalance.toFixed(2)}`;
+
+    // Show bet on user seat and table
+    myCurrentBet = { choice: selectedChoice, amount: total };
+    document.getElementById('seatBet-0').textContent = `${selectedChoice.toUpperCase()} ₹${total}`;
+    
+    const badge = document.getElementById(`myBetBadge${selectedChoice}`);
+    badge.textContent = `₹${total}`;
+    badge.style.display = 'block';
+
+    tablePool[selectedChoice] += total;
+    updatePoolUI();
+    playSound('chip');
 
     await addDoc(collection(db, BET_COLLECTION), {
       userId: currentUser.uid,
