@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#1a1a1a">
+<meta name="theme-color" content="#181818">
 <title>BDG K3 DICE</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -90,6 +90,47 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .exact-draw-overlay.show{display:flex;}
 .draw-flip-card{width:110px;height:160px;background:#424242;border-radius:16px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.06);}
 .draw-flip-digit{font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;}
+
+/* WIN / LOSE POPUP MODAL */
+.result-popup{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10000;
+  display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);
+}
+.result-popup.show{display:flex;animation:popFadeIn .25s ease;}
+@keyframes popFadeIn{from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);}}
+.res-card-box{width:100%;max-width:320px;position:relative;display:flex;flex-direction:column;align-items:center;}
+.res-badge{
+  width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg, #fff2c6 0%, #f6a836 100%);
+  border:4px solid #fff;box-shadow:0 6px 20px rgba(246,168,54,0.6);
+  display:flex;align-items:center;justify-content:center;position:relative;z-index:3;margin-bottom:-35px;
+}
+.res-badge svg{width:50px;height:50px;fill:#d87b00;}
+.res-main-card{
+  width:100%;background:linear-gradient(180deg, #ff7150 0%, #f44336 100%);
+  border-radius:28px;padding:45px 16px 20px;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,0.6);
+  border:2px solid rgba(255,255,255,0.2);position:relative;
+}
+.res-title{font-size:24px;font-weight:900;color:#fff;letter-spacing:0.5px;margin-bottom:12px;}
+.res-tags-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:16px;}
+.res-tag-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,0.85);}
+.res-pill{
+  background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);
+  color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px;
+}
+.res-ticket{
+  background:#fff;border-radius:14px;padding:16px 12px;margin:0 4px 14px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);position:relative;color:#222;
+}
+.ticket-lbl{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;}
+.ticket-amt{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:#e53935;margin:4px 0 6px;}
+.ticket-period{font-size:10px;font-weight:600;color:#666;}
+.res-auto-lbl{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.85);font-weight:600;}
+.auto-radio{width:14px;height:14px;border:1.5px solid #fff;border-radius:50%;display:inline-block;}
+.res-close-btn{
+  width:38px;height:38px;border-radius:50%;border:2px solid #fff;
+  display:flex;align-items:center;justify-content:center;margin-top:16px;cursor:pointer;
+  color:#fff;font-size:18px;font-weight:900;background:rgba(0,0,0,0.4);
+}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
@@ -182,6 +223,34 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="draw-flip-card"><div class="draw-flip-digit" id="drawD2">5</div></div>
 </div>
 
+<!-- WIN / LOSE POPUP -->
+<div class="result-popup" id="resultPopup">
+  <div class="res-card-box">
+    <div class="res-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 2.5s3.5 3 3.5 7.5a3.5 3.5 0 0 1-7 0c0-4.5 3.5-7.5 3.5-7.5zM7.5 14a4.5 4.5 0 0 0 9 0c0-1.5-.5-3-1.5-4-1 2-2.5 3-4 3s-2-1-2-2c-.5 1-1.5 2-1.5 3z"/></svg>
+    </div>
+    <div class="res-main-card">
+      <div class="res-title" id="popTitle">Congratulations</div>
+      <div class="res-tags-row">
+        <span class="res-tag-lbl">K3 Result</span>
+        <span class="res-pill" id="popDicePill">⚀ ⚁ ⚂</span>
+        <span class="res-pill" id="popSumPill">6</span>
+        <span class="res-pill" id="popSizePill">Small</span>
+      </div>
+      <div class="res-ticket">
+        <div class="ticket-lbl" id="popTicketLbl">Bonus</div>
+        <div class="ticket-amt" id="popTicketAmt">₹0.00</div>
+        <div class="ticket-period" id="popTicketPeriod">Period: K3 Dice</div>
+      </div>
+      <div class="res-auto-lbl">
+        <span class="auto-radio"></span>
+        <span id="popTimerCount">3 seconds auto close</span>
+      </div>
+    </div>
+    <div class="res-close-btn" onclick="closeResultPopup()">✕</div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="betModal">
   <div class="sheet">
     <div class="sheet-head">
@@ -198,7 +267,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="toast" id="toast"></div>
 
-<!-- 5-Sec Audio -->
+<!-- Audio -->
 <audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
 <audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
 
@@ -231,6 +300,7 @@ let currentUser = null, userBalance = 0, currentPeriod = '';
 let selectedChoice = '', selectedMulti = 1.95;
 let isBettingClosed = false, isSoundOn = true;
 let lastPlayedSec = -1;
+let autoCloseTimer = null;
 
 const diceSymbols = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 const snd1 = document.getElementById('soundDi1');
@@ -337,7 +407,7 @@ async function resolveBets(periodId, resData) {
     const snap = await getDocs(q);
     if (snap.empty) return;
 
-    let winTotal = 0;
+    let winTotal = 0, lostTotal = 0;
     const batch = [];
     snap.forEach(d => {
       const b = d.data();
@@ -349,8 +419,10 @@ async function resolveBets(periodId, resData) {
       let winAmt = 0;
       if (won) {
         const gross = b.amount * b.multi;
-        winAmt = gross - (gross * 0.15); // 15% owner commission
+        winAmt = gross - (gross * 0.15); // 15% platform commission
         winTotal += winAmt;
+      } else {
+        lostTotal += b.amount;
       }
       batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt }));
     });
@@ -360,11 +432,46 @@ async function resolveBets(periodId, resData) {
       await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
       userBalance += winTotal;
       document.getElementById('balVal').textContent = userBalance.toFixed(2);
-      toast(`K3 Won ₹${winTotal.toFixed(2)}!`);
+      showPopup(true, winTotal, periodId, resData);
+    } else if (lostTotal > 0) {
+      showPopup(false, lostTotal, periodId, resData);
     }
     loadMyHistory();
   } catch(e){}
 }
+
+function showPopup(isWin, amount, periodId, resData) {
+  const pop = document.getElementById('resultPopup');
+  document.getElementById('popTitle').textContent = isWin ? 'Congratulations' : 'Better Luck Next Time';
+  const d1 = resData.d1 || 1, d2 = resData.d2 || 2, d3 = resData.d3 || 3;
+  document.getElementById('popDicePill').textContent = `${diceSymbols[d1]} ${diceSymbols[d2]} ${diceSymbols[d3]}`;
+  document.getElementById('popSumPill').textContent = resData.sum || (d1 + d2 + d3);
+  document.getElementById('popSizePill').textContent = resData.size || 'Small';
+
+  document.getElementById('popTicketLbl').textContent = isWin ? 'Bonus' : 'Loss';
+  document.getElementById('popTicketAmt').textContent = (isWin ? '₹' : '-₹') + Number(amount).toFixed(2);
+  document.getElementById('popTicketPeriod').textContent = `Period: ${periodId}`;
+
+  pop.classList.add('show');
+
+  if (autoCloseTimer) clearInterval(autoCloseTimer);
+  let sec = 3;
+  document.getElementById('popTimerCount').textContent = `${sec} seconds auto close`;
+  autoCloseTimer = setInterval(() => {
+    sec--;
+    if (sec <= 0) {
+      clearInterval(autoCloseTimer);
+      closeResultPopup();
+    } else {
+      document.getElementById('popTimerCount').textContent = `${sec} seconds auto close`;
+    }
+  }, 1000);
+}
+
+window.closeResultPopup = () => {
+  if (autoCloseTimer) clearInterval(autoCloseTimer);
+  document.getElementById('resultPopup').classList.remove('show');
+};
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) return location.replace('index.html');
