@@ -3,96 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#1a1a1a">
+<meta name="theme-color" content="#1A1A1A">
 <title>BDG 5D GAME</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --gold: #e5a93b;
-  --gold-bg: linear-gradient(180deg, #F9DC8A 0%, #D8AA4D 100%);
-  --bg-main: #181818;
-}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+body{background:#1A1A1A;color:#fff;min-height:100vh;padding-bottom:20px;}
 button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
 ::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:50px;padding:0 14px;background:#242424;}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
-.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-brand{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;text-align:center;}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;border-bottom:1px solid rgba(255,255,255,0.05);}
+.navbar-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
+.navbar-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;text-transform:uppercase;}
+.navbar-right{display:flex;align-items:center;gap:12px;}
+.nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;}
 
 .wallet-card{
-  margin:10px 12px;background:linear-gradient(135deg,#363a45 0%,#262830 100%);
-  border-radius:18px;padding:14px 16px;text-align:center;
+  margin:16px;background:linear-gradient(135deg,#363a45 0%,#262830 100%);
+  border-radius:18px;padding:16px;text-align:center;
 }
 .bal-wrap{display:flex;align-items:center;justify-content:center;gap:6px;font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;}
 .bal-wrap svg{width:16px;height:16px;stroke:#a6a9ae;fill:none;stroke-width:2.2;cursor:pointer;}
-.wal-label{font-size:11px;color:#a6a9ae;margin-top:2px;}
-.wal-actions{display:flex;gap:12px;margin-top:12px;}
-.btn-w{flex:1;height:38px;border-radius:20px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.wal-label{font-size:12px;color:#a6a9ae;margin-top:4px;}
+.wal-actions{display:flex;gap:12px;margin-top:14px;}
+.btn-w{flex:1;height:40px;border-radius:20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;}
 .btn-withdraw{background:#f44336;color:#fff;}
 .btn-deposit{background:#00b977;color:#fff;}
 
-.ticket-card{
-  margin:0 12px 10px;background:linear-gradient(135deg, #f5d47a 0%, #d8a846 100%);
-  border-radius:18px;padding:14px;color:#332205;position:relative;
-}
-.tc-top{display:flex;justify-content:space-between;align-items:flex-start;}
-.tc-mode-title{font-size:14px;font-weight:900;}
-.tc-boxes{display:flex;gap:3px;margin-top:4px;justify-content:flex-end;}
-.tc-digit{background:#111;color:#fff;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;padding:3px 6px;border-radius:4px;}
-.tc-colon{color:#111;font-weight:900;line-height:24px;}
-.tc-5d-balls{display:flex;gap:5px;margin-top:10px;}
-.ball-5d{width:24px;height:24px;border-radius:50%;background:#e53935;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;}
-.tc-period{margin-top:10px;text-align:right;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.5px;}
+.notice-bar{margin:0 16px 16px;background:#262626;border-radius:20px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:11px;color:#a6a9ae;}
+.notice-bar svg{width:16px;height:16px;stroke:#FAE59F;fill:none;stroke-width:2;flex-shrink:0;}
+.notice-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-.bet-board{margin:0 12px 14px;background:#262626;border-radius:18px;padding:14px;}
-.row-5d-label{font-size:12px;font-weight:700;color:#a6a9ae;margin-bottom:8px;}
-.pos-bar{display:flex;gap:6px;margin-bottom:12px;}
-.pos-btn{flex:1;height:38px;border-radius:8px;background:#1a1a1a;font-weight:800;font-size:12px;color:#bbb;border:1px solid rgba(255,255,255,0.06);}
-.pos-btn.active{background:var(--gold-bg);color:#222;}
+.game-head{margin:0 16px 16px;background:#262626;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px;}
+.period-info{display:flex;justify-content:space-between;align-items:center;}
+.period-info span{font-size:12px;color:#a6a9ae;}
+.period-info strong{font-family:'Orbitron',sans-serif;font-size:14px;color:#FAE59F;}
+.tb-time{display:flex;align-items:center;gap:2px;justify-content:flex-end;}
+.tb-time span{background:#111;color:#FAE59F;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;padding:3px 6px;border-radius:4px;}
+.tb-time span.colon{background:transparent;padding:0;color:#a6a9ae;}
 
-.num-grid-5d{display:grid;grid-template-columns:repeat(5, 1fr);gap:8px;margin-bottom:12px;}
-.btn-5d-num{aspect-ratio:1;border-radius:50%;background:#1b1b1b;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;}
-.btn-5d-num:active{border-color:var(--gold);}
+.d5-slots{display:flex;justify-content:center;gap:6px;align-items:center;}
+.slot-box{width:42px;height:52px;background:#181818;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;border:1px solid rgba(255,255,255,0.1);box-shadow:inset 0 0 10px rgba(0,0,0,0.6);}
+.slot-separator{font-size:18px;color:#a6a9ae;font-weight:900;}
+.total-box{width:48px;height:52px;background:#fd565c;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#fff;box-shadow:0 0 15px rgba(253,86,92,0.4);}
 
-.size-5d-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.btn-5d-sz{height:42px;border-radius:20px;font-size:14px;font-weight:800;color:#fff;}
-.btn-5d-sz.big{background:#f5a623;}
-.btn-5d-sz.small{background:#4a90e2;}
+.bet-area{margin:0 16px 16px;background:#262626;border-radius:16px;padding:16px;transition:opacity .3s;}
+.d5-tabs{display:flex;justify-content:space-between;margin-bottom:16px;gap:6px;}
+.d5-tab{flex:1;height:40px;background:#1b1b1b;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:800;font-size:13px;color:#a6a9ae;cursor:pointer;border:1px solid rgba(255,255,255,0.06);}
+.d5-tab.active{background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#1A1A1A;}
 
-.hist-table{margin:0 12px;background:#242424;border-radius:12px;overflow:hidden;}
-.th-head{display:flex;background:#2f3440;padding:10px 0;font-size:11px;color:#9aa0ad;font-weight:700;}
-.th-row{display:flex;padding:12px 0;font-size:12px;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
-.col{flex:1;text-align:center;}
-.col-period{flex:1.4;font-family:'Orbitron',sans-serif;font-size:11px;color:#ddd;}
+.type-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.type-btn{height:44px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:14px;font-weight:800;color:#fff;cursor:pointer;background:#1b1b1b;border:1px solid rgba(255,255,255,0.06);}
+.type-btn:active{transform:scale(0.96);}
+.type-btn.big{border-left:4px solid #f5a623;}
+.type-btn.small{border-left:4px solid #4a90e2;}
+.type-btn.odd{border-left:4px solid #40ad72;}
+.type-btn.even{border-left:4px solid #fd565c;}
 
-.exact-draw-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(3px);z-index:9999;display:none;align-items:center;justify-content:center;gap:16px;}
-.exact-draw-overlay.show{display:flex;}
+.num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;}
+.num-btn{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;background:#1b1b1b;border:1.5px solid rgba(255,255,255,0.1);font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#fff;}
+.num-btn:active{transform:scale(0.9);border-color:#FAE59F;}
+.num-btn img{width:100%;height:100%;object-fit:contain;pointer-events:none;}
+
+.history-tabs-wrap{display:flex;margin:24px 16px 12px;gap:8px;}
+.h-tab{flex:1;text-align:center;padding:10px 0;font-size:13px;font-weight:700;background:#333;color:#a6a9ae;border-radius:8px;cursor:pointer;}
+.h-tab.active{background:#fd565c;color:#fff;}
+.history-table{background:#262626;border-radius:12px;overflow:hidden;margin:0 16px;}
+.ht-head{display:flex;background:#333;padding:10px 0;font-size:11px;color:#a6a9ae;font-weight:700;text-transform:uppercase;}
+.ht-row{display:flex;padding:12px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;}
+.ht-col{flex:1;text-align:center;}
+
+.draw-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(3px);z-index:9000;display:none;align-items:center;justify-content:center;gap:16px;}
+.draw-overlay.show{display:flex;}
 .draw-flip-card{width:110px;height:160px;background:#424242;border-radius:16px;display:flex;align-items:center;justify-content:center;}
-.draw-flip-digit{font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;}
+.draw-count{font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;}
 
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;display:none;align-items:flex-end;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
-.sheet{width:100%;background:#262626;border-radius:20px 20px 0 0;padding:18px 16px 24px;}
-.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.sheet-head h3{font-size:15px;font-weight:800;}
-.sheet-close{font-size:22px;color:#999;cursor:pointer;}
-.manual-input-box{display:flex;align-items:center;background:#1a1a1a;border:1px solid #444;border-radius:8px;padding:6px 12px;margin:12px 0;}
-.manual-input-box span{color:var(--gold);font-weight:800;font-size:14px;margin-right:6px;}
-.manual-input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:800;}
-.btn-place{width:100%;height:46px;border-radius:12px;background:var(--gold-bg);color:#221500;font-size:15px;font-weight:900;}
-.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#fff;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:700;z-index:99999;display:none;}
+.modal-content{background:#292929;width:100%;border-radius:20px 20px 0 0;padding:20px;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-head h2{font-size:16px;font-weight:700;}
+.modal-head span{font-size:24px;cursor:pointer;color:#a6a9ae;}
+.manual-input-box{display:flex;align-items:center;background:#1a1a1a;border:1px solid #444;border-radius:8px;padding:8px 12px;margin:12px 0 18px;}
+.manual-input-box span{color:#FAE59F;font-weight:800;font-size:16px;margin-right:6px;}
+.manual-input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:800;}
+.btn-confirm{width:100%;height:48px;border-radius:12px;background:linear-gradient(180deg,#FAE59F 0%,#C4933F 100%);color:#3a2a10;font-size:15px;font-weight:900;}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;z-index:10001;display:none;font-weight:700;}
 </style>
 </head>
 <body>
 
-<header class="navbar">
-  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+<div class="navbar">
+  <div class="navbar-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-brand">BDG 5D GAME</div>
-  <div></div>
-</header>
+  <div class="navbar-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24" id="soundIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
 
 <div class="wallet-card">
   <div class="bal-wrap">₹<span id="balVal">0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
@@ -103,68 +114,100 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<div class="ticket-card">
-  <div class="tc-top">
-    <div>
-      <div class="tc-mode-title">5D 1 Min</div>
-      <div class="tc-5d-balls" id="top5dPrev">
-        <div class="ball-5d">1</div><div class="ball-5d">2</div><div class="ball-5d">3</div><div class="ball-5d">4</div><div class="ball-5d">5</div>
-      </div>
-    </div>
-    <div>
-      <div class="tc-boxes">
-        <span class="tc-digit" id="tMin1">0</span><span class="tc-digit" id="tMin2">0</span>
-        <span class="tc-colon">:</span>
-        <span class="tc-digit" id="tSec1">0</span><span class="tc-digit" id="tSec2">0</span>
-      </div>
-    </div>
-  </div>
-  <div class="tc-period" id="curPeriodText">Loading...</div>
+<div class="notice-bar">
+  <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+  <div class="notice-text">Welcome to BDG LOTTERY7 5D Game. Pick Position (A, B, C, D, E, SUM) and win up to 9X!</div>
 </div>
 
-<div class="bet-board" id="betBoard">
-  <div class="row-5d-label">Select Position</div>
-  <div class="pos-bar">
-    <button class="pos-btn active" onclick="setPos('A', this)">A</button>
-    <button class="pos-btn" onclick="setPos('B', this)">B</button>
-    <button class="pos-btn" onclick="setPos('C', this)">C</button>
-    <button class="pos-btn" onclick="setPos('D', this)">D</button>
-    <button class="pos-btn" onclick="setPos('E', this)">E</button>
+<div class="game-head">
+  <div class="period-info">
+    <span>Period: <strong id="periodText">Loading...</strong></span>
+    <span class="tb-time">
+      <span id="minTens">0</span><span id="minOnes">0</span>
+      <span class="colon">:</span>
+      <span id="secTens">0</span><span id="secOnes">0</span>
+    </span>
   </div>
-
-  <div class="num-grid-5d" id="numGrid5d"></div>
-
-  <div class="size-5d-row">
-    <button class="btn-5d-sz big" onclick="openBet('Big', 1.95)">Big</button>
-    <button class="btn-5d-sz small" onclick="openBet('Small', 1.95)">Small</button>
+  <div class="d5-slots">
+    <div class="slot-box" id="slotA">0</div>
+    <div class="slot-box" id="slotB">0</div>
+    <div class="slot-box" id="slotC">0</div>
+    <div class="slot-box" id="slotD">0</div>
+    <div class="slot-box" id="slotE">0</div>
+    <div class="slot-separator">=</div>
+    <div class="total-box" id="slotTotal">0</div>
   </div>
 </div>
 
-<div class="hist-table">
-  <div class="th-head"><div class="col-period">Period</div><div class="col">Result 5D</div><div class="col">Sum</div></div>
-  <div id="historyRows"></div>
+<div class="bet-area" id="betArea">
+  <div class="d5-tabs">
+    <div class="d5-tab active" onclick="selectTab('A', this)">A</div>
+    <div class="d5-tab" onclick="selectTab('B', this)">B</div>
+    <div class="d5-tab" onclick="selectTab('C', this)">C</div>
+    <div class="d5-tab" onclick="selectTab('D', this)">D</div>
+    <div class="d5-tab" onclick="selectTab('E', this)">E</div>
+    <div class="d5-tab" onclick="selectTab('SUM', this)">SUM</div>
+  </div>
+
+  <div class="type-btns">
+    <div class="type-btn big" onclick="openBetModal('big', 1.95)">Big <span>&gt;=5</span></div>
+    <div class="type-btn small" onclick="openBetModal('small', 1.95)">Small <span>&lt;=4</span></div>
+    <div class="type-btn odd" onclick="openBetModal('odd', 1.95)">Odd</div>
+    <div class="type-btn even" onclick="openBetModal('even', 1.95)">Even</div>
+  </div>
+
+  <div class="num-grid" id="numGrid"></div>
 </div>
 
-<div class="exact-draw-overlay" id="drawOverlay">
-  <div class="draw-flip-card"><div class="draw-flip-digit" id="drawD1">0</div></div>
-  <div class="draw-flip-card"><div class="draw-flip-digit" id="drawD2">5</div></div>
+<div class="history-tabs-wrap">
+  <div class="h-tab active" onclick="switchHistoryTab('game', this)">Game history</div>
+  <div class="h-tab" onclick="switchHistoryTab('my', this)">My history</div>
+</div>
+
+<div class="history-table" id="gameHistoryView">
+  <div class="ht-head">
+    <div class="ht-col">Period</div>
+    <div class="ht-col">Result</div>
+    <div class="ht-col">Total</div>
+    <div class="ht-col">Big/Small</div>
+  </div>
+  <div id="historyList"></div>
+</div>
+
+<div class="history-table" id="myHistoryView" style="display:none;">
+  <div class="ht-head">
+    <div class="ht-col">Period</div>
+    <div class="ht-col">Bet</div>
+    <div class="ht-col">Amount</div>
+    <div class="ht-col">Result</div>
+  </div>
+  <div id="myHistoryList"></div>
+</div>
+
+<div class="draw-overlay" id="drawOverlay">
+  <div class="draw-flip-card"><div class="draw-count" id="drawCount1">0</div></div>
+  <div class="draw-flip-card"><div class="draw-count" id="drawCount2">5</div></div>
 </div>
 
 <div class="modal-overlay" id="betModal">
-  <div class="sheet">
-    <div class="sheet-head">
-      <h3>5D Game - <span id="sheetChoice" style="color:#FAE59F;">A - 5</span></h3>
-      <div class="sheet-close" onclick="closeBet()">×</div>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2>5D Game - <span id="modalChoice" style="color:#FAE59F;">A - BIG</span></h2>
+      <span onclick="closeBetModal()">×</span>
     </div>
     <div class="manual-input-box">
       <span>₹</span>
       <input type="number" id="manualAmtInput" class="manual-input" value="10" min="1">
     </div>
-    <button class="btn-place" onclick="confirmBet()">Confirm Bet</button>
+    <button class="btn-confirm" id="confirmBtn" onclick="placeBet()">Confirm Bet</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- 5-Sec Audio -->
+<audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
+<audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -189,11 +232,37 @@ const db = getFirestore(app);
 
 const RESULT_COLLECTION = 'results_5d';
 const BET_COLLECTION = 'bets_5d';
-const SLOT_DURATION_SEC = 60;
+const SLOT_DURATION_SEC = 60; // 1 Min 5D
 
 let currentUser = null, userBalance = 0, currentPeriod = '';
-let activePos = 'A', selectedChoice = '', selectedMulti = 1.95;
-let isBettingClosed = false;
+let selectedTab = 'A', selectedChoice = '', selectedMulti = 1.95;
+let isBettingClosed = false, isSoundOn = true;
+let lastPlayedSec = -1;
+
+const snd1 = document.getElementById('soundDi1');
+const snd2 = document.getElementById('soundDi2');
+
+function playTick(isLast3Sec) {
+  if (!isSoundOn) return;
+  try {
+    if (isLast3Sec) { snd2.currentTime = 0; snd2.play().catch(()=>{}); }
+    else { snd1.currentTime = 0; snd1.play().catch(()=>{}); }
+  } catch(e) {}
+}
+
+document.getElementById('soundBtn').addEventListener('click', () => {
+  isSoundOn = !isSoundOn;
+  const icon = document.getElementById('soundIcon');
+  if (isSoundOn) {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
+    icon.style.stroke = '#fff';
+    toast('Sound ON');
+  } else {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    icon.style.stroke = '#666';
+    toast('Sound OFF');
+  }
+});
 
 window.toast = (msg) => {
   const t = document.getElementById('toast');
@@ -214,9 +283,14 @@ function getISTDateComponents() {
   return { y, m, d, slotIndex };
 }
 
+function getPeriodIdFromIndex(idx) {
+  const { y, m, d } = getISTDateComponents();
+  return `${y}${m}${d}5D${String(10000 + idx)}`;
+}
+
 function getPeriodId() {
-  const { y, m, d, slotIndex } = getISTDateComponents();
-  return `${y}${m}${d}5D${String(10000 + slotIndex)}`;
+  const { slotIndex } = getISTDateComponents();
+  return getPeriodIdFromIndex(slotIndex);
 }
 
 async function pruneOldResults() {
@@ -240,8 +314,9 @@ function computeDeterministicResult(slotIndex, periodId) {
   const c = Math.abs(seed * 3) % 10;
   const d = Math.abs(seed * 4) % 10;
   const e = Math.abs(seed * 5) % 10;
-  const sum = a + b + c + d + e;
-  return { period: periodId, a, b, c, d, e, sum, slotIndex };
+  const digits = [a, b, c, d, e];
+  const total = a + b + c + d + e;
+  return { period: periodId, digits, a, b, c, d, e, total, slotIndex };
 }
 
 async function generateAndSaveResult(periodId, slotIndex) {
@@ -272,21 +347,34 @@ async function resolveBets(periodId, resData) {
     let winTotal = 0;
     const batch = [];
     snap.forEach(docSnap => {
-      const b = docSnap.data();
-      if (b.status !== 'pending') return;
+      const bet = docSnap.data();
+      if (bet.status !== 'pending') return;
       let won = false;
 
-      const targetVal = resData[b.pos.toLowerCase()];
-      if (b.type === 'number' && parseInt(b.choice) === targetVal) won = true;
-      if (b.type === 'size') {
-        if (b.choice === 'Big' && targetVal >= 5) won = true;
-        if (b.choice === 'Small' && targetVal < 5) won = true;
+      let targetVal = null;
+      if (bet.tab === 'A') targetVal = resData.a;
+      else if (bet.tab === 'B') targetVal = resData.b;
+      else if (bet.tab === 'C') targetVal = resData.c;
+      else if (bet.tab === 'D') targetVal = resData.d;
+      else if (bet.tab === 'E') targetVal = resData.e;
+
+      if (bet.tab === 'SUM') {
+        if (bet.choice === 'big' && resData.total >= 23) won = true;
+        if (bet.choice === 'small' && resData.total <= 22) won = true;
+        if (bet.choice === 'odd' && resData.total % 2 !== 0) won = true;
+        if (bet.choice === 'even' && resData.total % 2 === 0) won = true;
+      } else {
+        if (bet.choice === 'big' && targetVal >= 5) won = true;
+        if (bet.choice === 'small' && targetVal <= 4) won = true;
+        if (bet.choice === 'odd' && targetVal % 2 !== 0) won = true;
+        if (bet.choice === 'even' && targetVal % 2 === 0) won = true;
+        if (parseInt(bet.choice) === targetVal) won = true;
       }
 
       let winAmt = 0;
       if (won) {
-        const gross = b.amount * b.multi;
-        winAmt = gross - (gross * 0.15); // 15% owner commission
+        const gross = bet.amount * bet.multi;
+        winAmt = gross - (gross * 0.15); // 15% platform commission
         winTotal += winAmt;
       }
       batch.push(updateDoc(doc(db, BET_COLLECTION, docSnap.id), { status: won ? 'win' : 'lose', winAmount: winAmt }));
@@ -299,6 +387,7 @@ async function resolveBets(periodId, resData) {
       document.getElementById('balVal').textContent = userBalance.toFixed(2);
       toast(`5D Won ₹${winTotal.toFixed(2)}!`);
     }
+    loadMyHistory();
   } catch(e){}
 }
 
@@ -316,18 +405,22 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 function initNumGrid() {
-  const g = document.getElementById('numGrid5d');
+  const g = document.getElementById('numGrid');
+  const numImages = [
+    'n0-30bd92d1.png', 'n1-dfccbff5.png', 'n2-c2913607.png', 'n3-f92c313f.png', 'n4-cb84933b.png',
+    'n5-49d0e9c5.png', 'n6-a56e0b9a.png', 'n7-5961a17f.png', 'n8-d4d951a4.png', 'n9-a20f6f42.png'
+  ];
   let html = '';
   for (let i = 0; i <= 9; i++) {
-    html += `<button class="btn-5d-num" onclick="openBet('${i}', 9, 'number')">${i}</button>`;
+    html += `<div class="num-btn" onclick="openBetModal('${i}', 9)"><img src="./images/${numImages[i]}" onerror="this.src='./images/n${i}.png';"></div>`;
   }
   g.innerHTML = html;
 }
 
-window.setPos = (p, el) => {
-  document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+window.selectTab = (tab, el) => {
+  selectedTab = tab;
+  document.querySelectorAll('.d5-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  activePos = p;
 };
 
 function startTimer() {
@@ -340,42 +433,58 @@ function startTimer() {
 
     if (lastPeriod !== '' && period !== lastPeriod) {
       const prevIdx = slotIndex - 1;
-      const { y, m, d } = getISTDateComponents();
-      const prevPeriod = `${y}${m}${d}5D${String(10000 + prevIdx)}`;
+      const prevPeriod = getPeriodIdFromIndex(prevIdx);
       generateAndSaveResult(prevPeriod, prevIdx).then(loadGameHistory);
     }
     lastPeriod = period;
     currentPeriod = period;
-    document.getElementById('curPeriodText').textContent = period;
+    document.getElementById('periodText').textContent = period;
 
     const s = secLeft % 60;
-    document.getElementById('tSec1').textContent = Math.floor(s / 10);
-    document.getElementById('tSec2').textContent = s % 10;
+    document.getElementById('minTens').textContent = '0';
+    document.getElementById('minOnes').textContent = '0';
+    document.getElementById('secTens').textContent = Math.floor(s / 10);
+    document.getElementById('secOnes').textContent = s % 10;
 
     const overlay = document.getElementById('drawOverlay');
+    const bArea = document.getElementById('betArea');
+
     if (secLeft <= 5) {
       isBettingClosed = true;
+      bArea.style.opacity = '0.4';
+      bArea.style.pointerEvents = 'none';
       overlay.classList.add('show');
-      document.getElementById('drawD1').textContent = '0';
-      document.getElementById('drawD2').textContent = secLeft;
+      document.getElementById('drawCount1').textContent = '0';
+      document.getElementById('drawCount2').textContent = secLeft;
+
+      if (lastPlayedSec !== secLeft) {
+        lastPlayedSec = secLeft;
+        playTick(secLeft <= 3);
+      }
     } else {
       isBettingClosed = false;
+      bArea.style.opacity = '1';
+      bArea.style.pointerEvents = 'auto';
       overlay.classList.remove('show');
+      lastPlayedSec = -1;
     }
-  }, 250);
+  }, 200);
 }
 
-window.openBet = (choice, multi, type = 'size') => {
+window.openBetModal = (choice, multi = 1.95) => {
   if (isBettingClosed) return toast('Betting closed for this round');
   selectedChoice = choice; selectedMulti = multi;
-  document.getElementById('sheetChoice').textContent = `${activePos} - ${choice}`;
+  document.getElementById('modalChoice').textContent = `${selectedTab} - ${choice.toUpperCase()}`;
   document.getElementById('betModal').classList.add('show');
 };
-window.closeBet = () => document.getElementById('betModal').classList.remove('show');
+window.closeBetModal = () => document.getElementById('betModal').classList.remove('show');
 
-window.confirmBet = async () => {
+window.placeBet = async () => {
   const amt = parseInt(document.getElementById('manualAmtInput').value) || 10;
   if (amt > userBalance) return toast('Insufficient balance');
+
+  const btn = document.getElementById('confirmBtn');
+  btn.disabled = true;
 
   try {
     await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-amt) });
@@ -383,18 +492,18 @@ window.confirmBet = async () => {
     document.getElementById('balVal').textContent = userBalance.toFixed(2);
 
     await addDoc(collection(db, BET_COLLECTION), {
-      userId: currentUser.uid, period: currentPeriod, pos: activePos, choice: selectedChoice,
-      type: selectedChoice === 'Big' || selectedChoice === 'Small' ? 'size' : 'number',
+      userId: currentUser.uid, period: currentPeriod, tab: selectedTab, choice: selectedChoice,
       multi: selectedMulti, amount: amt, status: 'pending', createdAt: serverTimestamp()
     });
-    toast(`Bet placed on ${activePos} - ${selectedChoice}!`);
-    closeBet();
-  } catch(e){}
+    toast(`Bet placed on ${selectedTab} - ${selectedChoice}!`);
+    closeBetModal();
+    loadMyHistory();
+  } catch(e){ toast('Error placing bet'); }
+  finally { btn.disabled = false; }
 };
 
 async function loadGameHistory() {
-  const rBox = document.getElementById('historyRows');
-  const topBalls = document.getElementById('top5dPrev');
+  const listEl = document.getElementById('historyList');
   try {
     const q = query(collection(db, RESULT_COLLECTION), limit(15));
     const snap = await getDocs(q);
@@ -403,30 +512,60 @@ async function loadGameHistory() {
     arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
 
     if (arr[0]) {
-      const a = arr[0].a ?? 1;
-      const b = arr[0].b ?? 2;
-      const c = arr[0].c ?? 3;
-      const d = arr[0].d ?? 4;
-      const e = arr[0].e ?? 5;
-      topBalls.innerHTML = `<div class="ball-5d">${a}</div><div class="ball-5d">${b}</div><div class="ball-5d">${c}</div><div class="ball-5d">${d}</div><div class="ball-5d">${e}</div>`;
+      const digs = arr[0].digits || [arr[0].a, arr[0].b, arr[0].c, arr[0].d, arr[0].e];
+      document.getElementById('slotA').textContent = digs[0] ?? 0;
+      document.getElementById('slotB').textContent = digs[1] ?? 0;
+      document.getElementById('slotC').textContent = digs[2] ?? 0;
+      document.getElementById('slotD').textContent = digs[3] ?? 0;
+      document.getElementById('slotE').textContent = digs[4] ?? 0;
+      document.getElementById('slotTotal').textContent = arr[0].total ?? digs.reduce((x,y)=>x+y,0);
     }
 
-    rBox.innerHTML = arr.slice(0, 10).map(d => {
-      const a = d.a ?? (d.number ? (d.number % 10) : 0);
-      const b = d.b ?? ((a + 1) % 10);
-      const c = d.c ?? ((b + 2) % 10);
-      const dVal = d.d ?? ((c + 3) % 10);
-      const e = d.e ?? ((dVal + 4) % 10);
-      const sum = d.sum ?? (a + b + c + dVal + e);
+    listEl.innerHTML = arr.slice(0, 10).map(d => {
+      const digs = d.digits || [d.a, d.b, d.c, d.d, d.e];
+      const tot = d.total ?? digs.reduce((x,y)=>x+y,0);
+      const sz = tot >= 23 ? 'Big' : 'Small';
+      const col = tot >= 23 ? '#f5a623' : '#4a90e2';
       return `
-        <div class="th-row">
-          <div class="col-period">${d.period}</div>
-          <div class="col" style="letter-spacing:2px;font-weight:900;">${a} ${b} ${c} ${dVal} ${e}</div>
-          <div class="col" style="color:var(--gold);font-weight:900;">${sum}</div>
+        <div class="ht-row">
+          <div class="ht-col">${d.period}</div>
+          <div class="ht-col" style="font-weight:700;letter-spacing:2px;">${digs.join('')}</div>
+          <div class="ht-col">${tot}</div>
+          <div class="ht-col" style="color:${col};font-weight:700;">${sz}</div>
         </div>`;
     }).join('');
   } catch(e){}
 }
+
+async function loadMyHistory() {
+  const listEl = document.getElementById('myHistoryList');
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(15));
+    const snap = await getDocs(q);
+    if (snap.empty) { listEl.innerHTML = '<div style="text-align:center;padding:20px;color:#777;font-size:12px;">No bets found</div>'; return; }
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
+    listEl.innerHTML = arr.slice(0, 8).map(b => `
+      <div class="ht-row">
+        <div class="ht-col" style="font-size:11px;">${b.period.slice(-8)}</div>
+        <div class="ht-col" style="font-weight:700;">${b.tab} - ${b.choice}</div>
+        <div class="ht-col">₹${b.amount}</div>
+        <div class="ht-col" style="font-weight:900;color:${b.status==='win'?'#00b977':(b.status==='lose'?'#f44336':'#e5a93b')};">
+          ${b.status==='win'?'+₹'+Number(b.winAmount).toFixed(2):(b.status==='lose'?'-₹'+b.amount:'Pending')}
+        </div>
+      </div>
+    `).join('');
+  } catch(e){}
+}
+
+window.switchHistoryTab = (tab, el) => {
+  document.querySelectorAll('.h-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('gameHistoryView').style.display = tab === 'game' ? 'block' : 'none';
+  document.getElementById('myHistoryView').style.display = tab === 'my' ? 'block' : 'none';
+  if (tab === 'my') loadMyHistory();
+};
 </script>
 </body>
 </html>

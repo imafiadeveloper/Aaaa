@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#1a1a1a">
-<title>BDG WIN - K3 Dice</title>
+<title>BDG K3 DICE</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -22,6 +22,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
 .navbar-brand{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;text-align:center;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;}
 
 .wallet-card{
   margin:10px 12px;background:linear-gradient(135deg,#363a45 0%,#262830 100%);
@@ -38,47 +41,60 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .ticket-card{
   margin:0 12px 10px;background:linear-gradient(135deg, #f5d47a 0%, #d8a846 100%);
   border-radius:18px;padding:14px;color:#332205;position:relative;
+  box-shadow:0 6px 18px rgba(0,0,0,0.4);display:flex;flex-direction:column;gap:10px;
 }
 .tc-top{display:flex;justify-content:space-between;align-items:flex-start;}
 .tc-mode-title{font-size:14px;font-weight:900;}
-.tc-boxes{display:flex;gap:3px;margin-top:4px;justify-content:flex-end;}
+.tc-boxes{display:flex;gap:3px;justify-content:flex-end;}
 .tc-digit{background:#111;color:#fff;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;padding:3px 6px;border-radius:4px;}
 .tc-colon{color:#111;font-weight:900;line-height:24px;}
-.tc-dice-preview{display:flex;gap:6px;margin-top:10px;}
-.dice-icon{width:26px;height:26px;border-radius:6px;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;}
-.tc-period{position:absolute;bottom:10px;right:14px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;}
+.tc-bottom-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px;}
+.tc-dice-preview{display:flex;gap:6px;}
+.dice-cube{
+  width:32px;height:32px;border-radius:6px;background:#fff;color:#111;
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;
+  box-shadow:0 3px 6px rgba(0,0,0,0.3);border:1px solid #ccc;line-height:1;
+}
+.tc-period{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.5px;}
 
-/* K3 Betting Area */
 .bet-board{margin:0 12px 14px;background:#262626;border-radius:18px;padding:14px;}
 .k3-options{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-bottom:12px;}
-.k3-btn{height:46px;border-radius:10px;background:#1b1b1b;border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
-.k3-btn:active{border-color:var(--gold);}
-.k3-btn span{font-size:10px;color:var(--gold);}
+.k3-btn{
+  height:48px;border-radius:10px;background:#1b1b1b;border:1px solid rgba(255,255,255,0.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;
+  transition:transform .15s;
+}
+.k3-btn:active{transform:scale(0.96);border-color:var(--gold);}
+.k3-btn span{font-family:'Inter',sans-serif;font-size:10px;color:var(--gold);font-weight:700;margin-top:2px;}
 
 .size-oe-row{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;}
-.sz-btn{height:42px;border-radius:10px;font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;}
+.sz-btn{height:44px;border-radius:10px;font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+.sz-btn:active{transform:scale(0.96);}
 .sz-btn.big{background:#f5a623;}
 .sz-btn.small{background:#4a90e2;}
 .sz-btn.odd{background:#00b977;}
 .sz-btn.even{background:#9c27b0;}
 
-/* Table */
+.tabs-header{display:flex;margin:16px 12px 10px;gap:6px;}
+.t-btn{flex:1;background:#262626;color:#a6a9ae;font-size:12px;font-weight:700;padding:10px 0;border-radius:10px;text-align:center;cursor:pointer;}
+.t-btn.active{background:var(--gold-bg);color:#2a1b02;}
+
 .hist-table{margin:0 12px;background:#242424;border-radius:12px;overflow:hidden;}
 .th-head{display:flex;background:#2f3440;padding:10px 0;font-size:11px;color:#9aa0ad;font-weight:700;}
-.th-row{display:flex;padding:10px 0;font-size:12px;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
+.th-row{display:flex;padding:12px 0;font-size:12px;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
 .col{flex:1;text-align:center;}
 .col-period{flex:1.4;font-family:'Orbitron',sans-serif;font-size:11px;color:#ddd;}
+.col-dice{display:flex;gap:4px;justify-content:center;font-size:20px;}
 
-/* Draw Overlay */
 .exact-draw-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(3px);z-index:9999;display:none;align-items:center;justify-content:center;gap:16px;}
 .exact-draw-overlay.show{display:flex;}
-.draw-flip-card{width:110px;height:160px;background:#424242;border-radius:16px;display:flex;align-items:center;justify-content:center;}
+.draw-flip-card{width:110px;height:160px;background:#424242;border-radius:16px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.06);}
 .draw-flip-digit{font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#e5a93b;}
 
-/* Bet Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
-.sheet{width:100%;background:#262626;border-radius:20px 20px 0 0;padding:18px 16px 24px;}
+.sheet{width:100%;background:#262626;border-radius:20px 20px 0 0;padding:18px 16px 24px;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 .sheet-head h3{font-size:15px;font-weight:800;}
 .sheet-close{font-size:22px;color:#999;cursor:pointer;}
@@ -86,6 +102,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .manual-input-box span{color:var(--gold);font-weight:800;font-size:14px;margin-right:6px;}
 .manual-input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:800;}
 .btn-place{width:100%;height:46px;border-radius:12px;background:var(--gold-bg);color:#221500;font-size:15px;font-weight:900;}
+
 .toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#fff;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:700;z-index:99999;display:none;}
 </style>
 </head>
@@ -94,7 +111,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <header class="navbar">
   <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-brand">BDG K3 DICE</div>
-  <div></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24" id="soundIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
 </header>
 
 <div class="wallet-card">
@@ -108,19 +127,19 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="ticket-card">
   <div class="tc-top">
-    <div>
-      <div class="tc-mode-title">K3 Dice 1 Min</div>
-      <div class="tc-dice-preview" id="topDicePrev"></div>
-    </div>
-    <div>
-      <div class="tc-boxes">
-        <span class="tc-digit" id="tMin1">0</span><span class="tc-digit" id="tMin2">0</span>
-        <span class="tc-colon">:</span>
-        <span class="tc-digit" id="tSec1">0</span><span class="tc-digit" id="tSec2">0</span>
-      </div>
+    <div class="tc-mode-title">K3 Dice 1 Min</div>
+    <div class="tc-boxes">
+      <span class="tc-digit" id="tMin1">0</span><span class="tc-digit" id="tMin2">0</span>
+      <span class="tc-colon">:</span>
+      <span class="tc-digit" id="tSec1">0</span><span class="tc-digit" id="tSec2">0</span>
     </div>
   </div>
-  <div class="tc-period" id="curPeriodText">Loading...</div>
+  <div class="tc-bottom-row">
+    <div class="tc-dice-preview" id="topDicePrev">
+      <div class="dice-cube">⚀</div><div class="dice-cube">⚁</div><div class="dice-cube">⚂</div>
+    </div>
+    <div class="tc-period" id="curPeriodText">Loading...</div>
+  </div>
 </div>
 
 <div class="bet-board" id="betBoard">
@@ -142,9 +161,20 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
+<div class="tabs-header">
+  <div class="t-btn active" onclick="switchTab('game', this)">Game history</div>
+  <div class="t-btn" onclick="switchTab('my', this)">My history</div>
+</div>
+
 <div class="hist-table">
-  <div class="th-head"><div class="col-period">Period</div><div class="col">Dice Result</div><div class="col">Sum</div></div>
-  <div id="historyRows"></div>
+  <div id="gameView">
+    <div class="th-head"><div class="col-period">Period</div><div class="col">Dice Result</div><div class="col">Sum</div></div>
+    <div id="historyRows"></div>
+  </div>
+  <div id="myView" style="display:none;">
+    <div class="th-head"><div class="col-period">Period</div><div class="col">Bet</div><div class="col">Result</div></div>
+    <div id="myRows"></div>
+  </div>
 </div>
 
 <div class="exact-draw-overlay" id="drawOverlay">
@@ -162,11 +192,15 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <span>₹</span>
       <input type="number" id="manualAmtInput" class="manual-input" value="10" min="1">
     </div>
-    <button class="btn-place" onclick="confirmBet()">Confirm Bet</button>
+    <button class="btn-place" id="btnPlace" onclick="confirmBet()">Confirm Bet</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- 5-Sec Audio -->
+<audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
+<audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -189,14 +223,40 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// EXACT RULES MATCH
 const RESULT_COLLECTION = 'results_k3';
 const BET_COLLECTION = 'bets_k3';
 const SLOT_DURATION_SEC = 60;
 
 let currentUser = null, userBalance = 0, currentPeriod = '';
 let selectedChoice = '', selectedMulti = 1.95;
-let isBettingClosed = false;
+let isBettingClosed = false, isSoundOn = true;
+let lastPlayedSec = -1;
+
+const diceSymbols = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+const snd1 = document.getElementById('soundDi1');
+const snd2 = document.getElementById('soundDi2');
+
+function playTick(isLast3Sec) {
+  if (!isSoundOn) return;
+  try {
+    if (isLast3Sec) { snd2.currentTime = 0; snd2.play().catch(()=>{}); }
+    else { snd1.currentTime = 0; snd1.play().catch(()=>{}); }
+  } catch(e) {}
+}
+
+document.getElementById('soundBtn').addEventListener('click', () => {
+  isSoundOn = !isSoundOn;
+  const icon = document.getElementById('soundIcon');
+  if (isSoundOn) {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
+    icon.style.stroke = '#fff';
+    toast('Sound ON');
+  } else {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    icon.style.stroke = '#666';
+    toast('Sound OFF');
+  }
+});
 
 window.toast = (msg) => {
   const t = document.getElementById('toast');
@@ -217,9 +277,14 @@ function getISTDateComponents() {
   return { y, m, d, slotIndex };
 }
 
+function getPeriodIdFromIndex(idx) {
+  const { y, m, d } = getISTDateComponents();
+  return `${y}${m}${d}K3${String(10000 + idx)}`;
+}
+
 function getPeriodId() {
-  const { y, m, d, slotIndex } = getISTDateComponents();
-  return `${y}${m}${d}K3${String(10000 + slotIndex)}`;
+  const { slotIndex } = getISTDateComponents();
+  return getPeriodIdFromIndex(slotIndex);
 }
 
 async function pruneOldResults() {
@@ -284,7 +349,7 @@ async function resolveBets(periodId, resData) {
       let winAmt = 0;
       if (won) {
         const gross = b.amount * b.multi;
-        winAmt = gross - (gross * 0.15); // 15% platform fee
+        winAmt = gross - (gross * 0.15); // 15% owner commission
         winTotal += winAmt;
       }
       batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt }));
@@ -297,6 +362,7 @@ async function resolveBets(periodId, resData) {
       document.getElementById('balVal').textContent = userBalance.toFixed(2);
       toast(`K3 Won ₹${winTotal.toFixed(2)}!`);
     }
+    loadMyHistory();
   } catch(e){}
 }
 
@@ -322,8 +388,7 @@ function startTimer() {
 
     if (lastPeriod !== '' && period !== lastPeriod) {
       const prevIdx = slotIndex - 1;
-      const { y, m, d } = getISTDateComponents();
-      const prevPeriod = `${y}${m}${d}K3${String(10000 + prevIdx)}`;
+      const prevPeriod = getPeriodIdFromIndex(prevIdx);
       generateAndSaveResult(prevPeriod, prevIdx).then(loadGameHistory);
     }
     lastPeriod = period;
@@ -331,20 +396,34 @@ function startTimer() {
     document.getElementById('curPeriodText').textContent = period;
 
     const s = secLeft % 60;
+    document.getElementById('tMin1').textContent = '0';
+    document.getElementById('tMin2').textContent = '0';
     document.getElementById('tSec1').textContent = Math.floor(s / 10);
     document.getElementById('tSec2').textContent = s % 10;
 
     const overlay = document.getElementById('drawOverlay');
+    const bBoard = document.getElementById('betBoard');
+
     if (secLeft <= 5) {
       isBettingClosed = true;
+      bBoard.style.opacity = '0.4';
+      bBoard.style.pointerEvents = 'none';
       overlay.classList.add('show');
       document.getElementById('drawD1').textContent = '0';
       document.getElementById('drawD2').textContent = secLeft;
+
+      if (lastPlayedSec !== secLeft) {
+        lastPlayedSec = secLeft;
+        playTick(secLeft <= 3);
+      }
     } else {
       isBettingClosed = false;
+      bBoard.style.opacity = '1';
+      bBoard.style.pointerEvents = 'auto';
       overlay.classList.remove('show');
+      lastPlayedSec = -1;
     }
-  }, 250);
+  }, 200);
 }
 
 window.openBet = (choice, multi) => {
@@ -359,6 +438,9 @@ window.confirmBet = async () => {
   const amt = parseInt(document.getElementById('manualAmtInput').value) || 10;
   if (amt > userBalance) return toast('Insufficient balance');
 
+  const btn = document.getElementById('btnPlace');
+  btn.disabled = true;
+
   try {
     await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-amt) });
     userBalance -= amt;
@@ -370,7 +452,9 @@ window.confirmBet = async () => {
     });
     toast(`Bet placed on ${selectedChoice}!`);
     closeBet();
-  } catch(e){}
+    loadMyHistory();
+  } catch(e){ toast('Error placing bet'); }
+  finally { btn.disabled = false; }
 };
 
 async function loadGameHistory() {
@@ -384,18 +468,56 @@ async function loadGameHistory() {
     arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
 
     if (arr[0]) {
-      dPrev.innerHTML = `<div class="dice-icon">${arr[0].d1}</div><div class="dice-icon">${arr[0].d2}</div><div class="dice-icon">${arr[0].d3}</div>`;
+      const topD1 = arr[0].d1 || 1;
+      const topD2 = arr[0].d2 || 2;
+      const topD3 = arr[0].d3 || 3;
+      dPrev.innerHTML = `<div class="dice-cube">${diceSymbols[topD1]}</div><div class="dice-cube">${diceSymbols[topD2]}</div><div class="dice-cube">${diceSymbols[topD3]}</div>`;
     }
 
-    rBox.innerHTML = arr.slice(0, 10).map(d => `
+    rBox.innerHTML = arr.slice(0, 10).map(d => {
+      const d1 = d.d1 || (d.number ? (d.number % 6) + 1 : 1);
+      const d2 = d.d2 || ((d1 + 1) % 6 + 1);
+      const d3 = d.d3 || ((d2 + 1) % 6 + 1);
+      const sum = d.sum || (d1 + d2 + d3);
+      const size = d.size || (sum >= 11 ? 'Big' : 'Small');
+      return `
+        <div class="th-row">
+          <div class="col-period">${d.period}</div>
+          <div class="col col-dice"><span>${diceSymbols[d1]}</span> <span>${diceSymbols[d2]}</span> <span>${diceSymbols[d3]}</span></div>
+          <div class="col" style="color:var(--gold);font-weight:900;">${sum} (${size})</div>
+        </div>`;
+    }).join('');
+  } catch(e){}
+}
+
+async function loadMyHistory() {
+  const mBox = document.getElementById('myRows');
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(15));
+    const snap = await getDocs(q);
+    if (snap.empty) { mBox.innerHTML = '<div style="text-align:center;padding:20px;color:#777;font-size:12px;">No bets yet</div>'; return; }
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
+    mBox.innerHTML = arr.slice(0, 8).map(b => `
       <div class="th-row">
-        <div class="col-period">${d.period}</div>
-        <div class="col">${d.d1}, ${d.d2}, ${d.d3}</div>
-        <div class="col" style="color:var(--gold);font-weight:900;">${d.sum} (${d.size})</div>
+        <div class="col-period">${b.period.slice(-8)}</div>
+        <div class="col" style="font-weight:700;">${b.choice} (₹${b.amount})</div>
+        <div class="col" style="font-weight:900;color:${b.status==='win'?'#00b977':(b.status==='lose'?'#f44336':'#e5a93b')};">
+          ${b.status==='win'?'+₹'+Number(b.winAmount).toFixed(2):(b.status==='lose'?'-₹'+b.amount:'Pending')}
+        </div>
       </div>
     `).join('');
   } catch(e){}
 }
+
+window.switchTab = (tab, el) => {
+  document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('gameView').style.display = tab === 'game' ? 'block' : 'none';
+  document.getElementById('myView').style.display = tab === 'my' ? 'block' : 'none';
+  if (tab === 'my') loadMyHistory();
+};
 </script>
 </body>
 </html>
