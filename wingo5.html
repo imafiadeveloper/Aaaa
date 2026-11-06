@@ -26,8 +26,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
 .navbar-brand{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#FAE59F;letter-spacing:1px;text-align:center;}
 .nav-right{display:flex;align-items:center;gap:10px;}
-.nav-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:#1e1e1e;}
 .nav-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;}
+.nav-icon.muted svg{stroke:#ff4d4f;}
 
 .wallet-card{
   margin:10px 12px;background:linear-gradient(135deg,#363a45 0%,#262830 100%);
@@ -205,7 +206,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-brand">BDG WIN</div>
   <div class="nav-right">
-    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24" id="soundIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+    <div class="nav-icon" id="soundBtn" onclick="toggleSound()">
+      <svg viewBox="0 0 24 24" id="soundIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+    </div>
   </div>
 </header>
 
@@ -348,10 +351,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <div class="toast" id="toast"></div>
 
-<!-- 5-Sec Audio -->
-<audio id="soundDi1" src="./audio/di1.da40b233.mp3" preload="auto"></audio>
-<audio id="soundDi2" src="./audio/di2.317de251.mp3" preload="auto"></audio>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -373,9 +372,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// EXACT MATCH WITH RULES
+// EXACT MATCH WITH RULES & ADMIN TAGS
 const RESULT_COLLECTION = 'results_5m';
 const BET_COLLECTION = 'bets_5m';
+const GAME_TAG = '5m';
 const SLOT_DURATION_SEC = 300;
 
 let currentUser = null;
@@ -385,39 +385,104 @@ let selectedChoice = '', selectedType = '';
 let baseAmt = 1, currentMulti = 1;
 let isBettingClosed = false;
 let autoCloseTimer = null;
-let isSoundOn = true;
-let lastPlayedSec = -1;
-
-const snd1 = document.getElementById('soundDi1');
-const snd2 = document.getElementById('soundDi2');
-
-function playTick(isLast3Sec) {
-  if (!isSoundOn) return;
-  try {
-    if (isLast3Sec) { snd2.currentTime = 0; snd2.play().catch(()=>{}); }
-    else { snd1.currentTime = 0; snd1.play().catch(()=>{}); }
-  } catch(e) {}
-}
-
-document.getElementById('soundBtn').addEventListener('click', () => {
-  isSoundOn = !isSoundOn;
-  const icon = document.getElementById('soundIcon');
-  if (isSoundOn) {
-    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
-    icon.style.stroke = '#fff';
-    toast('Sound ON');
-  } else {
-    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
-    icon.style.stroke = '#666';
-    toast('Sound OFF');
-  }
-});
+let soundEnabled = true;
 
 window.toast = (msg) => {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
   setTimeout(() => t.style.display = 'none', 1800);
 };
+
+// ==========================================
+// 🔊 SYNTHESIZER AUDIO ENGINE (Web Audio API)
+// ==========================================
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) audioCtx = new AudioContextClass();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+window.toggleSound = () => {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('soundBtn');
+  const icon = document.getElementById('soundIcon');
+  if (soundEnabled) {
+    btn.classList.remove('muted');
+    icon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>`;
+    toast('Sound On');
+    playTickSound();
+  } else {
+    btn.classList.add('muted');
+    icon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>`;
+    toast('Sound Muted');
+  }
+};
+
+function playTickSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.09);
+  } catch(e){}
+}
+
+function playWinSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + (i * 0.12));
+      gain.gain.setValueAtTime(0.2, ctx.currentTime + (i * 0.12));
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (i * 0.12) + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + (i * 0.12));
+      osc.stop(ctx.currentTime + (i * 0.12) + 0.26);
+    });
+  } catch(e){}
+}
+
+function playLossSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(260, ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(140, ctx.currentTime + 0.35);
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.36);
+  } catch(e){}
+}
+
+document.addEventListener('click', () => { getAudioContext(); }, { once: true });
 
 function getISTDateComponents() {
   const now = new Date();
@@ -457,12 +522,56 @@ async function pruneOldResults() {
   } catch(e){}
 }
 
-function computeDeterministicResult(slotIndex, periodId) {
+// ==========================================================
+// 🎯 ADMIN PANEL CONTROL INTERCEPTION ENGINE (WinGo 5M)
+// ==========================================================
+async function fetchAdminPresetOrDeterministic(slotIndex, periodId) {
+  try {
+    const ctrlRef1 = doc(db, 'game_controls', `wingo_${GAME_TAG}`);
+    const ctrlRef2 = doc(db, 'system', `wingo_${GAME_TAG}_control`);
+
+    const [snap1, snap2] = await Promise.all([getDoc(ctrlRef1), getDoc(ctrlRef2)]);
+    const ctrl = snap1.exists() ? snap1.data() : (snap2.exists() ? snap2.data() : null);
+
+    if (ctrl && ctrl.mode === 'manual') {
+      let forcedNum = null;
+
+      if (ctrl.targetNumber !== null && ctrl.targetNumber !== undefined && ctrl.targetNumber !== '') {
+        forcedNum = parseInt(ctrl.targetNumber);
+      } else if (ctrl.targetSize === 'Big') {
+        const bigs = [5, 6, 7, 8, 9];
+        forcedNum = bigs[Math.floor(Math.random() * bigs.length)];
+      } else if (ctrl.targetSize === 'Small') {
+        const smalls = [0, 1, 2, 3, 4];
+        forcedNum = smalls[Math.floor(Math.random() * smalls.length)];
+      } else if (ctrl.targetColor === 'Green') {
+        const greens = [1, 3, 7, 9];
+        forcedNum = greens[Math.floor(Math.random() * greens.length)];
+      } else if (ctrl.targetColor === 'Red') {
+        const reds = [2, 4, 6, 8];
+        forcedNum = reds[Math.floor(Math.random() * reds.length)];
+      } else if (ctrl.targetColor === 'Violet') {
+        const violets = [0, 5];
+        forcedNum = violets[Math.floor(Math.random() * violets.length)];
+      }
+
+      if (forcedNum !== null && !isNaN(forcedNum)) {
+        let color = 'violet';
+        if ([1, 3, 7, 9].includes(forcedNum)) color = 'green';
+        else if ([2, 4, 6, 8].includes(forcedNum)) color = 'red';
+        const size = forcedNum >= 5 ? 'big' : 'small';
+        return { period: periodId, number: forcedNum, color, size, slotIndex, forcedByAdmin: true };
+      }
+    }
+  } catch(err) {
+    console.warn("Admin control fetch warning:", err);
+  }
+
   const seed = (slotIndex * 9301 + 49297) % 233280;
   const num = Math.abs(seed) % 10;
   let color = 'violet';
-  if ([1,3,7,9].includes(num)) color = 'green';
-  else if ([2,4,6,8].includes(num)) color = 'red';
+  if ([1, 3, 7, 9].includes(num)) color = 'green';
+  else if ([2, 4, 6, 8].includes(num)) color = 'red';
   const size = num >= 5 ? 'big' : 'small';
   return { period: periodId, number: num, color, size, slotIndex };
 }
@@ -474,7 +583,8 @@ async function generateAndSaveResult(periodId, slotIndex) {
     await resolveBets(periodId, snap.data());
     return;
   }
-  const data = { ...computeDeterministicResult(slotIndex, periodId), createdAt: serverTimestamp() };
+  const generated = await fetchAdminPresetOrDeterministic(slotIndex, periodId);
+  const data = { ...generated, createdAt: serverTimestamp() };
   try {
     await runTransaction(db, async (tx) => {
       const ex = await tx.get(ref);
@@ -547,8 +657,10 @@ async function resolveBets(periodId, resData) {
       await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
       userBalance += winTotal;
       document.getElementById('balVal').textContent = userBalance.toFixed(2);
+      playWinSound();
       showPopup(true, winTotal, periodId, resData);
     } else if (lostTotal > 0) {
+      playLossSound();
       showPopup(false, lostTotal, periodId, resData);
     }
     loadMyHistory();
@@ -659,16 +771,14 @@ function startTimer() {
       document.getElementById('drawD1').textContent = '0';
       document.getElementById('drawD2').textContent = secLeft;
 
-      if (lastPlayedSec !== secLeft) {
-        lastPlayedSec = secLeft;
-        playTick(secLeft <= 3);
+      if (Math.floor(now % 1000) < 260) {
+        playTickSound();
       }
     } else {
       isBettingClosed = false;
       bBoard.style.opacity = '1';
       bBoard.style.pointerEvents = 'auto';
       overlay.classList.remove('show');
-      lastPlayedSec = -1;
     }
   }, 200);
 }
@@ -723,7 +833,10 @@ window.confirmBet = async () => {
   btn.disabled = true;
 
   try {
-    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(-total),
+      totalBetTurnover: increment(total)
+    });
     userBalance -= total;
     document.getElementById('balVal').textContent = userBalance.toFixed(2);
 
@@ -733,6 +846,7 @@ window.confirmBet = async () => {
       choice: selectedChoice,
       type: selectedType,
       amount: total,
+      select: selectedChoice,
       status: 'pending',
       createdAt: serverTimestamp()
     });
