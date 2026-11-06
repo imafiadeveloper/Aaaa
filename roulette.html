@@ -3,104 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#120c18">
-<title>BDG LOTTERY7 - Roulette Live</title>
+<meta name="theme-color" content="#0e0817">
+<title>BDG LOTTERY7 - European Roulette Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold: #f5c443;
   --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
-  --red: #ff2a4b;
+  --red: #e53935;
   --green: #00e676;
-  --card-bg: #1a1524;
+  --board-green: #0a3d21;
+  --card-bg: #160f22;
   --border: rgba(255,255,255,0.08);
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:radial-gradient(circle at 50% 0%, #291238 0%, #0b0712 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;user-select:none;}
+body{background:radial-gradient(circle at 50% 0%, #291036 0%, #08040d 80%);color:#fff;min-height:100vh;padding-bottom:26px;}
 button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
 ::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(18,12,24,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 16px;background:rgba(14,9,20,0.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
 .nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;color:#fff;}
 .navbar-brand span{color:var(--gold);}
 .nav-right{display:flex;align-items:center;gap:10px;}
 .nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
 
-.bal-card{background:linear-gradient(145deg, #251633 0%, #150d1d 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
-.bal-label{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
-.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-card{background:linear-gradient(145deg, #241433 0%, #130a1c 100%);margin:10px 16px;border-radius:16px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:10px;color:#a58fae;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#fff;}
 .bal-amt span{color:var(--gold);}
 .refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
 
 /* Wheel Area */
-.wheel-card{margin:0 16px 14px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:20px;padding:16px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;position:relative;}
-.arena-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.arena-top span{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;}
-.arena-top h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#fff;margin-top:2px;}
-.timer-pill{background:#11091a;border:1.5px solid var(--gold);padding:4px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);}
+.wheel-card{margin:0 16px 12px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:24px;padding:14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;position:relative;}
+.arena-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.arena-top span{font-size:10px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.arena-top h3{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:#fff;margin-top:2px;}
+.timer-pill{background:#11091a;border:1.5px solid var(--gold);padding:3px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);}
 
-/* Canvas Spinning Wheel */
-.wheel-wrap{position:relative;width:240px;height:240px;margin:0 auto 10px;}
-#rouletteCanvas{width:100%;height:100%;border-radius:50%;box-shadow:0 0 25px rgba(245,196,67,0.3);border:4px solid #3d2358;}
-.wheel-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:20px solid var(--gold);z-index:10;}
+.wheel-wrap{position:relative;width:230px;height:230px;margin:0 auto 10px;}
+#rouletteCanvas{width:100%;height:100%;border-radius:50%;box-shadow:0 0 30px rgba(245,196,67,0.35);border:5px solid #3d2310;}
+.wheel-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:18px solid var(--gold);z-index:10;filter:drop-shadow(0 2px 4px #000);}
 
-.result-badge{display:inline-block;padding:4px 14px;border-radius:20px;background:rgba(255,255,255,0.06);font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:#fff;}
+.result-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 16px;border-radius:20px;background:rgba(0,0,0,0.5);font-family:'Orbitron',sans-serif;font-size:12px;font-weight:800;border:1px solid rgba(255,255,255,0.1);}
 .result-badge strong{color:var(--gold);}
 
+/* History Badges Bar */
+.history-bar{display:flex;gap:6px;overflow-x:auto;padding:0 16px 12px;}
+.h-chip{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#fff;}
+.h-chip.red{background:linear-gradient(135deg, #e53935, #b71c1c);box-shadow:0 2px 8px rgba(229,57,53,0.5);}
+.h-chip.black{background:linear-gradient(135deg, #2c2c2c, #111);box-shadow:0 2px 8px rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.15);}
+.h-chip.green{background:linear-gradient(135deg, #00e676, #007a38);box-shadow:0 2px 8px rgba(0,230,118,0.5);}
+
 /* Betting Board */
-.bet-deck{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:14px;border:1px solid var(--border);}
-.side-bets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
-.side-btn{height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:12px;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform .15s;}
-.side-btn:active{transform:scale(0.96);}
-.side-btn.red{background:linear-gradient(135deg, #ff2a4b, #990017);color:#fff;}
-.side-btn.green{background:linear-gradient(135deg, #00e676, #007a38);color:#fff;}
-.side-btn.black{background:linear-gradient(135deg, #2b2b2b, #121212);color:#fff;border:1px solid rgba(255,255,255,0.1);}
+.bet-deck{margin:0 16px 14px;background:#0d2c18;border-radius:20px;padding:12px;border:3px solid #3d2310;box-shadow:inset 0 0 25px rgba(0,0,0,0.8);}
+.outside-row{display:grid;grid-template-columns:repeat(3, 1fr);gap:6px;margin-bottom:6px;}
+.out-btn{height:42px;border-radius:10px;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 10px rgba(0,0,0,0.4);transition:transform .15s;}
+.out-btn:active{transform:scale(0.96);}
+.out-btn.red{background:linear-gradient(135deg, #e53935, #8e0000);color:#fff;}
+.out-btn.black{background:linear-gradient(135deg, #242424, #0d0d0d);color:#fff;border:1px solid rgba(255,255,255,0.15);}
+.out-btn.range{background:#164d2b;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:11px;}
 
-.range-bets{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-.range-btn{height:40px;border-radius:10px;background:#251936;border:1px solid var(--border);font-size:12px;font-weight:800;color:#ddd;}
-.range-btn:active{border-color:var(--gold);}
+.num-grid{display:grid;grid-template-columns:repeat(6, 1fr);gap:5px;margin-top:6px;}
+.num-btn{height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;cursor:pointer;position:relative;}
+.num-btn.red-num{background:#b71c1c;color:#fff;}
+.num-btn.black-num{background:#1a1a1a;color:#fff;border:1px solid rgba(255,255,255,0.1);}
+.num-btn.zero{grid-column:span 6;height:32px;background:#007a38;color:#fff;}
 
-.num-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
-.num-btn{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;cursor:pointer;}
-.num-btn.red-num{background:#990017;color:#fff;}
-.num-btn.black-num{background:#181818;color:#fff;border:1px solid rgba(255,255,255,0.08);}
-.num-btn.green-num{grid-column:span 6;aspect-ratio:auto;height:34px;background:#007a38;color:#fff;}
+.bet-badge-dot{position:absolute;top:2px;right:3px;background:var(--gold-grad);color:#000;font-size:8px;font-weight:900;padding:1px 4px;border-radius:6px;display:none;}
 
-/* History Tabs */
+/* Tabs & History */
 .tabs-wrap{display:flex;margin:0 16px 10px;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--border);}
-.tab-btn{flex:1;text-align:center;padding:9px;font-size:12px;font-weight:700;color:#a58fae;border-radius:8px;}
+.tab-btn{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:700;color:#a58fae;border-radius:8px;}
 .tab-btn.active{background:#2b1c3b;color:var(--gold);}
-.history-wrap{margin:0 16px;background:var(--card-bg);border-radius:16px;padding:12px;border:1px solid var(--border);min-height:100px;}
-.table-head,.table-row{display:flex;align-items:center;justify-content:space-between;padding:10px 8px;font-size:12px;}
+.history-wrap{margin:0 16px;background:var(--card-bg);border-radius:16px;padding:10px 12px;border:1px solid var(--border);min-height:90px;}
+.table-head,.table-row{display:flex;align-items:center;justify-content:space-between;padding:8px;font-size:11px;}
 .table-head{color:#a58fae;font-weight:700;border-bottom:1px solid var(--border);text-transform:uppercase;font-size:10px;}
 .table-row{border-bottom:1px solid rgba(255,255,255,0.03);}
 .table-row:last-child{border-bottom:none;}
 .col{flex:1;text-align:center;}
 
-/* Bet Modal */
+/* 5s Stop Overlay */
+.draw-overlay{position:fixed;inset:0;background:rgba(10,5,16,0.78);backdrop-filter:blur(6px);z-index:9000;display:none;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;}
+.draw-overlay.show{display:flex;}
+.draw-box{width:125px;height:125px;border-radius:50%;background:rgba(255,42,75,0.12);border:2.5px solid var(--red);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 35px rgba(255,42,75,0.5);animation:pulseCircle 0.8s infinite alternate;}
+@keyframes pulseCircle{0%{transform:scale(1);}100%{transform:scale(1.05);}}
+.draw-counter{font-family:'Orbitron',sans-serif;font-size:52px;font-weight:900;color:#fff;line-height:1;}
+.draw-lbl{font-size:10px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+
+/* Result Popup */
+.result-popup{position:fixed;inset:0;background:rgba(4,2,8,0.88);backdrop-filter:blur(6px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
+.result-popup.show{display:flex;}
+.res-card{width:100%;max-width:300px;border-radius:22px;padding:24px 18px 20px;text-align:center;background:#1a1224;border:1.5px solid var(--border);box-shadow:0 20px 50px rgba(0,0,0,0.8);animation:scalePop .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes scalePop{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+.res-card.win{border-color:var(--gold);box-shadow:0 0 45px rgba(245,196,67,0.35);}
+.res-card.lose{border-color:#ff334b;box-shadow:0 0 45px rgba(255,51,75,0.3);}
+.res-icon{font-size:48px;margin-bottom:6px;}
+.res-title{font-size:20px;font-weight:900;text-transform:uppercase;margin-bottom:4px;}
+.res-card.win .res-title{color:var(--gold);}
+.res-card.lose .res-title{color:#ff5252;}
+.res-amt{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;margin-bottom:16px;}
+.res-card.win .res-amt{color:var(--green);}
+.res-card.lose .res-amt{color:#ff5252;}
+.btn-res-close{width:100%;height:44px;border-radius:12px;background:var(--gold-grad);color:#211400;font-size:14px;font-weight:900;text-transform:uppercase;}
+
+/* Bet Bottom Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(8,4,12,0.85);backdrop-filter:blur(6px);z-index:999;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
 .sheet{width:100%;background:#181222;border-radius:24px 24px 0 0;padding:20px 18px 24px;border-top:1.5px solid var(--border);animation:slideUp .25s ease;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-.sheet-title{font-size:16px;font-weight:900;color:#fff;}
+.sheet-title{font-size:15px;font-weight:900;color:#fff;}
 .sheet-title span{color:var(--gold);}
 .sheet-close{font-size:24px;color:#a58fae;cursor:pointer;}
 .ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.ctrl-label{font-size:12px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.ctrl-label{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;}
 .chips{display:flex;gap:6px;}
-.chip{padding:7px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:13px;font-weight:800;color:#fff;cursor:pointer;}
+.chip{padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:12px;font-weight:800;color:#fff;cursor:pointer;}
 .chip.active{background:var(--gold-grad);color:#211400;border:none;}
 .qty-box{display:flex;align-items:center;background:#100918;border-radius:8px;border:1px solid var(--border);}
 .qty-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#a58fae;}
 .qty-input{width:48px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Orbitron',sans-serif;font-weight:800;}
 .btn-submit-bet{width:100%;height:48px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-top:14px;box-shadow:0 6px 20px rgba(245,196,67,0.35);}
 
-.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+.toast{position:fixed;top:18%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:8px 20px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
 </style>
 </head>
 <body>
@@ -124,7 +153,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="wheel-card">
   <div class="arena-top">
     <div>
-      <span>Spin Round</span>
+      <span>Spin Period</span>
       <h3 id="periodText">Loading...</h3>
     </div>
     <div class="timer-pill" id="timerClock">30s</div>
@@ -132,26 +161,52 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
   <div class="wheel-wrap">
     <div class="wheel-pointer"></div>
-    <canvas id="rouletteCanvas" width="240" height="240"></canvas>
+    <canvas id="rouletteCanvas" width="230" height="230"></canvas>
   </div>
-  <div class="result-badge">Last Number: <strong id="lastNum">0 Green</strong></div>
+  <div class="result-badge">Last Result: <strong id="lastNum">--</strong></div>
 </div>
 
+<div class="history-bar" id="recentBar"></div>
+
+<!-- Betting Deck -->
 <div class="bet-deck">
-  <div class="side-bets">
-    <button class="side-btn red" onclick="openBetModal('Red', 'color', 2)">RED (2X)</button>
-    <button class="side-btn green" onclick="openBetModal('0', 'number', 36)">0 GREEN (36X)</button>
-    <button class="side-btn black" onclick="openBetModal('Black', 'color', 2)">BLACK (2X)</button>
+  <!-- Outside Bets 1 -->
+  <div class="outside-row">
+    <button class="out-btn red" onclick="openBetModal('Red', 'color', 2)">
+      RED 2X
+      <span class="bet-badge-dot" id="dot-Red">0</span>
+    </button>
+    <button class="out-btn range" onclick="openBetModal('Even', 'parity', 2)">
+      EVEN 2X
+      <span class="bet-badge-dot" id="dot-Even">0</span>
+    </button>
+    <button class="out-btn black" onclick="openBetModal('Black', 'color', 2)">
+      BLACK 2X
+      <span class="bet-badge-dot" id="dot-Black">0</span>
+    </button>
   </div>
-  <div class="range-bets">
-    <button class="range-btn" onclick="openBetModal('1-18', 'range', 2)">1 to 18 (Low)</button>
-    <button class="range-btn" onclick="openBetModal('19-36', 'range', 2)">19 to 36 (High)</button>
+  <!-- Outside Bets 2 -->
+  <div class="outside-row">
+    <button class="out-btn range" onclick="openBetModal('1-18', 'range', 2)">
+      1 to 18
+      <span class="bet-badge-dot" id="dot-1-18">0</span>
+    </button>
+    <button class="out-btn range" onclick="openBetModal('Odd', 'parity', 2)">
+      ODD 2X
+      <span class="bet-badge-dot" id="dot-Odd">0</span>
+    </button>
+    <button class="out-btn range" onclick="openBetModal('19-36', 'range', 2)">
+      19 to 36
+      <span class="bet-badge-dot" id="dot-19-36">0</span>
+    </button>
   </div>
+
+  <!-- Number Grid -->
   <div class="num-grid" id="numGrid"></div>
 </div>
 
 <div class="tabs-wrap">
-  <div class="tab-btn active" onclick="switchTab('game',this)">History</div>
+  <div class="tab-btn active" onclick="switchTab('game',this)">Wheel History</div>
   <div class="tab-btn" onclick="switchTab('my',this)">My Bets</div>
 </div>
 
@@ -163,6 +218,24 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div id="myView" style="display:none;"><div id="myList"></div></div>
 </div>
 
+<!-- 5s Stop Overlay -->
+<div class="draw-overlay" id="drawOverlay">
+  <div class="draw-box">
+    <div class="draw-counter" id="drawSec">5</div>
+    <div class="draw-lbl">Wheel Spinning</div>
+  </div>
+</div>
+
+<!-- Result Popup -->
+<div class="result-popup" id="resultPopup">
+  <div class="res-card" id="resCard">
+    <div class="res-icon" id="resIcon">🎯</div>
+    <div class="res-title" id="resTitle">Victory!</div>
+    <div class="res-amt" id="resAmt">₹0.00</div>
+    <button class="btn-res-close" onclick="closePopup()">Next Spin</button>
+  </div>
+</div>
+
 <!-- Bet Modal -->
 <div class="modal-overlay" id="betModal">
   <div class="sheet">
@@ -171,7 +244,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="sheet-close" onclick="closeBetModal()">×</div>
     </div>
     <div class="ctrl-row">
-      <span class="ctrl-label">Chip Value</span>
+      <span class="ctrl-label">Chip Amount</span>
       <div class="chips">
         <div class="chip active" onclick="setAmt(this,10)">₹10</div>
         <div class="chip" onclick="setAmt(this,50)">₹50</div>
@@ -198,8 +271,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
-  addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
-  where, runTransaction
+  addDoc, serverTimestamp, query, limit, getDocs, where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -219,6 +291,10 @@ const BET_COLLECTION = 'bets_roulette';
 const SLOT_MS = 30 * 1000;
 const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
 
+// Standard European Wheel Sequence (37 numbers)
+const wheelNumbers = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+
 let currentUser = null;
 let userBalance = 0;
 let currentPeriod = '';
@@ -227,7 +303,7 @@ let selectedChoice = '', selectedType = '', payoutMultiplier = 2;
 let baseAmt = 10, currentQty = 1;
 let isBettingClosed = false, soundOn = true;
 
-const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+let myActiveBets = {};
 
 let audioCtx;
 function playSound(type) {
@@ -239,11 +315,17 @@ function playSound(type) {
     osc.connect(gain); gain.connect(audioCtx.destination);
     if (type === 'tick') {
       osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
       osc.start(); osc.stop(audioCtx.currentTime + 0.03);
     } else if (type === 'win') {
-      osc.type = 'triangle'; osc.frequency.setValueAtTime(523, audioCtx.currentTime);
-      osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.1);
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+    } else if (type === 'lose') {
+      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.35);
       gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
       osc.start(); osc.stop(audioCtx.currentTime + 0.35);
     }
@@ -263,63 +345,65 @@ function getPeriodId(slot) {
   return `${y}${m}${day}RL${String(slotOfDay).padStart(5, '0')}`;
 }
 
-// 20% Player Win / 80% House Edge Generator
-function generateRouletteResult(slot) {
-  const seed = (slot * 9301 + 49297) % 233280;
-  const num = seed % 37;
-  let color = 'Green';
-  if (num !== 0) {
-    color = redNumbers.includes(num) ? 'Red' : 'Black';
-  }
-  const range = (num === 0) ? 'None' : (num <= 18 ? '1-18' : '19-36');
-  return { num, color, range };
-}
-
-// Draw Canvas Wheel
+// Canvas Wheel Rendering
 const canvas = document.getElementById('rouletteCanvas');
 const ctx = canvas.getContext('2d');
 let currentAngle = 0;
+let targetAngle = 0;
+let isSpinningFast = false;
 
 function drawWheel(angle = 0) {
   const total = 37;
   const arc = (Math.PI * 2) / total;
-  ctx.clearRect(0,0,240,240);
+  ctx.clearRect(0, 0, 230, 230);
   ctx.save();
-  ctx.translate(120, 120);
+  ctx.translate(115, 115);
   ctx.rotate(angle);
 
   for (let i = 0; i < total; i++) {
+    const num = wheelNumbers[i];
     ctx.beginPath();
-    ctx.moveTo(0,0);
-    ctx.arc(0,0,114, i * arc, (i + 1) * arc);
-    if (i === 0) ctx.fillStyle = '#007a38';
-    else ctx.fillStyle = redNumbers.includes(i) ? '#990017' : '#141414';
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, 110, i * arc, (i + 1) * arc);
+    if (num === 0) ctx.fillStyle = '#007a38';
+    else ctx.fillStyle = redNumbers.includes(num) ? '#b71c1c' : '#141414';
     ctx.fill();
+    ctx.strokeStyle = '#2b1a0a';
+    ctx.lineWidth = 1;
     ctx.stroke();
 
     ctx.save();
     ctx.rotate(i * arc + arc / 2);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 9px Orbitron';
-    ctx.fillText(i, 84, 3);
+    ctx.fillText(num, 80, 3);
     ctx.restore();
   }
   ctx.restore();
 
-  // Center Cap
+  // Center Knob
   ctx.beginPath();
-  ctx.arc(120, 120, 24, 0, Math.PI * 2);
+  ctx.arc(115, 115, 22, 0, Math.PI * 2);
   ctx.fillStyle = '#f5c443';
   ctx.fill();
+  ctx.strokeStyle = '#7c530e';
+  ctx.lineWidth = 3;
+  ctx.stroke();
 }
 drawWheel(0);
 
+// Populate Number Grid
 function initGrid() {
   const g = document.getElementById('numGrid');
-  let html = '';
+  let html = `<button class="num-btn zero" onclick="openBetModal('0', 'number', 36)">0 GREEN (36X)<span class="bet-badge-dot" id="dot-0">0</span></button>`;
   for (let i = 1; i <= 36; i++) {
     const isRed = redNumbers.includes(i);
-    html += `<button class="num-btn ${isRed?'red-num':'black-num'}" onclick="openBetModal('${i}','number',36)">${i}</button>`;
+    html += `
+      <button class="num-btn ${isRed ? 'red-num' : 'black-num'}" onclick="openBetModal('${i}', 'number', 36)">
+        ${i}
+        <span class="bet-badge-dot" id="dot-${i}">0</span>
+      </button>
+    `;
   }
   g.innerHTML = html;
 }
@@ -338,6 +422,26 @@ onAuthStateChanged(auth, async (user) => {
   loadMyHistory();
 });
 
+// House Controlled 10% Real Player Win Rate
+function calculateRouletteResult(slot, forcedNum = null) {
+  let num;
+  if (forcedNum !== null) {
+    num = forcedNum;
+  } else {
+    const seed = (slot * 9301 + 49297) % 233280;
+    num = seed % 37;
+  }
+
+  let color = 'Green';
+  if (num !== 0) {
+    color = redNumbers.includes(num) ? 'Red' : 'Black';
+  }
+  const range = (num === 0) ? 'None' : (num <= 18 ? '1-18' : '19-36');
+  const parity = (num === 0) ? 'None' : (num % 2 === 0 ? 'Even' : 'Odd');
+
+  return { num, color, range, parity };
+}
+
 function startTimer() {
   let lastSlotTrack = -1;
   setInterval(() => {
@@ -346,43 +450,86 @@ function startTimer() {
     const secLeft = Math.max(0, Math.ceil((SLOT_MS - (now - (EPOCH + slot * SLOT_MS))) / 1000));
 
     if (lastSlotTrack !== -1 && slot !== lastSlotTrack) {
-      saveResultForSlot(lastSlotTrack, getPeriodId(lastSlotTrack)).then(() => {
-        loadGameHistory(); loadMyHistory();
-      });
+      resolveRound(lastSlotTrack);
     }
+
     lastSlotTrack = slot;
     currentSlot = slot;
     currentPeriod = getPeriodId(slot);
-    document.getElementById('periodText').textContent = currentPeriod;
+    document.getElementById('periodText').textContent = currentPeriod.slice(-7);
     document.getElementById('timerClock').textContent = `${secLeft}s`;
 
-    if (secLeft <= 6) {
+    // 🛑 5s Stop / Spin Fast
+    if (secLeft <= 5) {
       isBettingClosed = true;
-      currentAngle += 0.25;
+      document.getElementById('drawOverlay').classList.add('show');
+      document.getElementById('drawSec').textContent = secLeft;
+      if (secLeft > 0) playSound('tick');
+      currentAngle += 0.35;
       drawWheel(currentAngle);
-      playSound('tick');
     } else {
       isBettingClosed = false;
-      currentAngle += 0.02;
+      document.getElementById('drawOverlay').classList.remove('show');
+      currentAngle += 0.015;
       drawWheel(currentAngle);
+
+      if (secLeft >= 28) {
+        // Reset Board For New Spin
+        document.querySelectorAll('.bet-badge-dot').forEach(el => el.style.display = 'none');
+        myActiveBets = {};
+      }
     }
   }, 100);
 }
 
-async function saveResultForSlot(slot, periodId) {
-  const ref = doc(db, RESULT_COLLECTION, periodId);
-  const snap = await getDoc(ref);
-  if (snap.exists()) return;
-  const res = generateRouletteResult(slot);
-  const data = { period: periodId, ...res, createdAt: serverTimestamp() };
+async function resolveRound(slot) {
+  const periodId = getPeriodId(slot);
+
+  // House Controlled 10% Real User Win Rule
+  let forcedNum = null;
+  const hasBets = Object.keys(myActiveBets).length > 0;
+
+  if (hasBets) {
+    const isLucky = (Math.random() < 0.10); // 10% Cap
+    if (!isLucky) {
+      // Pick a number that player didn't bet on
+      const safeNumbers = [];
+      for (let i = 0; i < 37; i++) {
+        const c = i === 0 ? 'Green' : (redNumbers.includes(i) ? 'Red' : 'Black');
+        const r = i <= 18 ? '1-18' : '19-36';
+        const p = i % 2 === 0 ? 'Even' : 'Odd';
+        if (!myActiveBets[i] && !myActiveBets[c] && !myActiveBets[r] && !myActiveBets[p]) {
+          safeNumbers.push(i);
+        }
+      }
+      if (safeNumbers.length > 0) {
+        forcedNum = safeNumbers[Math.floor(Math.random() * safeNumbers.length)];
+      }
+    }
+  }
+
+  const res = calculateRouletteResult(slot, forcedNum);
+  document.getElementById('lastNum').textContent = `${res.num} ${res.color}`;
+
+  // Smooth wheel snapping to winning number
+  const numIndex = wheelNumbers.indexOf(res.num);
+  const total = 37;
+  const arc = (Math.PI * 2) / total;
+  currentAngle = (Math.PI * 1.5) - (numIndex * arc) - (arc / 2);
+  drawWheel(currentAngle);
+
+  // Save to Firestore
   try {
+    const ref = doc(db, RESULT_COLLECTION, periodId);
     await runTransaction(db, async (tx) => {
       const ex = await tx.get(ref);
-      if (!ex.exists()) tx.set(ref, data);
+      if (!ex.exists()) tx.set(ref, { period: periodId, ...res, createdAt: serverTimestamp() });
     });
   } catch(e){}
-  document.getElementById('lastNum').textContent = `${res.num} ${res.color}`;
-  await resolveBets(periodId, data);
+
+  await resolveBets(periodId, res);
+  loadGameHistory();
+  loadMyHistory();
 }
 
 async function resolveBets(periodId, resData) {
@@ -391,40 +538,59 @@ async function resolveBets(periodId, resData) {
     const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
     const snap = await getDocs(q);
     if (snap.empty) return;
-    let winTotal = 0;
+    let winTotal = 0, lostTotal = 0, hasPending = false;
     const batch = [];
+
     snap.forEach(d => {
       const b = d.data();
       if (b.status !== 'pending') return;
+      hasPending = true;
       let won = false;
       if (b.type === 'color' && b.choice === resData.color) won = true;
       else if (b.type === 'number' && parseInt(b.choice) === resData.num) won = true;
       else if (b.type === 'range' && b.choice === resData.range) won = true;
+      else if (b.type === 'parity' && b.choice === resData.parity) won = true;
 
       let winAmt = 0;
       if (won) {
-        const gross = b.amount * b.payoutMultiplier;
-        const tax = gross * 0.15; // 15% owner tax
-        winAmt = gross - tax;
+        winAmt = b.amount * b.payoutMultiplier;
         winTotal += winAmt;
+      } else {
+        lostTotal += b.amount;
       }
-      batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt, numResult: resData.num }));
+      batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt, hitNum: resData.num }));
     });
+
+    if (!hasPending) return;
     await Promise.all(batch);
+
     if (winTotal > 0) {
       await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
       userBalance += winTotal;
       document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
-      playSound('win');
-      toast(`You Won ₹${winTotal.toFixed(2)} on Round ${periodId.slice(-4)}!`);
+      showResultPopup(true, winTotal, `${resData.num} (${resData.color})`);
+    } else if (lostTotal > 0) {
+      showResultPopup(false, lostTotal, `${resData.num} (${resData.color})`);
     }
   } catch(e){}
 }
 
+function showResultPopup(isWin, amt, numStr) {
+  const pop = document.getElementById('resultPopup');
+  const card = document.getElementById('resCard');
+  card.className = `res-card ${isWin ? 'win' : 'lose'}`;
+  document.getElementById('resIcon').textContent = isWin ? '🎯' : '💀';
+  document.getElementById('resTitle').textContent = isWin ? `HIT ${numStr} (WON!)` : `HIT ${numStr} (LOST)`;
+  document.getElementById('resAmt').textContent = (isWin ? '+₹' : '-₹') + Number(amt).toFixed(2);
+  pop.classList.add('show');
+  playSound(isWin ? 'win' : 'lose');
+}
+window.closePopup = () => document.getElementById('resultPopup').classList.remove('show');
+
 window.openBetModal = (choice, type, multi) => {
   if (isBettingClosed) return toast('Spin in progress! Wait for next round');
   selectedChoice = choice; selectedType = type; payoutMultiplier = multi;
-  document.getElementById('sheetChoice').textContent = choice;
+  document.getElementById('sheetChoice').textContent = `${choice} (${multi}X)`;
   document.getElementById('betModal').classList.add('show');
   updateTotalBetSpan();
 };
@@ -445,6 +611,10 @@ window.placeBet = async () => {
   const total = baseAmt * currentQty;
   if (total > userBalance) return toast('Insufficient balance');
 
+  const btn = document.getElementById('btnPlaceBet');
+  btn.disabled = true;
+  btn.textContent = 'PLACING...';
+
   try {
     await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
     userBalance -= total;
@@ -460,26 +630,46 @@ window.placeBet = async () => {
       status: 'pending',
       createdAt: serverTimestamp()
     });
+
+    myActiveBets[selectedChoice] = (myActiveBets[selectedChoice] || 0) + total;
+    const dot = document.getElementById(`dot-${selectedChoice}`);
+    if (dot) {
+      dot.textContent = `₹${myActiveBets[selectedChoice]}`;
+      dot.style.display = 'block';
+    }
+
     toast(`Bet placed on ${selectedChoice}!`);
     closeBetModal();
     loadMyHistory();
-  } catch(e){ toast('Error placing bet'); }
+  } catch(e){
+    toast('Error placing bet');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = `CONFIRM BET ₹${baseAmt * currentQty}`;
+  }
 };
 
 async function loadGameHistory() {
   const gList = document.getElementById('gameList');
+  const recBar = document.getElementById('recentBar');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), limit(15));
+    const q = query(collection(db, RESULT_COLLECTION), limit(25));
     const snap = await getDocs(q);
     let arr = [];
     snap.forEach(d => arr.push(d.data()));
     arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
-    gList.innerHTML = arr.slice(0, 10).map(d => `
+
+    recBar.innerHTML = arr.slice(0, 14).map(d => {
+      const cls = d.num === 0 ? 'green' : (d.color === 'Red' ? 'red' : 'black');
+      return `<div class="h-chip ${cls}">${d.num}</div>`;
+    }).join('');
+
+    gList.innerHTML = arr.slice(0, 8).map(d => `
       <div class="table-row">
-        <div class="col" style="font-family:'Orbitron',sans-serif;font-size:11px;">${d.period.slice(-5)}</div>
+        <div class="col" style="font-family:'Orbitron',sans-serif;font-size:10px;">${d.period.slice(-5)}</div>
         <div class="col" style="font-family:'Orbitron',sans-serif;font-weight:900;color:var(--gold);">${d.num}</div>
         <div class="col" style="font-weight:800;color:${d.color==='Red'?'var(--red)':(d.color==='Green'?'var(--green)':'#fff')};">${d.color}</div>
-        <div class="col">${d.range}</div>
+        <div class="col">${d.range || '--'}</div>
       </div>
     `).join('');
   } catch(e){}
@@ -488,18 +678,18 @@ async function loadGameHistory() {
 async function loadMyHistory() {
   const myView = document.getElementById('myList');
   try {
-    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(15));
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(20));
     const snap = await getDocs(q);
-    if (snap.empty) { myView.innerHTML = '<div style="text-align:center;color:#777;padding:20px;font-size:12px;">No bets found</div>'; return; }
+    if (snap.empty) { myView.innerHTML = '<div style="text-align:center;color:#777;padding:15px;font-size:11px;">No bets found</div>'; return; }
     let arr = [];
     snap.forEach(d => arr.push(d.data()));
     arr.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
-    myView.innerHTML = arr.slice(0,8).map(b => `
+    myView.innerHTML = arr.slice(0, 8).map(b => `
       <div class="table-row">
-        <div class="col" style="font-size:11px;">${b.period.slice(-5)}</div>
+        <div class="col" style="font-size:10px;">${b.period.slice(-5)}</div>
         <div class="col" style="font-weight:800;">${b.choice}</div>
         <div class="col">₹${b.amount}</div>
-        <div class="col" style="font-weight:800;color:${b.status==='win'?'#00e676':(b.status==='lose'?'#ff2a4b':'var(--gold)')};">
+        <div class="col" style="font-weight:800;color:${b.status==='win'?'var(--green)':(b.status==='lose'?'var(--red)':'var(--gold)')};">
           ${b.status==='win'?'+₹'+Number(b.winAmount).toFixed(2):(b.status==='lose'?'-₹'+b.amount:'Pending')}
         </div>
       </div>
