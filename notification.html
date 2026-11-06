@@ -2,42 +2,225 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notification</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#141416">
+<title>BDG GAME - Notification</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-body{background:#1A1A1A;color:#fff;font-family:'Inter',sans-serif;margin:0;}
-.navbar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
-.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;cursor:pointer;}
-.nav-title{font-size:16px;font-weight:600;}
-.tabs{display:flex;padding:10px 16px;gap:10px;}
-.tab{flex:1;text-align:center;padding:12px;background:#262626;border-radius:8px;font-size:14px;font-weight:600;color:#a6a9ae;cursor:pointer;}
-.tab.active{background:linear-gradient(90deg,#FAE59F,#C4933F);color:#3a2a10;}
-.notice-card{background:#262626;margin:0 16px 16px;border-radius:12px;padding:16px;}
-.notice-title{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
-.notice-title svg{width:20px;height:20px;stroke:#FAE59F;fill:none;stroke-width:2;}
-.notice-body{font-size:13px;color:#a6a9ae;line-height:1.5;}
-.notice-time{font-size:11px;color:#666;margin-top:12px;}
+:root{
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg, #FFE793 0%, #C48E2F 100%);
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+/* Navbar */
+.navbar{position:sticky;top:0;z-index:100;height:54px;background:#18181a;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.nav-title{font-size:16px;font-weight:700;}
+.nav-right{font-size:12px;color:var(--gold);font-weight:700;cursor:pointer;}
+
+/* Tabs */
+.tabs-wrap{display:flex;padding:12px 16px;gap:10px;}
+.tab{flex:1;text-align:center;padding:10px 0;background:#202024;border-radius:10px;font-size:13px;font-weight:700;color:#8f929b;cursor:pointer;border:1px solid var(--border);transition:all .2s;}
+.tab.active{background:var(--gold-grad);color:#291a03;border-color:transparent;}
+
+/* Container */
+.content-box{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
+
+/* Notice Card */
+.notice-card{
+  background:#202024;border-radius:14px;padding:16px;border:1px solid var(--border);
+  box-shadow:0 4px 14px rgba(0,0,0,0.3);position:relative;overflow:hidden;
+}
+.notice-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.notice-title-box{display:flex;align-items:center;gap:10px;}
+.ico-badge{
+  width:34px;height:34px;border-radius:10px;background:rgba(250,229,159,0.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ico-badge svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+.notice-title{font-size:14px;font-weight:800;color:#fff;}
+.notice-tag{font-size:10px;color:var(--gold);font-weight:700;background:#2b261b;padding:2px 8px;border-radius:6px;border:1px solid rgba(250,229,159,0.2);}
+.notice-body{font-size:12px;color:#a6a9ae;line-height:1.6;}
+.notice-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed rgba(255,255,255,0.05);font-size:11px;color:#666;}
+.status-pill{color:#00e676;font-weight:700;}
+
+/* Empty State */
+.empty-box{text-align:center;padding:60px 20px;color:#666;}
+.empty-box svg{width:48px;height:48px;stroke:#555;margin-bottom:12px;fill:none;stroke-width:1.5;}
+.empty-box p{font-size:13px;font-weight:600;}
+
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;text-align:center;}
 </style>
 </head>
 <body>
-<div class="navbar">
-  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+
+<header class="navbar">
+  <div class="nav-left" onclick="history.back() || (location.href='account.html')">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
   <div class="nav-title">Notification</div>
-  <div style="width:24px;"></div>
+  <div class="nav-right" onclick="clearAllNotifications()">Clear All</div>
+</header>
+
+<div class="tabs-wrap">
+  <div class="tab active" id="tabNotice" onclick="switchTab('notification')">Notification</div>
+  <div class="tab" id="tabInfo" onclick="switchTab('information')">Information</div>
 </div>
-<div class="tabs">
-  <div class="tab active">Notification</div>
-  <div class="tab">Information</div>
-</div>
-<div class="notice-card">
-  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> About Withdrawal - BDGGame Notify</div>
-  <div class="notice-body">Please Fill In The Correct Bank Card Information. The Platform Will Process Withdrawals Within 1-24 Hours Or More. The Withdrawal Status Is "Completed" And The Transaction Has Been Approved By The Platform.</div>
-  <div class="notice-time">2024-01-18 12:13:09</div>
-</div>
-<div class="notice-card">
-  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> About Recharge - BDGGame Notify</div>
-  <div class="notice-body">Please Remember The Upi Id Of Your Payment And Fill In The Correct Utr Number And Amount To Submit. When You Need To Continue Recharging, Please Be Sure To Go To BDGGame To Get A New Upi Account Again!</div>
-  <div class="notice-time">2024-01-18 12:13:30</div>
-</div>
+
+<main class="content-box" id="listContainer">
+  <div class="empty-box">
+    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+    <p>Loading notifications...</p>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, query, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentTab = 'notification';
+let currentUser = null;
+
+const staticNotifications = [
+  {
+    type: 'notification',
+    tag: 'WITHDRAW',
+    title: 'About Withdrawal - BDGGame Notify',
+    body: 'Please Fill In The Correct Bank Card Information. The Platform Will Process Withdrawals Within 1-24 Hours Or More. The Withdrawal Status Is "Completed" And The Transaction Has Been Approved By The Platform.',
+    time: '2026-11-06 18:30:15',
+    status: 'Official'
+  },
+  {
+    type: 'notification',
+    tag: 'RECHARGE',
+    title: 'About Recharge - BDGGame Notify',
+    body: 'Please Remember The Upi Id Of Your Payment And Fill In The Correct Utr Number And Amount To Submit. When You Need To Continue Recharging, Please Be Sure To Go To BDGGame To Get A New Upi Account Again!',
+    time: '2026-11-06 17:15:20',
+    status: 'Official'
+  },
+  {
+    type: 'information',
+    tag: 'SECURITY',
+    title: 'Account Security Notice',
+    body: 'Never share your login credentials, withdrawal password, or OTP with anyone claiming to be BDG customer support. BDG staff will never ask for your account password.',
+    time: '2026-11-05 10:00:00',
+    status: 'Safety'
+  },
+  {
+    type: 'information',
+    tag: 'SYSTEM',
+    title: 'Fast Deposit & VIP Rewards',
+    body: 'Complete your daily deposit goals to level up your VIP badge. High VIP accounts enjoy 0% withdrawal processing fee and unlimited daily instant approvals.',
+    time: '2026-11-04 14:45:10',
+    status: 'Update'
+  }
+];
+
+window.toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 1800);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  await loadNotifications();
+});
+
+async function loadNotifications() {
+  const container = document.getElementById('listContainer');
+  let list = [...staticNotifications];
+
+  try {
+    const q = query(collection(db, 'notifications'), limit(20));
+    const snap = await getDocs(q);
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
+      list.unshift({
+        type: d.type || 'notification',
+        tag: d.tag || 'SYSTEM',
+        title: d.title || 'System Notification',
+        body: d.body || d.message || '',
+        time: d.createdAt?.toDate ? d.createdAt.toDate().toISOString().replace('T',' ').slice(0,19) : 'Recent',
+        status: 'Live'
+      });
+    });
+  } catch(e) {}
+
+  renderList(list.filter(item => item.type === currentTab));
+}
+
+function renderList(items) {
+  const container = document.getElementById('listContainer');
+  if (!items || items.length === 0) {
+    container.innerHTML = `
+      <div class="empty-box">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <p>No new ${currentTab} messages</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = items.map(item => `
+    <article class="notice-card">
+      <div class="notice-head">
+        <div class="notice-title-box">
+          <div class="ico-badge">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          </div>
+          <h2 class="notice-title">${item.title}</h2>
+        </div>
+        <span class="notice-tag">${item.tag}</span>
+      </div>
+      <div class="notice-body">${item.body}</div>
+      <div class="notice-footer">
+        <span>${item.time}</span>
+        <span class="status-pill">${item.status}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+window.switchTab = (tab) => {
+  currentTab = tab;
+  document.getElementById('tabNotice').classList.toggle('active', tab === 'notification');
+  document.getElementById('tabInfo').classList.toggle('active', tab === 'information');
+  loadNotifications();
+};
+
+window.clearAllNotifications = () => {
+  document.getElementById('listContainer').innerHTML = `
+    <div class="empty-box">
+      <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      <p>All notifications cleared</p>
+    </div>`;
+  toast('All notifications marked as read');
+};
+</script>
 </body>
 </html>
