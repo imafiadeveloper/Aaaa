@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#120c18">
-<title>BDG LOTTERY7 - Sic Bo</title>
+<title>BDG LOTTERY7 - Sic Bo Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -12,10 +12,11 @@
   --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
   --green: #00e676;
   --red: #ff2a4b;
+  --blue: #0088ff;
   --card-bg: #1a1424;
   --border: rgba(255,255,255,0.08);
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;user-select:none;}
 body{background:radial-gradient(circle at 50% 0%, #2b1238 0%, #0c0814 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
 button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
 ::-webkit-scrollbar{width:0;height:0;}
@@ -43,31 +44,34 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .arena-top h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#fff;margin-top:2px;}
 .timer-pill{background:#11091a;border:1.5px solid var(--gold);padding:4px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);}
 
-/* 3D Dice Cup & Dice */
+/* 3D Glass Shaker Cup & Real Pips Dice */
 .cup-box{
-  width:140px;height:100px;margin:0 auto 10px;background:linear-gradient(180deg, #381f4a, #160a20);
-  border-radius:50px 50px 10px 10px;border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 6px 20px rgba(0,0,0,0.6);position:relative;
+  width:140px;height:95px;margin:0 auto 10px;background:linear-gradient(180deg, #3d1c52, #14071f);
+  border-radius:60px 60px 14px 14px;border:3px solid var(--gold);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,0.7);position:relative;
+  transition: transform 0.2s;
 }
-.cup-box.shake{animation:shakeCup 0.12s infinite alternate;}
+.cup-box.shake{animation:shakeCup 0.1s infinite alternate;}
 @keyframes shakeCup{
-  0%{transform:rotate(-6deg) translateY(-4px);}
-  100%{transform:rotate(6deg) translateY(4px);}
+  0%{transform:rotate(-8deg) translateY(-5px);}
+  100%{transform:rotate(8deg) translateY(5px);}
 }
+
 .dice-row{display:flex;gap:12px;justify-content:center;margin:12px 0 6px;}
 .dice{
-  width:46px;height:46px;border-radius:10px;background:#fff;color:#111;
-  display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;
-  box-shadow:0 4px 12px rgba(0,0,0,0.4);border:1px solid #ccc;
+  width:48px;height:48px;border-radius:10px;background:#ffffff;color:#111;
+  display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;
+  box-shadow:0 4px 14px rgba(0,0,0,0.5);border:1px solid #d5d5d5;
 }
-.score-badge{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--gold);margin-top:4px;}
+.dice.active{transform:scale(1.05);border-color:var(--gold);}
+.score-badge{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--gold);margin-top:6px;}
 
 /* Betting Board */
 .bet-deck{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:14px;border:1px solid var(--border);}
 .big-small-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .big-small-btn{
-  height:70px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(0,0,0,0.4);transition:transform .15s;
+  height:75px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,0.4);position:relative;transition:transform .15s;
 }
 .big-small-btn:active{transform:scale(0.96);}
 .big-small-btn.small{background:linear-gradient(145deg, #1059a4, #052952);border:1.5px solid rgba(0,136,255,0.5);}
@@ -76,13 +80,22 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .big-small-btn span{font-size:11px;font-weight:800;color:var(--gold);margin-top:2px;}
 
 .odd-even-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.oe-btn{height:46px;border-radius:10px;background:#251936;border:1px solid var(--border);font-size:12px;font-weight:800;color:#ddd;}
+.oe-btn{
+  height:46px;border-radius:10px;background:#251936;border:1px solid var(--border);
+  font-size:12px;font-weight:800;color:#ddd;position:relative;
+}
 .oe-btn:active{border-color:var(--gold);}
 
 .triple-btn{
   width:100%;height:46px;border-radius:12px;background:linear-gradient(135deg, #3d1c52, #180924);
   border:1.5px solid var(--gold);color:var(--gold);font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;
   display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 12px rgba(245,196,67,0.2);
+  position:relative;
+}
+
+.bet-badge-dot{
+  position:absolute;top:5px;right:6px;background:var(--gold-grad);color:#000;
+  font-size:8px;font-weight:900;padding:2px 6px;border-radius:8px;display:none;
 }
 
 /* History Tabs */
@@ -95,6 +108,29 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .table-row{border-bottom:1px solid rgba(255,255,255,0.03);}
 .table-row:last-child{border-bottom:none;}
 .col{flex:1;text-align:center;}
+
+/* Result Popup (Win / Lose) */
+.result-popup{
+  position:fixed;inset:0;background:rgba(4,2,8,0.88);backdrop-filter:blur(6px);
+  z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;
+}
+.result-popup.show{display:flex;}
+.res-card{
+  width:100%;max-width:300px;border-radius:22px;padding:24px 18px 20px;text-align:center;
+  background:#1a1224;border:1.5px solid var(--border);box-shadow:0 20px 50px rgba(0,0,0,0.8);
+  animation:scalePop .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes scalePop{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+.res-card.win{border-color:var(--gold);box-shadow:0 0 45px rgba(245,196,67,0.35);}
+.res-card.lose{border-color:#ff334b;box-shadow:0 0 45px rgba(255,51,75,0.3);}
+.res-icon{font-size:48px;margin-bottom:6px;}
+.res-title{font-size:20px;font-weight:900;text-transform:uppercase;margin-bottom:4px;}
+.res-card.win .res-title{color:var(--gold);}
+.res-card.lose .res-title{color:#ff5252;}
+.res-amt{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;margin-bottom:16px;}
+.res-card.win .res-amt{color:var(--green);}
+.res-card.lose .res-amt{color:#ff5252;}
+.btn-res-close{width:100%;height:44px;border-radius:12px;background:var(--gold-grad);color:#211400;font-size:14px;font-weight:900;text-transform:uppercase;}
 
 /* Bet Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(8,4,12,0.85);backdrop-filter:blur(6px);z-index:999;display:none;align-items:flex-end;}
@@ -115,7 +151,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .qty-input{width:48px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Orbitron',sans-serif;font-weight:800;}
 .btn-submit-bet{width:100%;height:48px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-top:14px;box-shadow:0 6px 20px rgba(245,196,67,0.35);}
 
-.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+.toast{position:fixed;top:18%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
 </style>
 </head>
 <body>
@@ -136,6 +172,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
 </div>
 
+<!-- Dice Shaker Arena -->
 <div class="shaker-arena">
   <div class="arena-top">
     <div>
@@ -158,22 +195,32 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="score-badge" id="scoreBadge">Shake Result: Ready</div>
 </div>
 
+<!-- Betting Deck -->
 <div class="bet-deck">
   <div class="big-small-row">
-    <button class="big-small-btn small" onclick="openBetModal('Small (4-10)', 'size', 2.0)">
+    <button class="big-small-btn small" onclick="openBetModal('Small', 'size', 2.0)">
+      <div class="bet-badge-dot" id="dot-Small">0</div>
       <h2>SMALL (4-10)</h2>
       <span>2.0X Payout</span>
     </button>
-    <button class="big-small-btn big" onclick="openBetModal('Big (11-17)', 'size', 2.0)">
+    <button class="big-small-btn big" onclick="openBetModal('Big', 'size', 2.0)">
+      <div class="bet-badge-dot" id="dot-Big">0</div>
       <h2>BIG (11-17)</h2>
       <span>2.0X Payout</span>
     </button>
   </div>
   <div class="odd-even-row">
-    <button class="oe-btn" onclick="openBetModal('Odd', 'parity', 2.0)">ODD (2.0X)</button>
-    <button class="oe-btn" onclick="openBetModal('Even', 'parity', 2.0)">EVEN (2.0X)</button>
+    <button class="oe-btn" onclick="openBetModal('Odd', 'parity', 2.0)">
+      <div class="bet-badge-dot" id="dot-Odd">0</div>
+      ODD (2.0X)
+    </button>
+    <button class="oe-btn" onclick="openBetModal('Even', 'parity', 2.0)">
+      <div class="bet-badge-dot" id="dot-Even">0</div>
+      EVEN (2.0X)
+    </button>
   </div>
   <button class="triple-btn" onclick="openBetModal('Any Triple', 'triple', 30.0)">
+    <div class="bet-badge-dot" id="dot-Any Triple">0</div>
     <span>🎲 ANY TRIPLE (30X)</span>
   </button>
 </div>
@@ -189,6 +236,16 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div id="gameList"></div>
   </div>
   <div id="myView" style="display:none;"><div id="myList"></div></div>
+</div>
+
+<!-- Result Popup (Win / Lose) -->
+<div class="result-popup" id="resultPopup">
+  <div class="res-card" id="resCard">
+    <div class="res-icon" id="resIcon">🎲</div>
+    <div class="res-title" id="resTitle">Victory!</div>
+    <div class="res-amt" id="resAmt">₹0.00</div>
+    <button class="btn-res-close" onclick="closePopup()">Next Roll</button>
+  </div>
 </div>
 
 <!-- Bet Modal -->
@@ -224,7 +281,10 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, limit, getDocs, where, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore, doc, getDoc, updateDoc, increment, collection,
+  addDoc, serverTimestamp, query, limit, getDocs, where, runTransaction
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -246,11 +306,56 @@ const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
 let currentUser = null;
 let userBalance = 0;
 let currentPeriod = '';
+let currentSlot = -1;
 let selectedChoice = '', selectedType = '', payoutMultiplier = 2.0;
 let baseAmt = 10, currentQty = 1;
 let isBettingClosed = false, soundOn = true;
 
+let myActiveBets = {};
+
 const diceSymbols = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+
+// Audio Synthesizer
+let audioCtx;
+function playSound(type) {
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    if (type === 'tick') {
+      osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.03);
+    } else if (type === 'shake') {
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(260 + Math.random()*80, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.07);
+    } else if (type === 'win') {
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+    } else if (type === 'lose') {
+      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.35);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+    }
+  } catch(e){}
+}
+
+document.getElementById('soundBtn').onclick = () => {
+  soundOn = !soundOn; toast(soundOn ? 'Sound ON' : 'Sound OFF');
+};
+
+window.toast = (msg) => { 
+  const t = document.getElementById('toast'); 
+  t.textContent = msg; t.style.display = 'block'; 
+  setTimeout(() => t.style.display = 'none', 1800); 
+};
 
 function getSlot(ms = Date.now()) { return Math.floor((ms - EPOCH) / SLOT_MS); }
 function getPeriodId(slot) {
@@ -261,8 +366,6 @@ function getPeriodId(slot) {
   const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
   return `${y}${m}${day}SB${String(slotOfDay).padStart(5, '0')}`;
 }
-
-window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) return location.replace('index.html');
@@ -277,14 +380,24 @@ onAuthStateChanged(auth, async (user) => {
   loadMyHistory();
 });
 
-// 🔒 STRICT 10% WIN RATE ENGINE (90% HOUSE LOSS)
-function calculateDiceRoll(slot) {
-  let seed = (slot * 9301 + 49297) % 233280;
-  
-  // Controlled 10% player favorable rolls
-  const d1 = (seed % 6) + 1;
-  const d2 = ((seed * 2) % 6) + 1;
-  const d3 = ((seed * 3) % 6) + 1;
+// House Controlled 10% Win Rate Engine
+function calculateDiceRoll(slot, forcedOutcome = null) {
+  let d1, d2, d3;
+
+  if (forcedOutcome === 'Small') {
+    d1 = 1; d2 = 2; d3 = 4; // Sum 7 (Small, Odd)
+  } else if (forcedOutcome === 'Big') {
+    d1 = 4; d2 = 5; d3 = 5; // Sum 14 (Big, Even)
+  } else if (forcedOutcome === 'Even') {
+    d1 = 2; d2 = 4; d3 = 6; // Sum 12 (Big, Even)
+  } else if (forcedOutcome === 'Odd') {
+    d1 = 1; d2 = 3; d3 = 5; // Sum 9 (Small, Odd)
+  } else {
+    const seed = (slot * 9301 + 49297) % 233280;
+    d1 = (seed % 6) + 1;
+    d2 = ((seed * 2) % 6) + 1;
+    d3 = ((seed * 3) % 6) + 1;
+  }
 
   const sum = d1 + d2 + d3;
   const isTriple = (d1 === d2 && d2 === d3);
@@ -302,48 +415,76 @@ function startTimer() {
     const secLeft = Math.max(0, Math.ceil((SLOT_MS - (now - (EPOCH + slot * SLOT_MS))) / 1000));
 
     if (lastSlot !== -1 && slot !== lastSlot) {
-      const res = calculateDiceRoll(lastSlot);
-      document.getElementById('d1').textContent = diceSymbols[res.d1];
-      document.getElementById('d2').textContent = diceSymbols[res.d2];
-      document.getElementById('d3').textContent = diceSymbols[res.d3];
-      document.getElementById('scoreBadge').textContent = `Total: ${res.sum} (${res.size} / ${res.parity})`;
-
-      saveResult(getPeriodId(lastSlot), res);
+      resolveRoundOutcome(lastSlot);
     }
+
     lastSlot = slot;
     currentPeriod = getPeriodId(slot);
-    document.getElementById('periodText').textContent = currentPeriod;
+    document.getElementById('periodText').textContent = currentPeriod.slice(-7);
     document.getElementById('timerClock').textContent = `${secLeft}s`;
 
+    // Last 5 Seconds: Rattle cup smoothly without blocking the screen
     if (secLeft <= 5) {
       isBettingClosed = true;
       document.getElementById('cupBox').classList.add('shake');
+      playSound('shake');
+      if (secLeft > 0) playSound('tick');
     } else {
       isBettingClosed = false;
       document.getElementById('cupBox').classList.remove('shake');
-      if (secLeft > 18) {
+      if (secLeft >= 22) {
         document.getElementById('d1').textContent = '?';
         document.getElementById('d2').textContent = '?';
         document.getElementById('d3').textContent = '?';
         document.getElementById('scoreBadge').textContent = 'Shake Result: Ready';
+        document.querySelectorAll('.bet-badge-dot').forEach(el => el.style.display = 'none');
+        myActiveBets = {};
       }
     }
   }, 250);
 }
 
-async function saveResult(periodId, res) {
-  const ref = doc(db, RESULT_COLLECTION, periodId);
-  const snap = await getDoc(ref);
-  if (snap.exists()) return;
-  const data = { period: periodId, ...res, createdAt: serverTimestamp() };
+async function resolveRoundOutcome(slot) {
+  const periodId = getPeriodId(slot);
+
+  // House Controlled 10% Real Player Win Rate
+  let forcedOutcome = null;
+  const hasBets = Object.keys(myActiveBets).length > 0;
+
+  if (hasBets) {
+    const isPlayerLucky = (Math.random() < 0.10); // 10% Win Cap
+    if (!isPlayerLucky) {
+      // Force opposite side
+      if (myActiveBets['Small']) forcedOutcome = 'Big';
+      else if (myActiveBets['Big']) forcedOutcome = 'Small';
+      else if (myActiveBets['Even']) forcedOutcome = 'Odd';
+      else if (myActiveBets['Odd']) forcedOutcome = 'Even';
+      else forcedOutcome = 'Small';
+    } else {
+      const keys = Object.keys(myActiveBets);
+      forcedOutcome = keys[0];
+    }
+  }
+
+  const res = calculateDiceRoll(slot, forcedOutcome);
+
+  document.getElementById('d1').textContent = diceSymbols[res.d1];
+  document.getElementById('d2').textContent = diceSymbols[res.d2];
+  document.getElementById('d3').textContent = diceSymbols[res.d3];
+  document.getElementById('scoreBadge').textContent = `Total: ${res.sum} (${res.size} / ${res.parity})`;
+
+  // Save in Firestore
   try {
+    const ref = doc(db, RESULT_COLLECTION, periodId);
     await runTransaction(db, async (tx) => {
       const ex = await tx.get(ref);
-      if (!ex.exists()) tx.set(ref, data);
+      if (!ex.exists()) tx.set(ref, { period: periodId, ...res, createdAt: serverTimestamp() });
     });
   } catch(e){}
-  resolveBets(periodId, res);
+
+  await resolveBets(periodId, res);
   loadGameHistory();
+  loadMyHistory();
 }
 
 async function resolveBets(periodId, res) {
@@ -352,39 +493,58 @@ async function resolveBets(periodId, res) {
     const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
     const snap = await getDocs(q);
     if (snap.empty) return;
-    let winTotal = 0;
+    let winTotal = 0, lostTotal = 0, hasPending = false;
     const batch = [];
+
     snap.forEach(d => {
       const b = d.data();
       if (b.status !== 'pending') return;
+      hasPending = true;
       let won = false;
-      if (b.type === 'size' && b.choice.includes(res.size)) won = true;
+      if (b.type === 'size' && b.choice === res.size) won = true;
       else if (b.type === 'parity' && b.choice === res.parity) won = true;
       else if (b.type === 'triple' && res.isTriple) won = true;
 
       let winAmt = 0;
       if (won) {
-        const gross = b.amount * b.payoutMultiplier;
-        winAmt = gross - (gross * 0.15); // 15% owner commission
+        winAmt = b.amount * b.payoutMultiplier;
         winTotal += winAmt;
+      } else {
+        lostTotal += b.amount;
       }
       batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt, rollSum: res.sum }));
     });
+
+    if (!hasPending) return;
     await Promise.all(batch);
+
     if (winTotal > 0) {
       await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
       userBalance += winTotal;
       document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
-      toast(`Sic Bo Won! Received ₹${winTotal.toFixed(2)}`);
+      showResultPopup(true, winTotal, `${res.sum} (${res.size})`);
+    } else if (lostTotal > 0) {
+      showResultPopup(false, lostTotal, `${res.sum} (${res.size})`);
     }
-    loadMyHistory();
   } catch(e){}
 }
+
+function showResultPopup(isWin, amt, resStr) {
+  const pop = document.getElementById('resultPopup');
+  const card = document.getElementById('resCard');
+  card.className = `res-card ${isWin ? 'win' : 'lose'}`;
+  document.getElementById('resIcon').textContent = isWin ? '🎲' : '💀';
+  document.getElementById('resTitle').textContent = isWin ? `ROLL ${resStr} (WON!)` : `ROLL ${resStr} (LOST)`;
+  document.getElementById('resAmt').textContent = (isWin ? '+₹' : '-₹') + Number(amt).toFixed(2);
+  pop.classList.add('show');
+  playSound(isWin ? 'win' : 'lose');
+}
+window.closePopup = () => document.getElementById('resultPopup').classList.remove('show');
 
 window.openBetModal = (choice, type, multi) => {
   if (isBettingClosed) return toast('Dice rolling! Wait for next round');
   selectedChoice = choice; selectedType = type; payoutMultiplier = multi;
-  document.getElementById('sheetChoice').textContent = choice.toUpperCase();
+  document.getElementById('sheetChoice').textContent = `${choice.toUpperCase()} (${multi}X)`;
   document.getElementById('betModal').classList.add('show');
   updateTotalBetSpan();
 };
@@ -405,6 +565,10 @@ window.placeBet = async () => {
   const total = baseAmt * currentQty;
   if (total > userBalance) return toast('Insufficient balance');
 
+  const btn = document.getElementById('btnPlaceBet');
+  btn.disabled = true;
+  btn.textContent = 'PLACING...';
+
   try {
     await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
     userBalance -= total;
@@ -420,26 +584,39 @@ window.placeBet = async () => {
       status: 'pending',
       createdAt: serverTimestamp()
     });
+
+    myActiveBets[selectedChoice] = (myActiveBets[selectedChoice] || 0) + total;
+    const dot = document.getElementById(`dot-${selectedChoice}`);
+    if (dot) {
+      dot.textContent = `₹${myActiveBets[selectedChoice]}`;
+      dot.style.display = 'block';
+    }
+
     toast(`Bet placed on ${selectedChoice}!`);
     closeBetModal();
     loadMyHistory();
-  } catch(e){ toast('Error placing bet'); }
+  } catch(e) {
+    toast('Error placing bet');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = `CONFIRM BET ₹${baseAmt * currentQty}`;
+  }
 };
 
 async function loadGameHistory() {
   const gList = document.getElementById('gameList');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), limit(15));
+    const q = query(collection(db, RESULT_COLLECTION), limit(20));
     const snap = await getDocs(q);
     let arr = [];
     snap.forEach(d => arr.push(d.data()));
     arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
-    gList.innerHTML = arr.slice(0, 10).map(d => `
+    gList.innerHTML = arr.slice(0, 8).map(d => `
       <div class="table-row">
-        <div class="col" style="font-family:'Orbitron',sans-serif;font-size:11px;">${d.period.slice(-5)}</div>
-        <div class="col" style="font-size:14px;">${diceSymbols[d.d1]}${diceSymbols[d.d2]}${diceSymbols[d.d3]}</div>
-        <div class="col" style="color:var(--gold);font-weight:800;">${d.sum}</div>
-        <div class="col" style="font-weight:900;">${d.size}</div>
+        <div class="col" style="font-family:'Orbitron',sans-serif;font-size:10px;">${d.period.slice(-5)}</div>
+        <div class="col" style="font-size:16px;">${diceSymbols[d.d1]}${diceSymbols[d.d2]}${diceSymbols[d.d3]}</div>
+        <div class="col" style="color:var(--gold);font-weight:900;">${d.sum}</div>
+        <div class="col" style="font-weight:900;color:${d.size==='Big'?'var(--red)':'var(--blue)'};">${d.size}</div>
       </div>
     `).join('');
   } catch(e){}
@@ -448,18 +625,18 @@ async function loadGameHistory() {
 async function loadMyHistory() {
   const myView = document.getElementById('myList');
   try {
-    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(15));
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(20));
     const snap = await getDocs(q);
-    if (snap.empty) { myView.innerHTML = '<div style="text-align:center;color:#777;padding:20px;font-size:12px;">No bets found</div>'; return; }
+    if (snap.empty) { myView.innerHTML = '<div style="text-align:center;color:#777;padding:15px;font-size:11px;">No bets found</div>'; return; }
     let arr = [];
     snap.forEach(d => arr.push(d.data()));
     arr.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
-    myView.innerHTML = arr.slice(0,8).map(b => `
+    myView.innerHTML = arr.slice(0, 8).map(b => `
       <div class="table-row">
-        <div class="col" style="font-size:11px;">${b.period.slice(-5)}</div>
+        <div class="col" style="font-size:10px;">${b.period.slice(-5)}</div>
         <div class="col" style="font-weight:800;">${b.choice}</div>
         <div class="col">₹${b.amount}</div>
-        <div class="col" style="font-weight:800;color:${b.status==='win'?'#00e676':(b.status==='lose'?'#ff2a4b':'var(--gold)')};">
+        <div class="col" style="font-weight:800;color:${b.status==='win'?'var(--green)':(b.status==='lose'?'var(--red)':'var(--gold)')};">
           ${b.status==='win'?'+₹'+Number(b.winAmount).toFixed(2):(b.status==='lose'?'-₹'+b.amount:'Pending')}
         </div>
       </div>
