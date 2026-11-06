@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#120c18">
+<title>BDG LOTTERY7 - Deals Rummy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --green: #00e676;
+  --red: #ff2a4b;
+  --card-bg: #181122;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #2f123d 0%, #0d0814 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(18,12,24,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.bal-card{background:linear-gradient(145deg, #251633 0%, #150d1d 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+.rummy-table{margin:0 16px 14px;background:linear-gradient(145deg, #1d1229 0%, #100818 100%);border-radius:20px;padding:16px 12px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;}
+.table-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.table-meta span{font-size:11px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.table-meta h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#fff;margin-top:2px;}
+.deals-mode-selector{display:flex;gap:6px;}
+.mode-btn{padding:4px 10px;border-radius:12px;background:#11091a;border:1px solid rgba(255,255,255,0.1);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;color:#bbb;}
+.mode-btn.active{border-color:var(--gold);color:var(--gold);}
+
+.meter-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.meter-box{background:rgba(0,0,0,0.3);border-radius:10px;padding:8px;border:1px solid rgba(255,255,255,0.04);}
+.meter-lbl{font-size:10px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.meter-val{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;margin-top:2px;}
+
+.rack-title{font-size:11px;font-weight:800;color:#a58fae;text-transform:uppercase;margin-bottom:6px;text-align:left;}
+.cards-rack{display:flex;gap:4px;overflow-x:auto;padding-bottom:10px;margin-bottom:10px;}
+.r-card{
+  flex:0 0 auto;width:38px;height:54px;border-radius:6px;background:#fff;color:#111;
+  padding:3px;display:flex;flex-direction:column;justify-content:space-between;font-weight:900;font-size:11px;
+}
+.suit-red{color:#e53935;}
+.suit-black{color:#111;}
+
+.status-bar{background:rgba(0,0,0,0.3);border-radius:10px;padding:8px;font-size:12px;color:#ddd;font-weight:700;}
+
+.ctrl-card{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:16px;border:1px solid var(--border);}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.ctrl-lbl{font-size:12px;color:#a58fae;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:12px;font-weight:800;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+
+.btn-rummy{width:100%;height:50px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:1px;box-shadow:0 6px 20px rgba(245,196,67,0.35);margin-top:4px;}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(18,12,24,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">DEALS <span>RUMMY</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="rummy-table">
+  <div class="table-meta">
+    <div>
+      <span>Fixed Rounds Table</span>
+      <h3 id="dealTitle">2 Deals Round Match</h3>
+    </div>
+    <div class="deals-mode-selector">
+      <button class="mode-btn active" onclick="setDeals(2, this)">2 Deals</button>
+      <button class="mode-btn" onclick="setDeals(3, this)">3 Deals</button>
+    </div>
+  </div>
+
+  <div class="meter-row">
+    <div class="meter-box">
+      <div class="meter-lbl">My Total Chips</div>
+      <div class="meter-val" id="myChips" style="color:var(--gold);">160 Chips</div>
+    </div>
+    <div class="meter-box">
+      <div class="meter-lbl">Opponent Chips</div>
+      <div class="meter-val" id="oppChips" style="color:#bbb;">160 Chips</div>
+    </div>
+  </div>
+
+  <div class="rack-title">Hand Cards (13 Cards)</div>
+  <div class="cards-rack" id="handCards">
+    <div class="r-card"><div>🎴</div></div><div class="r-card"><div>🎴</div></div><div class="r-card"><div>🎴</div></div>
+  </div>
+
+  <div class="status-bar" id="gameStatus">Complete All Deals To Claim Prize Pool</div>
+</div>
+
+<div class="ctrl-card">
+  <div class="ctrl-row">
+    <span class="ctrl-lbl">Deals Entry Stake</span>
+    <div class="chips">
+      <div class="chip active" onclick="setAmt(this,20)">₹20</div>
+      <div class="chip" onclick="setAmt(this,50)">₹50</div>
+      <div class="chip" onclick="setAmt(this,100)">₹100</div>
+      <div class="chip" onclick="setAmt(this,200)">₹200</div>
+    </div>
+  </div>
+  <button class="btn-rummy" id="playBtn" onclick="playDealsHand()">PLAY DEALS SHOW</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const BET_COLLECTION = 'bets_rummy_deals';
+
+let currentUser = null;
+let userBalance = 0;
+let currentBet = 20;
+let totalDeals = 2;
+let isPlaying = false;
+let soundOn = true;
+
+const cardNames = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const suits = ['♠','♥','♣','♦'];
+
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+});
+
+window.setDeals = (deals, el) => {
+  if (isPlaying) return;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  totalDeals = deals;
+  document.getElementById('dealTitle').textContent = `${deals} Deals Round Match`;
+  const baseChips = deals * 80;
+  document.getElementById('myChips').textContent = `${baseChips} Chips`;
+  document.getElementById('oppChips').textContent = `${baseChips} Chips`;
+};
+
+window.setAmt = (el, amt) => {
+  if (isPlaying) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); currentBet = amt;
+};
+
+function generateDealsHand(willWin) {
+  if (willWin) {
+    return [
+      { v: 1, s: '♠' }, { v: 2, s: '♠' }, { v: 3, s: '♠' },
+      { v: 4, s: '♥' }, { v: 5, s: '♥' }, { v: 6, s: '♥' },
+      { v: 10, s: '♣' }, { v: 10, s: '♦' }, { v: 10, s: '♠' },
+      { v: 12, s: '♦' }, { v: 12, s: '♣' }, { v: 12, s: '♥' }, { v: 8, s: '♦' }
+    ];
+  } else {
+    return [
+      { v: 3, s: '♠' }, { v: 7, s: '♥' }, { v: 9, s: '♦' },
+      { v: 10, s: '♣' }, { v: 2, s: '♠' }, { v: 5, s: '♥' },
+      { v: 8, s: '♦' }, { v: 13, s: '♣' }, { v: 4, s: '♠' },
+      { v: 6, s: '♦' }, { v: 11, s: '♣' }, { v: 1, s: '♥' }, { v: 12, s: '♦' }
+    ];
+  }
+}
+
+function renderHand(cards) {
+  const rack = document.getElementById('handCards');
+  rack.innerHTML = cards.map(c => {
+    const isRed = c.s === '♥' || c.s === '♦';
+    return `<div class="r-card ${isRed?'suit-red':'suit-black'}"><div>${cardNames[c.v]}</div><div style="font-size:14px;text-align:center;">${c.s}</div><div style="transform:rotate(180deg);">${cardNames[c.v]}</div></div>`;
+  }).join('');
+}
+
+window.playDealsHand = async () => {
+  if (isPlaying) return;
+  if (currentBet > userBalance) return toast('Insufficient balance');
+
+  isPlaying = true;
+  document.getElementById('playBtn').disabled = true;
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-currentBet) });
+    userBalance -= currentBet;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
+    // 🔒 STRICT 10% WIN RATE (90% CHIPS LOST TO OPPONENT)
+    const willWin = (Math.random() < 0.10);
+    const hand = generateDealsHand(willWin);
+    renderHand(hand);
+
+    document.getElementById('gameStatus').textContent = `Playing Deal Rounds...`;
+
+    setTimeout(async () => {
+      let winAmt = 0;
+      if (willWin) {
+        const gross = currentBet * 2.3;
+        winAmt = gross - (gross * 0.15); // 15% owner commission
+        await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winAmt) });
+        userBalance += winAmt;
+        document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+        document.getElementById('myChips').textContent = `${totalDeals * 160} Chips (Winner)`;
+        document.getElementById('oppChips').textContent = `0 Chips`;
+        document.getElementById('gameStatus').textContent = `🎉 All Deals Won! Prize Won ₹${winAmt.toFixed(2)}`;
+        toast(`Deals Rummy Won ₹${winAmt.toFixed(2)}!`);
+      } else {
+        document.getElementById('myChips').textContent = `0 Chips (Lost)`;
+        document.getElementById('oppChips').textContent = `${totalDeals * 160} Chips (Winner)`;
+        document.getElementById('gameStatus').textContent = `Opponent Took All Chips! You Lost.`;
+        toast(`Deals Match Lost! -₹${currentBet}`);
+      }
+
+      await addDoc(collection(db, BET_COLLECTION), {
+        userId: currentUser.uid, amount: currentBet, deals: totalDeals, winAmount: winAmt, status: willWin ? 'win' : 'lose', createdAt: serverTimestamp()
+      });
+
+      isPlaying = false;
+      document.getElementById('playBtn').disabled = false;
+    }, 1200);
+
+  } catch(e) {
+    isPlaying = false;
+    document.getElementById('playBtn').disabled = false;
+  }
+};
+</script>
+</body>
+</html>

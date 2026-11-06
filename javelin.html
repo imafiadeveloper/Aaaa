@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d1117">
+<title>BDG LOTTERY7 - Javelin 80</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --green: #00e676;
+  --card-bg: #141c18;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #152d1f 0%, #08110b 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(10,20,14,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.bal-card{background:linear-gradient(145deg, #1b3321 0%, #0e1c12 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:11px;color:#88ab92;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+.stadium-arena{margin:0 16px 14px;background:linear-gradient(145deg, #132418 0%, #0a140d 100%);border-radius:20px;padding:26px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;position:relative;overflow:hidden;}
+.throw-field{height:120px;position:relative;display:flex;align-items:center;}
+.athlete{font-size:42px;position:absolute;left:10px;bottom:10px;}
+.javelin-spear{
+  font-size:32px;position:absolute;left:45px;bottom:25px;
+  transform:rotate(35deg);transition:all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.javelin-spear.flying{
+  left:220px;bottom:85px;transform:rotate(55deg);
+}
+
+.dist-meter{font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;color:var(--gold);margin-top:10px;}
+.dist-sub{font-size:12px;color:#88ab92;font-weight:700;}
+
+.ctrl-card{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:16px;border:1px solid var(--border);}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.ctrl-lbl{font-size:12px;color:#88ab92;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:12px;font-weight:800;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+
+.btn-throw{width:100%;height:50px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:1px;box-shadow:0 6px 20px rgba(245,196,67,0.35);margin-top:4px;}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(10,20,13,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">JAVELIN <span>80M</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="stadium-arena">
+  <div class="throw-field">
+    <div class="athlete">🏃‍♂️</div>
+    <div class="javelin-spear" id="spear">🗡️</div>
+  </div>
+  <div class="dist-meter" id="distVal">0.00m</div>
+  <div class="dist-sub" id="distSub">Target: 80.00m (Gold Medal 5X)</div>
+</div>
+
+<div class="ctrl-card">
+  <div class="ctrl-row">
+    <span class="ctrl-lbl">Throw Bet</span>
+    <div class="chips">
+      <div class="chip active" onclick="setAmt(this,10)">₹10</div>
+      <div class="chip" onclick="setAmt(this,50)">₹50</div>
+      <div class="chip" onclick="setAmt(this,100)">₹100</div>
+      <div class="chip" onclick="setAmt(this,500)">₹500</div>
+    </div>
+  </div>
+  <button class="btn-throw" id="throwBtn" onclick="throwJavelin()">THROW JAVELIN</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const BET_COLLECTION = 'bets_slots';
+
+let currentUser = null;
+let userBalance = 0;
+let currentBet = 10;
+let isThrowing = false;
+
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+});
+
+window.setAmt = (el, amt) => {
+  if (isThrowing) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); currentBet = amt;
+};
+
+window.throwJavelin = async () => {
+  if (isThrowing) return;
+  if (currentBet > userBalance) return toast('Insufficient balance');
+
+  isThrowing = true;
+  document.getElementById('throwBtn').disabled = true;
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-currentBet) });
+    userBalance -= currentBet;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
+    const spear = document.getElementById('spear');
+    spear.className = 'javelin-spear flying';
+
+    // 🔒 STRICT 10% WIN RATE CONTROLLER (90% FAILS/SHORT DISTANCE)
+    const won = (Math.random() < 0.10);
+    const distance = won ? (80 + Math.random() * 8).toFixed(2) : (45 + Math.random() * 32).toFixed(2);
+
+    setTimeout(async () => {
+      document.getElementById('distVal').textContent = `${distance}m`;
+      let winAmt = 0;
+
+      if (won) {
+        const gross = currentBet * 5.0; // 5X Payout
+        winAmt = gross - (gross * 0.15); // 15% owner commission
+        await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winAmt) });
+        userBalance += winAmt;
+        document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+        document.getElementById('distSub').textContent = `🏆 GOLD MEDAL! Distance: ${distance}m (5X)`;
+        toast(`Javelin Won ₹${winAmt.toFixed(2)}!`);
+      } else {
+        document.getElementById('distSub').textContent = `Short Throw (${distance}m) — Target Not Reached!`;
+        toast(`Foul/Short! -₹${currentBet}`);
+      }
+
+      await addDoc(collection(db, BET_COLLECTION), {
+        userId: currentUser.uid, game: 'javelin_80', amount: currentBet, distance: distance, winAmount: winAmt, status: won ? 'win' : 'lose', createdAt: serverTimestamp()
+      });
+
+      setTimeout(() => {
+        spear.className = 'javelin-spear';
+        isThrowing = false;
+        document.getElementById('throwBtn').disabled = false;
+      }, 800);
+
+    }, 550);
+
+  } catch(e) {
+    isThrowing = false;
+    document.getElementById('throwBtn').disabled = false;
+  }
+};
+</script>
+</body>
+</html>

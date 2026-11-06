@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0e1712">
+<title>BDG LOTTERY7 - Blackjack 21</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --green: #00e676;
+  --red: #ff2a4b;
+  --card-bg: #142419;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #153822 0%, #08140c 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(10,20,13,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.bal-card{background:linear-gradient(145deg, #1b3321 0%, #0e1c12 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:11px;color:#88ab92;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+/* Table Arena */
+.bj-table{margin:0 16px 14px;background:linear-gradient(145deg, #132418 0%, #0a140d 100%);border-radius:20px;padding:16px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;}
+.hand-wrap{margin-bottom:14px;background:rgba(0,0,0,0.25);border-radius:14px;padding:12px;border:1px solid rgba(255,255,255,0.04);}
+.hand-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.hand-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;}
+.hand-title.dealer{color:var(--red);}
+.hand-title.player{color:var(--green);}
+.hand-score{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:800;color:var(--gold);}
+
+.cards-deck{display:flex;gap:6px;justify-content:center;min-height:68px;}
+.bj-card{width:46px;height:66px;border-radius:8px;background:#fff;color:#111;padding:4px;display:flex;flex-direction:column;justify-content:space-between;font-weight:900;font-size:12px;box-shadow:0 4px 10px rgba(0,0,0,0.5);}
+.bj-card.flipped{background:linear-gradient(135deg, #1f3d26, #0c1c11);border:1px solid var(--gold);}
+.bj-card.flipped *{display:none;}
+.bj-card.flipped::after{content:'♠️';font-size:22px;margin:auto;}
+.suit-red{color:#e53935;}
+.suit-black{color:#111;}
+
+/* Controls */
+.ctrl-card{margin:0 16px 16px;background:var(--card-bg);border-radius:18px;padding:16px;border:1px solid var(--border);}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.ctrl-lbl{font-size:12px;color:#88ab92;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:12px;font-weight:800;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+
+.action-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.act-btn{height:48px;border-radius:12px;font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:1px;}
+.act-btn.hit{background:linear-gradient(135deg, #0088ff, #005199);color:#fff;}
+.act-btn.stand{background:linear-gradient(135deg, #ff2a4b, #990017);color:#fff;}
+.act-btn.deal{grid-column:span 2;background:var(--gold-grad);color:#211400;}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(10,20,13,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">BLACKJACK <span>21</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="bj-table">
+  <!-- Dealer -->
+  <div class="hand-wrap">
+    <div class="hand-header">
+      <span class="hand-title dealer">Dealer Hand</span>
+      <span class="hand-score" id="dealerScore">Score: ?</span>
+    </div>
+    <div class="cards-deck" id="dealerCards">
+      <div class="bj-card flipped"></div><div class="bj-card flipped"></div>
+    </div>
+  </div>
+
+  <!-- Player -->
+  <div class="hand-wrap">
+    <div class="hand-header">
+      <span class="hand-title player">Player Hand</span>
+      <span class="hand-score" id="playerScore">Score: 0</span>
+    </div>
+    <div class="cards-deck" id="playerCards">
+      <div class="bj-card flipped"></div><div class="bj-card flipped"></div>
+    </div>
+  </div>
+</div>
+
+<div class="ctrl-card">
+  <div class="ctrl-row">
+    <span class="ctrl-lbl">Round Bet</span>
+    <div class="chips">
+      <div class="chip active" onclick="setAmt(this,10)">₹10</div>
+      <div class="chip" onclick="setAmt(this,50)">₹50</div>
+      <div class="chip" onclick="setAmt(this,100)">₹100</div>
+      <div class="chip" onclick="setAmt(this,500)">₹500</div>
+    </div>
+  </div>
+
+  <div class="action-btns" id="actionBtns">
+    <button class="act-btn deal" id="dealBtn" onclick="startDeal()">DEAL (₹<span id="betAmtSpan">10</span>)</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const BET_COLLECTION = 'bets_blackjack';
+
+let currentUser = null;
+let userBalance = 0;
+let currentBet = 10;
+let isPlaying = false;
+let soundOn = true;
+
+let playerCards = [];
+let dealerCards = [];
+const cardNames = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const suits = ['♠','♥','♣','♦'];
+
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+});
+
+window.setAmt = (el, amt) => {
+  if (isPlaying) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); currentBet = amt;
+  document.getElementById('betAmtSpan').textContent = amt;
+};
+
+function getCardScore(cards) {
+  let sum = 0;
+  let aces = 0;
+  cards.forEach(c => {
+    if (c.v === 1) { aces++; sum += 11; }
+    else if (c.v >= 10) sum += 10;
+    else sum += c.v;
+  });
+  while (sum > 21 && aces > 0) {
+    sum -= 10;
+    aces--;
+  }
+  return sum;
+}
+
+function renderHand(elemId, cards, hideSecond = false) {
+  const el = document.getElementById(elemId);
+  el.innerHTML = cards.map((c, i) => {
+    if (hideSecond && i === 1) return '<div class="bj-card flipped"></div>';
+    const isRed = c.s === '♥' || c.s === '♦';
+    return `<div class="bj-card ${isRed?'suit-red':'suit-black'}"><div>${cardNames[c.v]}</div><div style="font-size:18px;text-align:center;">${c.s}</div><div style="transform:rotate(180deg);">${cardNames[c.v]}</div></div>`;
+  }).join('');
+}
+
+window.startDeal = async () => {
+  if (isPlaying) return;
+  if (currentBet > userBalance) return toast('Insufficient balance');
+
+  isPlaying = true;
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-currentBet) });
+    userBalance -= currentBet;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
+    // 🔒 STRICT 10% WIN RATE CONTROLLER (90% HOUSE WINS)
+    const rand = Math.random();
+    const willWin = (rand < 0.10); // 1 in 10 rounds
+
+    if (willWin) {
+      playerCards = [{ v: 10, s: '♠' }, { v: 1, s: '♥' }]; // Blackjack 21
+      dealerCards = [{ v: 10, s: '♦' }, { v: 8, s: '♣' }]; // 18 pts
+    } else {
+      playerCards = [{ v: 8, s: '♠' }, { v: 7, s: '♥' }]; // 15 pts (Tough spot)
+      dealerCards = [{ v: 10, s: '♦' }, { v: 10, s: '♣' }]; // 20 pts
+    }
+
+    renderHand('playerCards', playerCards);
+    renderHand('dealerCards', dealerCards, true);
+
+    document.getElementById('playerScore').textContent = `Score: ${getCardScore(playerCards)}`;
+    document.getElementById('dealerScore').textContent = `Score: ?`;
+
+    document.getElementById('actionBtns').innerHTML = `
+      <button class="act-btn hit" onclick="hitCard()">HIT</button>
+      <button class="act-btn stand" onclick="standRound()">STAND</button>
+    `;
+
+    if (willWin) {
+      setTimeout(() => standRound(), 600);
+    }
+  } catch(e){ isPlaying = false; }
+};
+
+window.hitCard = () => {
+  playerCards.push({ v: 10, s: '♣' }); // Bust card to protect 90% house edge
+  renderHand('playerCards', playerCards);
+  const pScore = getCardScore(playerCards);
+  document.getElementById('playerScore').textContent = `Score: ${pScore}`;
+
+  if (pScore > 21) {
+    endRound(false, 'Bust! Over 21');
+  }
+};
+
+window.standRound = () => {
+  renderHand('dealerCards', dealerCards, false);
+  const dScore = getCardScore(dealerCards);
+  const pScore = getCardScore(playerCards);
+  document.getElementById('dealerScore').textContent = `Score: ${dScore}`;
+
+  if (pScore > dScore && pScore <= 21) {
+    endRound(true, 'Blackjack Victory!');
+  } else {
+    endRound(false, 'Dealer Wins!');
+  }
+};
+
+async function endRound(won, msg) {
+  let winAmt = 0;
+  if (won) {
+    const gross = currentBet * 2;
+    winAmt = gross - (gross * 0.15); // 15% owner commission
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winAmt) });
+    userBalance += winAmt;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+    toast(`🎉 ${msg} Won ₹${winAmt.toFixed(2)}`);
+  } else {
+    toast(`🔴 ${msg}`);
+  }
+
+  await addDoc(collection(db, BET_COLLECTION), {
+    userId: currentUser.uid, amount: currentBet, winAmount: winAmt, status: won ? 'win' : 'lose', createdAt: serverTimestamp()
+  });
+
+  isPlaying = false;
+  document.getElementById('actionBtns').innerHTML = `
+    <button class="act-btn deal" id="dealBtn" onclick="startDeal()">DEAL (₹<span id="betAmtSpan">${currentBet}</span>)</button>
+  `;
+}
+</script>
+</body>
+</html>

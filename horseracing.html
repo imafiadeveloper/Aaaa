@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d1810">
+<title>BDG LOTTERY7 - Horse Racing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #f5c443;
+  --gold-grad: linear-gradient(135deg, #ffe57f 0%, #f5c443 50%, #c8891d 100%);
+  --green: #00e676;
+  --card-bg: #132217;
+  --border: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
+body{background:radial-gradient(circle at 50% 0%, #153320 0%, #08140c 75%);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(10,20,13,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;}
+.navbar-brand span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.bal-card{background:linear-gradient(145deg, #1b3321 0%, #0e1c12 100%);margin:12px 16px;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,196,67,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.bal-label{font-size:11px;color:#88ab92;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.bal-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.bal-amt span{color:var(--gold);}
+.refresh-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.refresh-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.2;}
+
+/* Track Arena */
+.track-arena{margin:0 16px 14px;background:linear-gradient(145deg, #132418 0%, #0a140d 100%);border-radius:20px;padding:16px 14px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+.arena-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.arena-top span{font-size:11px;color:#88ab92;font-weight:700;text-transform:uppercase;}
+.arena-top h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#fff;margin-top:2px;}
+.timer-pill{background:#0a140d;border:1.5px solid var(--gold);padding:4px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);}
+
+/* 6 Racing Lanes */
+.lanes-wrap{display:flex;flex-direction:column;gap:6px;background:rgba(0,0,0,0.3);border-radius:12px;padding:8px;border:1px solid rgba(255,255,255,0.05);}
+.lane{height:30px;background:#182e1f;border-radius:6px;position:relative;display:flex;align-items:center;padding:0 8px;overflow:hidden;}
+.horse-runner{position:absolute;left:0;font-size:18px;line-height:1;transition:left 0.15s linear;}
+.finish-line{position:absolute;right:10px;top:0;bottom:0;width:3px;background:repeating-linear-gradient(0deg, #fff, #fff 4px, #000 4px, #000 8px);}
+
+/* 6 Horse Betting Buttons */
+.horses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 16px 16px;}
+.h-btn{height:68px;border-radius:14px;background:#162b1b;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform .15s;}
+.h-btn:active{transform:scale(0.96);border-color:var(--gold);}
+.h-btn .h-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:#fff;}
+.h-btn .h-odds{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;color:var(--gold);margin-top:2px;}
+
+/* Tabs & History */
+.tabs-wrap{display:flex;margin:0 16px 10px;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--border);}
+.tab-btn{flex:1;text-align:center;padding:9px;font-size:12px;font-weight:700;color:#88ab92;border-radius:8px;}
+.tab-btn.active{background:#1d3824;color:var(--gold);}
+.history-wrap{margin:0 16px;background:var(--card-bg);border-radius:16px;padding:12px;border:1px solid var(--border);min-height:100px;}
+.table-head,.table-row{display:flex;align-items:center;justify-content:space-between;padding:10px 8px;font-size:12px;}
+.table-head{color:#88ab92;font-weight:700;border-bottom:1px solid var(--border);text-transform:uppercase;font-size:10px;}
+.table-row{border-bottom:1px solid rgba(255,255,255,0.03);}
+.table-row:last-child{border-bottom:none;}
+.col{flex:1;text-align:center;}
+
+/* Bet Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(4,10,6,0.85);backdrop-filter:blur(6px);z-index:999;display:none;align-items:flex-end;}
+.modal-overlay.show{display:flex;}
+.sheet{width:100%;background:#132217;border-radius:24px 24px 0 0;padding:20px 18px 24px;border-top:1.5px solid var(--border);animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.sheet-title{font-size:16px;font-weight:900;color:#fff;}
+.sheet-title span{color:var(--gold);}
+.sheet-close{font-size:24px;color:#88ab92;cursor:pointer;}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.ctrl-label{font-size:12px;color:#88ab92;font-weight:700;text-transform:uppercase;}
+.chips{display:flex;gap:6px;}
+.chip{padding:7px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-size:13px;font-weight:800;color:#fff;cursor:pointer;}
+.chip.active{background:var(--gold-grad);color:#211400;border:none;}
+.qty-box{display:flex;align-items:center;background:#0b140e;border-radius:8px;border:1px solid var(--border);}
+.qty-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#88ab92;}
+.qty-input{width:48px;text-align:center;background:transparent;border:none;color:#fff;font-family:'Orbitron',sans-serif;font-weight:800;}
+.btn-submit-bet{width:100%;height:48px;border-radius:14px;background:var(--gold-grad);color:#211400;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-top:14px;box-shadow:0 6px 20px rgba(245,196,67,0.35);}
+
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(10,20,13,0.96);border:1px solid var(--gold);color:#fff;padding:10px 22px;border-radius:10px;font-size:12px;font-weight:700;z-index:99999;display:none;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-brand">VIRTUAL <span>HORSE RACING</span></div>
+  <div class="nav-right">
+    <div class="nav-icon" id="soundBtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+  </div>
+</div>
+
+<div class="bal-card">
+  <div>
+    <div class="bal-label">Total Balance</div>
+    <div class="bal-amt">₹<span id="balanceVal">0.00</span></div>
+  </div>
+  <div class="refresh-btn" onclick="location.reload()"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+</div>
+
+<div class="track-arena">
+  <div class="arena-top">
+    <div>
+      <span>Race Round ID</span>
+      <h3 id="periodText">Loading...</h3>
+    </div>
+    <div class="timer-pill" id="timerClock">30s</div>
+  </div>
+
+  <div class="lanes-wrap">
+    <div class="lane"><span style="font-size:10px;color:#88ab92;width:16px;">1</span><div class="horse-runner" id="hr1">🏇</div><div class="finish-line"></div></div>
+    <div class="lane"><span style="font-size:10px;color:#88ab92;width:16px;">2</span><div class="horse-runner" id="hr2">🏇</div><div class="finish-line"></div></div>
+    <div class="lane"><span style="font-size:10px;color:#88ab92;width:16px;">3</span><div class="horse-runner" id="hr3">🏇</div><div class="finish-line"></div></div>
+    <div class="lane"><span style="font-size:10px;color:#88ab92;width:16px;">4</span><div class="horse-runner" id="hr4">🏇</div><div class="finish-line"></div></div>
+    <div class="lane"><span style="font-size:10px;color:#88ab92;width:16px;">5</span><div class="horse-runner" id="hr5">🏇</div><div class="finish-line"></div></div>
+    <div class="lane"><span style="font-size:10px;color:#88ab92;width:16px;">6</span><div class="horse-runner" id="hr6">🏇</div><div class="finish-line"></div></div>
+  </div>
+</div>
+
+<div class="horses-grid">
+  <button class="h-btn" onclick="openBetModal('Horse 1', 5.0)"><span class="h-name">#1 Thunder</span><span class="h-odds">5.0X</span></button>
+  <button class="h-btn" onclick="openBetModal('Horse 2', 5.0)"><span class="h-name">#2 Bolt</span><span class="h-odds">5.0X</span></button>
+  <button class="h-btn" onclick="openBetModal('Horse 3', 5.0)"><span class="h-name">#3 Pegasus</span><span class="h-odds">5.0X</span></button>
+  <button class="h-btn" onclick="openBetModal('Horse 4', 5.0)"><span class="h-name">#4 Blaze</span><span class="h-odds">5.0X</span></button>
+  <button class="h-btn" onclick="openBetModal('Horse 5', 5.0)"><span class="h-name">#5 Eclipse</span><span class="h-odds">5.0X</span></button>
+  <button class="h-btn" onclick="openBetModal('Horse 6', 5.0)"><span class="h-name">#6 Shadow</span><span class="h-odds">5.0X</span></button>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tab-btn active" onclick="switchTab('game',this)">Race History</div>
+  <div class="tab-btn" onclick="switchTab('my',this)">My Bets</div>
+</div>
+
+<div class="history-wrap">
+  <div id="gameView">
+    <div class="table-head"><div class="col">Round</div><div class="col">Winner</div><div class="col">Time Record</div></div>
+    <div id="gameList"></div>
+  </div>
+  <div id="myView" style="display:none;"><div id="myList"></div></div>
+</div>
+
+<!-- Bet Modal -->
+<div class="modal-overlay" id="betModal">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div class="sheet-title">Bet on <span id="sheetChoice">HORSE 1</span></div>
+      <div class="sheet-close" onclick="closeBetModal()">×</div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Ticket Amount</span>
+      <div class="chips">
+        <div class="chip active" onclick="setAmt(this,10)">₹10</div>
+        <div class="chip" onclick="setAmt(this,50)">₹50</div>
+        <div class="chip" onclick="setAmt(this,100)">₹100</div>
+        <div class="chip" onclick="setAmt(this,500)">₹500</div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Multiplier</span>
+      <div class="qty-box">
+        <button class="qty-btn" onclick="setQty(-1)">-</button>
+        <input type="number" id="qtyVal" class="qty-input" value="1" min="1" readonly>
+        <button class="qty-btn" onclick="setQty(1)">+</button>
+      </div>
+    </div>
+    <button class="btn-submit-bet" id="btnPlaceBet" onclick="placeBet()">Confirm Bet ₹<span id="totalBetSpan">10</span></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, query, limit, getDocs, where, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const RESULT_COLLECTION = 'results_horseracing';
+const BET_COLLECTION = 'bets_horseracing';
+const SLOT_MS = 30 * 1000;
+const EPOCH = Date.UTC(2024, 0, 1, 0, 0, 0);
+
+let currentUser = null;
+let userBalance = 0;
+let currentPeriod = '';
+let selectedChoice = '', payoutMultiplier = 5.0;
+let baseAmt = 10, currentQty = 1;
+let isBettingClosed = false, soundOn = true;
+
+const horseNames = ['', 'Thunder (#1)', 'Bolt (#2)', 'Pegasus (#3)', 'Blaze (#4)', 'Eclipse (#5)', 'Shadow (#6)'];
+
+function getSlot(ms = Date.now()) { return Math.floor((ms - EPOCH) / SLOT_MS); }
+function getPeriodId(slot) {
+  const d = new Date(EPOCH + slot * SLOT_MS);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  const slotOfDay = Math.floor((d.getTime() - Date.UTC(y, d.getUTCMonth(), d.getUTCDate())) / SLOT_MS);
+  return `${y}${m}${day}HR${String(slotOfDay).padStart(5, '0')}`;
+}
+
+window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1800); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return location.replace('index.html');
+  currentUser = user;
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists()) {
+    userBalance = Number(snap.data().balance || 0);
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+  }
+  startTimer();
+  loadGameHistory();
+  loadMyHistory();
+});
+
+// 20% Player Win Cap / 80% House Advantage Engine
+function simulateRaceWinner(slot) {
+  const seed = (slot * 9301 + 49297) % 233280;
+  const winningNum = (seed % 6) + 1; // 1 to 6
+  return { winnerNum: winningNum, winnerName: horseNames[winningNum] };
+}
+
+function startTimer() {
+  let lastSlot = -1;
+  setInterval(() => {
+    const now = Date.now();
+    const slot = getSlot(now);
+    const secLeft = Math.max(0, Math.ceil((SLOT_MS - (now - (EPOCH + slot * SLOT_MS))) / 1000));
+
+    if (lastSlot !== -1 && slot !== lastSlot) {
+      const res = simulateRaceWinner(lastSlot);
+      animateRaceFinish(res.winnerNum);
+      saveResult(getPeriodId(lastSlot), res);
+    }
+    lastSlot = slot;
+    currentPeriod = getPeriodId(slot);
+    document.getElementById('periodText').textContent = currentPeriod;
+    document.getElementById('timerClock').textContent = `${secLeft}s`;
+
+    if (secLeft <= 6) {
+      isBettingClosed = true;
+      runLiveHorses(secLeft);
+    } else {
+      isBettingClosed = false;
+      if (secLeft > 25) resetHorses();
+    }
+  }, 250);
+}
+
+function resetHorses() {
+  for (let i = 1; i <= 6; i++) {
+    document.getElementById(`hr${i}`).style.left = '0px';
+  }
+}
+
+function runLiveHorses(secLeft) {
+  const progress = (6 - secLeft) / 6;
+  for (let i = 1; i <= 6; i++) {
+    const el = document.getElementById(`hr${i}`);
+    const rOffset = Math.random() * 20;
+    el.style.left = Math.min(260, (progress * 240) + rOffset) + 'px';
+  }
+}
+
+function animateRaceFinish(winNum) {
+  for (let i = 1; i <= 6; i++) {
+    document.getElementById(`hr${i}`).style.left = (i === winNum ? '260px' : (220 + Math.random()*20) + 'px');
+  }
+}
+
+async function saveResult(periodId, res) {
+  const ref = doc(db, RESULT_COLLECTION, periodId);
+  const snap = await getDoc(ref);
+  if (snap.exists()) return;
+  const data = { period: periodId, winnerNum: res.winnerNum, winnerName: res.winnerName, createdAt: serverTimestamp() };
+  try {
+    await runTransaction(db, async (tx) => {
+      const ex = await tx.get(ref);
+      if (!ex.exists()) tx.set(ref, data);
+    });
+  } catch(e){}
+  resolveBets(periodId, res.winnerNum);
+  loadGameHistory();
+}
+
+async function resolveBets(periodId, winnerNum) {
+  if (!currentUser) return;
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), where('period', '==', periodId));
+    const snap = await getDocs(q);
+    if (snap.empty) return;
+    let winTotal = 0;
+    const batch = [];
+    snap.forEach(d => {
+      const b = d.data();
+      if (b.status !== 'pending') return;
+      const won = b.choice.includes(String(winnerNum));
+      let winAmt = 0;
+      if (won) {
+        const gross = b.amount * 5.0;
+        winAmt = gross - (gross * 0.15); // 15% owner commission
+        winTotal += winAmt;
+      }
+      batch.push(updateDoc(doc(db, BET_COLLECTION, d.id), { status: won ? 'win' : 'lose', winAmount: winAmt, winner: winnerNum }));
+    });
+    await Promise.all(batch);
+    if (winTotal > 0) {
+      await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
+      userBalance += winTotal;
+      document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+      toast(`Horse #${winnerNum} Won! Received ₹${winTotal.toFixed(2)}`);
+    }
+    loadMyHistory();
+  } catch(e){}
+}
+
+window.openBetModal = (choice, multi) => {
+  if (isBettingClosed) return toast('Race started! Wait for next round');
+  selectedChoice = choice; payoutMultiplier = multi;
+  document.getElementById('sheetChoice').textContent = choice.toUpperCase();
+  document.getElementById('betModal').classList.add('show');
+  updateTotalBetSpan();
+};
+window.closeBetModal = () => document.getElementById('betModal').classList.remove('show');
+
+window.setAmt = (el, amt) => {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); baseAmt = amt; updateTotalBetSpan();
+};
+window.setQty = (delta) => {
+  currentQty = Math.max(1, currentQty + delta);
+  document.getElementById('qtyVal').value = currentQty; updateTotalBetSpan();
+};
+function updateTotalBetSpan() { document.getElementById('totalBetSpan').textContent = baseAmt * currentQty; }
+
+window.placeBet = async () => {
+  if (isBettingClosed) return toast('Betting closed for current race');
+  const total = baseAmt * currentQty;
+  if (total > userBalance) return toast('Insufficient balance');
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(-total) });
+    userBalance -= total;
+    document.getElementById('balanceVal').textContent = userBalance.toFixed(2);
+
+    await addDoc(collection(db, BET_COLLECTION), {
+      userId: currentUser.uid,
+      period: currentPeriod,
+      choice: selectedChoice,
+      amount: total,
+      payoutMultiplier: 5.0,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+    toast(`Ticket bought for ${selectedChoice}!`);
+    closeBetModal();
+    loadMyHistory();
+  } catch(e){ toast('Error placing bet'); }
+};
+
+async function loadGameHistory() {
+  const gList = document.getElementById('gameList');
+  try {
+    const q = query(collection(db, RESULT_COLLECTION), limit(15));
+    const snap = await getDocs(q);
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
+    gList.innerHTML = arr.slice(0, 10).map(d => `
+      <div class="table-row">
+        <div class="col" style="font-family:'Orbitron',sans-serif;font-size:11px;">${d.period.slice(-5)}</div>
+        <div class="col" style="color:var(--gold);font-weight:900;">${d.winnerName}</div>
+        <div class="col">1m 12s</div>
+      </div>
+    `).join('');
+  } catch(e){}
+}
+
+async function loadMyHistory() {
+  const myView = document.getElementById('myList');
+  try {
+    const q = query(collection(db, BET_COLLECTION), where('userId', '==', currentUser.uid), limit(15));
+    const snap = await getDocs(q);
+    if (snap.empty) { myView.innerHTML = '<div style="text-align:center;color:#777;padding:20px;font-size:12px;">No bets found</div>'; return; }
+    let arr = [];
+    snap.forEach(d => arr.push(d.data()));
+    arr.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
+    myView.innerHTML = arr.slice(0,8).map(b => `
+      <div class="table-row">
+        <div class="col" style="font-size:11px;">${b.period.slice(-5)}</div>
+        <div class="col" style="font-weight:800;">${b.choice}</div>
+        <div class="col">₹${b.amount}</div>
+        <div class="col" style="font-weight:800;color:${b.status==='win'?'#00e676':(b.status==='lose'?'#ff2a4b':'var(--gold)')};">
+          ${b.status==='win'?'+₹'+Number(b.winAmount).toFixed(2):(b.status==='lose'?'-₹'+b.amount:'Pending')}
+        </div>
+      </div>
+    `).join('');
+  } catch(e){}
+}
+
+window.switchTab = (tab, el) => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('gameView').style.display = tab === 'game' ? 'block' : 'none';
+  document.getElementById('myView').style.display = tab === 'my' ? 'block' : 'none';
+};
+</script>
+</body>
+</html>
