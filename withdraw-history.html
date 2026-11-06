@@ -7,49 +7,76 @@
 <title>Withdrawal History - BDG LOTTERY7</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
+:root{
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#141416;color:#fff;min-height:100vh;padding-bottom:30px;}
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);border-bottom:1px solid rgba(255,255,255,0.06);}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 16px;background:rgba(20,20,22,0.95);border-bottom:1px solid var(--border);}
 .nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
 .nav-title{font-size:16px;font-weight:700;}
+.nav-right{width:36px;height:36px;display:flex;align-items:center;justify-content:flex-end;cursor:pointer;}
+.nav-right svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:2.2;}
 
-.tabs-wrap{display:flex;overflow-x:auto;padding:12px 16px;gap:8px;white-space:nowrap;}
-.tabs-wrap::-webkit-scrollbar{display:none;}
-.tab-item{background:#202024;color:#8f929b;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;}
-.tab-item.active{background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;}
+/* Tabs */
+.tabs-wrap{display:flex;overflow-x:auto;padding:12px 16px;gap:8px;white-space:nowrap;scrollbar-width:none;}
+.tab-item{background:#202024;color:#8f929b;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);transition:all .2s;}
+.tab-item.active{background:var(--gold-grad);color:#291a03;border-color:transparent;}
 
-.tx-list{padding:0 16px;}
-.tx-card{background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px;margin-bottom:10px;}
-.tx-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.tx-row:last-child{margin-bottom:0;}
-.tx-label{font-size:12px;color:#8f929b;}
-.tx-val{font-size:13px;font-weight:600;}
-.tx-amt{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:800;color:#ff4d4f;}
-.tx-status{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;}
-.st-pending{background:rgba(250,171,0,0.15);color:#ffab00;}
-.st-success{background:rgba(0,230,118,0.15);color:#00e676;}
-.st-failed{background:rgba(255,77,79,0.15);color:#ff4d4f;}
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 0;color:#6b6e78;}
-.empty-state svg{width:60px;height:60px;margin-bottom:12px;stroke:#3e3e44;fill:none;stroke-width:1.5;}
-.loader{text-align:center;padding:30px;font-size:13px;color:#8f929b;}
+/* Cards */
+.tx-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
+.tx-card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+.tx-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;}
+.tx-label{color:#8f929b;}
+.tx-val{font-weight:700;color:#fff;}
+.tx-amt{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#ff4d4f;}
+
+.copy-badge{display:inline-flex;align-items:center;gap:4px;cursor:pointer;}
+.copy-badge svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+.tx-status{padding:3px 10px;border-radius:12px;font-size:10px;font-weight:800;text-transform:uppercase;}
+.st-pending{background:rgba(250,171,0,0.15);color:#ffab00;border:1px solid rgba(250,171,0,0.3);}
+.st-success{background:rgba(0,230,118,0.15);color:#00e676;border:1px solid rgba(0,230,118,0.3);}
+.st-failed{background:rgba(255,77,79,0.15);color:#ff4d4f;border:1px solid rgba(255,77,79,0.3);}
+
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 0;color:#6b6e78;}
+.empty-state svg{width:64px;height:64px;margin-bottom:12px;stroke:#444;fill:none;stroke-width:1.5;}
+.loader{text-align:center;padding:40px;font-size:13px;color:#8f929b;font-weight:600;}
+
+.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(20,20,22,0.96);border:1px solid rgba(250,229,159,0.3);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
-<div class="navbar">
-  <div class="nav-left" onclick="location.href='wallet.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+
+<header class="navbar">
+  <div class="nav-left" onclick="location.href='withdraw.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="nav-title">Withdrawal History</div>
-  <div style="width:36px;"></div>
-</div>
+  <div class="nav-right" onclick="refreshList()">
+    <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+  </div>
+</header>
 
 <div class="tabs-wrap">
-  <div class="tab-item active">All Withdrawals</div>
-  <div class="tab-item">UPI Payout</div>
+  <div class="tab-item active" onclick="filterStatus('all', this)">All Withdrawals</div>
+  <div class="tab-item" onclick="filterStatus('pending', this)">Pending Review</div>
+  <div class="tab-item" onclick="filterStatus('success', this)">Transferred</div>
+  <div class="tab-item" onclick="filterStatus('failed', this)">Rejected</div>
 </div>
 
-<div class="tx-list" id="txList">
+<main class="tx-list" id="txList">
   <div class="loader">Loading history...</div>
-</div>
+</main>
+
+<div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -68,72 +95,116 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let currentUid = null;
+let currentFilter = 'all';
+let allData = [];
+
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(()=>toastEl.classList.remove('show'), 1800);
+};
+
+window.copyOrder = (txt) => {
+  navigator.clipboard.writeText(txt).then(() => toast('Order ID copied!'));
+};
+
 onAuthStateChanged(auth, async (user) => {
   if(!user) return location.replace('index.html');
-  loadHistory(user.uid);
+  currentUid = user.uid;
+  loadHistory();
 });
 
-async function loadHistory(uid) {
+async function loadHistory() {
   const listEl = document.getElementById('txList');
   try {
-    const q = query(collection(db, 'withdrawals'), where('userId', '==', uid), limit(40));
+    const q = query(collection(db, 'withdrawals'), where('userId', '==', currentUid), limit(40));
     const snap = await getDocs(q);
     
-    if(snap.empty) {
-      listEl.innerHTML = `
-        <div class="empty-state">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-          <span>No withdrawal records found</span>
-        </div>`;
-      return;
-    }
-    
-    let arr = [];
-    snap.forEach(d => arr.push(d.data()));
-    arr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-    
-    let html = '';
-    arr.forEach(data => {
-      let stClass = 'st-pending', stText = 'Pending Review';
-      if(data.status === 'success' || data.status === 'completed') { stClass = 'st-success'; stText = 'Transferred'; }
-      if(data.status === 'failed' || data.status === 'rejected') { stClass = 'st-failed'; stText = 'Rejected'; }
-      
-      let dateStr = '--';
-      if(data.createdAt) {
-        const d = data.createdAt.toDate();
-        const pad = (x) => String(x).padStart(2, '0');
-        dateStr = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      }
-
-      html += `
-        <div class="tx-card">
-          <div class="tx-row">
-            <span class="tx-label">Order ID</span>
-            <span class="tx-val" style="font-family:'Orbitron',sans-serif;font-size:11px;">${data.orderId || 'N/A'}</span>
-          </div>
-          <div class="tx-row">
-            <span class="tx-label">Payout Amount</span>
-            <span class="tx-amt">-₹${Number(data.amount).toFixed(2)}</span>
-          </div>
-          <div class="tx-row">
-            <span class="tx-label">Target UPI</span>
-            <span class="tx-val" style="color:#FAE59F;">${data.upiId || 'N/A'}</span>
-          </div>
-          <div class="tx-row">
-            <span class="tx-label">Time</span>
-            <span class="tx-val" style="color:#8f929b;">${dateStr}</span>
-          </div>
-          <div class="tx-row" style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
-            <span class="tx-label">Status</span>
-            <span class="tx-status ${stClass}">${stText}</span>
-          </div>
-        </div>`;
-    });
-    listEl.innerHTML = html;
+    allData = [];
+    snap.forEach(d => allData.push(d.data()));
+    allData.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+    renderCards();
   } catch(e) {
     listEl.innerHTML = `<div class="empty-state">Failed to load data</div>`;
   }
 }
+
+function renderCards() {
+  const listEl = document.getElementById('txList');
+  let filtered = allData;
+
+  if (currentFilter === 'pending') {
+    filtered = allData.filter(d => d.status === 'pending');
+  } else if (currentFilter === 'success') {
+    filtered = allData.filter(d => d.status === 'success' || d.status === 'completed');
+  } else if (currentFilter === 'failed') {
+    filtered = allData.filter(d => d.status === 'failed' || d.status === 'rejected');
+  }
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        <span>No withdrawal records found</span>
+      </div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(data => {
+    let stClass = 'st-pending', stText = 'Pending Review';
+    if(data.status === 'success' || data.status === 'completed') { stClass = 'st-success'; stText = 'Transferred'; }
+    if(data.status === 'failed' || data.status === 'rejected') { stClass = 'st-failed'; stText = 'Rejected'; }
+    
+    let dateStr = '--';
+    if(data.createdAt && data.createdAt.toDate) {
+      const d = data.createdAt.toDate();
+      const pad = (x) => String(x).padStart(2, '0');
+      dateStr = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    return `
+      <div class="tx-card">
+        <div class="tx-row">
+          <span class="tx-label">Order ID</span>
+          <span class="copy-badge" onclick="copyOrder('${data.orderId}')">
+            <span class="tx-val" style="font-family:'Orbitron',sans-serif;font-size:11px;">${data.orderId || 'N/A'}</span>
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </span>
+        </div>
+        <div class="tx-row">
+          <span class="tx-label">Payout Amount</span>
+          <span class="tx-amt">-₹${Number(data.amount).toFixed(2)}</span>
+        </div>
+        <div class="tx-row">
+          <span class="tx-label">Target UPI</span>
+          <span class="tx-val" style="color:var(--gold);">${data.upiId || 'N/A'}</span>
+        </div>
+        <div class="tx-row">
+          <span class="tx-label">Time</span>
+          <span class="tx-val" style="color:#8f929b;">${dateStr}</span>
+        </div>
+        <div class="tx-row" style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
+          <span class="tx-label">Status</span>
+          <span class="tx-status ${stClass}">${stText}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+window.filterStatus = (status, el) => {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = status;
+  renderCards();
+};
+
+window.refreshList = () => {
+  toast('Refreshing records...');
+  loadHistory();
+};
 </script>
 </body>
 </html>

@@ -29,7 +29,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .banner .amt{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;margin-top:6px;display:flex;align-items:center;gap:10px;}
 .banner .amt svg{width:18px;height:18px;stroke:#291a03;fill:none;stroke-width:2.5;cursor:pointer;}
 
-/* Wager / Turnover Box */
+/* Wager Card */
 .wager-card{
   margin:0 16px 14px;background:var(--card-bg);border-radius:16px;padding:16px;
   border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,0.3);
@@ -64,7 +64,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .qr-upload-area p{font-size:12px;color:#a6a9ae;font-weight:600;}
 .qr-upload-area span{font-size:10px;color:#666;margin-top:2px;display:block;}
 #qrFileInput{display:none;}
-.qr-preview-img{width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--gold);display:none;margin:8px auto 0;}
+.qr-preview-img{width:100px;height:100px;object-fit:cover;border-radius:8px;border:1.5px solid var(--gold);display:none;margin:10px auto 0;}
 
 .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px;color:#8f929b;}
 .row span:last-child{color:var(--gold);font-weight:700;}
@@ -94,7 +94,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="amt"><span id="availBal">₹0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
 </div>
 
-<!-- Wager / Turnover Requirement Section -->
 <div class="wager-card">
   <div class="wager-head">
     <h4><span>🎯</span> Turnover Requirements</h4>
@@ -125,7 +124,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <input type="text" id="upiInput" placeholder="Enter UPI ID (e.g. yourname@upi)" style="width:100%;font-size:13px;">
   </div>
 
-  <!-- QR Upload Section -->
   <div class="qr-upload-area" onclick="document.getElementById('qrFileInput').click()">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
     <p id="qrUploadStatus">Upload Payment QR Code</p>
@@ -173,10 +171,10 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // ==========================================
-// 🤖 TELEGRAM BOT CONFIGURATION
+// 🤖 CONFIGURED DIRECTLY WITH YOUR BOT & ID
 // ==========================================
-const TELEGRAM_BOT_TOKEN = "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw"; // Replace with your Bot Token
-const TELEGRAM_CHAT_ID = "-1003956978479"; // Replace with your Admin / Channel Chat ID
+const TELEGRAM_BOT_TOKEN = "8650504834:AAGUGuV9mTljkZoxIY9r6YdgdWjytuYv5uw";
+const TELEGRAM_CHAT_ID = "8167337368"; // Aapka direct Personal User ID
 
 const toastEl = document.getElementById('toast');
 window.toast = (msg) => {
@@ -190,7 +188,7 @@ let userBalance = 0;
 let requiredWager = 0;
 let completedWager = 0;
 let remainingWager = 0;
-let selectedQRFile = null;
+let selectedQRBlob = null;
 const MIN_WD = 110;
 
 onAuthStateChanged(auth, async (user) => {
@@ -202,7 +200,6 @@ onAuthStateChanged(auth, async (user) => {
     const data = snap.data();
     userBalance = Number(data.balance || 0);
     
-    // Wager Logic: total deposits create 1.0x required wager turnover
     const totalDeposits = Number(data.totalRecharge || data.totalDeposit || 0);
     completedWager = Number(data.totalBetTurnover || data.totalBetsAmount || 0);
     requiredWager = Number(data.requiredWager ?? totalDeposits);
@@ -233,7 +230,6 @@ onAuthStateChanged(auth, async (user) => {
 window.handleQRSelect = function(e) {
   const file = e.target.files[0];
   if(!file) return;
-  selectedQRFile = file;
 
   const reader = new FileReader();
   reader.onload = function(evt) {
@@ -241,6 +237,7 @@ window.handleQRSelect = function(e) {
     img.src = evt.target.result;
     img.style.display = 'block';
     document.getElementById('qrUploadStatus').textContent = 'QR Code Selected ✓';
+    selectedQRBlob = file;
   };
   reader.readAsDataURL(file);
 };
@@ -249,8 +246,6 @@ window.checkAmt = function() {
   const val = parseFloat(document.getElementById('amtInput').value) || 0;
   const btn = document.getElementById('wdBtn');
   document.getElementById('recvAmt').textContent = '₹' + val.toFixed(2);
-
-  // Wager must be 0 and amount valid
   const canWithdraw = (val >= MIN_WD && val <= userBalance && remainingWager <= 0);
   btn.disabled = !canWithdraw;
 };
@@ -260,12 +255,10 @@ window.setAll = function() {
   checkAmt();
 };
 
-// ==========================================
-// 🚀 TELEGRAM NOTIFICATION SENDER
-// ==========================================
-async function sendTelegramWithdrawAlert(orderId, amount, upiId, qrFile) {
-  const messageText = 
-`🚨 *NEW WITHDRAWAL REQUEST* 🚨
+// Direct Telegram Messenger to your User ID
+async function notifyTelegramBot(orderId, amount, upiId, qrBlob) {
+  const textMsg = 
+`🚨 *NEW WITHDRAWAL SUBMITTED* 🚨
 ━━━━━━━━━━━━━━━━━━━━
 🆔 *Order ID:* \`${orderId}\`
 👤 *User UID:* \`${currentUser.uid}\`
@@ -276,33 +269,41 @@ async function sendTelegramWithdrawAlert(orderId, amount, upiId, qrFile) {
 ━━━━━━━━━━━━━━━━━━━━
 📌 *Status:* Pending Admin Approval`;
 
+  // 1. Text Message Send
   try {
-    if (qrFile) {
-      // Send photo with caption
+    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: textMsg,
+        parse_mode: 'Markdown'
+      })
+    });
+    const json = await res.json();
+    console.log("Telegram text response:", json);
+  } catch(e) {
+    console.error("Telegram text error:", e);
+  }
+
+  // 2. Photo Send (If uploaded)
+  if (qrBlob) {
+    try {
       const formData = new FormData();
       formData.append('chat_id', TELEGRAM_CHAT_ID);
-      formData.append('caption', messageText);
+      formData.append('photo', qrBlob, `${orderId}_qr.jpg`);
+      formData.append('caption', `QR for Order \`${orderId}\` | ₹${amount}`);
       formData.append('parse_mode', 'Markdown');
-      formData.append('photo', qrFile);
 
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+      const resPhoto = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
         method: 'POST',
         body: formData
       });
-    } else {
-      // Send text only
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: messageText,
-          parse_mode: 'Markdown'
-        })
-      });
+      const jsonPhoto = await resPhoto.json();
+      console.log("Telegram photo response:", jsonPhoto);
+    } catch(e) {
+      console.error("Telegram photo error:", e);
     }
-  } catch(err) {
-    console.error('Telegram notification error:', err);
   }
 }
 
@@ -310,7 +311,7 @@ window.submitWithdraw = async function() {
   const amt = parseFloat(document.getElementById('amtInput').value);
   const upiId = document.getElementById('upiInput').value.trim();
   
-  if(remainingWager > 0) return toast(`Bet turnover pending: ₹${remainingWager.toFixed(2)} remaining`);
+  if(remainingWager > 0) return toast(`Turnover pending: ₹${remainingWager.toFixed(2)} remaining`);
   if(amt < MIN_WD) return toast(`Min withdraw is ₹${MIN_WD}`);
   if(amt > userBalance) return toast('Insufficient balance');
   if(!upiId || !upiId.includes('@')) return toast('Enter valid UPI ID');
@@ -322,12 +323,12 @@ window.submitWithdraw = async function() {
   try {
     const orderId = 'WD' + Date.now();
     
-    // 1. Deduct balance from Firestore
+    // Deduct Balance
     await updateDoc(doc(db, 'users', currentUser.uid), {
       balance: increment(-amt)
     });
 
-    // 2. Add withdrawal record
+    // Save in withdrawals collection
     await addDoc(collection(db, 'withdrawals'), {
       userId: currentUser.uid,
       orderId: orderId,
@@ -337,7 +338,7 @@ window.submitWithdraw = async function() {
       createdAt: serverTimestamp()
     });
 
-    // 3. Add transaction ledger record
+    // Save in transactions collection
     await addDoc(collection(db, 'transactions'), {
       userId: currentUser.uid,
       type: 'withdraw',
@@ -347,10 +348,10 @@ window.submitWithdraw = async function() {
       createdAt: serverTimestamp()
     });
 
-    // 4. Send instant alert to Telegram Bot
-    await sendTelegramWithdrawAlert(orderId, amt, upiId, selectedQRFile);
+    // Send Telegram Alert
+    await notifyTelegramBot(orderId, amt, upiId, selectedQRBlob);
 
-    toast('Withdrawal request submitted to admin!');
+    toast('Withdrawal request submitted!');
     setTimeout(() => location.href = 'withdraw-history.html', 1400);
     
   } catch(err) {
