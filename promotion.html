@@ -34,7 +34,7 @@
         .info-img{display:flex;gap:14px;align-items:center;background:#18181a;padding:14px;border-radius:12px;margin-bottom:14px;}
         .info-img #qrcode{background:#fff;padding:6px;border-radius:8px;width:102px;height:102px;display:flex;align-items:center;justify-content:center;}
         .btn-box{flex:1;display:flex;flex-direction:column;gap:8px;}
-        .btn-box .btn{background:#202024;border:1px solid #C48E2F;color:#FAE59F;padding:10px 12px;font-size:12px;border-radius:20px;font-weight:700;text-align:center;}
+        .btn-box .btn{background:#202024;border:1px solid #C48E2F;color:#FAE59F;padding:10px 12px;font-size:12px;border-radius:20px;font-weight:700;text-align:center;cursor:pointer;}
 
         .invite-link-box{background:#18181a;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px;text-align:center;}
         .invite-link-box p{font-size:11px;color:#8f929b;margin-bottom:6px;text-transform:uppercase;}
@@ -48,7 +48,7 @@
         .table .bd:last-child{border-bottom:none;}
         .col{flex:1;text-align:center;}
 
-        .team-item{background:#18181a;border-radius:10px;padding:10px 12px;margin-bottom:8px;}
+        .team-item{background:#18181a;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.04);}
         .team-row{display:flex;justify-content:space-between;align-items:center;}
         .hide{display:none !important;}
 
@@ -84,7 +84,7 @@
                 </div>
                 <div class="right">
                     <p class="txt">Direct Referrals: <span id="f1">0</span></p>
-                    <p class="txt">Level Rate: <span>Up to 1.0%</span></p>
+                    <p class="txt">Commission Rate: <span>Up to 1.0%</span></p>
                 </div>
             </div>
 
@@ -98,7 +98,7 @@
 
             <div class="invite-link-box">
                 <p>My Invitation Link</p>
-                <span id="inviteLinkText">Loading...</span>
+                <span id="inviteLinkText">Generating...</span>
                 <span id="inviteCodeVal" style="display:none;"></span>
                 <button onclick="copyText('inviteLinkText')">Copy Link</button>
             </div>
@@ -121,9 +121,9 @@
                 <div class="col">Referrals</div>
                 <div class="col">Commission</div>
             </div>
-            <div class="bd"><div class="col">Level 1</div><div class="col">Direct</div><div class="col">1.0%</div></div>
-            <div class="bd"><div class="col">Level 2</div><div class="col">Indirect</div><div class="col">0.3%</div></div>
-            <div class="bd"><div class="col">Level 3</div><div class="col">Team</div><div class="col">0.1%</div></div>
+            <div class="bd"><div class="col">Level 1</div><div class="col">Direct Subordinates</div><div class="col">1.0%</div></div>
+            <div class="bd"><div class="col">Level 2</div><div class="col">Team Level 2</div><div class="col">0.3%</div></div>
+            <div class="bd"><div class="col">Level 3</div><div class="col">Team Level 3</div><div class="col">0.1%</div></div>
         </div>
     </div>
 </div>
@@ -134,7 +134,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -158,60 +158,78 @@ window.toast = (msg) => {
 
 window.copyText = (elemId) => {
   const text = document.getElementById(elemId).innerText;
-  navigator.clipboard.writeText(text).then(() => toast('Copied!'));
+  navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard!'));
 };
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    const snap = await getDoc(doc(db, "users", user.uid));
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+
+    let code = user.uid.substring(0, 8).toUpperCase();
     if (snap.exists()) {
-      const code = user.uid.substring(0, 8).toUpperCase();
-      const link = `${window.location.origin}/index.html?ref=${code}`;
-      
-      document.getElementById('inviteCodeVal').innerText = code;
-      document.getElementById('inviteLinkText').innerText = link;
-
-      new QRCode(document.getElementById("qrcode"), {
-          text: link,
-          width: 90,
-          height: 90,
-          colorDark: "#000000",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H
-      });
-
-      loadTeam(user.uid);
+      const data = snap.data();
+      if (data.referralCode) {
+        code = data.referralCode;
+      } else {
+        // Enforce persistent referral code directly inside user record
+        await updateDoc(userRef, { referralCode: code }).catch(() => {});
+      }
     }
+
+    const link = `${window.location.origin}/index.html?ref=${code}`;
+    document.getElementById('inviteCodeVal').innerText = code;
+    document.getElementById('inviteLinkText').innerText = link;
+
+    const qrContainer = document.getElementById("qrcode");
+    qrContainer.innerHTML = '';
+    new QRCode(qrContainer, {
+      text: link,
+      width: 90,
+      height: 90,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    loadTeam(user.uid, code);
   } else {
     location.replace("index.html");
   }
 });
 
-async function loadTeam(uid) {
+async function loadTeam(uid, code) {
+  const container = document.getElementById('teamListContainer');
   try {
-    const q = query(collection(db, "users"), where("referredBy", "==", uid), limit(50));
-    const snap = await getDocs(q);
-    const container = document.getElementById('teamListContainer');
+    // Check both UID and short code in referredBy
+    const q1 = query(collection(db, "users"), where("referredBy", "==", uid), limit(50));
+    const q2 = query(collection(db, "users"), where("referredBy", "==", code), limit(50));
 
-    document.getElementById('f1').innerText = snap.size;
-    document.getElementById('f_total').innerText = snap.size;
+    const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
+    const map = new Map();
 
-    if (snap.empty) {
+    snap1.forEach(d => map.set(d.id, d.data()));
+    snap2.forEach(d => map.set(d.id, d.data()));
+
+    const total = map.size;
+    document.getElementById('f1').innerText = total;
+    document.getElementById('f_total').innerText = total;
+
+    if (total === 0) {
       container.innerHTML = `<div style="text-align:center;padding:30px;color:#777;">No team members yet</div>`;
       return;
     }
 
     let html = '';
-    snap.forEach(d => {
-      const u = d.data();
-      const name = u.name || 'Member';
-      const mUid = d.id.substring(0, 8).toUpperCase();
+    map.forEach((u, id) => {
+      const name = u.name || u.phone || 'Subordinate';
+      const mUid = id.substring(0, 8).toUpperCase();
       html += `
         <div class="team-item">
           <div class="team-row">
             <div>
-              <strong style="font-size:13px;">${name}</strong>
-              <div style="font-size:10px;color:#777;">UID: ${mUid}</div>
+              <strong style="font-size:13px;color:#fff;">${name}</strong>
+              <div style="font-size:10px;color:#777;margin-top:2px;">UID: ${mUid}</div>
             </div>
             <span style="color:#00e676;font-size:11px;font-weight:700;">Active</span>
           </div>
@@ -220,7 +238,7 @@ async function loadTeam(uid) {
     });
     container.innerHTML = html;
   } catch(e) {
-    document.getElementById('teamListContainer').innerHTML = `<div style="text-align:center;padding:30px;color:#777;">Could not load team</div>`;
+    container.innerHTML = `<div style="text-align:center;padding:30px;color:#777;">Could not load team</div>`;
   }
 }
 
