@@ -17,6 +17,7 @@
   --green: #00e676;
   --violet: #b388ff;
   --blue: #1e90ff;
+  --amber: #ffab00;
 }
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; -webkit-tap-highlight-color:transparent; }
 body { background:var(--bg); color:#fff; min-height:100vh; padding-bottom:60px; }
@@ -49,6 +50,15 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 .card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
 .card-head h3 { font-size:14px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px; }
 
+/* Sub Filter Bars */
+.sub-filter-bar { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; }
+.sub-pill {
+  padding:6px 14px; background:var(--card-sub); border:1px solid var(--border);
+  border-radius:14px; font-size:11px; font-weight:700; color:#8f929b; cursor:pointer;
+  white-space:nowrap; transition:all 0.15s;
+}
+.sub-pill.active { background:var(--gold); color:#1a1a1a; font-weight:900; }
+
 /* WinGo Controller */
 .game-selector { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; }
 .g-pill {
@@ -70,7 +80,6 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 .pool-box span { font-size:10px; color:#8f929b; text-transform:uppercase; font-weight:700; display:block; }
 .pool-box strong { font-family:'Orbitron',sans-serif; font-size:14px; margin-top:4px; display:block; }
 
-/* Big / Small & Color Selector */
 .decision-title { font-size:11px; color:#8f929b; text-transform:uppercase; font-weight:800; margin-bottom:8px; }
 .bs-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
 .bs-btn {
@@ -109,15 +118,24 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 .target-badge span { font-size:12px; color:#8f929b; }
 .target-badge strong { font-family:'Orbitron',sans-serif; color:var(--gold); font-size:14px; }
 
-/* Table Elements */
-.user-item { background:var(--card-sub); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:10px; }
+/* Items, Cards & Badges */
+.user-item { background:var(--card-sub); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:12px; }
 .user-item.frozen { border-color:var(--red); background:rgba(255,77,79,0.06); }
 .u-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:12px; }
 .u-row:last-child { margin-bottom:0; }
 .input-row { display:flex; gap:8px; background:#121215; padding:8px 12px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; }
 .input-row input { flex:1; font-size:13px; }
 
-.badge-status { font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; text-transform:uppercase; }
+.channel-badge {
+  font-size:10px; font-weight:800; color:var(--gold); background:rgba(250,229,159,0.12);
+  padding:2px 8px; border-radius:6px; border:1px solid rgba(250,229,159,0.25);
+}
+.badge-status { font-size:10px; font-weight:800; padding:3px 8px; border-radius:8px; text-transform:uppercase; }
+.st-pending { background:rgba(255,171,0,0.15); color:var(--amber); border:1px solid rgba(255,171,0,0.3); }
+.st-processing { background:rgba(30,144,255,0.15); color:var(--blue); border:1px solid rgba(30,144,255,0.3); }
+.st-success { background:rgba(0,230,118,0.15); color:var(--green); border:1px solid rgba(0,230,118,0.3); }
+.st-failed { background:rgba(255,77,79,0.15); color:var(--red); border:1px solid rgba(255,77,79,0.3); }
+
 .badge-frozen { background:rgba(255,77,79,0.2); color:var(--red); border:1px solid var(--red); }
 .badge-active { background:rgba(0,230,118,0.2); color:var(--green); border:1px solid var(--green); }
 
@@ -148,7 +166,7 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 
 <nav class="tabs-wrap">
   <button class="tab-btn active" onclick="switchTab('wingoTab', this)">WinGo Control</button>
-  <button class="tab-btn" onclick="switchTab('depositTab', this)">Deposits (Manual / UTR)</button>
+  <button class="tab-btn" onclick="switchTab('depositTab', this)">Deposits (Live Hub)</button>
   <button class="tab-btn" onclick="switchTab('withdrawTab', this)">Withdrawals</button>
   <button class="tab-btn" onclick="switchTab('usersTab', this)">User Records &amp; Freeze</button>
   <button class="tab-btn" onclick="switchTab('giftTab', this)">Gift Codes</button>
@@ -227,9 +245,18 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 <section id="depositTab" class="section">
   <div class="card">
     <div class="card-head">
-      <h3>Incoming User Deposits (UTR / Proof)</h3>
+      <h3>Incoming Deposits (All Gateways &amp; UTRs)</h3>
       <button class="btn-sm btn-gold" onclick="loadDeposits()">Refresh</button>
     </div>
+
+    <!-- Filter Pills -->
+    <div class="sub-filter-bar">
+      <div class="sub-pill active" onclick="filterDepositView('review', this)">Pending &amp; Review</div>
+      <div class="sub-pill" onclick="filterDepositView('success', this)">Success / Completed</div>
+      <div class="sub-pill" onclick="filterDepositView('failed', this)">Rejected</div>
+      <div class="sub-pill" onclick="filterDepositView('all', this)">All Records</div>
+    </div>
+
     <div id="depositListContainer">
       <div style="text-align:center; padding:30px; color:#666;">Loading deposit requests...</div>
     </div>
@@ -335,11 +362,13 @@ let currentGameInterval = 30;
 let currentPeriod = '';
 let betsUnsubscribe = null;
 let allUsersData = [];
+let allDepositsMaster = [];
+let currentDepositFilter = 'review';
 
+const toastEl = document.getElementById('toast');
 window.toast = (m) => {
-  const t = document.getElementById('toast');
-  t.textContent = m; t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 2000);
+  toastEl.textContent = m; toastEl.style.display = 'block';
+  setTimeout(() => toastEl.style.display = 'none', 2000);
 };
 
 window.switchTab = (id, el) => {
@@ -380,9 +409,6 @@ window.selectGame = (betsCol, resCol, tag, interval, el) => {
   listenToBets();
 };
 
-// ========================================================
-// 2. LIVE BETS POOL LISTENER
-// ========================================================
 function listenToBets() {
   if (betsUnsubscribe) betsUnsubscribe();
 
@@ -424,9 +450,6 @@ function listenToBets() {
 }
 listenToBets();
 
-// ========================================================
-// 3. OVERRIDE CONTROLS (NUMBER, SIZE, COLOR)
-// ========================================================
 window.setMode = (m) => {
   currentMode = m;
   if(m === 'auto') {
@@ -520,76 +543,157 @@ window.saveWinGoControl = async () => {
 };
 
 // ========================================================
-// 4. DEPOSIT APPROVAL / DECLINE (MANUAL / UTR PAYMENTS)
+// 2. FIXED DEPOSIT ENGINE (DISPLAYS CHANNEL, UTR, PHONE & TIME)
 // ========================================================
+window.filterDepositView = (filterType, el) => {
+  document.querySelectorAll('.sub-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentDepositFilter = filterType;
+  renderDepositsUI();
+};
+
 window.loadDeposits = async () => {
   const container = document.getElementById('depositListContainer');
-  container.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">Fetching deposits...</div>`;
+  container.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">Fetching deposits from database...</div>`;
+
   try {
-    const q = query(collection(db, 'deposits'), where('status', '==', 'pending'), limit(50));
+    // Read up to 80 recent deposits without restricting to only 'pending'
+    const q = query(collection(db, 'deposits'), limit(80));
     const snap = await getDocs(q);
 
     if (snap.empty) {
-      container.innerHTML = `<div style="text-align:center; padding:30px; color:#888;">No pending deposit requests!</div>`;
+      container.innerHTML = `<div style="text-align:center; padding:30px; color:#888;">No deposit records exist in database!</div>`;
+      allDepositsMaster = [];
       return;
     }
 
-    let html = '';
+    allDepositsMaster = [];
     snap.forEach(d => {
-      const dep = d.data();
-      const amount = Number(dep.amount || 0);
-      const utr = dep.utr || dep.txnId || d.id;
-      const uid = dep.userId || dep.uid || 'Unknown';
-      const phone = dep.phone || 'N/A';
-
-      html += `
-        <div class="user-item">
-          <div class="u-row">
-            <span><strong>UTR / Txn:</strong> ${utr}</span>
-            <strong style="color:var(--green); font-size:16px;">₹${amount.toFixed(2)}</strong>
-          </div>
-          <div class="u-row">
-            <span><strong>UID:</strong> ${uid.slice(0,10)}</span>
-            <span><strong>Phone:</strong> ${phone}</span>
-          </div>
-          <div class="u-row" style="margin-top:10px; gap:8px;">
-            <button class="btn-sm btn-green" style="flex:1;" onclick="processDeposit('${d.id}', '${uid}', ${amount}, 'approved')">Accept &amp; Credit</button>
-            <button class="btn-sm btn-red" style="flex:1;" onclick="processDeposit('${d.id}', '${uid}', ${amount}, 'rejected')">Decline</button>
-          </div>
-        </div>
-      `;
+      const data = d.data();
+      allDepositsMaster.push({
+        id: d.id,
+        ...data,
+        status: (data.status || 'pending').toLowerCase()
+      });
     });
-    container.innerHTML = html;
+
+    // Sort by newest created first
+    allDepositsMaster.sort((a,b) => {
+      const tA = a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
+      const tB = b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
+      return tB - tA;
+    });
+
+    renderDepositsUI();
   } catch(e) {
     container.innerHTML = `<div style="text-align:center; color:var(--red);">Error loading deposits: ${e.message}</div>`;
   }
 };
 
+function renderDepositsUI() {
+  const container = document.getElementById('depositListContainer');
+  let list = allDepositsMaster;
+
+  if (currentDepositFilter === 'review') {
+    list = allDepositsMaster.filter(d => d.status === 'pending' || d.status === 'processing');
+  } else if (currentDepositFilter === 'success') {
+    list = allDepositsMaster.filter(d => d.status === 'success' || d.status === 'completed' || d.status === 'approved');
+  } else if (currentDepositFilter === 'failed') {
+    list = allDepositsMaster.filter(d => d.status === 'failed' || d.status === 'rejected' || d.status === 'cancelled');
+  }
+
+  if (!list.length) {
+    container.innerHTML = `<div style="text-align:center; padding:30px; color:#888;">No deposits found in this category (${currentDepositFilter})</div>`;
+    return;
+  }
+
+  let html = '';
+  list.forEach(dep => {
+    const amount = Number(dep.amount || 0);
+    const utr = dep.utr || 'Not submitted yet';
+    const orderId = dep.orderId || dep.id;
+    const channel = dep.channel || 'UPI Fast QR';
+    const uid = dep.userId || dep.uid || 'N/A';
+    const phone = dep.phone || 'Member';
+
+    let dateStr = '--';
+    const rawDate = dep.createdAt || dep.submittedAt;
+    if (rawDate) {
+      const d = rawDate.toDate ? rawDate.toDate() : new Date(rawDate);
+      const pad = (x) => String(x).padStart(2, '0');
+      dateStr = `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    let badgeClass = 'st-pending', badgeText = 'Pending';
+    if (dep.status === 'processing') { badgeClass = 'st-processing'; badgeText = 'Under Review'; }
+    if (dep.status === 'success' || dep.status === 'completed' || dep.status === 'approved') { 
+      badgeClass = 'st-success'; badgeText = 'Success'; 
+    }
+    if (dep.status === 'failed' || dep.status === 'rejected' || dep.status === 'cancelled') { 
+      badgeClass = 'st-failed'; badgeText = 'Rejected'; 
+    }
+
+    const isPending = (dep.status === 'pending' || dep.status === 'processing');
+
+    html += `
+      <div class="user-item">
+        <div class="u-row">
+          <span>
+            <strong style="font-family:'Orbitron',sans-serif; color:#fff;">#${orderId}</strong>
+            <span class="channel-badge" style="margin-left:6px;">${channel}</span>
+          </span>
+          <strong style="color:var(--green); font-family:'Orbitron',sans-serif; font-size:16px;">+₹${amount.toFixed(2)}</strong>
+        </div>
+
+        <div class="u-row" style="margin-top:6px;">
+          <span><strong>UTR / Ref:</strong> <span style="color:var(--gold); font-family:'Orbitron',sans-serif;">${utr}</span></span>
+          <span class="badge-status ${badgeClass}">${badgeText}</span>
+        </div>
+
+        <div class="u-row" style="margin-top:6px; color:#8f929b;">
+          <span>UID: ${uid.slice(0, 10)} (${phone})</span>
+          <span>Time: ${dateStr}</span>
+        </div>
+
+        ${isPending ? `
+          <div class="u-row" style="margin-top:10px; gap:8px;">
+            <button class="btn-sm btn-green" style="flex:1;" onclick="processDeposit('${dep.id}', '${uid}', ${amount}, 'approved')">Accept &amp; Credit</button>
+            <button class="btn-sm btn-red" style="flex:1;" onclick="processDeposit('${dep.id}', '${uid}', ${amount}, 'rejected')">Decline</button>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
 window.processDeposit = async (docId, userId, amount, action) => {
-  if (!confirm(`Are you sure you want to ${action} this deposit of ₹${amount}?`)) return;
+  if (!confirm(`Are you sure you want to ${action.toUpperCase()} this deposit of ₹${amount}?`)) return;
   try {
     if (action === 'approved') {
-      // 1. Credit wallet & unlock games
+      // 1. Credit balance & unlock games in User record
       await updateDoc(doc(db, 'users', userId), {
         balance: increment(amount),
         totalRecharge: increment(amount),
         firstDepositDone: true
       });
 
-      // 2. Mark deposit completed
+      // 2. Mark deposit success
       await updateDoc(doc(db, 'deposits', docId), {
-        status: 'completed',
-        approvedAt: serverTimestamp()
+        status: 'success',
+        approvedAt: serverTimestamp(),
+        systemNote: 'Approved manually by Admin'
       });
 
       toast(`Deposit of ₹${amount} approved & wallet credited!`);
     } else {
-      // Reject deposit
       await updateDoc(doc(db, 'deposits', docId), {
-        status: 'rejected',
-        rejectedAt: serverTimestamp()
+        status: 'failed',
+        rejectedAt: serverTimestamp(),
+        failReason: 'Declined by Admin'
       });
-      toast(`Deposit declined.`);
+      toast(`Deposit rejected.`);
     }
     loadDeposits();
   } catch(e) {
@@ -598,7 +702,7 @@ window.processDeposit = async (docId, userId, amount, action) => {
 };
 
 // ========================================================
-// 5. WITHDRAWAL APPROVAL & REFUND REJECTION
+// 3. WITHDRAWAL APPROVAL & REFUND REJECTION
 // ========================================================
 window.loadWithdrawals = async () => {
   const container = document.getElementById('withdrawListContainer');
@@ -661,7 +765,7 @@ window.processWd = async (docId, userId, amount, status) => {
 };
 
 // ========================================================
-// 6. USERS MANAGEMENT & ACCOUNT FREEZE CONTROL
+// 4. USERS MANAGEMENT & ACCOUNT FREEZE CONTROL
 // ========================================================
 window.loadUsers = async () => {
   const container = document.getElementById('usersListContainer');
@@ -756,7 +860,7 @@ window.toggleUserFreeze = async (uid, shouldFreeze) => {
 };
 
 // ========================================================
-// 7. 32-CHAR GIFT CODES
+// 5. 32-CHAR GIFT CODES
 // ========================================================
 function create32HexCode() {
   const chars = '0123456789ABCDEF';
@@ -824,7 +928,7 @@ window.loadGiftCodes = async () => {
 };
 
 // ========================================================
-// 8. BROADCASTS
+// 6. BROADCASTS
 // ========================================================
 window.sendBroadcast = async () => {
   const title = document.getElementById('broadcastTitle').value.trim();
