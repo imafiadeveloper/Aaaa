@@ -69,7 +69,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .tier-item.ready{border-color:var(--gold);background:linear-gradient(160deg, #25241f 0%, #1b1b1e 100%);}
 .tier-item.claimed{border-color:rgba(0,230,118,0.25);background:#17171a;}
 
-.ti-left h4{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px;}
+.ti-left h4{font-size:13px;font-weight:800;color:#fff;}
 .ti-left p{font-size:11px;color:#8f929b;margin-top:3px;}
 .ti-progress{font-size:10px;color:var(--gold);font-weight:700;margin-top:4px;}
 
@@ -89,7 +89,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   background:rgba(0,230,118,0.15);color:var(--green);cursor:default;border:1px solid rgba(0,230,118,0.3);
 }
 
-/* Invite Button */
 .btn-invite-now{
   width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
   background:var(--gold-grad);color:#241602;font-size:15px;font-weight:900;
@@ -98,7 +97,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 }
 .btn-invite-now:active{transform:scale(0.98);}
 
-/* Rules */
 .rules-card{
   margin:18px 14px 0;background:var(--card-bg);border:1px solid var(--border);
   border-radius:16px;padding:16px;
@@ -108,7 +106,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .rules-list{font-size:11px;color:#8f929b;line-height:1.7;padding-left:14px;}
 .rules-list strong{color:#ddd;}
 
-/* Toast */
 .toast{
   position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
   background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
@@ -153,7 +150,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="tier-item" id="tierCard1">
     <div class="ti-left">
       <h4>Invite 1 Friend</h4>
-      <p>Friend Deposit &ge; ₹300</p>
+      <p>Invite active registered friend</p>
       <div class="ti-progress" id="tierProg1">Progress: 0 / 1</div>
     </div>
     <div class="ti-right">
@@ -166,7 +163,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="tier-item" id="tierCard3">
     <div class="ti-left">
       <h4>Invite 3 Friends</h4>
-      <p>Friends Deposit &ge; ₹300 each</p>
+      <p>Invite 3 active registered friends</p>
       <div class="ti-progress" id="tierProg3">Progress: 0 / 3</div>
     </div>
     <div class="ti-right">
@@ -179,7 +176,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="tier-item" id="tierCard10">
     <div class="ti-left">
       <h4>Invite 10 Friends</h4>
-      <p>Friends Deposit &ge; ₹300 each</p>
+      <p>Invite 10 active registered friends</p>
       <div class="ti-progress" id="tierProg10">Progress: 0 / 10</div>
     </div>
     <div class="ti-right">
@@ -192,7 +189,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="tier-item" id="tierCard30">
     <div class="ti-left">
       <h4>Invite 30 Friends</h4>
-      <p>Friends Deposit &ge; ₹300 each</p>
+      <p>Invite 30 active registered friends</p>
       <div class="ti-progress" id="tierProg30">Progress: 0 / 30</div>
     </div>
     <div class="ti-right">
@@ -211,7 +208,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
   <ul class="rules-list">
     <li>Friends must register using your referral link or invitation code.</li>
-    <li>An invited friend is counted as <strong>Active</strong> once they complete a recharge of &ge; ₹300.</li>
+    <li>Invited members are synchronized directly with your <strong>My Team</strong> network.</li>
     <li>Each milestone reward can be claimed <strong>strictly once per account</strong>.</li>
     <li>Claimed cash rewards are instantly credited directly to your playable balance.</li>
   </ul>
@@ -224,7 +221,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
   getFirestore, doc, getDoc, updateDoc, increment, collection, query, 
-  where, getDocs, setDoc, arrayUnion, serverTimestamp 
+  where, getDocs, setDoc, arrayUnion, serverTimestamp, limit 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -271,37 +268,25 @@ async function loadInvitationData() {
     const totalEarned = Number(userData.totalInviteBonusEarned || 0);
     document.getElementById('earnedBonus').textContent = `₹${totalEarned.toFixed(2)}`;
 
-    // 1. Fetch Invited Friends
-    const userInviteCode = userData.inviteCode || userData.referralCode || '';
+    const userInviteCode = userData.inviteCode || userData.referralCode || currentUser.uid.substring(0, 8).toUpperCase();
     
-    const q1 = query(collection(db, 'users'), where('referredBy', '==', currentUser.uid));
-    const snap1 = await getDocs(q1);
+    // Exact team query sync (matching with promotion.html)
+    const q1 = query(collection(db, 'users'), where('referredBy', '==', currentUser.uid), limit(50));
+    const q2 = query(collection(db, 'users'), where('referredBy', '==', userInviteCode), limit(50));
+    const q3 = query(collection(db, 'users'), where('appliedInviteCode', '==', userInviteCode), limit(50));
 
+    const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
     const friendsMap = new Map();
-    snap1.forEach(d => friendsMap.set(d.id, d.data()));
 
-    if (userInviteCode) {
-      const q2 = query(collection(db, 'users'), where('appliedInviteCode', '==', userInviteCode));
-      const snap2 = await getDocs(q2);
-      snap2.forEach(d => {
-        if (d.id !== currentUser.uid) friendsMap.set(d.id, d.data());
-      });
-    }
+    snap1.forEach(d => { if(d.id !== currentUser.uid) friendsMap.set(d.id, d.data()); });
+    snap2.forEach(d => { if(d.id !== currentUser.uid) friendsMap.set(d.id, d.data()); });
+    snap3.forEach(d => { if(d.id !== currentUser.uid) friendsMap.set(d.id, d.data()); });
 
-    // 2. Count Qualified Friends (Recharge >= 300)
-    let qualifiedCount = 0;
-    friendsMap.forEach((u) => {
-      const totalRecharge = Number(u.totalRecharge || u.totalDeposit || 0);
-      const isFirstDone = !!u.firstDepositDone;
-      if (totalRecharge >= 300 || (isFirstDone && totalRecharge >= 100)) {
-        qualifiedCount++;
-      }
-    });
-
-    activeInvitesCount = qualifiedCount;
+    // Now counts all registered friends seamlessly
+    activeInvitesCount = friendsMap.size;
     document.getElementById('invitedCount').textContent = activeInvitesCount;
 
-    // 3. Render Each Tier State
+    // Render Each Tier State
     TIERS.forEach(req => {
       const btn = document.getElementById(`tierBtn${req}`);
       const card = document.getElementById(`tierCard${req}`);
@@ -336,7 +321,7 @@ async function loadInvitationData() {
 window.claimTier = async (req, amt) => {
   if (!currentUser) return;
   if (claimedTiers.includes(req)) return toast('You have already claimed this tier reward!');
-  if (activeInvitesCount < req) return toast(`Need ${req} active friends with deposits to unlock!`);
+  if (activeInvitesCount < req) return toast(`Need ${req} friends to unlock!`);
 
   const btn = document.getElementById(`tierBtn${req}`);
   btn.disabled = true;
@@ -345,7 +330,6 @@ window.claimTier = async (req, amt) => {
   try {
     const userRef = doc(db, 'users', currentUser.uid);
 
-    // 1. Credit balance, add to claimed tiers, update total bonus
     await updateDoc(userRef, {
       balance: increment(amt),
       totalBonus: increment(amt),
@@ -353,7 +337,6 @@ window.claimTier = async (req, amt) => {
       claimedInviteTiers: arrayUnion(req)
     });
 
-    // 2. Save in Transactions Ledger (Mapped for Wallet)
     await setDoc(doc(db, "transactions", `inv_${req}_${Date.now()}_${currentUser.uid.slice(0, 5)}`), {
       userId: currentUser.uid,
       type: "bonus",

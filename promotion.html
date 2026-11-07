@@ -82,11 +82,11 @@
         .ts-item .level{font-size:11px;color:#8f929b;font-weight:700;}
         .ts-item .rate{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--gold);margin-top:4px;}
 
-        /* Live Referral Activity Feed */
+        /* ⚡ Live Referral Activity Feed (Auto-Refreshes hourly) */
         .live-feed-card{background:#202024;border:1px solid var(--border);border-radius:16px;padding:14px;}
         .lf-title{font-size:13px;font-weight:800;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
         .lf-list{display:flex;flex-direction:column;gap:8px;}
-        .lf-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#8f929b;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03);}
+        .lf-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#8f929b;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);}
         .lf-row:last-child{border-bottom:none;}
         .lf-user{color:#ddd;font-weight:700;}
         .lf-bonus{color:#00e676;font-family:'Orbitron',sans-serif;font-weight:800;}
@@ -99,7 +99,7 @@
         .table .bd:last-child{border-bottom:none;}
         .col{flex:1;text-align:center;}
 
-        .team-item{background:#18181a;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid var(--border);}
+        .team-item{background:#18181a;border-radius:12px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--border);}
         .team-row{display:flex;justify-content:space-between;align-items:center;}
         .hide{display:none !important;}
 
@@ -126,7 +126,6 @@
 
     <!-- OVERVIEW TAB -->
     <div id="content-data">
-        <!-- Top Summary Card -->
         <div class="box">
             <div class="tit">
                 <span>Commission Summary</span>
@@ -179,7 +178,7 @@
                 <div class="hub-icon green">💰</div>
                 <div class="hub-text">
                     <h4>Invite Bonus</h4>
-                    <p>Up to ₹3,655,555</p>
+                    <p>Up to ₹500.00</p>
                 </div>
             </div>
             <div class="hub-card" onclick="showTab('tutorial')">
@@ -213,25 +212,11 @@
             </div>
         </div>
 
-        <!-- Live Subordinate Commission Feed -->
+        <!-- Dynamic Real-time Commission Ranking (Auto-changes every 1-2 hours) -->
         <div class="live-feed-card">
             <div class="lf-title"><span>⚡</span> Real-time Commission Ranking</div>
-            <div class="lf-list">
-                <div class="lf-row">
-                    <span class="lf-user">User 98***342</span>
-                    <span>Received Tier 1 rebate</span>
-                    <span class="lf-bonus">+₹450.00</span>
-                </div>
-                <div class="lf-row">
-                    <span class="lf-user">User 84***023</span>
-                    <span>Received Team bonus</span>
-                    <span class="lf-bonus">+₹128.50</span>
-                </div>
-                <div class="lf-row">
-                    <span class="lf-user">User 70***891</span>
-                    <span>Direct referral reward</span>
-                    <span class="lf-bonus">+₹85.00</span>
-                </div>
+            <div class="lf-list" id="commissionRankingList">
+                <!-- Injected dynamically by JS -->
             </div>
         </div>
     </div>
@@ -309,7 +294,6 @@ onAuthStateChanged(auth, async (user) => {
       }
     }
 
-    // ⚡ CLEAN ROUTING URL (Removed .html)
     const link = `${window.location.origin}/index?ref=${code}`;
     document.getElementById('inviteCodeVal').innerText = code;
     document.getElementById('inviteLinkText').innerText = link;
@@ -326,22 +310,26 @@ onAuthStateChanged(auth, async (user) => {
     });
 
     loadTeam(user.uid, code);
+    renderHourlyCommissionRanking();
   } else {
     location.replace("index.html");
   }
 });
 
+// Dual fetch: Direct referredBy UID and Referral Code
 async function loadTeam(uid, code) {
   const container = document.getElementById('teamListContainer');
   try {
     const q1 = query(collection(db, "users"), where("referredBy", "==", uid), limit(50));
     const q2 = query(collection(db, "users"), where("referredBy", "==", code), limit(50));
+    const q3 = query(collection(db, "users"), where("appliedInviteCode", "==", code), limit(50));
 
-    const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
+    const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
     const map = new Map();
 
-    snap1.forEach(d => map.set(d.id, d.data()));
-    snap2.forEach(d => map.set(d.id, d.data()));
+    snap1.forEach(d => { if(d.id !== uid) map.set(d.id, d.data()); });
+    snap2.forEach(d => { if(d.id !== uid) map.set(d.id, d.data()); });
+    snap3.forEach(d => { if(d.id !== uid) map.set(d.id, d.data()); });
 
     const total = map.size;
     document.getElementById('f1').innerText = total;
@@ -356,6 +344,11 @@ async function loadTeam(uid, code) {
     map.forEach((u, id) => {
       const name = u.name || u.phone || 'Subordinate';
       const mUid = id.substring(0, 8).toUpperCase();
+      const isRecharged = (u.totalRecharge || u.totalDeposit || 0) > 0 || u.firstDepositDone;
+      const statusBadge = isRecharged 
+        ? `<span style="color:#00e676;font-size:11px;font-weight:700;">Active</span>`
+        : `<span style="color:#8f929b;font-size:11px;font-weight:700;">Registered</span>`;
+
       html += `
         <div class="team-item">
           <div class="team-row">
@@ -363,7 +356,7 @@ async function loadTeam(uid, code) {
               <strong style="font-size:13px;color:#fff;">${name}</strong>
               <div style="font-size:10px;color:#777;margin-top:2px;">UID: ${mUid}</div>
             </div>
-            <span style="color:#00e676;font-size:11px;font-weight:700;">Active</span>
+            ${statusBadge}
           </div>
         </div>
       `;
@@ -372,6 +365,48 @@ async function loadTeam(uid, code) {
   } catch(e) {
     document.getElementById('teamListContainer').innerHTML = `<div style="text-align:center;padding:30px;color:#777;">Could not load team</div>`;
   }
+}
+
+// ⚡ Dynamic Ranking Generator: Generates realistic random commissions that change smoothly based on the hour
+function renderHourlyCommissionRanking() {
+  const container = document.getElementById('commissionRankingList');
+  if(!container) return;
+
+  const now = new Date();
+  // Hour block seed (changes every 2 hours)
+  const hourBlock = Math.floor(now.getHours() / 2);
+  const daySeed = now.getDate() * 100 + hourBlock;
+
+  function pseudoRandom(offset) {
+    let x = Math.sin(daySeed + offset) * 10000;
+    return x - Math.floor(x);
+  }
+
+  const prefixList = ['98', '97', '84', '79', '91', '80', '76', '95', '88', '70'];
+  const titles = [
+    'Received Tier 1 rebate',
+    'Received Team bonus',
+    'Direct referral reward',
+    'Subordinate recharge rebate',
+    'Level 2 team bonus'
+  ];
+
+  let html = '';
+  for(let i = 0; i < 4; i++) {
+    const pref = prefixList[Math.floor(pseudoRandom(i * 3) * prefixList.length)];
+    const mid = Math.floor(100 + pseudoRandom(i * 7) * 899);
+    const title = titles[Math.floor(pseudoRandom(i * 5) * titles.length)];
+    const amt = (45 + pseudoRandom(i * 11) * 650).toFixed(2);
+
+    html += `
+      <div class="lf-row">
+        <span class="lf-user">User ${pref}***${mid}</span>
+        <span>${title}</span>
+        <span class="lf-bonus">+₹${amt}</span>
+      </div>
+    `;
+  }
+  container.innerHTML = html;
 }
 
 window.showTab = function(tab) {
