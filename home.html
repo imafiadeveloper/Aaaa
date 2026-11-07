@@ -22,7 +22,7 @@
         button { border: none; outline: none; cursor: pointer; background: transparent; color: inherit; }
         ::-webkit-scrollbar { width: 0; height: 0; }
 
-        /* 🔒 1. 100% FIXED TOP HEADER ON SCROLL */
+        /* 🔒 1. FIXED TOP HEADER */
         .top-header {
             position: sticky; top: 0; left: 0; right: 0; z-index: 1000;
             display: flex; align-items: center; justify-content: space-between;
@@ -85,7 +85,7 @@
         .ub-mail { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .ub-mail svg { width: 20px; height: 20px; fill: none; stroke: #2c1f06; stroke-width: 2; }
 
-        /* 🃏 3. BIG CATEGORY CARDS (SAME SIZE FOR ALL 6) */
+        /* 🃏 3. BIG CATEGORY CARDS */
         .category-deck {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
             padding: 0 12px 14px;
@@ -105,7 +105,7 @@
         .lottery-tabs-bar { display: flex; gap: 6px; overflow-x: auto; padding: 0 12px 12px; }
         .lot-tab {
             padding: 6px 14px; border-radius: 14px; background: #2a2a2a;
-            color: #8f9299; font-size: 11px; font-weight: 700; white-space: nowrap;
+            color: #8f929b; font-size: 11px; font-weight: 700; white-space: nowrap;
             cursor: pointer; border: 1px solid transparent;
         }
         .lot-tab.active { background: #383838; color: #FAE59F; border-color: rgba(250,229,159,0.3); }
@@ -139,7 +139,43 @@
         .card-footer { padding: 6px 4px; text-align: center; background: #26262a; border-top: 1px solid rgba(255,255,255,0.04); }
         .card-title { font-size: 11px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* 🏆 4. TODAY'S EARNINGS CHART (10 PROFILES DYNAMIC) */
+        /* 🔴 5. WINNING INFORMATION (MATCHED EXACT TO SCREENSHOT) */
+        .winning-info-wrap {
+            margin: 6px 12px 18px;
+        }
+        .winning-scroll-box {
+            display: flex; flex-direction: column; gap: 8px;
+            max-height: 380px; overflow: hidden; position: relative;
+        }
+        .win-row {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #282828; border-radius: 12px; padding: 10px 14px;
+            border: 1px solid var(--border-subtle); animation: slideDown 0.35s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .win-left { display: flex; align-items: center; gap: 10px; width: 38%; }
+        .win-avatar {
+            width: 38px; height: 38px; border-radius: 50%; object-fit: cover;
+            background: #383838; flex-shrink: 0; border: 1.5px solid rgba(250,229,159,0.25);
+        }
+        .win-user { font-size: 11px; font-weight: 700; color: #e2e4ea; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .win-mid {
+            width: 52px; height: 36px; border-radius: 6px; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: #18181a; flex-shrink: 0;
+        }
+        .win-mid img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .win-right { text-align: right; width: 44%; }
+        .win-receive { font-size: 12px; font-weight: 800; color: #fff; }
+        .win-receive span { font-family: 'Orbitron', sans-serif; color: #FAE59F; font-weight: 900; }
+        .win-sub { font-size: 10px; color: #858892; margin-top: 2px; }
+
+        /* 🏆 4. TODAY'S EARNINGS CHART */
         .ranking-wrap { margin: 0 12px 16px; }
         .podium-box { display: flex; align-items: flex-end; justify-content: center; gap: 6px; margin: 16px 0 12px; }
         .podium-item { flex: 1; background: #282828; border-radius: 12px; padding: 12px 6px 10px; text-align: center; position: relative; border: 1px solid var(--border-subtle); }
@@ -156,7 +192,7 @@
         .rr-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; background: #333; }
         .rr-amt { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #FAE59F; }
 
-        /* Floating App & Service Icons */
+        /* Floating Action Icons */
         .app-fab { position: fixed; bottom: 145px; right: 15px; width: 48px; height: 48px; border-radius: 50%; z-index: 99; background: #2b2b2b; border: 2px solid #FAE59F; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
         .app-fab svg { width: 22px; height: 22px; stroke: #FAE59F; fill: none; stroke-width: 2.2; }
         .customer-fab { position: fixed; bottom: 85px; right: 15px; width: 48px; height: 48px; border-radius: 50%; z-index: 99; background: linear-gradient(135deg, #f5c442, #ff8f00); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.6); cursor: pointer; }
@@ -325,7 +361,7 @@
   </div>
 </div>
 
-<!-- 🃏 3. BIG CATEGORY BUTTONS (2 ROWS × 3 CARDS = ALL EQUAL & BIG) -->
+<!-- 🃏 3. BIG CATEGORY BUTTONS -->
 <div class="category-deck">
   <div class="cat-card active" onclick="switchCategory('lottery', this)">
     <span class="cat-icon">🎰</span>
@@ -523,6 +559,14 @@
       <div class="card-thumb"><div style="font-size:38px;">🔥</div><span class="badge-tag gold">DESI</span></div>
       <div class="card-footer"><div class="card-title">Teen Patti</div></div>
     </div>
+  </div>
+</div>
+
+<!-- 🔴 5. WINNING INFORMATION TICKER (ADDED AS REQUESTED) -->
+<div class="winning-info-wrap">
+  <div class="section-head"><h3>Winning information</h3></div>
+  <div class="winning-scroll-box" id="winningContainer">
+    <!-- Real-time dynamically fed winners list -->
   </div>
 </div>
 
@@ -825,6 +869,85 @@ if (slides.length > 1) {
   }, 3500);
 }
 
+// ==========================================================
+// 🔴 5. LIVE WINNING INFORMATION ENGINE (100+ REALISTIC WINNERS)
+// ==========================================================
+const winAvatars = [
+  '3-abfcc056.png', '6-7c7f5203.png', '7-00479cfa.png', 
+  '19-2ac9fd83.png', '17-bedde42f.png', '1-c7e4efc8.png'
+];
+
+const winGames = [
+  { name: 'K3 Dice', img: './images/lotterycategory_20240110062111bt8e.png' },
+  { name: 'Win Go 1Min', img: './images/lotterycategory_20240110062051do1k.png' },
+  { name: '5D Lottery', img: './images/lotterycategory_20240110062118e9kt.png' },
+  { name: 'TRX Win', img: './images/lotterycategory_20240110062124qut6.png' },
+  { name: 'Aviator', img: './images/22001.png' },
+  { name: 'Mines', img: './images/229.png' }
+];
+
+const winAmounts = [
+  '196.00', '235.20', '352.80', '392.00', '490.00', '784.00', 
+  '980.00', '1,470.00', '1,960.00', '2,940.00', '3,920.00', '4,900.00'
+];
+
+const charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+function getRandomWinnerRow() {
+  const c1 = charSet[Math.floor(Math.random() * charSet.length)];
+  const c2 = charSet[Math.floor(Math.random() * charSet.length)];
+  const c3 = charSet[Math.floor(Math.random() * charSet.length)];
+  const username = `Mem***${c1}${c2}${c3}`;
+
+  const ava = winAvatars[Math.floor(Math.random() * winAvatars.length)];
+  const gm = winGames[Math.floor(Math.random() * winGames.length)];
+  const amt = winAmounts[Math.floor(Math.random() * winAmounts.length)];
+
+  return `
+    <div class="win-row">
+      <div class="win-left">
+        <img src="./images/${ava}" class="win-avatar" onerror="this.src='./images/6-7c7f5203.png'">
+        <span class="win-user">${username}</span>
+      </div>
+      <div class="win-mid">
+        <img src="${gm.img}" alt="${gm.name}" onerror="this.src='./images/lotterycategory_20240110062051do1k.png'">
+      </div>
+      <div class="win-right">
+        <div class="win-receive">Receive <span>₹${amt}</span></div>
+        <div class="win-sub">Winning amount</div>
+      </div>
+    </div>
+  `;
+}
+
+function initWinningInfo() {
+  const container = document.getElementById('winningContainer');
+  if (!container) return;
+
+  // Initialize with first 5 rows
+  let initialHtml = '';
+  for (let i = 0; i < 5; i++) {
+    initialHtml += getRandomWinnerRow();
+  }
+  container.innerHTML = initialHtml;
+
+  // Continuously slide in new winners every 2.5 seconds
+  setInterval(() => {
+    const newRowHtml = getRandomWinnerRow();
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = newRowHtml.trim();
+    const newElement = tempDiv.firstChild;
+
+    container.insertBefore(newElement, container.firstChild);
+
+    // Keep memory clean: remove bottom items beyond 6
+    if (container.children.length > 6) {
+      container.removeChild(container.lastChild);
+    }
+  }, 2500);
+}
+initWinningInfo();
+
 // 🏆 DYNAMIC TODAY'S EARNINGS CHART (10 PROFILES DYNAMIC)
 function generateDailyLeaderboard() {
   const dateKey = new Date().toISOString().split('T')[0].replace(/-/g, '');
@@ -843,7 +966,6 @@ function generateDailyLeaderboard() {
     return `${prefix}***${p1}${p2}${p3}`;
   }
 
-  // Rank 1, 2, 3 (Podium)
   const top1Amt = 50000000 + pseudoRand(25000000);
   const top2Amt = 25000000 + pseudoRand(15000000);
   const top3Amt = 10000000 + pseudoRand(8000000);
@@ -857,7 +979,6 @@ function generateDailyLeaderboard() {
   document.getElementById('p3_name').innerText = genName("Mem");
   document.getElementById('p3_amt').innerText = `₹${top3Amt.toLocaleString('en-IN')}`;
 
-  // Rank 4 to 10 Rows
   const avatars = ['19-2ac9fd83.png', '7-00479cfa.png', '1-c7e4efc8.png', '17-bedde42f.png', '6-7c7f5203.png', '3-abfcc056.png', '19-2ac9fd83.png'];
   const rowsBox = document.getElementById('rankRowsContainer');
   let rowsHtml = '';
