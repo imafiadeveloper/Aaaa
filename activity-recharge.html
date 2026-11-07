@@ -3,45 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#181818">
+<meta name="theme-color" content="#141416">
 <title>BDG GAME - Recharge Bonus</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
   --bg-main: #141416;
   --card-bg: #202024;
+  --card-sub: #18181b;
   --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.25);
+  --green: #00e676;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:40px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;font-family:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.navbar{
+  position:sticky;top:0;z-index:100;height:54px;background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--border);
+}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
-.banner-wrap{margin:12px 14px;}
-.top-banner{width:100%;border-radius:14px;display:block;}
+.banner-wrap{margin:12px 14px 6px;}
+.top-banner{width:100%;border-radius:16px;display:block;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
 
-.bonus-box{margin:0 14px 16px;background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);}
-.bb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.bb-row h3{font-size:16px;font-weight:800;color:#fff;}
-.bb-row span{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:900;}
+.brand-strip{text-align:center;padding:10px 0 4px;}
+.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;letter-spacing:1px;}
 
-.table-wrap{margin:0 14px;background:#202024;border-radius:14px;overflow:hidden;border:1px solid var(--border);}
-.tw-head{display:flex;background:#28282e;padding:12px 16px;font-size:11px;color:#8f929b;font-weight:700;}
+.bonus-box{
+  margin:6px 14px 14px;background:linear-gradient(145deg, #28241b 0%, #1c1a16 60%, #151518 100%);
+  border-radius:18px;padding:18px 16px;border:1px solid var(--border-gold);
+  box-shadow:0 10px 24px rgba(0,0,0,0.4);
+}
+.bb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.bb-row h3{font-size:17px;font-weight:900;color:#fff;}
+.bb-row span{
+  font-family:'Orbitron',sans-serif;font-size:11px;color:#241602;
+  background:var(--gold-grad);padding:3px 8px;border-radius:12px;font-weight:900;
+}
+.bonus-box p{font-size:12px;color:#8f929b;line-height:1.5;}
+
+.status-card{
+  margin:0 14px 14px;background:var(--card-sub);border-radius:14px;
+  padding:12px 16px;border:1px solid var(--border);display:flex;
+  justify-content:space-between;align-items:center;font-size:12px;
+}
+.status-card span{color:#8f929b;font-weight:700;}
+.status-card strong{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:900;}
+
+.section-label{padding:4px 16px 10px;font-size:13px;font-weight:800;color:#d5d8e2;}
+
+.table-wrap{margin:0 14px;background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+.tw-head{display:flex;justify-content:space-between;background:#28282e;padding:12px 16px;font-size:11px;color:#8f929b;font-weight:800;text-transform:uppercase;}
 .tw-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);}
 .tw-row:last-child{border-bottom:none;}
-.tw-row h4{font-family:'Orbitron',sans-serif;font-size:15px;color:#fff;}
-.tw-row h3{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);}
+.tw-col-info h4{font-family:'Orbitron',sans-serif;font-size:14px;color:#fff;font-weight:800;}
+.tw-col-info p{font-size:11px;color:#8f929b;margin-top:2px;}
+.tw-col-action{display:flex;align-items:center;gap:12px;}
+.tw-col-action h3{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);font-weight:900;}
+
+.btn-claim-bonus{
+  padding:5px 14px;border-radius:14px;background:#26262b;color:#6b6e78;
+  font-size:11px;font-weight:800;cursor:not-allowed;border:1px solid rgba(255,255,255,0.05);
+  transition:all 0.2s ease;
+}
+.btn-claim-bonus.ready{
+  background:var(--gold-grad);color:#241602;cursor:pointer;border:none;
+  box-shadow:0 3px 10px rgba(196,142,47,0.35);
+}
+.btn-claim-bonus.ready:active{transform:scale(0.96);}
+.btn-claim-bonus.claimed{
+  background:rgba(0,230,118,0.15);color:var(--green);cursor:default;border:1px solid rgba(0,230,118,0.3);
+}
 
 .btn-deposit{
-  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
-  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
-  font-size:15px;font-weight:900;
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
+  background:var(--gold-grad);color:#241602;font-size:15px;font-weight:900;
+  box-shadow:0 4px 16px rgba(196,147,63,0.35);display:flex;align-items:center;
+  justify-content:center;letter-spacing:0.3px;
 }
+.btn-deposit:active{transform:scale(0.98);}
+
+.rules-card{
+  margin:18px 14px 0;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:16px;padding:16px;
+}
+.rules-head{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#fff;margin-bottom:8px;}
+.rules-head svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2;}
+.rules-list{font-size:11px;color:#8f929b;line-height:1.7;padding-left:14px;}
+.rules-list strong{color:#ddd;}
+
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -49,44 +114,235 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <header class="navbar">
   <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-title">Recharge Bonus</div>
+  <div style="width:36px;"></div>
 </header>
 
 <div class="banner-wrap">
   <img src="./images/Banner_20261027221033lv4t.png" class="top-banner" onerror="this.src='./images/banner4.png'">
 </div>
 
+<div class="brand-strip">
+  <h2>BDG GAME</h2>
+</div>
+
 <div class="bonus-box">
   <div class="bb-row">
     <h3>First Deposit Bonus</h3>
-    <span>+100% EXTRA</span>
+    <span>ACTIVE</span>
   </div>
-  <p style="font-size:12px;color:#8f929b;line-height:1.5;">Deposit and get direct cashback to your wallet instantly. Valid for all payment gateways.</p>
+  <p>Make your qualifying first recharge and get instant bonus cashback added directly into your playable balance.</p>
 </div>
+
+<div class="status-card">
+  <span>Your Total Approved Recharge</span>
+  <strong id="displayTotalDep">₹0.00</strong>
+</div>
+
+<div class="section-label">🎁 Deposit Bonus Tiers</div>
 
 <div class="table-wrap">
   <div class="tw-head">
-    <div style="flex:1;">DEPOSIT AMOUNT</div>
-    <div>EXTRA BONUS</div>
+    <div>DEPOSIT AMOUNT</div>
+    <div>EXTRA BONUS / CLAIM</div>
   </div>
+
+  <!-- Tier 100 -->
   <div class="tw-row">
-    <h4>₹500</h4>
-    <h3>+₹50</h3>
+    <div class="tw-col-info">
+      <h4>₹100</h4>
+      <p>Single recharge target</p>
+    </div>
+    <div class="tw-col-action">
+      <h3>+₹10.00</h3>
+      <button class="btn-claim-bonus" id="btnDep100" onclick="claimDepositTier(100, 10)">Claim</button>
+    </div>
   </div>
+
+  <!-- Tier 300 -->
   <div class="tw-row">
-    <h4>₹1,000</h4>
-    <h3>+₹150</h3>
+    <div class="tw-col-info">
+      <h4>₹300</h4>
+      <p>Single recharge target</p>
+    </div>
+    <div class="tw-col-action">
+      <h3>+₹25.00</h3>
+      <button class="btn-claim-bonus" id="btnDep300" onclick="claimDepositTier(300, 25)">Claim</button>
+    </div>
   </div>
+
+  <!-- Tier 500 -->
   <div class="tw-row">
-    <h4>₹5,000</h4>
-    <h3>+₹800</h3>
+    <div class="tw-col-info">
+      <h4>₹500</h4>
+      <p>Single recharge target</p>
+    </div>
+    <div class="tw-col-action">
+      <h3>+₹50.00</h3>
+      <button class="btn-claim-bonus" id="btnDep500" onclick="claimDepositTier(500, 50)">Claim</button>
+    </div>
   </div>
+
+  <!-- Tier 1000 -->
   <div class="tw-row">
-    <h4>₹10,000</h4>
-    <h3>+₹2,000</h3>
+    <div class="tw-col-info">
+      <h4>₹1,000+</h4>
+      <p>Single recharge target</p>
+    </div>
+    <div class="tw-col-action">
+      <h3>+₹100.00</h3>
+      <button class="btn-claim-bonus" id="btnDep1000" onclick="claimDepositTier(1000, 100)">Claim</button>
+    </div>
   </div>
 </div>
 
 <button class="btn-deposit" onclick="location.href='deposit.html'">Recharge Now</button>
 
+<div class="rules-card">
+  <div class="rules-head">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span>Bonus Rules</span>
+  </div>
+  <ul class="rules-list">
+    <li>Recharge bonuses are awarded based on your qualifying approved deposit amount.</li>
+    <li>Each deposit milestone can be claimed <strong>strictly once per account</strong>.</li>
+    <li>Claimed cash bonuses are instantly credited directly to your game balance.</li>
+  </ul>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, doc, getDoc, updateDoc, increment, collection, query, 
+  where, getDocs, setDoc, arrayUnion, serverTimestamp, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let userTotalRecharge = 0;
+let claimedDepositTiers = [];
+
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg; 
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
+};
+
+const TIERS = [100, 300, 500, 1000];
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    loadRechargeBonusData();
+  } else {
+    location.replace('index.html');
+  }
+});
+
+async function loadRechargeBonusData() {
+  try {
+    const snap = await getDoc(doc(db, 'users', currentUser.uid));
+    if (!snap.exists()) return;
+    const userData = snap.data();
+
+    claimedDepositTiers = userData.claimedDepositTiers || [];
+
+    // Verify deposit amounts from user document & actual approved deposits
+    let totalDep = Number(userData.totalDeposit || userData.totalRecharge || 0);
+
+    try {
+      const q = query(
+        collection(db, 'deposits'),
+        where('userId', '==', currentUser.uid),
+        where('status', 'in', ['completed', 'approved', 'success']),
+        limit(50)
+      );
+      const depSnap = await getDocs(q);
+      let realSum = 0;
+      depSnap.forEach(d => {
+        realSum += Number(d.data().amount || 0);
+      });
+      if (realSum > totalDep) totalDep = realSum;
+    } catch (e) {}
+
+    userTotalRecharge = totalDep;
+    document.getElementById('displayTotalDep').textContent = `₹${userTotalRecharge.toFixed(2)}`;
+
+    // Update each tier button
+    TIERS.forEach(target => {
+      const btn = document.getElementById(`btnDep${target}`);
+      btn.classList.remove('ready', 'claimed');
+
+      if (claimedDepositTiers.includes(target)) {
+        btn.classList.add('claimed');
+        btn.textContent = 'Claimed ✓';
+        btn.disabled = true;
+      } else if (userTotalRecharge >= target) {
+        btn.classList.add('ready');
+        btn.textContent = 'Claim';
+        btn.disabled = false;
+      } else {
+        btn.textContent = 'Claim';
+        btn.disabled = true;
+      }
+    });
+
+  } catch (e) {
+    console.error("Recharge bonus error:", e);
+  }
+}
+
+window.claimDepositTier = async (target, amt) => {
+  if (!currentUser) return;
+  if (claimedDepositTiers.includes(target)) return toast('Tier bonus already claimed!');
+  if (userTotalRecharge < target) return toast(`Recharge at least ₹${target} to unlock!`);
+
+  const btn = document.getElementById(`btnDep${target}`);
+  btn.disabled = true;
+  btn.textContent = 'Claiming...';
+
+  try {
+    const userRef = doc(db, 'users', currentUser.uid);
+
+    // 1. Credit wallet balance and record claimed tier
+    await updateDoc(userRef, {
+      balance: increment(amt),
+      totalBonus: increment(amt),
+      claimedDepositTiers: arrayUnion(target)
+    });
+
+    // 2. Add to Transactions Ledger (Instant success on Wallet)
+    await setDoc(doc(db, 'transactions', `depb_${target}_${Date.now()}_${currentUser.uid.slice(0, 5)}`), {
+      userId: currentUser.uid,
+      type: 'bonus',
+      title: `Recharge ₹${target} Extra Bonus`,
+      amount: amt,
+      status: 'success',
+      createdAt: serverTimestamp()
+    });
+
+    toast(`🎉 ₹${amt}.00 Recharge Bonus Claimed!`);
+    await loadRechargeBonusData();
+  } catch (e) {
+    toast('Claim failed. Try again.');
+    btn.disabled = false;
+    btn.textContent = 'Claim';
+  }
+};
+</script>
 </body>
 </html>

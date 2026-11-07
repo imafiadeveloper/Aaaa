@@ -3,54 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#181818">
+<meta name="theme-color" content="#141416">
 <title>BDG GAME - Aviator Bonus</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
   --bg-main: #141416;
   --card-bg: #202024;
+  --card-sub: #18181b;
   --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.25);
+  --green: #00e676;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:40px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;font-family:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.navbar{
+  position:sticky;top:0;z-index:100;height:54px;background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--border);
+}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
-.banner-wrap{margin:12px 14px;}
-.top-banner{width:100%;border-radius:14px;display:block;}
-.brand-strip{text-align:center;padding:10px 0;}
-.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;}
+.banner-wrap{margin:12px 14px 6px;}
+.top-banner{width:100%;border-radius:16px;display:block;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
 
-.detail-card{margin:0 14px 14px;background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);}
+.detail-card{
+  margin:6px 14px 14px;background:linear-gradient(145deg, #2b1f1f 0%, #1c1515 60%, #151518 100%);
+  border-radius:18px;padding:18px 16px;border:1px solid rgba(255,89,98,0.25);
+  position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,0.4);
+}
 .dc-header{display:flex;justify-content:space-between;align-items:flex-start;}
-.dc-sub{font-size:11px;color:var(--gold);font-weight:700;}
-.dc-title{font-size:18px;font-weight:800;margin-top:4px;}
+.dc-sub{font-size:11px;color:#ff5964;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:4px;}
+.dc-title{font-size:18px;font-weight:900;margin-top:4px;}
 .dc-desc{font-size:12px;color:#8f929b;margin-top:2px;}
-.dc-badge{text-align:right;}
-.dc-badge span{font-size:10px;color:var(--gold);font-weight:700;}
-.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:24px;color:var(--gold);line-height:1.2;}
-.dc-timing{margin-top:16px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.1);font-size:12px;color:#8f929b;}
-.dc-timing p{font-size:10px;color:#666;margin-top:4px;}
+.dc-badge{
+  text-align:center;background:rgba(0,0,0,0.35);padding:8px 12px;
+  border-radius:12px;border:1px solid rgba(255,89,98,0.3);
+}
+.dc-badge span{font-size:9px;color:#ff5964;font-weight:800;letter-spacing:0.5px;}
+.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:20px;color:var(--gold);line-height:1;margin:2px 0;}
 
-.section-label{padding:0 14px 10px;font-size:14px;font-weight:800;}
-.table-box{margin:0 14px;background:#202024;border-radius:14px;overflow:hidden;border:1px solid var(--border);}
-.tb-head{display:flex;background:#28282e;padding:12px 16px;font-size:11px;color:#8f929b;font-weight:700;text-transform:uppercase;}
-.tb-row{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.status-card{
+  margin:0 14px 14px;background:var(--card-sub);border-radius:14px;
+  padding:12px 16px;border:1px solid var(--border);display:flex;
+  justify-content:space-between;align-items:center;font-size:12px;
+}
+.status-card span{color:#8f929b;font-weight:700;}
+.status-card strong{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:900;}
+
+.section-label{padding:0 16px 10px;font-size:13px;font-weight:800;color:#d5d8e2;}
+.table-box{margin:0 14px;background:var(--card-bg);border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+.tb-head{display:flex;justify-content:space-between;background:#28282e;padding:12px 16px;font-size:11px;color:#8f929b;font-weight:800;text-transform:uppercase;}
+.tb-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);}
 .tb-row:last-child{border-bottom:none;}
-.tb-row h3{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;}
-.tb-row h2{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--gold);}
+.tb-row h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:800;}
+.tb-row-right{display:flex;align-items:center;gap:10px;}
+.tb-row-right h2{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--gold);}
+.btn-claim-av{
+  padding:4px 12px;border-radius:12px;background:#26262b;color:#6b6e78;
+  font-size:11px;font-weight:800;border:1px solid rgba(255,255,255,0.05);
+}
+.btn-claim-av.ready{background:var(--gold-grad);color:#241602;border:none;}
+.btn-claim-av.claimed{background:rgba(0,230,118,0.15);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
 
 .btn-play{
-  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
-  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
-  font-size:15px;font-weight:900;
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
+  background:var(--gold-grad);color:#241602;font-size:15px;font-weight:900;
+  box-shadow:0 4px 16px rgba(196,147,63,0.35);display:flex;align-items:center;
+  justify-content:center;letter-spacing:0.3px;
 }
+.btn-play:active{transform:scale(0.98);}
+
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -58,64 +95,191 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <header class="navbar">
   <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-title">Activity details</div>
+  <div style="width:36px;"></div>
 </header>
 
 <div class="banner-wrap">
   <img src="./images/Banner_20261027220812iof3.png" class="top-banner" onerror="this.src='./images/banner8.png'">
 </div>
 
-<div class="brand-strip">
-  <h2>BDG GAME</h2>
-</div>
-
 <div class="detail-card">
   <div class="dc-header">
     <div>
-      <div class="dc-sub">✈️ AVIATOR</div>
-      <div class="dc-title">Aviator bonus</div>
-      <div class="dc-desc">Turnover rewards</div>
+      <div class="dc-sub">✈️ AVIATOR CRASH</div>
+      <div class="dc-title">Aviator Turnover Bonus</div>
+      <div class="dc-desc">Place bets on Aviator and unlock cash rewards</div>
     </div>
     <div class="dc-badge">
       <span>TOP TIER</span>
-      <h1>₹2,000</h1>
+      <h1>+₹60</h1>
       <span style="color:#8f929b;">BONUS</span>
     </div>
   </div>
-  <div class="dc-timing">
-    <div style="display:flex;justify-content:space-between;">
-      <span>⏱️ Apply</span>
-      <strong style="color:#fff;">Next day after completion</strong>
-    </div>
-    <p>Claims are invalid if you do not apply the next day.</p>
-  </div>
 </div>
 
-<div class="section-label">🎁 Aviator turnover rewards</div>
+<div class="status-card">
+  <span>Your Aviator Turnover</span>
+  <strong id="displayAviatorBet">₹0.00</strong>
+</div>
+
+<div class="section-label">🎁 Aviator Milestone Rewards</div>
 
 <div class="table-box">
   <div class="tb-head">
-    <div style="flex:1;">TURNOVER / TOTAL BET</div>
-    <div>BONUS</div>
+    <div>AVIATOR BET</div>
+    <div>BONUS REWARD</div>
   </div>
   <div class="tb-row">
-    <h3>₹10,000</h3>
-    <h2>₹100</h2>
+    <h3>₹500</h3>
+    <div class="tb-row-right">
+      <h2>+₹5.00</h2>
+      <button class="btn-claim-av" id="btnAv500" onclick="claimAviatorTier(500, 5)">Claim</button>
+    </div>
   </div>
   <div class="tb-row">
-    <h3>₹30,000</h3>
-    <h2>₹300</h2>
+    <h3>₹1,500</h3>
+    <div class="tb-row-right">
+      <h2>+₹15.00</h2>
+      <button class="btn-claim-av" id="btnAv1500" onclick="claimAviatorTier(1500, 15)">Claim</button>
+    </div>
   </div>
   <div class="tb-row">
-    <h3>₹50,000</h3>
-    <h2>₹700</h2>
+    <h3>₹3,000</h3>
+    <div class="tb-row-right">
+      <h2>+₹30.00</h2>
+      <button class="btn-claim-av" id="btnAv3000" onclick="claimAviatorTier(3000, 30)">Claim</button>
+    </div>
   </div>
   <div class="tb-row">
-    <h3>₹100,000</h3>
-    <h2>₹2,000</h2>
+    <h3>₹6,000</h3>
+    <div class="tb-row-right">
+      <h2>+₹60.00</h2>
+      <button class="btn-claim-av" id="btnAv6000" onclick="claimAviatorTier(6000, 60)">Claim</button>
+    </div>
   </div>
 </div>
 
 <button class="btn-play" onclick="location.href='aviator.html'">Play Aviator Now</button>
 
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, doc, getDoc, updateDoc, increment, collection, query, 
+  where, getDocs, setDoc, arrayUnion, serverTimestamp, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let aviatorTurnover = 0;
+let claimedAviatorTiers = [];
+
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg; 
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
+};
+
+const AVIATOR_TIERS = [500, 1500, 3000, 6000];
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    loadAviatorData();
+  } else {
+    location.replace('index.html');
+  }
+});
+
+async function loadAviatorData() {
+  try {
+    const snap = await getDoc(doc(db, 'users', currentUser.uid));
+    if (!snap.exists()) return;
+    const userData = snap.data();
+    claimedAviatorTiers = userData.claimedAviatorTiers || [];
+
+    // Live scan bets_aviator
+    let totalBet = 0;
+    try {
+      const q = query(collection(db, 'bets_aviator'), where('userId', '==', currentUser.uid), limit(100));
+      const bSnap = await getDocs(q);
+      bSnap.forEach(d => { totalBet += Number(d.data().amount || 0); });
+    } catch(e){}
+
+    aviatorTurnover = Math.max(totalBet, Number(userData.aviatorTurnover || 0));
+    document.getElementById('displayAviatorBet').textContent = `₹${aviatorTurnover.toFixed(2)}`;
+
+    AVIATOR_TIERS.forEach(target => {
+      const btn = document.getElementById(`btnAv${target}`);
+      btn.classList.remove('ready', 'claimed');
+
+      if (claimedAviatorTiers.includes(target)) {
+        btn.classList.add('claimed');
+        btn.textContent = 'Claimed ✓';
+        btn.disabled = true;
+      } else if (aviatorTurnover >= target) {
+        btn.classList.add('ready');
+        btn.textContent = 'Claim';
+        btn.disabled = false;
+      } else {
+        btn.textContent = 'Claim';
+        btn.disabled = true;
+      }
+    });
+  } catch(e) {
+    console.error("Aviator bonus error:", e);
+  }
+}
+
+window.claimAviatorTier = async (target, amt) => {
+  if (!currentUser) return;
+  if (claimedAviatorTiers.includes(target)) return toast('Tier already claimed!');
+  if (aviatorTurnover < target) return toast(`Need ₹${target} Aviator turnover to claim!`);
+
+  const btn = document.getElementById(`btnAv${target}`);
+  btn.disabled = true;
+  btn.textContent = 'Claiming...';
+
+  try {
+    const userRef = doc(db, 'users', currentUser.uid);
+
+    await updateDoc(userRef, {
+      balance: increment(amt),
+      totalBonus: increment(amt),
+      claimedAviatorTiers: arrayUnion(target)
+    });
+
+    await setDoc(doc(db, 'transactions', `avb_${target}_${Date.now()}`), {
+      userId: currentUser.uid,
+      type: 'bonus',
+      title: `Aviator ₹${target} Turnover Reward`,
+      amount: amt,
+      status: 'success',
+      createdAt: serverTimestamp()
+    });
+
+    toast(`🎉 ₹${amt}.00 Aviator Bonus Claimed!`);
+    await loadAviatorData();
+  } catch(e) {
+    toast('Claim failed');
+    btn.disabled = false;
+    btn.textContent = 'Claim';
+  }
+};
+</script>
 </body>
 </html>

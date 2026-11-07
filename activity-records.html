@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#181818">
+<meta name="theme-color" content="#141416">
 <title>BDG GAME - Bonus Details</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -12,56 +12,65 @@
   --gold-grad: linear-gradient(180deg, #FFE793 0%, #C48E2F 100%);
   --bg-main: #141416;
   --card-bg: #202024;
+  --card-sub: #18181b;
   --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.25);
+  --green: #00e676;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:40px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;font-family:inherit;}
 ::-webkit-scrollbar{width:0;height:0;}
 
-/* Navbar */
-.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.navbar{
+  position:sticky;top:0;z-index:100;height:54px;background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--border);
+}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
-/* Top Summary Banner */
 .summary-card{
-  margin:12px 14px;background:linear-gradient(135deg, #2c2415 0%, #171618 100%);
-  border-radius:18px;padding:18px 16px;border:1px solid rgba(250,229,159,0.25);
-  box-shadow:0 8px 24px rgba(0,0,0,0.5);display:flex;justify-content:space-between;align-items:center;
+  margin:12px 14px 14px;background:linear-gradient(145deg, #2a2419 0%, #1b1916 60%, #151518 100%);
+  border-radius:18px;padding:18px 16px;border:1px solid var(--border-gold);
+  box-shadow:0 8px 24px rgba(0,0,0,0.45);display:flex;justify-content:space-between;align-items:center;
 }
 .sc-info span{font-size:11px;color:#a6a9ae;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
-.sc-info h1{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--gold);margin-top:4px;}
-.sc-icon{width:50px;height:50px;border-radius:14px;background:rgba(250,229,159,0.1);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.sc-info h1{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);margin-top:4px;}
+.sc-icon{width:46px;height:46px;border-radius:50%;background:rgba(250,229,159,0.12);display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border-gold);}
 
-/* Filter Tabs */
 .filter-tabs-wrap{
-  display:flex;gap:8px;padding:0 14px 14px;overflow-x:auto;scrollbar-width:none;
+  display:flex;gap:8px;padding:0 14px 12px;overflow-x:auto;scrollbar-width:none;
 }
 .f-tab{
-  flex:0 0 auto;padding:8px 16px;border-radius:20px;background:#202024;
-  color:#8f929b;font-size:12px;font-weight:700;border:1px solid var(--border);transition:all .2s;
+  flex:0 0 auto;padding:8px 14px;border-radius:18px;background:var(--card-bg);
+  color:#8f929b;font-size:11px;font-weight:800;border:1px solid var(--border);transition:all .2s;
 }
-.f-tab.active{background:var(--gold-grad);color:#291a03;border-color:transparent;}
+.f-tab.active{background:var(--gold-grad);color:#241602;border-color:transparent;}
 
-/* Records List */
 .records-wrap{padding:0 14px;display:flex;flex-direction:column;gap:10px;}
 .record-card{
-  background:#202024;border-radius:14px;padding:14px 16px;border:1px solid var(--border);
+  background:var(--card-bg);border-radius:14px;padding:12px 14px;border:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:center;
 }
 .rc-left h4{font-size:13px;font-weight:700;color:#fff;}
-.rc-left p{font-size:11px;color:#7e8290;margin-top:3px;}
+.rc-left p{font-size:11px;color:#7e8290;margin-top:2px;}
 .rc-right{text-align:right;}
-.rc-right .amt{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:#00e676;}
-.rc-right .status{font-size:10px;color:var(--gold);font-weight:700;margin-top:2px;text-transform:uppercase;}
+.rc-right .amt{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--green);}
+.rc-right .status{font-size:10px;color:var(--gold);font-weight:800;margin-top:2px;text-transform:uppercase;}
 
-.empty-state{text-align:center;padding:50px 20px;color:#666;}
-.empty-state .ico{font-size:44px;margin-bottom:10px;opacity:0.4;}
-.empty-state p{font-size:13px;font-weight:600;}
+.empty-state{text-align:center;padding:50px 20px;color:#6b6e78;}
+.empty-state .ico{font-size:40px;margin-bottom:8px;opacity:0.4;}
+.empty-state p{font-size:12px;font-weight:600;}
 
-.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;}
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -71,6 +80,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
   </div>
   <div class="navbar-title">Bonus Details</div>
+  <div style="width:36px;"></div>
 </header>
 
 <div class="summary-card">
@@ -85,15 +95,15 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <button class="f-tab active" onclick="filterBonus('all', this)">All</button>
   <button class="f-tab" onclick="filterBonus('Attendance', this)">Attendance</button>
   <button class="f-tab" onclick="filterBonus('Rebate', this)">Rebate</button>
-  <button class="f-tab" onclick="filterBonus('Wheel', this)">Wheel Spin</button>
   <button class="f-tab" onclick="filterBonus('Mystery', this)">Mystery</button>
   <button class="f-tab" onclick="filterBonus('Invite', this)">Invitation</button>
+  <button class="f-tab" onclick="filterBonus('Jackpot', this)">Jackpot</button>
 </div>
 
 <div class="records-wrap" id="recordsContainer">
   <div class="empty-state">
     <div class="ico">⏳</div>
-    <p>Loading records...</p>
+    <p>Loading bonus records...</p>
   </div>
 </div>
 
@@ -117,20 +127,14 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUser = null;
-let allTransactions = [];
-
-window.toast = (msg) => {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 1800);
-};
+let allBonusRecords = [];
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
-    const userSnap = await getDoc(doc(db, 'users', user.uid));
-    if (userSnap.exists()) {
-      const data = userSnap.data();
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      const data = snap.data();
       document.getElementById('totalBonusDisplay').textContent = `₹${Number(data.totalBonus || 0).toFixed(2)}`;
     }
     await loadBonusHistory();
@@ -149,14 +153,14 @@ async function loadBonusHistory() {
       limit(50)
     );
     const snap = await getDocs(q);
-    allTransactions = [];
+    allBonusRecords = [];
 
     snap.forEach(d => {
-      allTransactions.push({ id: d.id, ...d.data() });
+      allBonusRecords.push({ id: d.id, ...d.data() });
     });
 
-    allTransactions.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-    renderRecords(allTransactions);
+    allBonusRecords.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+    renderRecords(allBonusRecords);
   } catch(e) {
     container.innerHTML = `
       <div class="empty-state">
@@ -181,13 +185,13 @@ function renderRecords(list) {
     let dateStr = 'Recent';
     if (item.createdAt && item.createdAt.toDate) {
       dateStr = item.createdAt.toDate().toLocaleString('en-IN', {
-        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
       });
     }
     return `
       <div class="record-card">
         <div class="rc-left">
-          <h4>${item.title || 'Activity Bonus'}</h4>
+          <h4>${item.title || 'Bonus Reward'}</h4>
           <p>${dateStr}</p>
         </div>
         <div class="rc-right">
@@ -204,9 +208,9 @@ window.filterBonus = (category, el) => {
   el.classList.add('active');
 
   if (category === 'all') {
-    renderRecords(allTransactions);
+    renderRecords(allBonusRecords);
   } else {
-    const filtered = allTransactions.filter(item => 
+    const filtered = allBonusRecords.filter(item => 
       (item.title || '').toLowerCase().includes(category.toLowerCase())
     );
     renderRecords(filtered);

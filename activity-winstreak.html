@@ -3,63 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#181818">
+<meta name="theme-color" content="#141416">
 <title>BDG GAME - Win Streak Bonus</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
   --bg-main: #141416;
   --card-bg: #202024;
+  --card-sub: #18181b;
   --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.25);
+  --green: #00e676;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:40px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;font-family:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.navbar{
+  position:sticky;top:0;z-index:100;height:54px;background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--border);
+}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
-.banner-wrap{margin:12px 14px;}
-.top-banner{width:100%;border-radius:14px;display:block;}
-.brand-strip{text-align:center;padding:10px 0;}
-.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;}
+.banner-wrap{margin:12px 14px 6px;}
+.top-banner{width:100%;border-radius:16px;display:block;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
 
-.detail-card{margin:0 14px 14px;background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);}
+.brand-strip{text-align:center;padding:10px 0 4px;}
+.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;letter-spacing:1px;}
+
+.detail-card{
+  margin:6px 14px 14px;background:linear-gradient(145deg, #252420 0%, #1a1917 60%, #151518 100%);
+  border-radius:18px;padding:18px 16px;border:1px solid var(--border-gold);
+  position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,0.4);
+}
+.detail-card::after{
+  content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  background:radial-gradient(circle, rgba(250,229,159,0.15), transparent 70%);
+  pointer-events:none;
+}
 .dc-header{display:flex;justify-content:space-between;align-items:flex-start;}
-.dc-sub{font-size:11px;color:var(--gold);font-weight:700;}
-.dc-title{font-size:18px;font-weight:800;margin-top:4px;}
+.dc-sub{font-size:11px;color:var(--gold);font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:4px;}
+.dc-title{font-size:18px;font-weight:900;margin-top:4px;}
 .dc-desc{font-size:12px;color:#8f929b;margin-top:2px;}
-.dc-badge{text-align:right;}
-.dc-badge span{font-size:10px;color:var(--gold);font-weight:700;}
-.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:28px;color:var(--gold);line-height:1;}
-.dc-timing{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.1);font-size:12px;color:#8f929b;}
+.dc-badge{
+  text-align:center;background:rgba(0,0,0,0.35);padding:8px 12px;
+  border-radius:12px;border:1px solid var(--border-gold);
+}
+.dc-badge span{font-size:9px;color:var(--gold);font-weight:800;letter-spacing:0.5px;}
+.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:24px;color:var(--gold);line-height:1;margin:2px 0;}
+.dc-timing{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.08);font-size:12px;color:#8f929b;}
 
-.section-label{padding:0 14px 10px;font-size:14px;font-weight:800;}
-.streak-table{margin:0 14px;background:#202024;border-radius:14px;overflow:hidden;border:1px solid var(--border);}
-.st-head{display:flex;background:#28282e;padding:12px 16px;font-size:11px;color:#8f929b;font-weight:700;text-transform:uppercase;}
-.st-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);}
-.st-row:last-child{border-bottom:none;}
-.st-col-title h3{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#fff;}
-.st-col-title p{font-size:11px;color:#8f929b;margin-top:2px;}
-.st-col-reward{text-align:right;}
-.st-col-reward p{font-size:11px;color:#8f929b;}
-.st-col-reward h2{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);margin-top:2px;}
+.status-card{
+  margin:0 14px 14px;background:var(--card-sub);border-radius:14px;
+  padding:12px 16px;border:1px solid var(--border);display:flex;
+  justify-content:space-between;align-items:center;font-size:12px;
+}
+.status-card span{color:#8f929b;font-weight:700;}
+.status-card strong{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:900;}
+
+.section-label{padding:4px 16px 10px;font-size:13px;font-weight:800;color:#d5d8e2;display:flex;align-items:center;gap:6px;}
+
+.tier-list{margin:0 14px;display:flex;flex-direction:column;gap:10px;}
+.tier-item{
+  background:var(--card-bg);border-radius:16px;padding:14px 16px;display:flex;
+  justify-content:space-between;align-items:center;border:1px solid var(--border);
+  transition:all 0.2s ease;
+}
+.tier-item.ready{border-color:var(--gold);background:linear-gradient(160deg, #25241f 0%, #1b1b1e 100%);}
+.tier-item.claimed{border-color:rgba(0,230,118,0.25);background:#17171a;}
+
+.ti-left h4{font-size:13px;font-weight:800;color:#fff;}
+.ti-left p{font-size:11px;color:#8f929b;margin-top:3px;}
+.ti-progress{font-size:10px;color:var(--gold);font-weight:700;margin-top:4px;}
+
+.ti-right{text-align:right;}
+.ti-right h3{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;color:var(--gold);}
+
+.btn-claim-streak{
+  margin-top:6px;padding:6px 16px;border-radius:16px;background:#26262b;color:#6b6e78;
+  font-size:11px;font-weight:800;cursor:not-allowed;border:1px solid rgba(255,255,255,0.05);
+}
+.btn-claim-streak.ready{
+  background:var(--gold-grad);color:#241602;cursor:pointer;
+  box-shadow:0 3px 10px rgba(196,142,47,0.35);border:none;
+}
+.btn-claim-streak.ready:active{transform:scale(0.96);}
+.btn-claim-streak.claimed{
+  background:rgba(0,230,118,0.15);color:var(--green);cursor:default;border:1px solid rgba(0,230,118,0.3);
+}
 
 .btn-bet{
-  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
-  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
-  font-size:15px;font-weight:900;
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
+  background:var(--gold-grad);color:#241602;font-size:15px;font-weight:900;
+  box-shadow:0 4px 16px rgba(196,147,63,0.35);display:flex;align-items:center;
+  justify-content:center;letter-spacing:0.3px;
 }
+.btn-bet:active{transform:scale(0.98);}
+
+.rules-card{
+  margin:18px 14px 0;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:16px;padding:16px;
+}
+.rules-head{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#fff;margin-bottom:8px;}
+.rules-head svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2;}
+.rules-list{font-size:11px;color:#8f929b;line-height:1.7;padding-left:14px;}
+.rules-list strong{color:#ddd;}
+
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
 <header class="navbar">
   <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
-  <div class="navbar-title">Activity details</div>
+  <div class="navbar-title">Win Streak Bonus</div>
+  <div style="width:36px;"></div>
 </header>
 
 <div class="banner-wrap">
@@ -73,72 +143,242 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="detail-card">
   <div class="dc-header">
     <div>
-      <div class="dc-sub">🏆 LOTTERY</div>
-      <div class="dc-title">Win streak bonus</div>
-      <div class="dc-desc">Lottery game rewards</div>
+      <div class="dc-sub">🏆 LOTTERY STREAK</div>
+      <div class="dc-title">Win Streak Bonus</div>
+      <div class="dc-desc">Consecutive lottery round victory bonuses</div>
     </div>
     <div class="dc-badge">
-      <span>UP TO</span>
-      <h1>200%</h1>
-      <span style="color:#8f929b;">BONUS</span>
+      <span>TOP BONUS</span>
+      <h1>+₹20.00</h1>
+      <span style="color:#8f929b;">REWARD</span>
     </div>
   </div>
   <div class="dc-timing">
-    <span>🎯 Game type</span>
-    <strong style="color:#fff;">WINGO 30s · WINGO 1min</strong>
+    <span>🎯 Target Games</span>
+    <strong style="color:#fff;">Win Go 30s · Win Go 1Min</strong>
   </div>
 </div>
 
-<div class="section-label">🎁 Win streak rewards</div>
+<div class="status-card">
+  <span>Current Consecutive Wins</span>
+  <strong id="displayCurrentStreak">0 Wins</strong>
+</div>
 
-<div class="streak-table">
-  <div class="st-head">
-    <div style="flex:1;">WIN STREAK</div>
-    <div style="text-align:right;">BONUS</div>
-  </div>
-  <div class="st-row">
-    <div class="st-col-title">
-      <h3>8</h3>
-      <p>consecutive wins</p>
+<div class="section-label">🎁 Win Streak Milestones</div>
+
+<div class="tier-list">
+  <div class="tier-item" id="tierCard3">
+    <div class="ti-left">
+      <h4>3 Consecutive Wins</h4>
+      <p>Win Go 30s / 1Min victory streak</p>
+      <div class="ti-progress" id="tierProg3">Progress: 0 / 3</div>
     </div>
-    <div class="st-col-reward">
-      <p>Betting amount ×</p>
-      <h2>20%</h2>
-    </div>
-  </div>
-  <div class="st-row">
-    <div class="st-col-title">
-      <h3>18</h3>
-      <p>consecutive wins</p>
-    </div>
-    <div class="st-col-reward">
-      <p>Betting amount ×</p>
-      <h2>35%</h2>
+    <div class="ti-right">
+      <h3>+₹2.00</h3>
+      <button class="btn-claim-streak" id="streakBtn3" onclick="claimStreakReward(3, 2)">Claim</button>
     </div>
   </div>
-  <div class="st-row">
-    <div class="st-col-title">
-      <h3>28</h3>
-      <p>consecutive wins</p>
+
+  <div class="tier-item" id="tierCard5">
+    <div class="ti-left">
+      <h4>5 Consecutive Wins</h4>
+      <p>Win Go 30s / 1Min victory streak</p>
+      <div class="ti-progress" id="tierProg5">Progress: 0 / 5</div>
     </div>
-    <div class="st-col-reward">
-      <p>Betting amount ×</p>
-      <h2>60%</h2>
+    <div class="ti-right">
+      <h3>+₹5.00</h3>
+      <button class="btn-claim-streak" id="streakBtn5" onclick="claimStreakReward(5, 5)">Claim</button>
     </div>
   </div>
-  <div class="st-row">
-    <div class="st-col-title">
-      <h3>38</h3>
-      <p>consecutive wins</p>
+
+  <div class="tier-item" id="tierCard8">
+    <div class="ti-left">
+      <h4>8 Consecutive Wins</h4>
+      <p>Win Go 30s / 1Min victory streak</p>
+      <div class="ti-progress" id="tierProg8">Progress: 0 / 8</div>
     </div>
-    <div class="st-col-reward">
-      <p>Betting amount ×</p>
-      <h2>200%</h2>
+    <div class="ti-right">
+      <h3>+₹10.00</h3>
+      <button class="btn-claim-streak" id="streakBtn8" onclick="claimStreakReward(8, 10)">Claim</button>
+    </div>
+  </div>
+
+  <div class="tier-item" id="tierCard12">
+    <div class="ti-left">
+      <h4>12 Consecutive Wins</h4>
+      <p>Grand Master victory streak</p>
+      <div class="ti-progress" id="tierProg12">Progress: 0 / 12</div>
+    </div>
+    <div class="ti-right">
+      <h3>+₹20.00</h3>
+      <button class="btn-claim-streak" id="streakBtn12" onclick="claimStreakReward(12, 20)">Claim</button>
     </div>
   </div>
 </div>
 
-<button class="btn-bet" onclick="location.href='wingo30.html'">Play WinGo Now</button>
+<button class="btn-bet" onclick="location.href='wingo30.html'">Play Win Go 30s</button>
 
+<div class="rules-card">
+  <div class="rules-head">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span>Streak Rules</span>
+  </div>
+  <ul class="rules-list">
+    <li>Consecutive winning rounds on <strong>Win Go 30s and 1Min</strong> count towards your current streak.</li>
+    <li>A loss or skipped period automatically resets the consecutive streak counter to 0.</li>
+    <li>Each streak tier can only be claimed <strong>once per streak cycle</strong>.</li>
+    <li>Claimed cash bonuses are instantly credited into your playable balance.</li>
+  </ul>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, doc, getDoc, updateDoc, increment, collection, query, 
+  where, getDocs, setDoc, arrayUnion, serverTimestamp, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let currentStreak = 0;
+let claimedStreakTiers = [];
+
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg; 
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
+};
+
+const STREAK_TIERS = [3, 5, 8, 12];
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    loadStreakData();
+  } else {
+    location.replace('index.html');
+  }
+});
+
+async function loadStreakData() {
+  try {
+    const snap = await getDoc(doc(db, 'users', currentUser.uid));
+    if (!snap.exists()) return;
+    const userData = snap.data();
+
+    claimedStreakTiers = userData.claimedStreakTiers || [];
+
+    let computedStreak = 0;
+    try {
+      const q30 = query(collection(db, 'bets_30s'), where('userId', '==', currentUser.uid), limit(25));
+      const q1 = query(collection(db, 'bets'), where('userId', '==', currentUser.uid), limit(25));
+
+      const [s30, s1] = await Promise.all([getDocs(q30), getDocs(q1)]);
+      let combined = [];
+
+      s30.forEach(d => combined.push(d.data()));
+      s1.forEach(d => combined.push(d.data()));
+
+      combined.sort((a,b) => {
+        const tA = a.createdAt?.toMillis?.() || a.time || 0;
+        const tB = b.createdAt?.toMillis?.() || b.time || 0;
+        return tB - tA;
+      });
+
+      for (const bet of combined) {
+        const st = (bet.status || '').toLowerCase();
+        if (st === 'win' || st === 'won' || st === 'success') {
+          computedStreak++;
+        } else if (st === 'lose' || st === 'lost' || st === 'failed') {
+          break;
+        }
+      }
+    } catch(e) {}
+
+    currentStreak = Math.max(computedStreak, Number(userData.winStreakCount || 0));
+    document.getElementById('displayCurrentStreak').textContent = `${currentStreak} Consecutive Wins`;
+
+    STREAK_TIERS.forEach(req => {
+      const btn = document.getElementById(`streakBtn${req}`);
+      const card = document.getElementById(`tierCard${req}`);
+      const prog = document.getElementById(`tierProg${req}`);
+
+      prog.textContent = `Progress: ${Math.min(currentStreak, req)} / ${req}`;
+
+      btn.classList.remove('ready', 'claimed');
+      card.classList.remove('ready', 'claimed');
+
+      if (claimedStreakTiers.includes(req)) {
+        btn.classList.add('claimed');
+        card.classList.add('claimed');
+        btn.textContent = 'Claimed ✓';
+        btn.disabled = true;
+      } else if (currentStreak >= req) {
+        btn.classList.add('ready');
+        card.classList.add('ready');
+        btn.textContent = 'Claim';
+        btn.disabled = false;
+      } else {
+        btn.textContent = 'Claim';
+        btn.disabled = true;
+      }
+    });
+
+  } catch(e) {
+    console.error("Streak loader error:", e);
+  }
+}
+
+window.claimStreakReward = async (req, amt) => {
+  if (!currentUser) return;
+  if (claimedStreakTiers.includes(req)) return toast('Already claimed this streak reward!');
+  if (currentStreak < req) return toast(`Need ${req} consecutive wins to claim!`);
+
+  const btn = document.getElementById(`streakBtn${req}`);
+  btn.disabled = true;
+  btn.textContent = 'Claiming...';
+
+  try {
+    const userRef = doc(db, 'users', currentUser.uid);
+
+    await updateDoc(userRef, {
+      balance: increment(amt),
+      totalBonus: increment(amt),
+      claimedStreakTiers: arrayUnion(req)
+    });
+
+    await setDoc(doc(db, 'transactions', `strk_${req}_${Date.now()}_${currentUser.uid.slice(0, 5)}`), {
+      userId: currentUser.uid,
+      type: 'bonus',
+      title: `Win Streak (${req} Rounds) Reward`,
+      amount: amt,
+      status: 'success',
+      createdAt: serverTimestamp()
+    });
+
+    toast(`🎉 ₹${amt}.00 Streak Reward Claimed!`);
+    await loadStreakData();
+  } catch(e) {
+    toast('Claim failed. Try again.');
+    btn.disabled = false;
+    btn.textContent = 'Claim';
+  }
+};
+</script>
 </body>
 </html>

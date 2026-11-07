@@ -7,105 +7,251 @@
 <title>BDG GAME — Attendance Bonus</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
-body{background-color:#141416;color:#fff;padding-bottom:30px;-webkit-tap-highlight-color:transparent;}
-button{cursor:pointer;border:none;outline:none;background:transparent;}
+:root{
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --card-sub: #19191d;
+  --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.3);
+  --green: #00e676;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background-color:var(--bg-main);color:#fff;padding-bottom:50px;}
+button{cursor:pointer;border:none;outline:none;background:transparent;font-family:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;background:rgba(20,20,22,0.95);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:54px;border-bottom:1px solid rgba(255,255,255,0.06);}
+/* Navbar */
+.navbar{
+  position:sticky;top:0;z-index:100;background:rgba(20,20,22,0.96);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:54px;
+  border-bottom:1px solid var(--border);
+}
 .navbar-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .navbar-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
-.check-box{padding:16px;}
-.check-header{text-align:center;margin-bottom:20px;}
-.check-header h4{font-size:20px;font-weight:800;margin-bottom:8px;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.check-header p{font-size:12px;color:#8f929b;}
-
-.list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.item{ 
-    background:#202024;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px 10px;
-    text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    box-shadow:0 6px 16px rgba(0,0,0,0.3);
+/* Hero Banner Card */
+.hero-card{
+  margin:14px 16px;
+  background:linear-gradient(145deg, #2a251b 0%, #1a1711 50%, #151518 100%);
+  border:1px solid var(--border-gold);
+  border-radius:20px;padding:20px 18px;
+  position:relative;overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
-.item.action{cursor:pointer;border-color:rgba(250,229,159,0.3);}
-.item.action:active{transform:scale(0.96);border-color:#FAE59F;}
-.item.disabled{opacity:0.4;pointer-events:none;}
-
-.item .num{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:800;color:#FAE59F;margin-bottom:6px;}
-.item .gift-icon{width:42px;height:42px;margin-bottom:8px;}
-.item .txt{font-size:11px;color:#291a03;background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);padding:5px 10px;border-radius:20px;font-weight:800;display:inline-block;width:100%;}
-
-.item.received{background:#18181a;border-color:rgba(255,255,255,0.03);}
-.item.received .num{color:#555;}
-.item.received .gift-icon{filter:grayscale(100%);opacity:0.4;}
-.item.received .txt{background:#2a2a2e;color:#777;}
-
-.item:nth-child(7){ 
-    grid-column:span 3;flex-direction:row;justify-content:space-between;padding:16px 20px;
-    background:linear-gradient(135deg,#C48E2F 0%,#FFE793 100%);border:none;
+.hero-card::after{
+  content:'';position:absolute;top:-40px;right:-40px;width:130px;height:130px;
+  background:radial-gradient(circle, rgba(250,229,159,0.18), transparent 70%);
+  border-radius:50%;pointer-events:none;
 }
-.item:nth-child(7) .num{color:#291a03;font-size:24px;margin-bottom:0;}
-.item:nth-child(7) .gift-icon{width:50px;height:50px;margin:0;}
-.item:nth-child(7) .txt{background:#291a03;color:#FAE59F;font-size:13px;width:auto;padding:8px 18px;}
-.item:nth-child(7).received{background:#18181a;}
-.item:nth-child(7).received .num{color:#555;}
-.item:nth-child(7).received .txt{background:#2a2a2e;color:#777;}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.hero-title{font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;}
+.hero-title span{background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:11px;color:#a4a7b2;}
+.streak-pill{
+  background:rgba(250,229,159,0.12);border:1px solid var(--border-gold);
+  color:var(--gold);padding:4px 10px;border-radius:14px;
+  font-size:11px;font-weight:800;display:flex;align-items:center;gap:4px;
+}
 
-.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(20,20,22,0.96);border:1px solid rgba(250,229,159,0.3);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;}
+.hero-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);
+}
+.hs-box{background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;border:1px solid var(--border);}
+.hs-box span{display:block;font-size:10px;color:#858892;font-weight:700;text-transform:uppercase;}
+.hs-box strong{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);font-weight:900;margin-top:2px;display:block;}
+
+/* 7 Days Attendance Grid */
+.attendance-grid{
+  display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;
+  padding:0 16px 14px;
+}
+.day-card{
+  background:var(--card-bg);border:1px solid var(--border);border-radius:16px;
+  padding:14px 10px;display:flex;flex-direction:column;align-items:center;
+  text-align:center;position:relative;overflow:hidden;transition:all 0.2s ease;
+}
+.day-badge{font-size:11px;font-weight:800;color:#8f929b;margin-bottom:6px;text-transform:uppercase;}
+.coin-icon{
+  width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle, #ffe793 0%, #c48e2f 100%);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:8px;box-shadow:0 4px 14px rgba(196,142,47,0.35);
+  font-size:20px;
+}
+.reward-amt{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;color:var(--gold);margin-bottom:8px;}
+.day-btn{
+  width:100%;height:32px;border-radius:16px;
+  font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Card States */
+/* 1. Claimable */
+.day-card.ready{
+  border-color:var(--gold);background:linear-gradient(160deg, #2a2822 0%, #1f1e1c 100%);
+  box-shadow:0 0 16px rgba(250,229,159,0.25);transform:scale(1.02);
+}
+.day-card.ready .day-btn{
+  background:var(--gold-grad);color:#271903;cursor:pointer;
+  box-shadow:0 3px 10px rgba(196,142,47,0.4);
+}
+.day-card.ready .day-btn:active{transform:scale(0.95);}
+
+/* 2. Claimed */
+.day-card.claimed{background:#18181b;border-color:rgba(0,230,118,0.25);}
+.day-card.claimed .coin-icon{background:#1e2e23;box-shadow:none;}
+.day-card.claimed .reward-amt{color:#777;}
+.day-card.claimed .day-btn{background:rgba(0,230,118,0.15);color:var(--green);cursor:default;}
+
+/* 3. Locked */
+.day-card.locked{background:#19191d;opacity:0.65;}
+.day-card.locked .coin-icon{filter:grayscale(90%);opacity:0.5;}
+.day-card.locked .reward-amt{color:#777;}
+.day-card.locked .day-btn{background:#232328;color:#5d6069;cursor:not-allowed;}
+
+/* Day 7 Grand Banner Card */
+.day-card.grand{
+  grid-column:span 3;flex-direction:row;justify-content:space-between;
+  padding:16px 20px;background:linear-gradient(135deg, #2d2616 0%, #1a1711 100%);
+  border:1.5px solid var(--border-gold);
+}
+.day-card.grand .grand-left{display:flex;align-items:center;gap:14px;text-align:left;}
+.day-card.grand .coin-icon{width:52px;height:52px;font-size:24px;margin-bottom:0;}
+.day-card.grand .reward-amt{font-size:22px;margin-bottom:0;}
+.day-card.grand .day-btn{width:auto;padding:0 22px;height:38px;font-size:12px;}
+
+/* Rules Section */
+.rules-card{
+  margin:10px 16px 30px;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:16px;padding:16px;
+}
+.rules-head{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#fff;margin-bottom:10px;}
+.rules-head svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2;}
+.rules-list{font-size:11px;color:#8f929b;line-height:1.7;padding-left:14px;}
+.rules-list strong{color:#ddd;}
+
+/* Toast */
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
 <header class="navbar">
-  <div class="navbar-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="navbar-left" onclick="location.href='activity.html'">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
   <div class="navbar-title">Attendance Bonus</div>
   <div style="width:36px;"></div>
 </header>
 
-<div class="check-box">
-  <div class="check-header">
-    <h4>7 Days Attendance Bonus</h4>
-    <p>Sign in consecutive days to receive massive grand rewards</p>
+<!-- Hero Banner -->
+<div class="hero-card">
+  <div class="hero-top">
+    <div>
+      <div class="hero-title">7-Day <span>Sign In Reward</span></div>
+      <div class="hero-sub">Sign in continuously to claim growing cash rewards</div>
+    </div>
+    <div class="streak-pill" id="streakBadge">🔥 Day 1 of 7</div>
   </div>
 
-  <div class="list" id="checkinList">
-    <div class="item action" data-day="1" onclick="claimBonus(1, 5)">
-      <div class="num">₹5</div>
-      <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-      <span class="txt">Claim</span>
+  <div class="hero-stats">
+    <div class="hs-box">
+      <span>Consecutive Days</span>
+      <strong id="statConsecutive">0 Days</strong>
     </div>
-    <div class="item action" data-day="2" onclick="claimBonus(2, 10)">
-      <div class="num">₹10</div>
-      <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-      <span class="txt">Claim</span>
-    </div>
-    <div class="item action" data-day="3" onclick="claimBonus(3, 15)">
-      <div class="num">₹15</div>
-      <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-      <span class="txt">Claim</span>
-    </div>
-    <div class="item action" data-day="4" onclick="claimBonus(4, 20)">
-      <div class="num">₹20</div>
-      <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-      <span class="txt">Claim</span>
-    </div>
-    <div class="item action" data-day="5" onclick="claimBonus(5, 25)">
-      <div class="num">₹25</div>
-      <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-      <span class="txt">Claim</span>
-    </div>
-    <div class="item action" data-day="6" onclick="claimBonus(6, 30)">
-      <div class="num">₹30</div>
-      <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#FAE59F" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-      <span class="txt">Claim</span>
-    </div>
-    <div class="item action" data-day="7" onclick="claimBonus(7, 35)">
-      <div class="num">₹35</div>
-      <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#291a03" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-      <span class="txt">Claim Grand Bonus</span>
+    <div class="hs-box">
+      <span>Total Bonus Received</span>
+      <strong id="statTotalEarned">₹0.00</strong>
     </div>
   </div>
+</div>
+
+<!-- 7 Days Grid -->
+<div class="attendance-grid" id="gridContainer">
+  <!-- Day 1 -->
+  <div class="day-card" id="card-1">
+    <span class="day-badge">Day 1</span>
+    <div class="coin-icon">💰</div>
+    <div class="reward-amt">₹5</div>
+    <button class="day-btn" id="btn-1" onclick="claimDayBonus(1, 5)">Claim</button>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="day-card" id="card-2">
+    <span class="day-badge">Day 2</span>
+    <div class="coin-icon">💰</div>
+    <div class="reward-amt">₹10</div>
+    <button class="day-btn" id="btn-2" onclick="claimDayBonus(2, 10)">Locked</button>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="day-card" id="card-3">
+    <span class="day-badge">Day 3</span>
+    <div class="coin-icon">💰</div>
+    <div class="reward-amt">₹15</div>
+    <button class="day-btn" id="btn-3" onclick="claimDayBonus(3, 15)">Locked</button>
+  </div>
+
+  <!-- Day 4 -->
+  <div class="day-card" id="card-4">
+    <span class="day-badge">Day 4</span>
+    <div class="coin-icon">💰</div>
+    <div class="reward-amt">₹20</div>
+    <button class="day-btn" id="btn-4" onclick="claimDayBonus(4, 20)">Locked</button>
+  </div>
+
+  <!-- Day 5 -->
+  <div class="day-card" id="card-5">
+    <span class="day-badge">Day 5</span>
+    <div class="coin-icon">💰</div>
+    <div class="reward-amt">₹25</div>
+    <button class="day-btn" id="btn-5" onclick="claimDayBonus(5, 25)">Locked</button>
+  </div>
+
+  <!-- Day 6 -->
+  <div class="day-card" id="card-6">
+    <span class="day-badge">Day 6</span>
+    <div class="coin-icon">💰</div>
+    <div class="reward-amt">₹30</div>
+    <button class="day-btn" id="btn-6" onclick="claimDayBonus(6, 30)">Locked</button>
+  </div>
+
+  <!-- Day 7 (Grand Box) -->
+  <div class="day-card grand" id="card-7">
+    <div class="grand-left">
+      <div class="coin-icon">👑</div>
+      <div>
+        <span class="day-badge" style="color:var(--gold);">Day 7 Grand Jackpot</span>
+        <div class="reward-amt">₹35.00</div>
+      </div>
+    </div>
+    <button class="day-btn" id="btn-7" onclick="claimDayBonus(7, 35)">Locked</button>
+  </div>
+</div>
+
+<!-- Rules -->
+<div class="rules-card">
+  <div class="rules-head">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span>Attendance Rules</span>
+  </div>
+  <ul class="rules-list">
+    <li>New registered users can claim <strong>Day 1</strong> immediately today.</li>
+    <li>Log in on consecutive days to unlock <strong>Day 2 up to Day 7</strong> grand bonus.</li>
+    <li>If attendance is missed for a day, the progress resets back to <strong>Day 1</strong>.</li>
+    <li>Once Day 7 is claimed, the reward cycle restarts from Day 1.</li>
+    <li>Claimed cash bonus is credited directly into your playable game balance.</li>
+  </ul>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -113,7 +259,9 @@ button{cursor:pointer;border:none;outline:none;background:transparent;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment, arrayUnion, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore, doc, getDoc, updateDoc, increment, collection, setDoc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -123,11 +271,16 @@ const firebaseConfig = {
   messagingSenderId: "568771943906",
   appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUser = null;
+let currentConsecutive = 0;
+let nextEligibleDay = 1;
+let isAlreadyClaimedToday = false;
+
 const toastEl = document.getElementById('toast');
 window.toast = (msg) => {
   toastEl.textContent = msg;
@@ -136,67 +289,138 @@ window.toast = (msg) => {
 };
 
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUser = user;
-    const snap = await getDoc(doc(db, "users", user.uid));
-    if (snap.exists()) {
-      const data = snap.data();
-      const claimedDays = data.claimedAttendanceDays || [];
-      claimedDays.forEach(day => {
-        const el = document.querySelector(`.item[data-day="${day}"]`);
-        if (el) {
-          el.classList.remove('action');
-          el.classList.add('received');
-          el.querySelector('.txt').textContent = 'Claimed ✓';
-        }
-      });
-
-      const todayStr = new Date().toDateString();
-      const lastClaimStr = data.lastAttendanceDate ? new Date(data.lastAttendanceDate.toDate ? data.lastAttendanceDate.toDate() : data.lastAttendanceDate).toDateString() : null;
-      if (lastClaimStr === todayStr) {
-        document.querySelectorAll('.item.action').forEach(el => {
-          el.classList.remove('action');
-          el.classList.add('disabled');
-          el.querySelector('.txt').textContent = 'Come Back Tomorrow';
-        });
-      }
-    }
-  } else {
-    location.replace("index.html");
-  }
+  if (!user) return location.replace("index.html");
+  currentUser = user;
+  loadAttendanceData();
 });
 
-window.claimBonus = async (day, amount) => {
+// Calculate Days Difference (Calendar Day wise)
+function getCalendarDayDiff(date1, date2) {
+  const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+  return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+}
+
+async function loadAttendanceData() {
+  try {
+    const snap = await getDoc(doc(db, "users", currentUser.uid));
+    if (!snap.exists()) return;
+    const data = snap.data();
+
+    const now = new Date();
+    let consecutiveDays = Number(data.attendanceStreak || 0);
+    let totalEarned = Number(data.totalAttendanceBonus || 0);
+
+    let lastClaimDate = null;
+    if (data.lastAttendanceDate) {
+      lastClaimDate = data.lastAttendanceDate.toDate ? data.lastAttendanceDate.toDate() : new Date(data.lastAttendanceDate);
+    }
+
+    if (!lastClaimDate) {
+      // First time registered user -> Day 1 Ready!
+      consecutiveDays = 0;
+      nextEligibleDay = 1;
+      isAlreadyClaimedToday = false;
+    } else {
+      const diff = getCalendarDayDiff(lastClaimDate, now);
+
+      if (diff === 0) {
+        // Already claimed today
+        isAlreadyClaimedToday = true;
+        nextEligibleDay = (consecutiveDays % 7) + 1;
+      } else if (diff === 1) {
+        // Consecutive yesterday claimed -> next eligible day is today!
+        isAlreadyClaimedToday = false;
+        if (consecutiveDays >= 7) consecutiveDays = 0; // restart after day 7
+        nextEligibleDay = consecutiveDays + 1;
+      } else {
+        // Missed one or more days -> Streak broken! Reset to Day 1
+        isAlreadyClaimedToday = false;
+        consecutiveDays = 0;
+        nextEligibleDay = 1;
+      }
+    }
+
+    currentConsecutive = consecutiveDays;
+
+    // Update Stats Display
+    document.getElementById('statConsecutive').textContent = `${consecutiveDays} Days`;
+    document.getElementById('statTotalEarned').textContent = `₹${totalEarned.toFixed(2)}`;
+    document.getElementById('streakBadge').textContent = `🔥 Day ${isAlreadyClaimedToday ? (consecutiveDays || 1) : nextEligibleDay} of 7`;
+
+    renderGridUI(consecutiveDays, nextEligibleDay, isAlreadyClaimedToday);
+  } catch (err) {
+    console.error("Attendance load error:", err);
+  }
+}
+
+function renderGridUI(consecutive, nextDay, claimedToday) {
+  for (let day = 1; day <= 7; day++) {
+    const card = document.getElementById(`card-${day}`);
+    const btn = document.getElementById(`btn-${day}`);
+
+    // Clear prior states
+    card.classList.remove('ready', 'claimed', 'locked');
+
+    if (day <= consecutive && (claimedToday || day < nextDay)) {
+      // Already claimed in this cycle
+      card.classList.add('claimed');
+      btn.textContent = 'Claimed ✓';
+      btn.disabled = true;
+    } else if (day === nextDay && !claimedToday) {
+      // Ready to claim TODAY!
+      card.classList.add('ready');
+      btn.textContent = (day === 7) ? 'Claim Grand Bonus' : 'Claim';
+      btn.disabled = false;
+    } else {
+      // Future locked days
+      card.classList.add('locked');
+      btn.textContent = 'Locked';
+      btn.disabled = true;
+    }
+  }
+}
+
+window.claimDayBonus = async (day, amount) => {
   if (!currentUser) return;
-  const el = document.querySelector(`.item[data-day="${day}"]`);
-  if (!el || !el.classList.contains('action')) return;
+  if (isAlreadyClaimedToday) return toast("You have already claimed today's bonus! Come back tomorrow.");
+  if (day !== nextEligibleDay) return toast(`Day ${day} is locked. Complete Day ${nextEligibleDay} first.`);
+
+  const btn = document.getElementById(`btn-${day}`);
+  btn.disabled = true;
+  btn.textContent = 'Claiming...';
 
   try {
-    toast("Claiming bonus...");
-    el.classList.remove('action');
-    el.classList.add('disabled');
+    const userRef = doc(db, "users", currentUser.uid);
+    const newStreak = (day >= 7) ? 7 : day;
 
-    await updateDoc(doc(db, "users", currentUser.uid), {
+    // 1. Update User Balances & Streak
+    await updateDoc(userRef, {
       balance: increment(amount),
       totalBonus: increment(amount),
-      claimedAttendanceDays: arrayUnion(day),
+      totalAttendanceBonus: increment(amount),
+      attendanceStreak: newStreak,
       lastAttendanceDate: serverTimestamp()
     });
 
-    await addDoc(collection(db, "transactions"), {
+    // 2. Add to Transactions Ledger (Instant Success for Wallet)
+    await setDoc(doc(db, "transactions", `att_${Date.now()}_${currentUser.uid.slice(0, 5)}`), {
       userId: currentUser.uid,
       type: "bonus",
-      title: `Attendance Day ${day} Bonus`,
+      title: `Daily Attendance (Day ${day})`,
       amount: amount,
       status: "success",
       createdAt: serverTimestamp()
     });
 
-    el.classList.add('received');
-    el.querySelector('.txt').textContent = 'Claimed ✓';
-    toast(`₹${amount} added to your balance!`);
-  } catch (error) {
+    toast(`🎉 ₹${amount}.00 Attendance Bonus added to wallet!`);
+
+    // Reload UI
+    await loadAttendanceData();
+  } catch (err) {
     toast("Claim failed. Please try again.");
+    btn.disabled = false;
+    btn.textContent = 'Claim';
   }
 };
 </script>

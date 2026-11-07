@@ -3,55 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#181818">
+<meta name="theme-color" content="#141416">
 <title>BDG GAME - Super Jackpot</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
   --bg-main: #141416;
   --card-bg: #202024;
+  --card-sub: #18181b;
   --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.25);
+  --green: #00e676;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:40px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;font-family:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.navbar{
+  position:sticky;top:0;z-index:100;height:54px;background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--border);
+}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
+/* Top Hero Banner */
 .jackpot-banner{
-  margin:12px 14px;background:linear-gradient(135deg, #ff7150 0%, #ff4b2b 100%);
-  border-radius:18px;padding:24px 18px;position:relative;overflow:hidden;
+  margin:12px 14px;background:linear-gradient(135deg, #e74c3c 0%, #c0392b 50%, #8e1a1a 100%);
+  border-radius:18px;padding:22px 18px;position:relative;overflow:hidden;
+  box-shadow:0 10px 28px rgba(192,57,43,0.35);border:1px solid rgba(255,255,255,0.12);
 }
-.jb-title{font-size:24px;font-weight:900;color:#fff;}
-.jb-sub{font-size:12px;color:rgba(255,255,255,0.9);margin-top:6px;max-width:240px;line-height:1.4;}
-.jb-note{font-size:11px;color:rgba(255,255,255,0.7);margin-top:12px;max-width:240px;}
+.jackpot-banner::after{
+  content:'🎰';position:absolute;right:10px;bottom:-10px;font-size:80px;opacity:0.22;
+  pointer-events:none;
+}
+.jb-title{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.jb-sub{font-size:12px;color:rgba(255,255,255,0.95);margin-top:6px;max-width:250px;line-height:1.4;font-weight:600;}
+.jb-note{font-size:10px;color:rgba(255,255,255,0.7);margin-top:10px;max-width:250px;}
 
+/* Batch Claim Button */
 .batch-btn{
-  width:calc(100% - 28px);height:44px;margin:0 14px 14px;border-radius:24px;
-  background:#2b2b32;color:#8f929b;font-size:13px;font-weight:700;display:flex;
-  align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);
+  width:calc(100% - 28px);height:44px;margin:0 14px 14px;border-radius:22px;
+  background:#26262b;color:#a4a7b2;font-size:13px;font-weight:800;display:flex;
+  align-items:center;justify-content:center;gap:8px;border:1px solid var(--border);
+  transition:all 0.2s ease;
 }
+.batch-btn.ready{
+  background:var(--gold-grad);color:#241602;border:none;
+  box-shadow:0 4px 14px rgba(196,142,47,0.35);cursor:pointer;
+}
+.batch-btn.ready:active{transform:scale(0.97);}
 
+/* Sub Navigation Tabs */
 .sub-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 16px;}
-.stab{height:46px;border-radius:12px;background:#202024;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700;color:#8f929b;}
-.stab.active{background:#2a2a30;color:var(--gold);border-color:rgba(250,229,159,0.3);}
+.stab{
+  height:44px;border-radius:12px;background:#202024;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:13px;font-weight:800;color:#8f929b;transition:all 0.15s ease;
+}
+.stab.active{background:#2a2a30;color:var(--gold);border-color:var(--border-gold);}
 
+/* Tab View Panels */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Empty State */
 .empty-box{
-  margin:0 14px;background:#202024;border-radius:16px;padding:50px 20px;
+  margin:0 14px;background:#202024;border-radius:16px;padding:46px 20px;
   text-align:center;border:1px solid var(--border);
 }
-.empty-icon{font-size:48px;opacity:0.3;margin-bottom:12px;}
-.empty-box p{font-size:13px;color:#8f929b;font-weight:600;}
+.empty-icon{font-size:44px;opacity:0.35;margin-bottom:10px;}
+.empty-box p{font-size:12px;color:#8f929b;font-weight:600;}
+
+/* Jackpot Items List */
+.jackpot-list{padding:0 14px;display:flex;flex-direction:column;gap:10px;}
+.jp-card{
+  background:#202024;border-radius:14px;padding:14px;border:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.jp-card.claimable{border-color:var(--gold);background:linear-gradient(145deg, #25241f 0%, #1b1b1e 100%);}
+.jp-left h4{font-size:13px;font-weight:800;color:#fff;}
+.jp-left p{font-size:11px;color:#8f929b;margin-top:2px;}
+.jp-right{text-align:right;}
+.jp-right h3{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;color:var(--gold);}
+.btn-claim-single{
+  margin-top:4px;padding:4px 14px;border-radius:14px;background:var(--gold-grad);
+  color:#241602;font-size:11px;font-weight:800;
+}
+
+/* Rules Table (BDG Original) */
+.rules-table{margin:0 14px 14px;background:#202024;border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+.rt-head{display:flex;justify-content:space-between;background:#28282e;padding:12px 14px;font-size:11px;color:#8f929b;font-weight:800;text-transform:uppercase;}
+.rt-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;}
+.rt-row:last-child{border-bottom:none;}
+.rt-row strong{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:800;}
+
+/* Winning Star Feed */
+.winners-list{padding:0 14px;display:flex;flex-direction:column;gap:8px;}
+.winner-row{
+  background:#202024;border-radius:12px;padding:10px 14px;border:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;font-size:12px;
+}
+.wr-left{display:flex;align-items:center;gap:10px;}
+.wr-avatar{width:32px;height:32px;border-radius:50%;background:#333;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.wr-user{font-weight:700;color:#eaeaea;}
+.wr-game{font-size:10px;color:#8f929b;}
+.wr-amt{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:800;}
 
 .btn-gobet{
-  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
-  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
-  font-size:15px;font-weight:900;
+  width:calc(100% - 28px);height:48px;margin:18px 14px 0;border-radius:24px;
+  background:var(--gold-grad);color:#241602;font-size:15px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(196,142,47,0.35);
 }
+.btn-gobet:active{transform:scale(0.98);}
+
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -59,29 +135,265 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <header class="navbar">
   <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-title">Super Jackpot</div>
+  <div style="width:36px;"></div>
 </header>
 
 <div class="jackpot-banner">
   <div class="jb-title">Super Jackpot</div>
-  <div class="jb-sub">When you get the Super Jackpot in [Slots] Can get 1 additional bonus</div>
-  <div class="jb-note">The reward is valid for 30 day, and you will not be able to claim it after it expires!</div>
+  <div class="jb-sub">When you hit a big multiplier in [Slots] get additional extra cash bonus!</div>
+  <div class="jb-note">Rewards expire after 30 days if not claimed. Bet more to unlock!</div>
 </div>
 
-<button class="batch-btn">
-  <span>🎁</span> Receive in batches
+<button class="batch-btn" id="btnBatchClaim" onclick="claimAllJackpots()">
+  <span>🎁</span> <span id="batchBtnText">Receive in batches (0)</span>
 </button>
 
 <div class="sub-tabs">
-  <button class="stab active">📋 Rule</button>
-  <button class="stab">👑 Winning star</button>
+  <button class="stab active" id="tabBtnRule" onclick="switchJackpotTab('rule')">📋 Rule</button>
+  <button class="stab" id="tabBtnStar" onclick="switchJackpotTab('star')">👑 Winning star</button>
 </div>
 
-<div class="empty-box">
-  <div class="empty-icon">📜</div>
-  <p>You don't have a big jackpot yet, let's bet</p>
+<!-- PANEL 1: USER JACKPOTS / RULES -->
+<div class="tab-panel active" id="panelRule">
+  <div id="userJackpotContainer">
+    <div class="empty-box">
+      <div class="empty-icon">📜</div>
+      <p>You don't have a big jackpot yet, let's bet on slots!</p>
+    </div>
+  </div>
+
+  <div style="padding:14px 14px 8px; font-size:13px; font-weight:800; color:#ddd;">Jackpot Reward Tiers</div>
+  <div class="rules-table">
+    <div class="rt-head">
+      <div>SLOT WIN MULTIPLIER</div>
+      <div>EXTRA BONUS</div>
+    </div>
+    <div class="rt-row">
+      <div><strong>10X — 50X</strong><div style="color:#8f929b;font-size:10px;">Super Win Tier</div></div>
+      <strong style="color:var(--green);">+₹5.00</strong>
+    </div>
+    <div class="rt-row">
+      <div><strong>50X — 100X</strong><div style="color:#8f929b;font-size:10px;">Mega Win Tier</div></div>
+      <strong style="color:var(--green);">+₹15.00</strong>
+    </div>
+    <div class="rt-row">
+      <div><strong>100X — 500X</strong><div style="color:#8f929b;font-size:10px;">Super Jackpot Tier</div></div>
+      <strong style="color:var(--gold);">+₹50.00</strong>
+    </div>
+    <div class="rt-row">
+      <div><strong>500X+</strong><div style="color:#8f929b;font-size:10px;">Grand Grand Jackpot</div></div>
+      <strong style="color:var(--gold);">+₹150.00</strong>
+    </div>
+  </div>
 </div>
 
-<button class="btn-gobet" onclick="location.href='boxing-king.html'">Go bet</button>
+<!-- PANEL 2: WINNING STAR LIVE FEED -->
+<div class="tab-panel" id="panelStar">
+  <div class="winners-list" id="winningStarList"></div>
+</div>
 
+<button class="btn-gobet" onclick="location.href='jili-slots.html'">Go bet on Slots</button>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, doc, getDoc, updateDoc, increment, collection, query, 
+  where, getDocs, setDoc, serverTimestamp, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
+  authDomain: "bdglottery7.firebaseapp.com",
+  projectId: "bdglottery7",
+  storageBucket: "bdglottery7.firebasestorage.app",
+  messagingSenderId: "568771943906",
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let pendingJackpots = [];
+
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    loadUserJackpots();
+    generateWinningStars();
+  } else {
+    location.replace('index.html');
+  }
+});
+
+// Tab Switcher
+window.switchJackpotTab = (tab) => {
+  document.getElementById('tabBtnRule').classList.toggle('active', tab === 'rule');
+  document.getElementById('tabBtnStar').classList.toggle('active', tab === 'star');
+  document.getElementById('panelRule').classList.toggle('active', tab === 'rule');
+  document.getElementById('panelStar').classList.toggle('active', tab === 'star');
+};
+
+async function loadUserJackpots() {
+  const container = document.getElementById('userJackpotContainer');
+  const batchBtn = document.getElementById('btnBatchClaim');
+  const batchText = document.getElementById('batchBtnText');
+
+  try {
+    // Check if user has slot bets with big multiplier
+    const q = query(
+      collection(db, 'transactions'),
+      where('userId', '==', currentUser.uid),
+      where('type', '==', 'slot_win'),
+      limit(20)
+    );
+    const snap = await getDocs(q);
+
+    pendingJackpots = [];
+    snap.forEach(d => {
+      const data = d.data();
+      if (!data.jackpotClaimed) {
+        pendingJackpots.push({ id: d.id, ...data });
+      }
+    });
+
+    if (pendingJackpots.length === 0) {
+      container.innerHTML = `
+        <div class="empty-box">
+          <div class="empty-icon">📜</div>
+          <p>You don't have a big jackpot yet, let's bet on slots</p>
+        </div>`;
+      batchBtn.className = 'batch-btn';
+      batchText.textContent = 'Receive in batches (0)';
+      return;
+    }
+
+    // Render Claimable Items
+    let html = '<div class="jackpot-list">';
+    let totalAmt = 0;
+
+    pendingJackpots.forEach(jp => {
+      const bonusAmt = Number(jp.jackpotBonus || 5);
+      totalAmt += bonusAmt;
+      html += `
+        <div class="jp-card claimable">
+          <div class="jp-left">
+            <h4>🎰 ${jp.title || 'Super Jackpot Hit'}</h4>
+            <p>Multiplier: ${jp.multiplier || '15x'} | Slots</p>
+          </div>
+          <div class="jp-right">
+            <h3>+₹${bonusAmt.toFixed(2)}</h3>
+            <button class="btn-claim-single" onclick="claimSingleJackpot('${jp.id}', ${bonusAmt})">Claim</button>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+    batchBtn.className = 'batch-btn ready';
+    batchText.textContent = `Receive in batches (${pendingJackpots.length}) - ₹${totalAmt}`;
+  } catch(e) {
+    console.error("Jackpot loader error:", e);
+  }
+}
+
+window.claimSingleJackpot = async (docId, amt) => {
+  if (!currentUser) return;
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(amt),
+      totalBonus: increment(amt)
+    });
+
+    await updateDoc(doc(db, 'transactions', docId), {
+      jackpotClaimed: true
+    });
+
+    await setDoc(doc(db, 'transactions', `jp_${Date.now()}`), {
+      userId: currentUser.uid,
+      type: 'bonus',
+      title: 'Super Jackpot Extra Reward',
+      amount: amt,
+      status: 'success',
+      createdAt: serverTimestamp()
+    });
+
+    toast(`🎉 Super Jackpot Bonus ₹${amt} claimed!`);
+    loadUserJackpots();
+  } catch(e) {
+    toast('Claim failed');
+  }
+};
+
+window.claimAllJackpots = async () => {
+  if (!pendingJackpots.length) return toast('No rewards to claim right now!');
+  const total = pendingJackpots.reduce((sum, item) => sum + Number(item.jackpotBonus || 5), 0);
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      balance: increment(total),
+      totalBonus: increment(total)
+    });
+
+    for (const jp of pendingJackpots) {
+      await updateDoc(doc(db, 'transactions', jp.id), {
+        jackpotClaimed: true
+      }).catch(()=>{});
+    }
+
+    await setDoc(doc(db, 'transactions', `jp_batch_${Date.now()}`), {
+      userId: currentUser.uid,
+      type: 'bonus',
+      title: `Super Jackpot Batch Reward (${pendingJackpots.length}x)`,
+      amount: total,
+      status: 'success',
+      createdAt: serverTimestamp()
+    });
+
+    toast(`🎉 All Jackpots Claimed! +₹${total} added to wallet!`);
+    loadUserJackpots();
+  } catch(e) {
+    toast('Batch claim error');
+  }
+};
+
+// Generate Dynamic Winning Star Feed
+function generateWinningStars() {
+  const listEl = document.getElementById('winningStarList');
+  const games = ['Boxing King', 'Super Ace', 'Fortune Gems', 'JILI 777'];
+  const alpha = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  let html = '';
+  for(let i=0; i<8; i++) {
+    const user = `Mem***${alpha[Math.floor(Math.random()*alpha.length)]}${alpha[Math.floor(Math.random()*alpha.length)]}`;
+    const game = games[Math.floor(Math.random()*games.length)];
+    const bonus = [5, 15, 50, 150][Math.floor(Math.random()*4)];
+    const multi = [18, 52, 120, 560][Math.floor(Math.random()*4)];
+
+    html += `
+      <div class="winner-row">
+        <div class="wr-left">
+          <div class="wr-avatar">👑</div>
+          <div>
+            <div class="wr-user">${user}</div>
+            <div class="wr-game">${game} • ${multi}X Multiplier</div>
+          </div>
+        </div>
+        <div class="wr-amt">+₹${bonus}.00</div>
+      </div>`;
+  }
+  listEl.innerHTML = html;
+}
+</script>
 </body>
 </html>

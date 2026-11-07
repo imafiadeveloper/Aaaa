@@ -3,62 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#181818">
+<meta name="theme-color" content="#141416">
 <title>BDG GAME - Invitation Bonus</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
   --bg-main: #141416;
   --card-bg: #202024;
+  --card-sub: #18181b;
   --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.25);
+  --green: #00e676;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:40px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;font-family:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
-.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
-
-.banner-wrap{margin:12px 14px;}
-.top-banner{width:100%;border-radius:14px;display:block;}
-
-.grand-card{
-  margin:0 14px 16px;background:linear-gradient(135deg,#3a2a10 0%,#18181a 100%);
-  border-radius:16px;padding:16px;border:1px solid rgba(250,229,159,0.3);text-align:center;
+.navbar{
+  position:sticky;top:0;z-index:100;height:54px;background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--border);
 }
-.grand-card p{font-size:11px;color:#a6a9ae;text-transform:uppercase;font-weight:700;}
-.grand-card h1{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);margin-top:4px;}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
+.banner-wrap{margin:12px 14px 6px;}
+.top-banner{width:100%;border-radius:16px;display:block;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+
+/* Grand Header Card */
+.grand-card{
+  margin:10px 14px 14px;background:linear-gradient(145deg, #2b2212 0%, #1c1a16 55%, #141416 100%);
+  border-radius:18px;padding:18px 16px;border:1px solid var(--border-gold);text-align:center;
+  box-shadow:0 10px 26px rgba(0,0,0,0.45);position:relative;overflow:hidden;
+}
+.grand-card::after{
+  content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  background:radial-gradient(circle, rgba(250,229,159,0.15), transparent 70%);
+  pointer-events:none;
+}
+.grand-card p{font-size:11px;color:#a6a9ae;text-transform:uppercase;font-weight:800;letter-spacing:0.5px;}
+.grand-card h1{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--gold);margin-top:4px;}
+
+/* Invite Real-time Stats */
 .invite-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 16px;}
-.is-box{background:#202024;border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border);}
-.is-box span{font-size:11px;color:#8f929b;}
-.is-box h3{font-family:'Orbitron',sans-serif;font-size:20px;color:#fff;margin-top:4px;}
+.is-box{
+  background:var(--card-bg);border-radius:14px;padding:14px 12px;text-align:center;
+  border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.25);
+}
+.is-box span{font-size:11px;color:#8f929b;font-weight:700;}
+.is-box h3{font-family:'Orbitron',sans-serif;font-size:19px;color:#fff;margin-top:4px;font-weight:900;}
 
-.section-label{padding:0 14px 10px;font-size:14px;font-weight:800;}
+.section-label{padding:4px 16px 10px;font-size:13px;font-weight:800;color:#d5d8e2;display:flex;align-items:center;gap:6px;}
+
+/* Tier List */
 .tier-list{margin:0 14px;display:flex;flex-direction:column;gap:10px;}
 .tier-item{
-  background:#202024;border-radius:14px;padding:14px 16px;display:flex;
+  background:var(--card-bg);border-radius:16px;padding:14px 16px;display:flex;
   justify-content:space-between;align-items:center;border:1px solid var(--border);
+  transition:all 0.2s ease;
 }
-.ti-left h4{font-size:13px;font-weight:800;color:#fff;}
-.ti-left p{font-size:11px;color:#8f929b;margin-top:2px;}
+.tier-item.ready{border-color:var(--gold);background:linear-gradient(160deg, #25241f 0%, #1b1b1e 100%);}
+.tier-item.claimed{border-color:rgba(0,230,118,0.25);background:#17171a;}
+
+.ti-left h4{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px;}
+.ti-left p{font-size:11px;color:#8f929b;margin-top:3px;}
+.ti-progress{font-size:10px;color:var(--gold);font-weight:700;margin-top:4px;}
+
 .ti-right{text-align:right;}
 .ti-right h3{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--gold);}
-.btn-claim-tier{
-  margin-top:6px;padding:5px 14px;border-radius:14px;background:#333;color:#888;
-  font-size:11px;font-weight:700;
-}
-.btn-claim-tier.active{background:linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);color:#291a03;}
 
-.btn-invite-now{
-  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
-  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
-  font-size:15px;font-weight:900;
+.btn-claim-tier{
+  margin-top:6px;padding:6px 16px;border-radius:16px;background:#26262b;color:#6b6e78;
+  font-size:11px;font-weight:800;cursor:not-allowed;border:1px solid rgba(255,255,255,0.05);
 }
-.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;}
+.btn-claim-tier.active{
+  background:var(--gold-grad);color:#241602;cursor:pointer;
+  box-shadow:0 3px 10px rgba(196,142,47,0.35);border:none;
+}
+.btn-claim-tier.active:active{transform:scale(0.96);}
+.btn-claim-tier.claimed{
+  background:rgba(0,230,118,0.15);color:var(--green);cursor:default;border:1px solid rgba(0,230,118,0.3);
+}
+
+/* Invite Button */
+.btn-invite-now{
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
+  background:var(--gold-grad);color:#241602;font-size:15px;font-weight:900;
+  letter-spacing:0.3px;box-shadow:0 4px 16px rgba(196,147,63,0.35);
+  display:flex;align-items:center;justify-content:center;
+}
+.btn-invite-now:active{transform:scale(0.98);}
+
+/* Rules */
+.rules-card{
+  margin:18px 14px 0;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:16px;padding:16px;
+}
+.rules-head{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#fff;margin-bottom:8px;}
+.rules-head svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2;}
+.rules-list{font-size:11px;color:#8f929b;line-height:1.7;padding-left:14px;}
+.rules-list strong{color:#ddd;}
+
+/* Toast */
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -66,6 +123,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <header class="navbar">
   <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
   <div class="navbar-title">Invitation Bonus</div>
+  <div style="width:36px;"></div>
 </header>
 
 <div class="banner-wrap">
@@ -73,74 +131,101 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 </div>
 
 <div class="grand-card">
-  <p>Bonus up to</p>
-  <h1>₹3,655,555</h1>
+  <p>Total Available Bonus Up To</p>
+  <h1>₹500.00</h1>
 </div>
 
 <div class="invite-stats">
   <div class="is-box">
-    <span>Invited Friends</span>
+    <span>Active Invited Friends</span>
     <h3 id="invitedCount">0</h3>
   </div>
   <div class="is-box">
-    <span>Earned Bonus</span>
-    <h3 id="earnedBonus">₹0.00</h3>
+    <span>Total Earned Bonus</span>
+    <h3 id="earnedBonus" style="color:var(--gold);">₹0.00</h3>
   </div>
 </div>
 
 <div class="section-label">🎁 Invitation Progress Tiers</div>
 
 <div class="tier-list">
-  <div class="tier-item">
+  <!-- Tier 1 -->
+  <div class="tier-item" id="tierCard1">
     <div class="ti-left">
       <h4>Invite 1 Friend</h4>
-      <p>Deposit &ge; ₹300</p>
+      <p>Friend Deposit &ge; ₹300</p>
+      <div class="ti-progress" id="tierProg1">Progress: 0 / 1</div>
     </div>
     <div class="ti-right">
-      <h3>₹55</h3>
-      <button class="btn-claim-tier" id="tierBtn1" onclick="claimTier(1, 55)">Claim</button>
+      <h3>₹5.00</h3>
+      <button class="btn-claim-tier" id="tierBtn1" onclick="claimTier(1, 5)">Claim</button>
     </div>
   </div>
-  <div class="tier-item">
+
+  <!-- Tier 3 -->
+  <div class="tier-item" id="tierCard3">
     <div class="ti-left">
       <h4>Invite 3 Friends</h4>
-      <p>Deposit &ge; ₹300 each</p>
+      <p>Friends Deposit &ge; ₹300 each</p>
+      <div class="ti-progress" id="tierProg3">Progress: 0 / 3</div>
     </div>
     <div class="ti-right">
-      <h3>₹155</h3>
-      <button class="btn-claim-tier" id="tierBtn3" onclick="claimTier(3, 155)">Claim</button>
+      <h3>₹15.00</h3>
+      <button class="btn-claim-tier" id="tierBtn3" onclick="claimTier(3, 15)">Claim</button>
     </div>
   </div>
-  <div class="tier-item">
+
+  <!-- Tier 10 -->
+  <div class="tier-item" id="tierCard10">
     <div class="ti-left">
       <h4>Invite 10 Friends</h4>
-      <p>Deposit &ge; ₹300 each</p>
+      <p>Friends Deposit &ge; ₹300 each</p>
+      <div class="ti-progress" id="tierProg10">Progress: 0 / 10</div>
     </div>
     <div class="ti-right">
-      <h3>₹655</h3>
-      <button class="btn-claim-tier" id="tierBtn10" onclick="claimTier(10, 655)">Claim</button>
+      <h3>₹50.00</h3>
+      <button class="btn-claim-tier" id="tierBtn10" onclick="claimTier(10, 50)">Claim</button>
     </div>
   </div>
-  <div class="tier-item">
+
+  <!-- Tier 30 -->
+  <div class="tier-item" id="tierCard30">
     <div class="ti-left">
       <h4>Invite 30 Friends</h4>
-      <p>Deposit &ge; ₹300 each</p>
+      <p>Friends Deposit &ge; ₹300 each</p>
+      <div class="ti-progress" id="tierProg30">Progress: 0 / 30</div>
     </div>
     <div class="ti-right">
-      <h3>₹2,355</h3>
-      <button class="btn-claim-tier" id="tierBtn30" onclick="claimTier(30, 2355)">Claim</button>
+      <h3>₹150.00</h3>
+      <button class="btn-claim-tier" id="tierBtn30" onclick="claimTier(30, 150)">Claim</button>
     </div>
   </div>
 </div>
 
 <button class="btn-invite-now" onclick="location.href='promotion.html'">Invite Friends Now</button>
 
+<div class="rules-card">
+  <div class="rules-head">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span>Activity Rules</span>
+  </div>
+  <ul class="rules-list">
+    <li>Friends must register using your referral link or invitation code.</li>
+    <li>An invited friend is counted as <strong>Active</strong> once they complete a recharge of &ge; ₹300.</li>
+    <li>Each milestone reward can be claimed <strong>strictly once per account</strong>.</li>
+    <li>Claimed cash rewards are instantly credited directly to your playable balance.</li>
+  </ul>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore, doc, getDoc, updateDoc, increment, collection, query, 
+  where, getDocs, setDoc, arrayUnion, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -155,46 +240,135 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUser = null;
-let totalInvites = 0;
+let activeInvitesCount = 0;
+let claimedTiers = [];
 
+const toastEl = document.getElementById('toast');
 window.toast = (msg) => {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 2000);
+  toastEl.textContent = msg; 
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
 };
+
+const TIERS = [1, 3, 10, 30];
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
-    const q = query(collection(db, 'users'), where('referredBy', '==', user.uid));
-    const snap = await getDocs(q);
-    totalInvites = snap.size;
-    document.getElementById('invitedCount').textContent = totalInvites;
-
-    if (totalInvites >= 1) document.getElementById('tierBtn1').classList.add('active');
-    if (totalInvites >= 3) document.getElementById('tierBtn3').classList.add('active');
-    if (totalInvites >= 10) document.getElementById('tierBtn10').classList.add('active');
-    if (totalInvites >= 30) document.getElementById('tierBtn30').classList.add('active');
+    loadInvitationData();
   } else {
     location.replace('index.html');
   }
 });
 
+async function loadInvitationData() {
+  try {
+    const userSnap = await getDoc(doc(db, 'users', currentUser.uid));
+    if (!userSnap.exists()) return;
+    const userData = userSnap.data();
+
+    claimedTiers = userData.claimedInviteTiers || [];
+    const totalEarned = Number(userData.totalInviteBonusEarned || 0);
+    document.getElementById('earnedBonus').textContent = `₹${totalEarned.toFixed(2)}`;
+
+    // 1. Fetch Invited Friends
+    const userInviteCode = userData.inviteCode || userData.referralCode || '';
+    
+    const q1 = query(collection(db, 'users'), where('referredBy', '==', currentUser.uid));
+    const snap1 = await getDocs(q1);
+
+    const friendsMap = new Map();
+    snap1.forEach(d => friendsMap.set(d.id, d.data()));
+
+    if (userInviteCode) {
+      const q2 = query(collection(db, 'users'), where('appliedInviteCode', '==', userInviteCode));
+      const snap2 = await getDocs(q2);
+      snap2.forEach(d => {
+        if (d.id !== currentUser.uid) friendsMap.set(d.id, d.data());
+      });
+    }
+
+    // 2. Count Qualified Friends (Recharge >= 300)
+    let qualifiedCount = 0;
+    friendsMap.forEach((u) => {
+      const totalRecharge = Number(u.totalRecharge || u.totalDeposit || 0);
+      const isFirstDone = !!u.firstDepositDone;
+      if (totalRecharge >= 300 || (isFirstDone && totalRecharge >= 100)) {
+        qualifiedCount++;
+      }
+    });
+
+    activeInvitesCount = qualifiedCount;
+    document.getElementById('invitedCount').textContent = activeInvitesCount;
+
+    // 3. Render Each Tier State
+    TIERS.forEach(req => {
+      const btn = document.getElementById(`tierBtn${req}`);
+      const card = document.getElementById(`tierCard${req}`);
+      const prog = document.getElementById(`tierProg${req}`);
+
+      prog.textContent = `Progress: ${Math.min(activeInvitesCount, req)} / ${req}`;
+
+      btn.classList.remove('active', 'claimed');
+      card.classList.remove('ready', 'claimed');
+
+      if (claimedTiers.includes(req)) {
+        btn.classList.add('claimed');
+        card.classList.add('claimed');
+        btn.textContent = 'Claimed ✓';
+        btn.disabled = true;
+      } else if (activeInvitesCount >= req) {
+        btn.classList.add('active');
+        card.classList.add('ready');
+        btn.textContent = 'Claim';
+        btn.disabled = false;
+      } else {
+        btn.textContent = 'Claim';
+        btn.disabled = true;
+      }
+    });
+
+  } catch(e) {
+    console.error("Invitation loader error:", e);
+  }
+}
+
 window.claimTier = async (req, amt) => {
   if (!currentUser) return;
-  if (totalInvites < req) return toast(`Need ${req} active invites to claim!`);
+  if (claimedTiers.includes(req)) return toast('You have already claimed this tier reward!');
+  if (activeInvitesCount < req) return toast(`Need ${req} active friends with deposits to unlock!`);
+
+  const btn = document.getElementById(`tierBtn${req}`);
+  btn.disabled = true;
+  btn.textContent = 'Claiming...';
 
   try {
-    await updateDoc(doc(db, 'users', currentUser.uid), {
+    const userRef = doc(db, 'users', currentUser.uid);
+
+    // 1. Credit balance, add to claimed tiers, update total bonus
+    await updateDoc(userRef, {
       balance: increment(amt),
-      totalBonus: increment(amt)
+      totalBonus: increment(amt),
+      totalInviteBonusEarned: increment(amt),
+      claimedInviteTiers: arrayUnion(req)
     });
-    await addDoc(collection(db, 'transactions'), {
-      userId: currentUser.uid, type: 'bonus', title: `Tier ${req} Friends Invite Bonus`, amount: amt, status: 'success', createdAt: serverTimestamp()
+
+    // 2. Save in Transactions Ledger (Mapped for Wallet)
+    await setDoc(doc(db, "transactions", `inv_${req}_${Date.now()}_${currentUser.uid.slice(0, 5)}`), {
+      userId: currentUser.uid,
+      type: "bonus",
+      title: `Tier Invite Reward (${req} Friends)`,
+      amount: amt,
+      status: "success",
+      createdAt: serverTimestamp()
     });
-    toast(`₹${amt} Invitation Bonus Claimed!`);
+
+    toast(`🎉 ₹${amt}.00 Invitation Reward Claimed!`);
+    await loadInvitationData();
   } catch(e) {
-    toast('Claim failed');
+    toast('Claim failed. Try again.');
+    btn.disabled = false;
+    btn.textContent = 'Claim';
   }
 };
 </script>

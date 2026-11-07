@@ -3,45 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#181818">
+<meta name="theme-color" content="#141416">
 <title>BDG GAME - Invite Friends</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
   --bg-main: #141416;
   --card-bg: #202024;
+  --card-sub: #18181b;
   --border: rgba(255,255,255,0.06);
+  --border-gold: rgba(250,229,159,0.25);
+  --green: #00e676;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;}
-body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:30px;}
-button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;}
+body{background:var(--bg-main);color:#fff;min-height:100vh;padding-bottom:40px;}
+button{border:none;outline:none;cursor:pointer;background:transparent;color:inherit;font-family:inherit;}
+::-webkit-scrollbar{width:0;height:0;}
 
-.navbar{position:sticky;top:0;z-index:100;height:52px;background:#18181a;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);}
-.nav-left{width:32px;height:32px;display:flex;align-items:center;cursor:pointer;}
+.navbar{
+  position:sticky;top:0;z-index:100;height:54px;background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--border);
+}
+.nav-left{width:36px;height:36px;display:flex;align-items:center;cursor:pointer;}
 .nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
-.navbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:32px;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
 
-.banner-wrap{margin:12px 14px;}
-.top-banner{width:100%;border-radius:14px;display:block;}
-.brand-strip{text-align:center;padding:10px 0;}
-.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;}
+.banner-wrap{margin:12px 14px 6px;}
+.top-banner{width:100%;border-radius:16px;display:block;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
 
-.detail-card{margin:0 14px 14px;background:#202024;border-radius:16px;padding:16px;border:1px solid var(--border);}
+.brand-strip{text-align:center;padding:10px 0 4px;}
+.brand-strip h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:18px;letter-spacing:1px;}
+
+.detail-card{
+  margin:6px 14px 14px;background:linear-gradient(145deg, #252420 0%, #1a1917 60%, #151518 100%);
+  border-radius:18px;padding:18px 16px;border:1px solid var(--border-gold);
+  position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,0.4);
+}
+.detail-card::after{
+  content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  background:radial-gradient(circle, rgba(250,229,159,0.15), transparent 70%);
+  pointer-events:none;
+}
 .dc-header{display:flex;justify-content:space-between;align-items:flex-start;}
-.dc-sub{font-size:11px;color:var(--gold);font-weight:700;}
-.dc-title{font-size:18px;font-weight:800;margin-top:4px;}
+.dc-sub{font-size:11px;color:var(--gold);font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:4px;}
+.dc-title{font-size:18px;font-weight:900;margin-top:4px;}
 .dc-desc{font-size:12px;color:#8f929b;margin-top:2px;}
-.dc-badge{text-align:right;}
-.dc-badge span{font-size:10px;color:var(--gold);font-weight:700;}
-.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:32px;color:var(--gold);line-height:1;}
-.dc-timing{margin-top:16px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.1);font-size:12px;color:#8f929b;}
-.dc-timing p{font-size:11px;color:#666;margin-top:4px;}
+.dc-badge{
+  text-align:center;background:rgba(0,0,0,0.35);padding:8px 12px;
+  border-radius:12px;border:1px solid var(--border-gold);
+}
+.dc-badge span{font-size:9px;color:var(--gold);font-weight:800;letter-spacing:0.5px;}
+.dc-badge h1{font-family:'Orbitron',sans-serif;font-size:24px;color:var(--gold);line-height:1;margin:2px 0;}
+.dc-timing{margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.08);font-size:12px;color:#8f929b;}
+.dc-timing p{font-size:11px;color:var(--gold);margin-top:4px;font-weight:600;}
 
-.section-label{padding:0 14px 10px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px;}
+/* Live Referral Stats */
+.ref-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 14px;}
+.rs-box{
+  background:var(--card-bg);border-radius:14px;padding:12px 14px;
+  border:1px solid var(--border);text-align:center;
+}
+.rs-box span{font-size:10px;color:#8f929b;font-weight:700;text-transform:uppercase;}
+.rs-box h3{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#fff;margin-top:4px;}
+
+/* Quick Copy Box */
+.link-box{
+  margin:0 14px 16px;background:var(--card-sub);border-radius:14px;
+  padding:12px 14px;border:1px solid var(--border);display:flex;
+  align-items:center;justify-content:space-between;gap:10px;
+}
+.link-info{overflow:hidden;}
+.link-info span{display:block;font-size:10px;color:#8f929b;font-weight:700;text-transform:uppercase;}
+.link-info strong{
+  display:block;font-size:12px;color:var(--gold);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;margin-top:2px;
+}
+.btn-copy-code{
+  padding:8px 14px;border-radius:10px;background:rgba(250,229,159,0.12);
+  color:var(--gold);border:1px solid var(--border-gold);font-size:11px;font-weight:800;flex-shrink:0;
+}
+.btn-copy-code:active{background:rgba(250,229,159,0.25);}
+
+.section-label{padding:0 16px 10px;font-size:13px;font-weight:800;color:#d5d8e2;display:flex;align-items:center;gap:6px;}
 
 .steps-list{margin:0 14px;display:flex;flex-direction:column;gap:10px;}
-.step-item{background:#202024;border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:14px;border:1px solid var(--border);}
+.step-item{background:var(--card-bg);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:14px;border:1px solid var(--border);}
 .step-num{
   width:28px;height:28px;border-radius:8px;background:rgba(250,229,159,0.1);
   color:var(--gold);font-family:'Orbitron',sans-serif;font-weight:900;display:flex;align-items:center;
@@ -51,18 +100,28 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .step-text strong{color:var(--gold);}
 
 .btn-invite{
-  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:14px;
-  background:linear-gradient(180deg,#F9DC8A 0%,#D8AA4D 100%);color:#221500;
-  font-size:15px;font-weight:900;
+  width:calc(100% - 28px);height:48px;margin:20px 14px 0;border-radius:24px;
+  background:var(--gold-grad);color:#241602;font-size:15px;font-weight:900;
+  box-shadow:0 4px 16px rgba(196,147,63,0.35);display:flex;align-items:center;justify-content:center;
+  letter-spacing:0.3px;
 }
-.toast{position:fixed;top:30%;left:50%;transform:translateX(-50%);background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;display:none;z-index:9999;}
+.btn-invite:active{transform:scale(0.98);}
+
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);color:#fff;
+  font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
 <header class="navbar">
   <div class="nav-left" onclick="location.href='activity.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
-  <div class="navbar-title">Activity details</div>
+  <div class="navbar-title">Activity Details</div>
+  <div style="width:36px;"></div>
 </header>
 
 <div class="banner-wrap">
@@ -76,23 +135,42 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="detail-card">
   <div class="dc-header">
     <div>
-      <div class="dc-sub">👥 REFERRAL</div>
-      <div class="dc-title">Invite friends earn cash</div>
-      <div class="dc-desc">Reach milestones. Earn more.</div>
+      <div class="dc-sub">👥 REFERRAL PROGRAM</div>
+      <div class="dc-title">Invite Friends Earn Cash</div>
+      <div class="dc-desc">Build your subordinate team &amp; earn commissions</div>
     </div>
     <div class="dc-badge">
-      <span>👥 TOTAL</span>
-      <h1>6</h1>
-      <span style="color:#8f929b;">TIERS</span>
+      <span>TIERS</span>
+      <h1>3</h1>
+      <span style="color:#8f929b;">LEVELS</span>
     </div>
   </div>
   <div class="dc-timing">
     <div style="display:flex;justify-content:space-between;">
-      <span>⏱️ Activity window</span>
-      <strong style="color:#fff;">Within 30 days of binding</strong>
+      <span>⏱️ Settlement Cycle</span>
+      <strong style="color:#fff;">Automatic Daily 00:00 AM</strong>
     </div>
-    <p>Sports Betting · Fantasy Sports</p>
+    <p>Eligible on all Lottery, Sports &amp; Casino wagers</p>
   </div>
+</div>
+
+<div class="ref-stats">
+  <div class="rs-box">
+    <span>Direct Friends</span>
+    <h3 id="statFriends">0</h3>
+  </div>
+  <div class="rs-box">
+    <span>Team Rebate</span>
+    <h3 id="statRebate" style="color:var(--gold);">Up to 1.0%</h3>
+  </div>
+</div>
+
+<div class="link-box">
+  <div class="link-info">
+    <span>Your Invitation Code</span>
+    <strong id="displayInviteCode">LOADING...</strong>
+  </div>
+  <button class="btn-copy-code" onclick="copyInviteCode()">Copy Code</button>
 </div>
 
 <div class="section-label">🎁 How it works</div>
@@ -100,26 +178,26 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="steps-list">
   <div class="step-item">
     <div class="step-num">1</div>
-    <div class="step-text">Invite eligible friends using your referral link or referral code.</div>
+    <div class="step-text">Share your clean invite link with friends via WhatsApp, Telegram, or SMS.</div>
   </div>
   <div class="step-item">
     <div class="step-num">2</div>
-    <div class="step-text">Your invited friends participate in <strong>Sports Betting</strong> or <strong>Fantasy Sports</strong>.</div>
+    <div class="step-text">When friends register and make their first deposit, they bind permanently under your <strong>Tier 1 Team</strong>.</div>
   </div>
   <div class="step-item">
     <div class="step-num">3</div>
-    <div class="step-text">Meet the invite and qualifying activity requirements for the current tier.</div>
+    <div class="step-text">Earn continuous daily commission rebates on their betting turnovers across all games.</div>
   </div>
 </div>
 
-<button class="btn-invite" onclick="copyReferralLink()">Invite Now</button>
+<button class="btn-invite" onclick="copyCleanLink()">Copy Invitation Link</button>
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -133,19 +211,42 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-let refCode = 'BDG777';
-window.toast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); };
+let inviteCode = 'BDG777';
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
+};
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const snap = await getDoc(doc(db, 'users', user.uid));
-    if(snap.exists() && snap.data().referralCode) refCode = snap.data().referralCode;
+    if (snap.exists()) {
+      const data = snap.data();
+      inviteCode = data.inviteCode || data.referralCode || user.uid.substring(0, 8).toUpperCase();
+      document.getElementById('displayInviteCode').textContent = inviteCode;
+    }
+
+    try {
+      const q = query(collection(db, 'users'), where('referredBy', '==', user.uid));
+      const refSnap = await getDocs(q);
+      document.getElementById('statFriends').textContent = refSnap.size;
+    } catch (e) {
+      document.getElementById('statFriends').textContent = '0';
+    }
+  } else {
+    location.replace('index.html');
   }
 });
 
-window.copyReferralLink = () => {
-  const link = `${window.location.origin}/register.html?ref=${refCode}`;
-  navigator.clipboard.writeText(link).then(() => toast('Referral link copied to clipboard!'));
+window.copyInviteCode = () => {
+  navigator.clipboard.writeText(inviteCode).then(() => toast(`Invite Code ${inviteCode} copied!`));
+};
+
+window.copyCleanLink = () => {
+  const link = `${window.location.origin}/index?ref=${inviteCode}`;
+  navigator.clipboard.writeText(link).then(() => toast('Clean Referral Link copied!'));
 };
 </script>
 </body>
