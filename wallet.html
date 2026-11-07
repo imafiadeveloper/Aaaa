@@ -178,10 +178,10 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 .tx-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tx-meta{display:flex;align-items:center;gap:6px;font-size:11px;}
 .tx-time{color:#777a83;}
-.tx-status{padding:1px 6px;border-radius:4px;font-weight:700;font-size:9px;}
-.tx-status.success{background:rgba(0,230,118,0.12);color:#00e676;}
-.tx-status.pending{background:rgba(250,171,0,0.12);color:#ffab00;}
-.tx-status.failed{background:rgba(255,77,79,0.12);color:#ff4d4f;}
+.tx-status{padding:2px 8px;border-radius:4px;font-weight:800;font-size:10px;text-transform:uppercase;}
+.tx-status.success{background:rgba(0,230,118,0.15);color:#00e676;}
+.tx-status.pending{background:rgba(250,171,0,0.15);color:#ffab00;}
+.tx-status.failed{background:rgba(255,77,79,0.15);color:#ff4d4f;}
 .tx-amt{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:800;flex-shrink:0;}
 .tx-amt.plus{color:#00e676;}
 .tx-amt.minus{color:#ff4d4f;}
@@ -202,7 +202,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ============ BOTTOM TAB BAR (SAME AS HOME) ============ */
+/* ============ BOTTOM TAB BAR ============ */
 .bottom-tabbar {
   position: fixed; bottom: 0; left: 0; width: 100%; height: 65px;
   background: #1A1A1A; display: flex; justify-content: space-around;
@@ -224,7 +224,6 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 </head>
 <body>
 
-<!-- SVG Gradients for Tab Bar (Same as Home) -->
 <svg style="position: absolute; width: 0; height: 0;">
     <defs>
         <linearGradient id="gold-grad" x1="0" y1="1" x2="0" y2="0">
@@ -234,7 +233,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
     </defs>
 </svg>
 
-<!-- NAVBAR (CLEAN, NO FLAG) -->
+<!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left" onclick="location.href='home.html'">
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
@@ -331,7 +330,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- BOTTOM TAB BAR (IDENTICAL TO HOME) -->
+<!-- BOTTOM TAB BAR -->
 <div class="bottom-tabbar">
     <a href="home.html" class="tab-item">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -361,7 +360,10 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore, doc, getDoc, updateDoc, collection, query, 
+  where, getDocs, limit, onSnapshot 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -417,51 +419,43 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
   currentUser = user;
-  loadUserData(user.uid);
+
+  // ⚡ 1. REAL-TIME LIVE USER PROFILE & BALANCE LISTENER
+  onSnapshot(doc(db, 'users', user.uid), (snap) => {
+    if(snap.exists()) {
+      const data = snap.data();
+      document.getElementById('userName').textContent = data.name || data.username || 'Member';
+      document.getElementById('userUid').textContent = 'UID: ' + user.uid.substring(0,8).toUpperCase();
+
+      const bal = Number(data.balance ?? data.wallet ?? 0);
+      document.getElementById('balanceVal').textContent = fmt(bal);
+
+      const dep = Number(data.totalDeposit ?? data.totalRecharge ?? 0);
+      const wd  = Number(data.totalWithdraw ?? 0);
+      document.getElementById('totalDeposit').textContent = '₹' + fmt(dep);
+      document.getElementById('totalWithdraw').textContent = '₹' + fmt(wd);
+
+      const charSum = user.uid.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+      const imgIndex = charSum % profileImages.length;
+      const userAvatar = document.getElementById('userAvatar');
+      userAvatar.src = './images/' + profileImages[imgIndex];
+      userAvatar.style.display = 'block';
+    }
+  });
+
+  // Load Transactions & Real-time status cross-verification
   loadTransactions(user.uid);
 });
 
-async function loadUserData(uid){
-  try{
-    const snap = await getDoc(doc(db,'users',uid));
-    if(!snap.exists()){
-      toast('User profile not found');
-      return;
-    }
-    const data = snap.data();
-    
-    document.getElementById('userName').textContent = data.name || data.username || 'Member';
-    document.getElementById('userUid').textContent = 'UID: ' + uid.substring(0,8).toUpperCase();
-
-    const bal = Number(data.balance ?? data.wallet ?? 0);
-    document.getElementById('balanceVal').textContent = fmt(bal);
-
-    const dep = Number(data.totalDeposit ?? data.totalRecharge ?? 0);
-    const wd  = Number(data.totalWithdraw ?? 0);
-    document.getElementById('totalDeposit').textContent = '₹' + fmt(dep);
-    document.getElementById('totalWithdraw').textContent = '₹' + fmt(wd);
-
-    const charSum = uid.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-    const imgIndex = charSum % profileImages.length;
-    const userAvatar = document.getElementById('userAvatar');
-    userAvatar.src = './images/' + profileImages[imgIndex];
-    userAvatar.style.display = 'block';
-
-  }catch(err){
-    console.error('loadUserData error:',err);
-  }
-}
-
-// Refresh balance
+// Refresh balance button
 document.getElementById('refreshBtn').addEventListener('click', async (e)=>{
   const btn = e.currentTarget;
   if(btn.classList.contains('spin')) return;
   btn.classList.add('spin');
   try{
     if(currentUser){
-      await loadUserData(currentUser.uid);
       await loadTransactions(currentUser.uid);
-      toast('Balance updated');
+      toast('Balance & Records updated');
     }
   }catch(err){
     toast('Refresh failed');
@@ -470,15 +464,30 @@ document.getElementById('refreshBtn').addEventListener('click', async (e)=>{
   }
 });
 
-// Load Transactions
+// ==========================================================
+// ⚡ 2. SMART TRANSACTION RESOLVER (FIXES PENDING BUG)
+// ==========================================================
 async function loadTransactions(uid){
   const listEl = document.getElementById('txList');
   try{
-    const txRef = collection(db,'transactions');
-    const q = query(txRef, where('userId','==',uid), limit(25));
+    // A. Query user's approved deposits directly from deposits collection
+    const depSnap = await getDocs(query(collection(db, 'deposits'), where('userId', '==', uid), limit(35)));
+    const depStatusMap = new Map();
+    depSnap.forEach(d => {
+      const data = d.data();
+      const st = (data.status || '').toLowerCase();
+      // Map both doc id and UTR to its real status
+      depStatusMap.set(d.id, st);
+      if(data.utr) depStatusMap.set(String(data.utr).trim(), st);
+      if(data.orderId) depStatusMap.set(String(data.orderId).trim(), st);
+    });
+
+    // B. Query transactions ledger
+    const txRef = collection(db, 'transactions');
+    const q = query(txRef, where('userId', '==', uid), limit(30));
     const snap = await getDocs(q);
 
-    if(snap.empty){
+    if(snap.empty && depSnap.empty){
       listEl.innerHTML = `
         <div class="empty-state">
           <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
@@ -488,7 +497,27 @@ async function loadTransactions(uid){
     }
 
     let arr = [];
-    snap.forEach(d => arr.push(d.data()));
+    snap.forEach(d => arr.push({ docId: d.id, ...d.data() }));
+
+    // C. Reconcile statuses (If deposits collection says approved/completed, turn Pending -> Success)
+    arr.forEach(t => {
+      const utrKey = String(t.utr || '').trim();
+      const orderKey = String(t.orderId || '').trim();
+      const liveDepStatus = depStatusMap.get(utrKey) || depStatusMap.get(orderKey) || depStatusMap.get(t.docId.replace('dep_', ''));
+
+      if(liveDepStatus) {
+        if(['completed', 'approved', 'success'].includes(liveDepStatus)) {
+          t.status = 'success';
+          // Auto-heal firestore record in background so it never stays pending
+          if(t.status !== 'success') {
+            updateDoc(doc(db, 'transactions', t.docId), { status: 'success' }).catch(()=>{});
+          }
+        } else if(['rejected', 'failed', 'cancelled'].includes(liveDepStatus)) {
+          t.status = 'failed';
+        }
+      }
+    });
+
     arr.sort((a,b) => {
       const tA = a.createdAt?.toMillis?.() || a.time || 0;
       const tB = b.createdAt?.toMillis?.() || b.time || 0;
@@ -502,15 +531,18 @@ async function loadTransactions(uid){
       const ts = t.createdAt || t.time || t.timestamp;
       
       let title = t.title || (
-        type.includes('deposit') ? 'Recharge' :
-        type.includes('withdraw') ? 'Withdraw' :
+        type.includes('deposit') ? 'UPI Fast Recharge' :
+        type.includes('withdraw') ? 'Bank Withdrawal' :
         type.includes('win') ? 'Game Profit' : 'Transaction'
       );
       
       let stText = 'Success';
       let stClass = 'success';
-      if(t.status === 'failed' || t.status === 'rejected') { stText = 'Failed'; stClass = 'failed'; }
-      else if(t.status === 'pending') { stText = 'Pending'; stClass = 'pending'; }
+      if(t.status === 'failed' || t.status === 'rejected' || t.status === 'cancelled') { 
+        stText = 'Failed'; stClass = 'failed'; 
+      } else if(t.status === 'pending') { 
+        stText = 'Pending'; stClass = 'pending'; 
+      }
 
       let cls = 'bet';
       let sign = '-';
