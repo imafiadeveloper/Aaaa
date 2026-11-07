@@ -17,13 +17,19 @@
             --border-subtle: rgba(255,255,255,0.08);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        html, body { background: var(--bg-main); color: #fff; overflow-x: hidden; min-height: 100vh; padding-bottom: 75px; }
+        html, body { background: var(--bg-main); color: #fff; min-height: 100vh; padding-bottom: 75px; overflow-x: clip; }
         a { text-decoration: none; color: inherit; display: block; }
         button { border: none; outline: none; cursor: pointer; background: transparent; color: inherit; }
         ::-webkit-scrollbar { width: 0; height: 0; }
 
-        /* Top Header */
-        .top-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #282828; border-bottom: 1px solid var(--border-subtle); }
+        /* 🔒 1. 100% FIXED TOP HEADER ON SCROLL */
+        .top-header {
+            position: sticky; top: 0; left: 0; right: 0; z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; background: #242424;
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+        }
         .logo-area { display: flex; flex-direction: column; gap: 3px; }
         .brand-title { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; color: #FAE59F; letter-spacing: 1px; }
         .flag-greeting { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #c0c2c8; font-weight: 600; }
@@ -40,20 +46,13 @@
         }
         .top-btn svg { width: 13px; height: 13px; stroke: #312105; fill: none; stroke-width: 2.5; }
 
-        /* Banner Slider */
+        /* 🖼️ 2. BANNER SLIDER */
         .slider-container { padding: 10px 12px 6px; position: relative; overflow: hidden; }
         .slides-wrapper { position: relative; border-radius: 14px; overflow: hidden; background: #2e2e2e; aspect-ratio: 2.2/1; }
         .mySlide { display: none; width: 100%; height: 100%; position: relative; }
-        .mySlide.active { display: block; }
+        .mySlide.active { display: block; animation: bannerFade 0.4s ease; }
+        @keyframes bannerFade { from { opacity: 0.6; } to { opacity: 1; } }
         .mySlide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .banner-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
-            padding: 16px; display: flex; flex-direction: column; justify-content: center;
-        }
-        .banner-badge { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; color: #FAE59F; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
-        .banner-sub { font-size: 12px; color: #fff; margin: 4px 0 8px; font-weight: 700; }
-        .banner-pill { background: #d9ac4f; color: #221500; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 12px; width: fit-content; }
 
         /* Notice Strip */
         .notice-strip {
@@ -69,7 +68,7 @@
             border-radius: 14px; flex-shrink: 0;
         }
 
-        /* User Info Strip */
+        /* User Account Strip */
         .user-bar {
             margin: 0 12px 14px; background: linear-gradient(135deg, #F3D989 0%, #D8AB4E 100%);
             border-radius: 16px; padding: 10px 14px; color: #2c1f06;
@@ -86,26 +85,21 @@
         .ub-mail { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .ub-mail svg { width: 20px; height: 20px; fill: none; stroke: #2c1f06; stroke-width: 2; }
 
-        /* Game Category Decks */
-        .category-deck { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 12px 8px; }
+        /* 🃏 3. BIG CATEGORY CARDS (SAME SIZE FOR ALL 6) */
+        .category-deck {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+            padding: 0 12px 14px;
+        }
         .cat-card {
             background: linear-gradient(145deg, #EAD083 0%, #C99738 100%);
-            border-radius: 14px; padding: 12px 6px; text-align: center;
+            border-radius: 14px; padding: 14px 6px 12px; text-align: center;
             color: #241602; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform .15s;
+            transition: transform .15s, box-shadow .15s;
         }
         .cat-card:active { transform: scale(0.96); }
-        .cat-card.active { box-shadow: 0 0 0 2px #fff, 0 6px 16px rgba(216,171,78,0.4); }
-        .cat-icon { font-size: 26px; margin-bottom: 2px; }
+        .cat-card.active { box-shadow: 0 0 0 2px #fff, 0 6px 18px rgba(250,229,159,0.5); }
+        .cat-icon { font-size: 28px; margin-bottom: 4px; display: block; }
         .cat-name { font-size: 12px; font-weight: 900; }
-
-        .category-subdeck { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 12px 14px; }
-        .subcat-card {
-            background: #2b2b2b; border: 1px solid var(--border-subtle);
-            border-radius: 12px; padding: 9px 4px; text-align: center;
-            color: #d8d8d8; cursor: pointer; font-size: 11px; font-weight: 800;
-        }
-        .subcat-card.active { background: #383838; color: #FAE59F; border-color: #FAE59F; }
 
         /* Lottery Subtabs */
         .lottery-tabs-bar { display: flex; gap: 6px; overflow-x: auto; padding: 0 12px 12px; }
@@ -145,7 +139,7 @@
         .card-footer { padding: 6px 4px; text-align: center; background: #26262a; border-top: 1px solid rgba(255,255,255,0.04); }
         .card-title { font-size: 11px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Ranking Section */
+        /* 🏆 4. TODAY'S EARNINGS CHART (10 PROFILES DYNAMIC) */
         .ranking-wrap { margin: 0 12px 16px; }
         .podium-box { display: flex; align-items: flex-end; justify-content: center; gap: 6px; margin: 16px 0 12px; }
         .podium-item { flex: 1; background: #282828; border-radius: 12px; padding: 12px 6px 10px; text-align: center; position: relative; border: 1px solid var(--border-subtle); }
@@ -180,7 +174,7 @@
         .tab-item.active { color: #FAE59F; }
         .tab-item.active svg { stroke: #FAE59F; }
 
-        /* ==================== POPUP OVERLAYS & UI ==================== */
+        /* POPUP MODALS */
         .popup-modal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);
             z-index: 10000; display: none; align-items: center; justify-content: center; padding: 16px;
@@ -188,7 +182,6 @@
         .popup-modal.show { display: flex; animation: popIn 0.25s ease; }
         @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* 1. Welcome Bonus Popup */
         .welcome-card {
             width: 100%; max-width: 320px; background: #fff; border-radius: 20px;
             text-align: center; padding: 24px 18px 20px; position: relative; color: #222;
@@ -208,7 +201,6 @@
             color: #fff; font-size: 15px; font-weight: 800; box-shadow: 0 4px 15px rgba(255,71,87,0.4);
         }
 
-        /* 2. Banner Poster Modal (Recharge & Diwali with Images) */
         .poster-card {
             width: 100%; max-width: 330px; background: #1c1c1f; border-radius: 16px;
             overflow: hidden; border: 1px solid var(--gold-solid); text-align: center;
@@ -226,7 +218,6 @@
             color: #291a03; font-size: 14px; font-weight: 900;
         }
 
-        /* 3. Extra First Deposit Bonus Modal */
         .first-dep-card {
             width: 100%; max-width: 340px; background: #2c2c30; border-radius: 18px;
             padding: 18px 14px; border: 1px solid rgba(255,255,255,0.1); position: relative;
@@ -273,7 +264,7 @@
 </head>
 <body>
 
-<!-- Top Header -->
+<!-- 🔒 1. FIXED TOP HEADER -->
 <header class="top-header">
   <div class="logo-area">
     <div class="brand-title">BDG GAME</div>
@@ -294,25 +285,23 @@
   </div>
 </header>
 
-<!-- Banner Slider -->
+<!-- 🖼️ 2. FULL BANNER SLIDER WITH ALL IMAGES -->
 <div class="slider-container">
-  <div class="slides-wrapper">
-    <div class="mySlide active">
-      <img src="./images/Banner_20240110082959xdnc.png" onerror="this.src='./images/Banner_20231125140847kw1d.png'">
-      <div class="banner-overlay">
-        <div class="banner-badge">Super Jackpot</div>
-        <div class="banner-sub">Get Big Bonus &amp; Rewards</div>
-        <div class="banner-pill">VIP EXCLUSIVE</div>
-      </div>
-    </div>
-    <div class="mySlide">
-      <img src="./images/Banner_20231125140847kw1d.png">
-      <div class="banner-overlay">
-        <div class="banner-badge">Win Go 1Min</div>
-        <div class="banner-sub">Fastest Payout Lottery</div>
-        <div class="banner-pill">PLAY NOW</div>
-      </div>
-    </div>
+  <div class="slides-wrapper" id="sliderWrapper">
+    <div class="mySlide active"><img src="./images/Banner_20261027220752j3bs.png" onerror="this.src='./images/Banner_20240110082959xdnc.png'"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027220812iof3.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027220830qq7i.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027220843t9o6.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027221033lv4t.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027221334cpfh.png"></div>
+    <div class="mySlide"><img src="./images/Banner_2026102722090226nu.png"></div>
+    <div class="mySlide"><img src="./images/Banner_2026102722040583fi.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261103171330ut1v.jpg"></div>
+    <div class="mySlide"><img src="./images/Banner_20261028123337l85m.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261028113049vnd8.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027221429sim9.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027221419iq5w.png"></div>
+    <div class="mySlide"><img src="./images/Banner_20261027221409jn7o.png"></div>
   </div>
 </div>
 
@@ -336,26 +325,32 @@
   </div>
 </div>
 
-<!-- Main Game Categories Deck -->
+<!-- 🃏 3. BIG CATEGORY BUTTONS (2 ROWS × 3 CARDS = ALL EQUAL & BIG) -->
 <div class="category-deck">
   <div class="cat-card active" onclick="switchCategory('lottery', this)">
-    <div class="cat-icon">🎰</div>
-    <div class="cat-name">Lottery</div>
+    <span class="cat-icon">🎰</span>
+    <span class="cat-name">Lottery</span>
   </div>
   <div class="cat-card" onclick="switchCategory('original', this)">
-    <div class="cat-icon">🚀</div>
-    <div class="cat-name">Original</div>
+    <span class="cat-icon">🚀</span>
+    <span class="cat-name">Original</span>
   </div>
   <div class="cat-card" onclick="switchCategory('slots', this)">
-    <div class="cat-icon">💎</div>
-    <div class="cat-name">Slots</div>
+    <span class="cat-icon">💎</span>
+    <span class="cat-name">Slots</span>
   </div>
-</div>
-
-<div class="category-subdeck">
-  <div class="subcat-card" onclick="switchCategory('sports', this)"><span>⚽ Sports</span></div>
-  <div class="subcat-card" onclick="switchCategory('casino', this)"><span>🎡 Casino</span></div>
-  <div class="subcat-card" onclick="switchCategory('rummy', this)"><span>🃏 Rummy</span></div>
+  <div class="cat-card" onclick="switchCategory('sports', this)">
+    <span class="cat-icon">⚽</span>
+    <span class="cat-name">Sports</span>
+  </div>
+  <div class="cat-card" onclick="switchCategory('casino', this)">
+    <span class="cat-icon">🎡</span>
+    <span class="cat-name">Casino</span>
+  </div>
+  <div class="cat-card" onclick="switchCategory('rummy', this)">
+    <span class="cat-icon">🃏</span>
+    <span class="cat-name">Rummy</span>
+  </div>
 </div>
 
 <!-- 1. LOTTERY SECTION -->
@@ -408,8 +403,8 @@
   </div>
 </div>
 
-<!-- 2. ORIGINAL / MINI GAMES SECTION -->
-<div class="game-section-block" id="sec-original">
+<!-- 2. ORIGINAL SECTION -->
+<div class="game-section-block" id="sec-original" style="display:none;">
   <div class="section-head"><h3>Originals &amp; Mini Games</h3></div>
   <div class="games-grid">
     <div onclick="safeLaunchGame('aviator.html')" class="game-card">
@@ -440,7 +435,7 @@
 </div>
 
 <!-- 3. SLOTS SECTION -->
-<div class="game-section-block" id="sec-slots">
+<div class="game-section-block" id="sec-slots" style="display:none;">
   <div class="section-head"><h3>Slots (JILI &amp; PG)</h3></div>
   <div class="games-grid">
     <div onclick="safeLaunchGame('jili-slots.html')" class="game-card">
@@ -462,31 +457,8 @@
   </div>
 </div>
 
-<!-- 4. CASINO SECTION -->
-<div class="game-section-block" id="sec-casino">
-  <div class="section-head"><h3>Live Casino</h3></div>
-  <div class="games-grid">
-    <div onclick="safeLaunchGame('roulette.html')" class="game-card">
-      <div class="card-thumb"><div style="font-size:38px;">🎡</div><span class="badge-tag gold">LIVE</span></div>
-      <div class="card-footer"><div class="card-title">Roulette Live</div></div>
-    </div>
-    <div onclick="safeLaunchGame('baccarat.html')" class="game-card">
-      <div class="card-thumb"><div style="font-size:38px;">👑</div><span class="badge-tag">VIP</span></div>
-      <div class="card-footer"><div class="card-title">Baccarat</div></div>
-    </div>
-    <div onclick="safeLaunchGame('sicbo.html')" class="game-card">
-      <div class="card-thumb"><div style="font-size:38px;">🎲</div><span class="badge-tag">DICE</span></div>
-      <div class="card-footer"><div class="card-title">Sic Bo</div></div>
-    </div>
-    <div onclick="safeLaunchGame('blackjack.html')" class="game-card">
-      <div class="card-thumb"><div style="font-size:38px;">♠️</div><span class="badge-tag gold">21</span></div>
-      <div class="card-footer"><div class="card-title">Blackjack 21</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- 5. SPORTS SECTION -->
-<div class="game-section-block" id="sec-sports">
+<!-- 4. SPORTS SECTION -->
+<div class="game-section-block" id="sec-sports" style="display:none;">
   <div class="section-head"><h3>Sports Betting</h3></div>
   <div class="games-grid">
     <div onclick="safeLaunchGame('cricket.html')" class="game-card">
@@ -508,8 +480,31 @@
   </div>
 </div>
 
+<!-- 5. CASINO SECTION -->
+<div class="game-section-block" id="sec-casino" style="display:none;">
+  <div class="section-head"><h3>Live Casino</h3></div>
+  <div class="games-grid">
+    <div onclick="safeLaunchGame('roulette.html')" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎡</div><span class="badge-tag gold">LIVE</span></div>
+      <div class="card-footer"><div class="card-title">Roulette Live</div></div>
+    </div>
+    <div onclick="safeLaunchGame('baccarat.html')" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">👑</div><span class="badge-tag">VIP</span></div>
+      <div class="card-footer"><div class="card-title">Baccarat</div></div>
+    </div>
+    <div onclick="safeLaunchGame('sicbo.html')" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">🎲</div><span class="badge-tag">DICE</span></div>
+      <div class="card-footer"><div class="card-title">Sic Bo</div></div>
+    </div>
+    <div onclick="safeLaunchGame('blackjack.html')" class="game-card">
+      <div class="card-thumb"><div style="font-size:38px;">♠️</div><span class="badge-tag gold">21</span></div>
+      <div class="card-footer"><div class="card-title">Blackjack 21</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- 6. RUMMY SECTION -->
-<div class="game-section-block" id="sec-rummy">
+<div class="game-section-block" id="sec-rummy" style="display:none;">
   <div class="section-head"><h3>Rummy &amp; Cards</h3></div>
   <div class="games-grid">
     <div onclick="safeLaunchGame('rummy-point.html')" class="game-card">
@@ -531,67 +526,47 @@
   </div>
 </div>
 
-<!-- Ranking Podium -->
+<!-- 🏆 4. DYNAMIC DAILY 10 USERS EARNINGS CHART -->
 <div class="ranking-wrap">
   <div class="section-head"><h3>Today's Earnings Chart</h3></div>
-  <div class="podium-box">
+  
+  <!-- Podium Top 3 -->
+  <div class="podium-box" id="podiumContainer">
     <div class="podium-item">
       <div class="podium-avatar">
         <img src="./images/3-abfcc056.png" onerror="this.src='./images/6-7c7f5203.png'">
         <div class="crown-icon">🥈</div>
       </div>
-      <div class="pod-name">Mem***E6F</div>
-      <div class="pod-amt">₹27,240,080</div>
+      <div class="pod-name" id="p2_name">Mem***2A</div>
+      <div class="pod-amt" id="p2_amt">₹27,240,080</div>
     </div>
     <div class="podium-item p1">
       <div class="podium-avatar" style="width:52px;height:52px;">
         <img src="./images/6-7c7f5203.png">
         <div class="crown-icon" style="font-size:20px;top:-15px;">👑</div>
       </div>
-      <div class="pod-name">Mem***Q0B</div>
-      <div class="pod-amt">₹68,800,214</div>
+      <div class="pod-name" id="p1_name">Mem***8K</div>
+      <div class="pod-amt" id="p1_amt">₹68,800,214</div>
     </div>
     <div class="podium-item">
       <div class="podium-avatar">
         <img src="./images/17-bedde42f.png" onerror="this.src='./images/6-7c7f5203.png'">
         <div class="crown-icon">🥉</div>
       </div>
-      <div class="pod-name">Mem***0AF</div>
-      <div class="pod-amt">₹3,501,350</div>
+      <div class="pod-name" id="p3_name">Mem***9Q</div>
+      <div class="pod-amt" id="p3_amt">₹13,501,350</div>
     </div>
   </div>
 
-  <div class="rank-row">
-    <div class="rr-left">
-      <span class="rr-rank">4</span>
-      <img src="./images/19-2ac9fd83.png" class="rr-avatar" onerror="this.src='./images/7-00479cfa.png'">
-      <span>Mem***7VY</span>
-    </div>
-    <span class="rr-amt">₹2,180,339.28</span>
-  </div>
-  <div class="rank-row">
-    <div class="rr-left">
-      <span class="rr-rank">5</span>
-      <img src="./images/7-00479cfa.png" class="rr-avatar">
-      <span>ma***mi</span>
-    </div>
-    <span class="rr-amt">₹2,133,885.80</span>
-  </div>
-  <div class="rank-row">
-    <div class="rr-left">
-      <span class="rr-rank">6</span>
-      <img src="./images/1-c7e4efc8.png" class="rr-avatar" onerror="this.src='./images/7-00479cfa.png'">
-      <span>Mem***0WA</span>
-    </div>
-    <span class="rr-amt">₹2,024,544.20</span>
-  </div>
+  <!-- Rank 4 to 10 Rows -->
+  <div id="rankRowsContainer"></div>
 </div>
 
-<!-- Floating App & Service Icons -->
+<!-- Floating Action Icons -->
 <div class="app-fab" onclick="triggerPWAInstall()" title="Install App">
   <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
 </div>
-<div class="customer-fab" onclick="openService()" title="Telegram Customer Service">
+<div class="customer-fab" onclick="openService()" title="Customer Service">
   <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
 </div>
 
@@ -620,8 +595,6 @@
 </div>
 
 <!-- ==================== POPUP MODALS ==================== -->
-
-<!-- 1. POPUP: ₹28 Welcome Signup Bonus (1-Time Only) -->
 <div class="popup-modal" id="modalWelcome">
   <div class="welcome-card">
     <div class="wc-badge">✓</div>
@@ -633,61 +606,37 @@
   </div>
 </div>
 
-<!-- 2. POPUP: Recharge Bonus Poster (Images/ogi.jpg) -->
 <div class="popup-modal" id="modalRecharge">
   <div class="poster-card">
     <div class="poster-header">Recharge Bonus</div>
     <div class="poster-body">
-      <div class="poster-img-wrap">
-        <img src="./images/ogi.jpg" alt="Recharge Bonus">
-      </div>
+      <div class="poster-img-wrap"><img src="./images/ogi.jpg" alt="Recharge Bonus"></div>
       <button class="poster-btn" onclick="closePoster('modalRecharge')">Confirm</button>
     </div>
   </div>
 </div>
 
-<!-- 3. POPUP: Diwali Bonus Poster (Images/funjj.jpg) -->
 <div class="popup-modal" id="modalDiwali">
   <div class="poster-card">
     <div class="poster-header">Diwali Bonus</div>
     <div class="poster-body">
-      <div class="poster-img-wrap">
-        <img src="./images/funjj.jpg" alt="Diwali Bonus">
-      </div>
+      <div class="poster-img-wrap"><img src="./images/funjj.jpg" alt="Diwali Bonus"></div>
       <button class="poster-btn" onclick="closePoster('modalDiwali')">Confirm</button>
     </div>
   </div>
 </div>
 
-<!-- 4. POPUP: Extra First Deposit Bonus Modal -->
 <div class="popup-modal" id="modalFirstDeposit">
   <div class="first-dep-card">
     <div class="fd-title">Extra first deposit bonus</div>
     <div class="fd-sub">Each account can only receive rewards once</div>
-    
     <div class="fd-list">
-      <div class="fd-item">
-        <div class="fd-left"><h5>First deposit 100</h5><p>Deposit 100 to receive bonus</p></div>
-        <div class="fd-right"><span class="fd-bonus">+₹20.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div>
-      </div>
-      <div class="fd-item">
-        <div class="fd-left"><h5>First deposit 300</h5><p>Deposit 300 to receive bonus</p></div>
-        <div class="fd-right"><span class="fd-bonus">+₹60.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div>
-      </div>
-      <div class="fd-item">
-        <div class="fd-left"><h5>First deposit 500</h5><p>Deposit 500 to receive bonus</p></div>
-        <div class="fd-right"><span class="fd-bonus">+₹100.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div>
-      </div>
-      <div class="fd-item">
-        <div class="fd-left"><h5>First deposit 1000</h5><p>Deposit 1000 to receive bonus</p></div>
-        <div class="fd-right"><span class="fd-bonus">+₹200.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div>
-      </div>
-      <div class="fd-item">
-        <div class="fd-left"><h5>First deposit 3000</h5><p>Deposit 3000 to receive bonus</p></div>
-        <div class="fd-right"><span class="fd-bonus">+₹600.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div>
-      </div>
+      <div class="fd-item"><div class="fd-left"><h5>First deposit 100</h5><p>Deposit 100 to receive bonus</p></div><div class="fd-right"><span class="fd-bonus">+₹20.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div></div>
+      <div class="fd-item"><div class="fd-left"><h5>First deposit 300</h5><p>Deposit 300 to receive bonus</p></div><div class="fd-right"><span class="fd-bonus">+₹60.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div></div>
+      <div class="fd-item"><div class="fd-left"><h5>First deposit 500</h5><p>Deposit 500 to receive bonus</p></div><div class="fd-right"><span class="fd-bonus">+₹100.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div></div>
+      <div class="fd-item"><div class="fd-left"><h5>First deposit 1000</h5><p>Deposit 1000 to receive bonus</p></div><div class="fd-right"><span class="fd-bonus">+₹200.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div></div>
+      <div class="fd-item"><div class="fd-left"><h5>First deposit 3000</h5><p>Deposit 3000 to receive bonus</p></div><div class="fd-right"><span class="fd-bonus">+₹600.00</span><button class="fd-action-btn" onclick="location.href='deposit.html'">Deposit</button></div></div>
     </div>
-
     <div class="fd-footer">
       <label class="fd-reminder">
         <input type="checkbox" id="chkNoReminder" onchange="toggleNoReminder(this)">
@@ -695,12 +644,10 @@
       </label>
       <button class="fd-act-btn" onclick="location.href='deposit.html'">Activity</button>
     </div>
-
     <div class="modal-x-close" onclick="closeFirstDepositModal()">✕</div>
   </div>
 </div>
 
-<!-- Telegram Service Modal -->
 <div id="modal-service" class="popup-modal">
   <div style="width:100%;max-width:310px;background:#262626;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">
     <div style="background:#333;padding:12px;text-align:center;font-size:14px;font-weight:700;">Telegram Customer Service</div>
@@ -719,7 +666,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
-  getFirestore, doc, getDoc, updateDoc, setDoc, serverTimestamp, increment 
+  getFirestore, doc, getDoc, updateDoc, setDoc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -766,19 +713,15 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// ==========================================
 // 🔒 1ST DEPOSIT & ACCOUNT FREEZE GUARD
-// ==========================================
 window.safeLaunchGame = (gameUrl) => {
   if (!userData) return toast('Loading account data...');
   
-  // 🚫 1. Check Freeze Status First
   if (userData.isFrozen) {
     toast('🚫 Your account is frozen due to betting rules violation. Contact support.');
     return;
   }
 
-  // 🔒 2. Strict 1st deposit check
   if (!userData.firstDepositDone && Number(userData.totalRecharge || 0) <= 0) {
     toast('⚠️ Please make 1st deposit to unlock all games!');
     setTimeout(() => {
@@ -790,17 +733,13 @@ window.safeLaunchGame = (gameUrl) => {
   location.href = gameUrl;
 };
 
-// ==========================================
 // 🎯 POPUP QUEUE CONTROLLER
-// ==========================================
 function checkModalsSequence() {
-  // 1. One-Time ₹28 Registration Bonus Check
   if (userData && !userData.welcomeClaimed) {
     document.getElementById('modalWelcome').classList.add('show');
     return;
   }
 
-  // 2. Extra First Deposit Modal (Daily Reminder Check)
   const todayStr = new Date().toISOString().split('T')[0];
   const lastSkippedDate = localStorage.getItem('bdg_skip_deposit_modal');
   
@@ -809,14 +748,12 @@ function checkModalsSequence() {
     return;
   }
 
-  // 3. Recharge & Diwali Banner Popups (Session Based - Does not show on simple reload)
   if (!sessionStorage.getItem('bdg_session_posters_shown')) {
     sessionStorage.setItem('bdg_session_posters_shown', 'yes');
     document.getElementById('modalRecharge').classList.add('show');
   }
 }
 
-// 1. Claim Welcome Bonus Action
 window.claimWelcomeBonus = async () => {
   try {
     await updateDoc(doc(db, 'users', currentUser.uid), {
@@ -834,7 +771,6 @@ window.claimWelcomeBonus = async () => {
   }
 };
 
-// 2. Close Poster Action
 window.closePoster = (modalId) => {
   document.getElementById(modalId).classList.remove('show');
   if (modalId === 'modalRecharge') {
@@ -844,7 +780,6 @@ window.closePoster = (modalId) => {
   }
 };
 
-// 3. Close First Deposit Action
 window.closeFirstDepositModal = () => {
   document.getElementById('modalFirstDeposit').classList.remove('show');
 };
@@ -858,19 +793,18 @@ window.toggleNoReminder = (chk) => {
   }
 };
 
-// Category Switcher
+// 🃏 BIG CATEGORY SWITCHER
 window.switchCategory = (catName, el) => {
-  document.querySelectorAll('.cat-card, .subcat-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
 
-  const sections = ['lottery', 'original', 'slots', 'casino', 'sports', 'rummy'];
+  const sections = ['lottery', 'original', 'slots', 'sports', 'casino', 'rummy'];
   sections.forEach(s => {
     const elSec = document.getElementById(`sec-${s}`);
     if (elSec) elSec.style.display = (s === catName) ? 'block' : 'none';
   });
 };
 
-// Filter Lottery Cards
 window.filterLottery = (type, el) => {
   document.querySelectorAll('.lot-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -880,7 +814,7 @@ window.filterLottery = (type, el) => {
   });
 };
 
-// Banner Auto Slider
+// 🖼️ BANNER AUTO SLIDER (ALL 14 BANNERS)
 let slideIdx = 0;
 const slides = document.querySelectorAll('.mySlide');
 if (slides.length > 1) {
@@ -888,8 +822,65 @@ if (slides.length > 1) {
     slides[slideIdx].classList.remove('active');
     slideIdx = (slideIdx + 1) % slides.length;
     slides[slideIdx].classList.add('active');
-  }, 4000);
+  }, 3500);
 }
+
+// 🏆 DYNAMIC TODAY'S EARNINGS CHART (10 PROFILES DYNAMIC)
+function generateDailyLeaderboard() {
+  const dateKey = new Date().toISOString().split('T')[0].replace(/-/g, '');
+  let seed = parseInt(dateKey, 10) || 20261107;
+
+  function pseudoRand(mod) {
+    seed = (seed * 9301 + 49297) % 233280;
+    return Math.floor(Math.abs(seed) % mod);
+  }
+
+  const alpha = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  function genName(prefix) {
+    const p1 = alpha[pseudoRand(alpha.length)];
+    const p2 = alpha[pseudoRand(alpha.length)];
+    const p3 = alpha[pseudoRand(alpha.length)];
+    return `${prefix}***${p1}${p2}${p3}`;
+  }
+
+  // Rank 1, 2, 3 (Podium)
+  const top1Amt = 50000000 + pseudoRand(25000000);
+  const top2Amt = 25000000 + pseudoRand(15000000);
+  const top3Amt = 10000000 + pseudoRand(8000000);
+
+  document.getElementById('p1_name').innerText = genName("Mem");
+  document.getElementById('p1_amt').innerText = `₹${top1Amt.toLocaleString('en-IN')}`;
+
+  document.getElementById('p2_name').innerText = genName("Mem");
+  document.getElementById('p2_amt').innerText = `₹${top2Amt.toLocaleString('en-IN')}`;
+
+  document.getElementById('p3_name').innerText = genName("Mem");
+  document.getElementById('p3_amt').innerText = `₹${top3Amt.toLocaleString('en-IN')}`;
+
+  // Rank 4 to 10 Rows
+  const avatars = ['19-2ac9fd83.png', '7-00479cfa.png', '1-c7e4efc8.png', '17-bedde42f.png', '6-7c7f5203.png', '3-abfcc056.png', '19-2ac9fd83.png'];
+  const rowsBox = document.getElementById('rankRowsContainer');
+  let rowsHtml = '';
+
+  let curAmt = 5500000 + pseudoRand(1500000);
+  for (let rank = 4; rank <= 10; rank++) {
+    curAmt = curAmt - (300000 + pseudoRand(400000));
+    const uName = genName(rank % 2 === 0 ? "Mem" : "User");
+    const ava = avatars[(rank - 4) % avatars.length];
+    rowsHtml += `
+      <div class="rank-row">
+        <div class="rr-left">
+          <span class="rr-rank">${rank}</span>
+          <img src="./images/${ava}" class="rr-avatar" onerror="this.src='./images/7-00479cfa.png'">
+          <span>${uName}</span>
+        </div>
+        <span class="rr-amt">₹${curAmt.toLocaleString('en-IN')}.80</span>
+      </div>
+    `;
+  }
+  rowsBox.innerHTML = rowsHtml;
+}
+generateDailyLeaderboard();
 
 // PWA Install Prompt
 let deferredPrompt;
