@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#141416">
+<title>BDG LOTTERY7 - Game History</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold: #FAE59F;
+  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
+  --bg-main: #141416;
+  --card-bg: #202024;
+  --border: rgba(255,255,255,0.06);
+  --green: #00e676;
+  --red: #ff4d4f;
+  --violet: #b388ff;
+  --orange: #ffa502;
+  --blue: #1e90ff;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;width:100%;background:var(--bg-main);font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;}
+::-webkit-scrollbar{width:0;height:0;}
+
+/* Header */
+.navbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  height:54px;padding:0 16px;
+  background:rgba(20,20,22,0.96);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.navbar-left{width:38px;height:38px;display:flex;align-items:center;cursor:pointer;}
+.navbar-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.navbar-title{font-size:16px;font-weight:800;letter-spacing:0.3px;}
+.navbar-right{font-size:12px;font-weight:700;color:var(--gold);cursor:pointer;}
+
+/* Summary Banner */
+.stats-banner{
+  margin:12px 16px 14px;
+  background:linear-gradient(145deg, #28282d 0%, #1c1c1f 100%);
+  border:1px solid rgba(250,229,159,0.2);
+  border-radius:18px;padding:16px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.45);
+}
+.sb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.sb-title{font-size:11px;font-weight:700;color:#8f929b;text-transform:uppercase;letter-spacing:0.5px;}
+.sb-total-count{font-size:12px;font-weight:800;color:var(--gold);}
+.sb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sb-box{
+  background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;text-align:center;
+  border:1px solid rgba(255,255,255,0.03);
+}
+.sb-box span{display:block;font-size:10px;font-weight:700;color:#858892;text-transform:uppercase;margin-bottom:3px;}
+.sb-box strong{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;}
+
+/* Game Filters Horizontal Scroll */
+.filter-tabs{
+  display:flex;gap:8px;padding:0 16px 12px;
+  overflow-x:auto;white-space:nowrap;
+}
+.f-tab{
+  padding:8px 16px;border-radius:20px;
+  background:#202024;border:1px solid var(--border);
+  font-size:12px;font-weight:800;color:#8f929b;
+  cursor:pointer;transition:all .2s ease;
+}
+.f-tab.active{
+  background:var(--gold-grad);color:#241602;border-color:transparent;
+  box-shadow:0 4px 12px rgba(196,147,63,0.3);
+}
+
+/* History List Container */
+.history-container{padding:0 16px 85px;}
+.bet-card{
+  background:#202024;border:1px solid var(--border);
+  border-radius:16px;padding:14px;margin-bottom:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.3);
+  position:relative;overflow:hidden;
+}
+.bet-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+}
+.bet-card.win::before{background:var(--green);}
+.bet-card.lose::before{background:var(--red);}
+.bet-card.pending::before{background:var(--orange);}
+
+.card-top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.game-badge{
+  font-size:13px;font-weight:800;color:#fff;
+  display:flex;align-items:center;gap:6px;
+}
+.game-tag{
+  font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;
+  background:rgba(250,229,159,0.12);color:var(--gold);
+}
+.bet-status{
+  font-size:11px;font-weight:900;text-transform:uppercase;
+  padding:2px 8px;border-radius:10px;
+}
+.bet-status.win{background:rgba(0,230,118,0.15);color:var(--green);}
+.bet-status.lose{background:rgba(255,77,79,0.15);color:var(--red);}
+.bet-status.pending{background:rgba(255,165,2,0.15);color:var(--orange);}
+
+.card-mid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  font-size:12px;margin-bottom:10px;
+}
+.info-col p{color:#8f929b;font-size:11px;margin-bottom:2px;}
+.info-col span{font-weight:700;color:#eaeaea;}
+.choice-pill{
+  display:inline-block;padding:2px 8px;border-radius:6px;
+  font-weight:800;font-size:11px;
+}
+.choice-green{background:rgba(0,230,118,0.2);color:var(--green);}
+.choice-red{background:rgba(255,77,79,0.2);color:var(--red);}
+.choice-violet{background:rgba(179,136,255,0.2);color:var(--violet);}
+.choice-big{background:rgba(255,165,2,0.2);color:var(--orange);}
+.choice-small{background:rgba(30,144,255,0.2);color:var(--blue);}
+.choice-gold{background:rgba(250,229,159,0.2);color:var(--gold);}
+
+.card-bot{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-top:8px;border-top:1px solid rgba(255,255,255,0.04);
+}
+.bet-time{font-size:10px;color:#777a83;font-weight:600;}
+.order-ref{font-size:10px;color:#8f929b;margin-top:2px;cursor:pointer;}
+.order-ref svg{width:10px;height:10px;stroke:#8f929b;margin-left:3px;}
+.bet-pnl{
+  font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;text-align:right;
+}
+.bet-pnl.plus{color:var(--green);}
+.bet-pnl.minus{color:var(--red);}
+.bet-pnl.wait{color:var(--orange);}
+
+/* Empty / Loading State */
+.state-box{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;padding:60px 16px;color:#727580;text-align:center;
+}
+.state-box svg{width:48px;height:48px;stroke:#3e3e44;fill:none;stroke-width:1.8;}
+.state-box p{font-size:13px;font-weight:600;}
+
+/* Toast */
+.toast{
+  position:fixed;top:30%;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:rgba(20,20,22,0.96);border:1px solid var(--gold);
+  color:#fff;font-size:12px;font-weight:700;padding:10px 20px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:all .25s ease;z-index:9999;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="navbar-left" onclick="location.href='account.html'">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
+  <div class="navbar-title">Bet History</div>
+  <div class="navbar-right" onclick="fetchUserBets()">Refresh</div>
+</header>
+
+<!-- Overall Statistics Banner -->
+<div class="stats-banner">
+  <div class="sb-row">
+    <span class="sb-title">Total Betting Summary</span>
+    <span class="sb-total-count" id="statCount">Total Bets: 0</span>
+  </div>
+  <div class="sb-grid">
+    <div class="sb-box">
+      <span>Total Bet Turnover</span>
+      <strong id="statTurnover" style="color:#fff;">₹0.00</strong>
+    </div>
+    <div class="sb-box">
+      <span>Net Profit / Loss</span>
+      <strong id="statProfit" style="color:var(--gold);">₹0.00</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Game Filter Tabs -->
+<div class="filter-tabs">
+  <div class="f-tab active" data-filter="all" onclick="setFilter('all', this)">All Games</div>
+  <div class="f-tab" data-filter="wingo" onclick="setFilter('wingo', this)">Win Go</div>
+  <div class="f-tab" data-filter="trx" onclick="setFilter('trx', this)">Trx Win</div>
+  <div class="f-tab" data-filter="5d" onclick="setFilter('5d', this)">5D Lottery</div>
+  <div class="f-tab" data-filter="k3" onclick="setFilter('k3', this)">K3 Dice</div>
+  <div class="f-tab" data-filter="aviator" onclick="setFilter('aviator', this)">Aviator</div>
+  <div class="f-tab" data-filter="cricket" onclick="setFilter('cricket', this)">Cricket</div>
+</div>
+
+<!-- List of Bets -->
+<div class="history-container" id="historyList">
+  <div class="state-box">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <p>Loading your betting records...</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, collection, query, where, getDocs, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = { 
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", 
+  authDomain: "bdglottery7.firebaseapp.com", 
+  projectId: "bdglottery7", 
+  storageBucket: "bdglottery7.firebasestorage.app", 
+  messagingSenderId: "568771943906", 
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb" 
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let masterBetsList = [];
+let activeFilter = 'all';
+
+const toastEl = document.getElementById('toast');
+window.toast = (msg) => {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2000);
+};
+
+window.copyOrder = (orderId) => {
+  navigator.clipboard.writeText(orderId).then(() => toast('Order ID Copied!'));
+};
+
+function fmt(n) {
+  const v = Number(n) || 0;
+  return v.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function fmtTime(ts) {
+  try {
+    let d;
+    if (ts && typeof ts.toDate === 'function') d = ts.toDate();
+    else if (ts instanceof Date) d = ts;
+    else if (typeof ts === 'number') d = new Date(ts);
+    else if (typeof ts === 'string') d = new Date(ts);
+    else return '--';
+    if (isNaN(d.getTime())) return '--';
+    const pad = x => String(x).padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  } catch(e) { return '--'; }
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    location.replace('index.html');
+    return;
+  }
+  currentUser = user;
+  fetchUserBets();
+});
+
+// Collections across all platform game categories
+const GAME_COLLECTIONS = [
+  { name: 'Win Go 30s', tag: 'wingo', col: 'bets_30s' },
+  { name: 'Win Go 1Min', tag: 'wingo', col: 'bets' },
+  { name: 'Win Go 3Min', tag: 'wingo', col: 'bets_3m' },
+  { name: 'Win Go 5Min', tag: 'wingo', col: 'bets_5m' },
+  { name: 'Win Go 10Min', tag: 'wingo', col: 'bets_10m' },
+  { name: 'TRX Win', tag: 'trx', col: 'bets_trx' },
+  { name: '5D Lottery', tag: '5d', col: 'bets_5d' },
+  { name: 'K3 Dice', tag: 'k3', col: 'bets_k3' },
+  { name: 'Cricket Win', tag: 'cricket', col: 'bets_cricket' },
+  { name: 'Aviator', tag: 'aviator', col: 'bets_aviator' }
+];
+
+window.fetchUserBets = async () => {
+  if (!currentUser) return;
+  const listEl = document.getElementById('historyList');
+  listEl.innerHTML = `
+    <div class="state-box">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <p>Refreshing game records...</p>
+    </div>`;
+
+  try {
+    const promises = GAME_COLLECTIONS.map(async (g) => {
+      try {
+        const q = query(collection(db, g.col), where('userId', '==', currentUser.uid), limit(40));
+        const snap = await getDocs(q);
+        const docs = [];
+        snap.forEach(d => {
+          docs.push({
+            docId: d.id,
+            gameName: g.name,
+            gameTag: g.tag,
+            ...d.data()
+          });
+        });
+        return docs;
+      } catch(err) {
+        return [];
+      }
+    });
+
+    const results = await Promise.all(promises);
+    masterBetsList = results.flat();
+
+    // Sort newest first
+    masterBetsList.sort((a, b) => {
+      const tA = a.createdAt?.toMillis?.() || a.time || 0;
+      const tB = b.createdAt?.toMillis?.() || b.time || 0;
+      return tB - tA;
+    });
+
+    renderStatistics();
+    renderFilteredBets();
+  } catch(e) {
+    listEl.innerHTML = `
+      <div class="state-box">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>Failed to load records. Check internet.</p>
+      </div>`;
+  }
+};
+
+function renderStatistics() {
+  let totalBets = masterBetsList.length;
+  let totalTurnover = 0;
+  let netPnl = 0;
+
+  masterBetsList.forEach(b => {
+    const amt = Number(b.amount || 0);
+    totalTurnover += amt;
+    const winAmt = Number(b.winAmount || 0);
+    const st = (b.status || '').toLowerCase();
+
+    if (st === 'win' || st === 'success' || st === 'won') {
+      netPnl += (winAmt > 0 ? (winAmt - amt) : amt);
+    } else if (st === 'lose' || st === 'lost' || st === 'failed') {
+      netPnl -= amt;
+    }
+  });
+
+  document.getElementById('statCount').textContent = `Total Bets: ${totalBets}`;
+  document.getElementById('statTurnover').textContent = `₹${fmt(totalTurnover)}`;
+  
+  const pnlEl = document.getElementById('statProfit');
+  pnlEl.textContent = `${netPnl >= 0 ? '+' : '-'}₹${fmt(Math.abs(netPnl))}`;
+  pnlEl.style.color = netPnl >= 0 ? 'var(--green)' : 'var(--red)';
+}
+
+window.setFilter = (tag, el) => {
+  document.querySelectorAll('.f-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = tag;
+  renderFilteredBets();
+};
+
+function renderFilteredBets() {
+  const listEl = document.getElementById('historyList');
+  const filtered = activeFilter === 'all' 
+    ? masterBetsList 
+    : masterBetsList.filter(b => b.gameTag === activeFilter);
+
+  if (!filtered.length) {
+    listEl.innerHTML = `
+      <div class="state-box">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 10l4 4m0-4l-4 4"/></svg>
+        <p>No betting history found for this category</p>
+      </div>`;
+    return;
+  }
+
+  let html = '';
+  filtered.forEach(b => {
+    const rawSt = (b.status || 'pending').toLowerCase();
+    let statusClass = 'pending';
+    let statusLabel = 'Waiting';
+
+    if (rawSt === 'win' || rawSt === 'won' || rawSt === 'success') {
+      statusClass = 'win';
+      statusLabel = 'Win';
+    } else if (rawSt === 'lose' || rawSt === 'lost' || rawSt === 'failed') {
+      statusClass = 'lose';
+      statusLabel = 'Lose';
+    }
+
+    const betAmount = Number(b.amount || 0);
+    const winAmount = Number(b.winAmount || 0);
+    let pnlSign = '';
+    let pnlDisplay = `₹${fmt(betAmount)}`;
+    let pnlClass = 'wait';
+
+    if (statusClass === 'win') {
+      pnlSign = '+';
+      pnlClass = 'plus';
+      pnlDisplay = `+₹${fmt(winAmount > 0 ? winAmount : (betAmount * 1.96))}`;
+    } else if (statusClass === 'lose') {
+      pnlSign = '-';
+      pnlClass = 'minus';
+      pnlDisplay = `-₹${fmt(betAmount)}`;
+    }
+
+    // Selected Bet Badge Style
+    const selectStr = String(b.select || b.choice || b.number || 'Standard').toUpperCase();
+    let choiceClass = 'choice-gold';
+    if (['GREEN', '1', '3', '7', '9'].includes(selectStr)) choiceClass = 'choice-green';
+    else if (['RED', '2', '4', '6', '8'].includes(selectStr)) choiceClass = 'choice-red';
+    else if (['VIOLET', '0', '5'].includes(selectStr)) choiceClass = 'choice-violet';
+    else if (selectStr === 'BIG') choiceClass = 'choice-big';
+    else if (selectStr === 'SMALL') choiceClass = 'choice-small';
+
+    const periodStr = b.period || b.periodId || b.round || 'Direct';
+    const orderRef = b.orderId || b.docId;
+    const timeFormatted = fmtTime(b.createdAt || b.time || b.timestamp);
+
+    html += `
+      <div class="bet-card ${statusClass}">
+        <div class="card-top">
+          <div class="game-badge">
+            <span>${b.gameName}</span>
+            <span class="game-tag">${b.gameTag.toUpperCase()}</span>
+          </div>
+          <div class="bet-status ${statusClass}">${statusLabel}</div>
+        </div>
+
+        <div class="card-mid">
+          <div class="info-col">
+            <p>Period Number</p>
+            <span style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:11px;">${periodStr}</span>
+          </div>
+          <div class="info-col" style="text-align:right;">
+            <p>Selection</p>
+            <span class="choice-pill ${choiceClass}">${selectStr}</span>
+          </div>
+          <div class="info-col">
+            <p>Bet Amount</p>
+            <span>₹${fmt(betAmount)}</span>
+          </div>
+          <div class="info-col" style="text-align:right;">
+            <p>Result</p>
+            <span>${b.resultNumber !== undefined ? `Num: ${b.resultNumber}` : (statusClass === 'win' ? 'Successful' : (statusClass === 'lose' ? 'Failed' : 'Running'))}</span>
+          </div>
+        </div>
+
+        <div class="card-bot">
+          <div>
+            <div class="bet-time">${timeFormatted}</div>
+            <div class="order-ref" onclick="copyOrder('${orderRef}')" title="Click to copy">
+              <span>#${String(orderRef).slice(0, 16)}...</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </div>
+          </div>
+          <div class="bet-pnl ${pnlClass}">${pnlDisplay}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  listEl.innerHTML = html;
+}
+</script>
+</body>
+</html>
