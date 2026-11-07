@@ -758,7 +758,6 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById('userBalance').textContent = bal.toFixed(2);
         if (userData.phone) document.getElementById('csPhone').value = userData.phone;
 
-        // Sequence Modals check
         checkModalsSequence();
       }
     } catch(e){}
@@ -768,11 +767,18 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // ==========================================
-// 🔒 1ST DEPOSIT GAME BLOCKER
+// 🔒 1ST DEPOSIT & ACCOUNT FREEZE GUARD
 // ==========================================
 window.safeLaunchGame = (gameUrl) => {
   if (!userData) return toast('Loading account data...');
   
+  // 🚫 1. Check Freeze Status First
+  if (userData.isFrozen) {
+    toast('🚫 Your account is frozen due to betting rules violation. Contact support.');
+    return;
+  }
+
+  // 🔒 2. Strict 1st deposit check
   if (!userData.firstDepositDone && Number(userData.totalRecharge || 0) <= 0) {
     toast('⚠️ Please make 1st deposit to unlock all games!');
     setTimeout(() => {
@@ -803,7 +809,7 @@ function checkModalsSequence() {
     return;
   }
 
-  // 3. Recharge & Diwali Banner Popups (Session Based - Not on page reload)
+  // 3. Recharge & Diwali Banner Popups (Session Based - Does not show on simple reload)
   if (!sessionStorage.getItem('bdg_session_posters_shown')) {
     sessionStorage.setItem('bdg_session_posters_shown', 'yes');
     document.getElementById('modalRecharge').classList.add('show');
