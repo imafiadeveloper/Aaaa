@@ -4,54 +4,155 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Transaction History - BDG LOTTERY7</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#1A1A1A;color:#fff;min-height:100vh;}
-.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;background:#1A1A1A;}
+body{background:#181818;color:#fff;min-height:100vh;padding-bottom:30px;}
+::-webkit-scrollbar{width:0;height:0;}
+
+.navbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  height:54px;padding:0 16px;background:#181818;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
 .nav-left{width:40px;height:40px;display:flex;align-items:center;cursor:pointer;}
-.nav-left svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.2;}
-.nav-title{font-size:16px;font-weight:600;}
-.filter-row{display:flex;gap:10px;padding:10px 16px 16px;}
-.filter-box{flex:1;background:#262626;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#a6a9ae;cursor:pointer;}
-.filter-box svg{width:16px;height:16px;stroke:#a6a9ae;fill:none;stroke-width:2;}
+.nav-left svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.4;}
+.nav-title{font-size:16px;font-weight:700;}
+
+/* Filters */
+.filter-row{display:flex;gap:10px;padding:12px 16px 14px;position:relative;}
+.filter-box{
+  flex:1;background:#262626;border-radius:10px;padding:10px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;color:#a6a9ae;cursor:pointer;border:1px solid rgba(255,255,255,0.05);
+}
+.filter-box span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
+.filter-box svg{width:16px;height:16px;stroke:#a6a9ae;fill:none;stroke-width:2;flex-shrink:0;margin-left:6px;}
+.filter-box input[type="date"]{
+  position:absolute;opacity:0;pointer-events:none;width:0;height:0;
+}
+
+/* Dropdown Menu for Categories */
+.filter-dropdown{
+  position:absolute;top:54px;left:16px;width:calc(50% - 10px);
+  background:#262626;border:1px solid rgba(250,229,159,0.25);
+  border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.6);
+  z-index:200;display:none;overflow:hidden;
+}
+.filter-dropdown.show{display:block;}
+.fd-item{
+  padding:12px 14px;font-size:13px;color:#d8d8d8;cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.fd-item:active, .fd-item.active{background:#333;color:#FAE59F;font-weight:700;}
+.fd-item:last-child{border-bottom:none;}
+
+/* Transaction Cards */
 .tx-list{padding:0 16px;}
-.tx-card{background:#333;border-radius:12px;margin-bottom:12px;overflow:hidden;}
-.tx-header{padding:16px;border-bottom:1px solid #222;font-size:15px;font-weight:600;color:#fff;}
-.tx-row{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #222;font-size:13px;}
+.tx-card{
+  background:#262626;border-radius:14px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.06);overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+}
+.tx-header{
+  padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);
+  font-size:14px;font-weight:700;color:#fff;
+  display:flex;justify-content:space-between;align-items:center;
+  background:#2a2a2a;
+}
+.tx-tag{
+  font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;
+  text-transform:uppercase;letter-spacing:0.3px;
+}
+.tag-success{background:rgba(0,230,118,0.15);color:#00e676;}
+.tag-pending{background:rgba(255,171,0,0.15);color:#ffab00;}
+.tag-failed{background:rgba(255,77,79,0.15);color:#ff4d4f;}
+
+.tx-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:13px;
+}
 .tx-row:last-child{border-bottom:none;}
-.tx-label{color:#a6a9ae;}
-.tx-val{font-weight:500;color:#fff;}
-.tx-val.green{color:#6abe57;font-weight:700;font-size:15px;}
-.tx-empty{text-align:center;padding:40px;color:#666;font-size:14px;}
-.loader{text-align:center;padding:20px;font-size:14px;color:#a6a9ae;}
+.tx-label{color:#8f929b;font-size:12px;}
+.tx-val{font-weight:600;color:#e8e8e8;}
+.tx-amt{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;}
+.tx-amt.green{color:#00e676;}
+.tx-amt.red{color:#ff4d4f;}
+
+.tx-empty{text-align:center;padding:45px 16px;color:#666;font-size:13px;font-weight:600;}
+.loader{text-align:center;padding:40px;font-size:13px;color:#8f929b;}
+
+.clear-btn{
+  background:rgba(255,77,79,0.15);color:#ff4d4f;border:1px solid rgba(255,77,79,0.3);
+  padding:4px 8px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;
+  display:none;margin-left:auto;
+}
 </style>
 </head>
 <body>
+
 <div class="navbar">
-  <div class="nav-left" onclick="location.href='account.html'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+  <div class="nav-left" onclick="location.href='account.html'">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
   <div class="nav-title">Transaction history</div>
   <div style="width:40px;"></div>
 </div>
 
 <div class="filter-row">
-  <div class="filter-box">All <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-  <div class="filter-box">Choose a date <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+  <!-- Type Filter -->
+  <div class="filter-box" id="btnTypeFilter" onclick="toggleTypeDropdown(event)">
+    <span id="selectedTypeText">All</span>
+    <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+
+  <div class="filter-dropdown" id="typeDropdown">
+    <div class="fd-item active" onclick="selectTypeFilter('all', 'All')">All</div>
+    <div class="fd-item" onclick="selectTypeFilter('deposit', 'Deposit / Recharge')">Deposit</div>
+    <div class="fd-item" onclick="selectTypeFilter('withdraw', 'Withdrawal')">Withdraw</div>
+    <div class="fd-item" onclick="selectTypeFilter('bonus', 'Bonus / Reward')">Bonus</div>
+    <div class="fd-item" onclick="selectTypeFilter('bet', 'Game Bet')">Game Bet</div>
+  </div>
+
+  <!-- Date Filter -->
+  <div class="filter-box" id="btnDateFilter" onclick="openDatePicker()">
+    <span id="selectedDateText">Choose a date</span>
+    <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    <input type="date" id="datePickerInput" onchange="onDateSelected(this.value)">
+  </div>
+
+  <button class="clear-btn" id="btnClearDate" onclick="clearDateFilter()">Clear</button>
 </div>
 
 <div class="tx-list" id="txList">
-  <div class="loader">Loading...</div>
+  <div class="loader">Loading history...</div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore, collection, query, where, getDocs, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = { apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", authDomain: "bdglottery7.firebaseapp.com", projectId: "bdglottery7", storageBucket: "bdglottery7.firebasestorage.app", messagingSenderId: "568771943906", appId: "1:568771943906:web:5b78078d9c0d67427dedbb" };
+const firebaseConfig = { 
+  apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo", 
+  authDomain: "bdglottery7.firebaseapp.com", 
+  projectId: "bdglottery7", 
+  storageBucket: "bdglottery7.firebasestorage.app", 
+  messagingSenderId: "568771943906", 
+  appId: "1:568771943906:web:5b78078d9c0d67427dedbb" 
+};
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+let allTransactions = [];
+let currentFilterType = 'all';
+let currentFilterDate = null;
 
 onAuthStateChanged(auth, async (user) => {
   if(!user) return location.replace('index.html');
@@ -61,45 +162,221 @@ onAuthStateChanged(auth, async (user) => {
 async function loadHistory(uid) {
   const listEl = document.getElementById('txList');
   try {
-    const q = query(collection(db, 'transactions'), where('userId', '==', uid));
-    const snap = await getDocs(q);
-    
-    if(snap.empty) {
-      listEl.innerHTML = `<div class="tx-empty">No more</div>`;
-      return;
-    }
-    
-    let arr = [];
-    snap.forEach(d => arr.push(d.data()));
-    arr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-    
-    let html = '';
-    arr.forEach(data => {
-      let dateStr = '--';
-      if(data.createdAt) {
-        const d = data.createdAt.toDate();
-        dateStr = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
-      }
-      
-      let title = data.title || data.type || 'Transaction';
-      if(title === 'signup_bonus') title = 'Sign up bonus';
-      
-      let amtClass = data.amount > 0 ? 'green' : '';
-      let amtPrefix = data.amount > 0 ? '+' : '';
-
-      html += `
-        <div class="tx-card">
-          <div class="tx-header">${title}</div>
-          <div class="tx-row"><span class="tx-label">Detail</span><span class="tx-val">${title}</span></div>
-          <div class="tx-row"><span class="tx-label">Time</span><span class="tx-val">${dateStr}</span></div>
-          <div class="tx-row"><span class="tx-label">Balance</span><span class="tx-val ${amtClass}">${amtPrefix}₹${Number(data.amount).toFixed(2)}</span></div>
-        </div>`;
+    // 1. Fetch deposit statuses to reconcile any pending transactions
+    const depSnap = await getDocs(query(collection(db, 'deposits'), where('userId', '==', uid), limit(50)));
+    const depStatusMap = new Map();
+    depSnap.forEach(d => {
+      const data = d.data();
+      const st = (data.status || '').toLowerCase();
+      depStatusMap.set(d.id, st);
+      if(data.utr) depStatusMap.set(String(data.utr).trim(), st);
+      if(data.orderId) depStatusMap.set(String(data.orderId).trim(), st);
     });
-    listEl.innerHTML = html + `<div class="tx-empty">No more</div>`;
+
+    // 2. Fetch withdrawal statuses
+    const wdSnap = await getDocs(query(collection(db, 'withdrawals'), where('userId', '==', uid), limit(50)));
+    const wdStatusMap = new Map();
+    wdSnap.forEach(d => {
+      const data = d.data();
+      const st = (data.status || '').toLowerCase();
+      wdStatusMap.set(d.id, st);
+      if(data.orderId) wdStatusMap.set(String(data.orderId).trim(), st);
+    });
+
+    // 3. Fetch primary transactions ledger
+    const q = query(collection(db, 'transactions'), where('userId', '==', uid), limit(80));
+    const snap = await getDocs(q);
+
+    allTransactions = [];
+    snap.forEach(d => {
+      const item = { docId: d.id, ...d.data() };
+      
+      // Auto reconcile status if deposits/withdrawals say approved
+      const utrKey = String(item.utr || '').trim();
+      const orderKey = String(item.orderId || '').trim();
+      const liveDep = depStatusMap.get(utrKey) || depStatusMap.get(orderKey) || depStatusMap.get(item.docId.replace('dep_', ''));
+      const liveWd = wdStatusMap.get(orderKey) || wdStatusMap.get(item.docId);
+
+      if(liveDep && ['completed', 'approved', 'success'].includes(liveDep)) {
+        item.status = 'success';
+      } else if(liveWd && ['completed', 'approved', 'success'].includes(liveWd)) {
+        item.status = 'success';
+      }
+
+      allTransactions.push(item);
+    });
+
+    // Also include any deposits that were created directly in 'deposits' without transaction doc
+    depSnap.forEach(d => {
+      const dep = d.data();
+      const alreadyHas = allTransactions.some(t => t.utr === dep.utr || t.orderId === dep.orderId || t.docId === `dep_${dep.utr}`);
+      if(!alreadyHas) {
+        allTransactions.push({
+          docId: d.id,
+          type: 'deposit',
+          title: 'UPI Fast Recharge',
+          amount: dep.amount,
+          utr: dep.utr,
+          status: ['completed', 'approved', 'success'].includes(dep.status) ? 'success' : dep.status,
+          createdAt: dep.createdAt || dep.submittedAt
+        });
+      }
+    });
+
+    allTransactions.sort((a,b) => {
+      const tA = a.createdAt?.toMillis?.() || a.time || 0;
+      const tB = b.createdAt?.toMillis?.() || b.time || 0;
+      return tB - tA;
+    });
+
+    renderTransactions();
   } catch(e) {
-    listEl.innerHTML = `<div class="tx-empty">Failed to load</div>`;
+    listEl.innerHTML = `<div class="tx-empty">Failed to load transactions</div>`;
   }
 }
+
+function renderTransactions() {
+  const listEl = document.getElementById('txList');
+  
+  let filtered = allTransactions.filter(item => {
+    const type = (item.type || item.transactionType || '').toLowerCase();
+    const title = (item.title || '').toLowerCase();
+
+    // 1. Type Match
+    let matchesType = true;
+    if(currentFilterType === 'deposit') {
+      matchesType = type.includes('deposit') || type.includes('recharge') || title.includes('recharge');
+    } else if(currentFilterType === 'withdraw') {
+      matchesType = type.includes('withdraw') || title.includes('withdraw');
+    } else if(currentFilterType === 'bonus') {
+      matchesType = type.includes('bonus') || type.includes('gift') || title.includes('bonus') || title.includes('gift');
+    } else if(currentFilterType === 'bet') {
+      matchesType = type.includes('bet') || type.includes('game') || title.includes('bet');
+    }
+
+    // 2. Date Match
+    let matchesDate = true;
+    if(currentFilterDate && item.createdAt) {
+      const d = item.createdAt.toDate ? item.createdAt.toDate() : new Date(item.createdAt);
+      const itemDateStr = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+      matchesDate = (itemDateStr === currentFilterDate);
+    }
+
+    return matchesType && matchesDate;
+  });
+
+  if(!filtered.length) {
+    listEl.innerHTML = `<div class="tx-empty">No transaction records found</div>`;
+    return;
+  }
+
+  let html = '';
+  filtered.forEach(data => {
+    let dateStr = '--';
+    if(data.createdAt) {
+      const d = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+      dateStr = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
+    }
+
+    let title = data.title || data.type || 'Transaction';
+    if(title === 'signup_bonus' || title.includes('Signup')) title = 'Sign up bonus';
+
+    const amt = Number(data.amount || 0);
+    const type = (data.type || '').toLowerCase();
+
+    // Determine sign & color
+    let isCredit = amt > 0;
+    if(type.includes('withdraw')) isCredit = false;
+
+    let amtClass = isCredit ? 'green' : 'red';
+    let amtPrefix = isCredit ? '+' : '-';
+
+    // Status Badge
+    let st = (data.status || 'success').toLowerCase();
+    let badgeClass = 'tag-success';
+    let badgeText = 'Success';
+    if(st === 'pending') {
+      badgeClass = 'tag-pending';
+      badgeText = 'Pending';
+    } else if(st === 'failed' || st === 'rejected' || st === 'cancelled') {
+      badgeClass = 'tag-failed';
+      badgeText = 'Failed';
+    }
+
+    const orderRef = data.utr || data.orderId || data.docId || '--';
+
+    html += `
+      <div class="tx-card">
+        <div class="tx-header">
+          <span>${title}</span>
+          <span class="tx-tag ${badgeClass}">${badgeText}</span>
+        </div>
+        <div class="tx-row">
+          <span class="tx-label">Type</span>
+          <span class="tx-val">${title}</span>
+        </div>
+        <div class="tx-row">
+          <span class="tx-label">Order Ref / UTR</span>
+          <span class="tx-val" style="font-size:11px;color:#aaa;">#${String(orderRef).slice(0, 16)}</span>
+        </div>
+        <div class="tx-row">
+          <span class="tx-label">Time</span>
+          <span class="tx-val" style="font-size:12px;color:#8f929b;">${dateStr}</span>
+        </div>
+        <div class="tx-row">
+          <span class="tx-label">Amount</span>
+          <span class="tx-val tx-amt ${amtClass}">${amtPrefix}₹${Math.abs(amt).toFixed(2)}</span>
+        </div>
+      </div>`;
+  });
+
+  listEl.innerHTML = html + `<div class="tx-empty">No more</div>`;
+}
+
+// Filter Controllers
+window.toggleTypeDropdown = (e) => {
+  e.stopPropagation();
+  document.getElementById('typeDropdown').classList.toggle('show');
+};
+
+window.selectTypeFilter = (type, label) => {
+  currentFilterType = type;
+  document.getElementById('selectedTypeText').innerText = label;
+  document.querySelectorAll('.fd-item').forEach(el => el.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('typeDropdown').classList.remove('show');
+  renderTransactions();
+};
+
+window.openDatePicker = () => {
+  const inp = document.getElementById('datePickerInput');
+  if(inp.showPicker) {
+    inp.showPicker();
+  } else {
+    inp.click();
+  }
+};
+
+window.onDateSelected = (dateVal) => {
+  if(!dateVal) return;
+  currentFilterDate = dateVal;
+  document.getElementById('selectedDateText').innerText = dateVal;
+  document.getElementById('btnClearDate').style.display = 'block';
+  renderTransactions();
+};
+
+window.clearDateFilter = () => {
+  currentFilterDate = null;
+  document.getElementById('datePickerInput').value = '';
+  document.getElementById('selectedDateText').innerText = 'Choose a date';
+  document.getElementById('btnClearDate').style.display = 'none';
+  renderTransactions();
+};
+
+document.addEventListener('click', () => {
+  const dd = document.getElementById('typeDropdown');
+  if(dd) dd.classList.remove('show');
+});
 </script>
 </body>
 </html>
