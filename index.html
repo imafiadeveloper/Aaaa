@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="robots" content="noindex,nofollow" />
 <title>BDG LOTTERY7 — Login</title>
+
+<!-- ⚡ CLEAN URL ENGINE: Removes .html immediately from browser bar -->
+<script>
+  (function() {
+    if (window.location.pathname.endsWith('.html')) {
+      const cleanPath = window.location.pathname.replace(/\.html$/, '');
+      const cleanUrl = cleanPath + window.location.search + window.location.hash;
+      window.history.replaceState(null, '', cleanUrl);
+    }
+  })();
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -617,35 +629,30 @@ function openRegister() {
 }
 window.openRegister = openRegister;
 
-// 🔥 MULTI-FALLBACK INVITE CODE RESOLVER (100% Guaranteed Match)
+// MULTI-FALLBACK INVITE CODE RESOLVER
 async function findParentInviter(code) {
   const cleanCode = (code || '').trim().toUpperCase();
   if (!cleanCode) return null;
   if (cleanCode === 'ADMIN' || cleanCode === 'VIP' || cleanCode === 'OFFICIAL') return 'ADMIN_SYSTEM';
 
   try {
-    // 1. Check direct 'inviteCode'
     const q1 = query(collection(db, "users"), where("inviteCode", "==", cleanCode), limit(1));
     const snap1 = await getDocs(q1);
     if (!snap1.empty) return snap1.docs[0].id;
 
-    // 2. Check alternative 'referralCode'
     const q2 = query(collection(db, "users"), where("referralCode", "==", cleanCode), limit(1));
     const snap2 = await getDocs(q2);
     if (!snap2.empty) return snap2.docs[0].id;
 
-    // 3. Check Substring Match on UID (First 8 chars e.g. EA4CIA0N)
     const allUsersSnap = await getDocs(query(collection(db, "users"), limit(120)));
     for (const uDoc of allUsersSnap.docs) {
       const uUid = uDoc.id.toUpperCase();
       if (uUid.startsWith(cleanCode)) {
-        // Auto-heal parent doc by saving inviteCode
         updateDoc(doc(db, "users", uDoc.id), { inviteCode: cleanCode, referralCode: cleanCode }).catch(() => {});
         return uDoc.id;
       }
     }
 
-    // 4. Check Direct Full UID
     const directDoc = await getDoc(doc(db, "users", cleanCode.toLowerCase()));
     if (directDoc.exists()) return directDoc.id;
 
@@ -681,7 +688,6 @@ async function doRegister() {
   btn.disabled = true;
 
   try {
-    // 🔍 Find Inviter with Multi-Fallback
     const parentId = await findParentInviter(rawInvite);
     if (!parentId) {
       hideLoader();
@@ -694,7 +700,6 @@ async function doRegister() {
     const cred = await createUserWithEmailAndPassword(auth, authEmail, pwd);
     const newShortCode = cred.user.uid.substring(0, 8).toUpperCase();
 
-    // 🎁 Save New User with BOTH inviteCode and referralCode populated
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       country, 
@@ -705,13 +710,12 @@ async function doRegister() {
       inviteCode: newShortCode,
       referralCode: newShortCode,
       referredBy: (parentId === 'ADMIN_SYSTEM') ? null : parentId,
-      balance: 28, // 🎁 ₹28 Signup Bonus
+      balance: 28, // ₹28 Signup Bonus
       firstDepositDone: false,
       totalBetTurnover: 0,
       createdAt: serverTimestamp()
     });
 
-    // 💰 Credit ₹10 Referral Bonus to Inviter
     if (parentId && parentId !== 'ADMIN_SYSTEM') {
       try {
         await updateDoc(doc(db, "users", parentId), {
