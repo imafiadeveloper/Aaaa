@@ -8,7 +8,7 @@
 <meta name="google-site-verification" content="SPKoDnNAOqwnzcNFFmnbBl2YCTiXmBuhRwYwFyEsrJU" />
 
 <!-- ⚡ GOOGLE SEO META TAGS -->
-<title>BDG GAME - Official Login, Register & Online Lottery Games</title>
+<title>BDG GAME - Official Login, Register & Online Gaming Platform</title>
 <meta name="description" content="Play official BDG Game online. Win Go 30s, Aviator, TRX Win, Slots & Casino games. Register now and get instant daily cash bonuses & fast withdrawals.">
 <meta name="keywords" content="BDG Game, BDG Lottery, Win Go, Aviator, BDG Register, BDG Login, BDG Lottery 7">
 <link rel="canonical" href="https://bdglottery7.pages.dev/">
@@ -31,7 +31,7 @@
       "@id": "https://bdglottery7.pages.dev/#website",
       "url": "https://bdglottery7.pages.dev/",
       "name": "BDG GAME",
-      "description": "Official BDG Lottery & Casino Gaming Platform"
+      "description": "Official BDG Lottery & Online Entertainment Platform"
     },
     {
       "@type": "SiteNavigationElement",
@@ -45,7 +45,7 @@
     },
     {
       "@type": "SiteNavigationElement",
-      "name": "Aviator Crash",
+      "name": "Aviator",
       "url": "https://bdglottery7.pages.dev/aviator"
     },
     {
@@ -72,7 +72,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    height: 100%;
+    min-height: 100%;
     background: #090909;
     font-family: 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
     color: #eaeaea;
@@ -128,7 +128,6 @@
   /* Form Wrapper */
   .form-wrap {
     background: #090909; padding: 22px;
-    min-height: calc(100vh - 56px - 110px - 78px);
   }
   .form-panel { display: none; }
   .form-panel.active { display: block; }
@@ -187,8 +186,8 @@
   .btn-ghost { background: transparent; border: 1px solid #C4933F; color: #C4933F; }
   .btn-ghost:active { background: rgba(196, 147, 63, 0.1); }
 
-  /* Footer */
-  .helper-footer { display: flex; justify-content: space-around; margin-top: 32px; }
+  /* Helper Actions */
+  .helper-footer { display: flex; justify-content: space-around; margin: 28px 0 20px; }
   .helper-item {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
     background: transparent; color: #a6a9ae; font-size: 12px;
@@ -200,6 +199,35 @@
     border: 1px solid #333;
   }
   .helper-icon svg { width: 20px; height: 20px; stroke: #d9ac4f; fill: none; stroke-width: 2; }
+
+  /* 🛡️ Legal Compliance & Trust Footer */
+  .trust-footer {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    background: #0d0d0f;
+    padding: 24px 16px 36px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .trust-links {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 16px;
+    margin-bottom: 14px;
+  }
+  .trust-links a {
+    color: #8e929c; font-size: 12px; text-decoration: none; font-weight: 600;
+    transition: color 0.2s;
+  }
+  .trust-links a:hover { color: #FAE59F; }
+  .trust-badge-wrap {
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .trust-badge {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color: #d1d5db; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 12px;
+  }
+  .trust-disclaimer {
+    font-size: 11px; color: #6b7280; line-height: 1.6; max-width: 600px; margin: 0 auto;
+  }
 
   /* Toast & Loader */
   #toast {
@@ -235,7 +263,7 @@
   }
   .modal-overlay.show { display: flex; }
   .modal-box {
-    width: 100%; max-width: 400px;
+    width: 100%; max-width: 420px;
     background: #292929; border-radius: 14px;
     overflow: hidden;
     animation: modalIn .2s ease;
@@ -248,7 +276,7 @@
     font-size: 15px; font-weight: 600; color: #FAE59F;
     border-bottom: 1px solid #333;
   }
-  .modal-body { padding: 18px; }
+  .modal-body { padding: 18px; max-height: 75vh; overflow-y: auto; }
 
   .modal-input {
     width: 100%; height: 46px; border-radius: 10px;
@@ -271,6 +299,10 @@
     display: block; width: 100%; text-align: center;
     padding: 14px; font-size: 14px; color: #a6a9ae; background: transparent;
   }
+
+  /* Legal Modal Content */
+  .legal-content h3 { font-size: 14px; color: #FAE59F; margin: 12px 0 6px; }
+  .legal-content p { font-size: 12px; color: #c4c7cf; line-height: 1.6; margin-bottom: 10px; }
 
   /* CS Modal */
   .cs-logo-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
@@ -371,7 +403,7 @@
       <div class="input-box">
         <input id="phonePwd" type="password" placeholder="Please enter the password" maxlength="32" />
         <button class="eye-btn" onclick="togglePwd('phonePwd', this)" aria-label="Show">
-          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="13" r="3"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
     </div>
@@ -404,7 +436,7 @@
       <div class="input-box">
         <input id="emailPwd" type="password" placeholder="Please enter the password" maxlength="32" />
         <button class="eye-btn" onclick="togglePwd('emailPwd', this)" aria-label="Show">
-          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="13" r="3"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
     </div>
@@ -432,7 +464,25 @@
       <span>Customer Service</span>
     </button>
   </div>
+
 </div>
+
+<!-- 🛡️ Legal Compliance, Trust & Transparency Section -->
+<footer class="trust-footer">
+  <div class="trust-badge-wrap">
+    <span class="trust-badge">🔞 18+ Only</span>
+    <span class="trust-badge">🔒 SSL Secured 256-bit</span>
+    <span class="trust-badge">🛡️ Fair Play RNG</span>
+  </div>
+  <div class="trust-links">
+    <a href="javascript:void(0)" onclick="openModal('modal-terms')">Terms of Service</a>
+    <a href="javascript:void(0)" onclick="openModal('modal-privacy')">Privacy Policy</a>
+    <a href="javascript:void(0)" onclick="openModal('modal-disclaimer')">Gaming Disclaimer</a>
+  </div>
+  <p class="trust-disclaimer">
+    BDG LOTTERY7 adheres to strict fair-play standards and responsible gaming. Participation is restricted to individuals of legal age (18+). Please play responsibly and within your financial limits.
+  </p>
+</footer>
 
 <!-- MODAL: REGISTER -->
 <div id="modal-register" class="modal-overlay">
@@ -516,6 +566,54 @@
         Send to Support
       </button>
       <button class="modal-close-btn" onclick="closeModal('modal-service')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TERMS OF SERVICE -->
+<div id="modal-terms" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Terms of Service</div>
+    <div class="modal-body legal-content">
+      <h3>1. Acceptance of Terms</h3>
+      <p>By accessing or registering on BDG LOTTERY7, you confirm that you are at least 18 years old and legally permitted to participate under applicable local laws.</p>
+      <h3>2. User Account & Security</h3>
+      <p>Users are responsible for safeguarding login credentials. Multiple accounts per individual or device fraud are strictly prohibited and subject to immediate suspension.</p>
+      <h3>3. Transaction Rules</h3>
+      <p>All deposits and withdrawals must be processed through valid banking channels and verified with authentic transaction references (UTR).</p>
+      <button class="modal-close-btn" onclick="closeModal('modal-terms')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PRIVACY POLICY -->
+<div id="modal-privacy" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Privacy Policy</div>
+    <div class="modal-body legal-content">
+      <h3>1. Data Protection</h3>
+      <p>We implement industry-standard 256-bit encryption protocols to safeguard all user data, passwords, and transactional records.</p>
+      <h3>2. Information We Collect</h3>
+      <p>Only essential technical identifiers (phone numbers, account timestamps, and transaction references) are retained for service delivery and dispute resolution.</p>
+      <h3>3. Non-Disclosure</h3>
+      <p>We do not sell, rent, or trade personal user information to third-party marketing companies.</p>
+      <button class="modal-close-btn" onclick="closeModal('modal-privacy')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: GAMING DISCLAIMER -->
+<div id="modal-disclaimer" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">Responsible Gaming Disclaimer</div>
+    <div class="modal-body legal-content">
+      <h3>1. Financial Risk Warning</h3>
+      <p>Participating in online gaming and lottery simulations involves real financial risk. Past results do not guarantee future round outcomes.</p>
+      <h3>2. Age Restriction (18+)</h3>
+      <p>This platform is exclusively engineered for adults aged 18 and above. Minors are strictly prohibited from creating accounts or wagering.</p>
+      <h3>3. Moderation</h3>
+      <p>Never treat gaming as a substitute for steady income. Always set daily budgets and play responsibly.</p>
+      <button class="modal-close-btn" onclick="closeModal('modal-disclaimer')">Close</button>
     </div>
   </div>
 </div>
