@@ -134,7 +134,7 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
   <ul class="ins-list">
     <li>Scan QR or pay directly using PhonePe, Paytm, or Google Pay.</li>
     <li>Input the exact 12-digit UTR/Ref number immediately after payment.</li>
-    <li>Once your UTR is detected by our automatic system, your balance updates in seconds.</li>
+    <li>Once your payment is approved or matched, your balance updates in seconds.</li>
   </ul>
 </div>
 
@@ -198,7 +198,7 @@ input{font-family:inherit;outline:none;border:none;background:transparent;color:
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
-  getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, 
+  getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, query, 
   where, getDocs, serverTimestamp, onSnapshot 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -260,7 +260,7 @@ onAuthStateChanged(auth, async (user) => {
   if(!user) return location.replace('index.html');
   currentUser = user;
   
-  // Real-time balance sync
+  // Real-time balance & deposit listener
   onSnapshot(doc(db, 'users', user.uid), (snap) => {
     if(snap.exists()) {
       const bal = snap.data().balance || 0;
@@ -281,11 +281,24 @@ async function checkPendingOrder() {
     const snap = await getDocs(q);
     
     if(!snap.empty) {
-      // Find latest pending order
-      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      docs.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-      const activeOrder = docs[0];
-      
+      let activeOrder = null;
+      for (const d of snap.docs) {
+        const data = d.data();
+        // Check order age (expire if > 20 minutes)
+        const createdMs = data.createdAt?.toMillis() || Date.now();
+        const diffMinutes = (Date.now() - createdMs) / (1000 * 60);
+
+        if (diffMinutes > 20) {
+          // Auto delete expired staging orders so it doesn't loop
+          deleteDoc(doc(db, 'deposits', d.id)).catch(()=>{});
+        } else {
+          activeOrder = { id: d.id, ...data };
+          break;
+        }
+      }
+
+      if(!activeOrder) return;
+
       currentPendingOrderId = activeOrder.orderId || activeOrder.id;
       currentPendingAmount = Number(activeOrder.amount || 0);
 
@@ -311,8 +324,26 @@ async function checkPendingOrder() {
           document.getElementById('pendingTimer').innerText = `${m}:${s}`;
         }
       }, 1000);
+
+      // Listen for Admin Approval / Completed Status
+      listenToPendingDoc(activeOrder.id);
     }
   } catch(e) {}
+}
+
+function listenToPendingDoc(docId) {
+  if (statusUnsubscribe) statusUnsubscribe();
+  statusUnsubscribe = onSnapshot(doc(db, 'deposits', docId), (snap) => {
+    if (snap.exists()) {
+      const st = snap.data().status;
+      if (st === 'completed' || st === 'approved' || st === 'success') {
+        toast('🎉 Deposit Approved! Redirecting...');
+        document.getElementById('pendingModal').classList.remove('show');
+        document.getElementById('paymentModal').classList.remove('show');
+        setTimeout(() => location.href = 'wallet.html', 1000);
+      }
+    }
+  });
 }
 
 btnDeposit.addEventListener('click', async () => {
@@ -327,7 +358,6 @@ btnDeposit.addEventListener('click', async () => {
     currentPendingOrderId = orderId;
     currentPendingAmount = amt;
 
-    // Temporary staging record
     await setDoc(doc(db, 'deposits', orderId), {
       userId: currentUser.uid,
       orderId: orderId,
@@ -339,6 +369,7 @@ btnDeposit.addEventListener('click', async () => {
     document.getElementById('pendingAmt').innerText = '₹' + amt.toFixed(2);
     document.getElementById('pendingOrderId').innerText = orderId;
     
+    listenToPendingDoc(orderId);
     showPaymentModal();
   } catch(err) {
     toast('Deposit initialization failed');
@@ -378,7 +409,7 @@ window.showPaymentModal = function() {
   document.getElementById('gpayBtn').onclick = () => window.location.href = `tez://upi/pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amt}&cu=INR`;
 };
 
-// 🚀 UTR SUBMISSION ENGINE (Mapped Directly with Automatic MacroDroid Matcher)
+// 🚀 UTR SUBMISSION & AUTO LOOP KILLER
 document.getElementById('submitUtrBtn').addEventListener('click', async () => {
   const utr = document.getElementById('utrInput').value.trim();
   
@@ -394,18 +425,15 @@ document.getElementById('submitUtrBtn').addEventListener('click', async () => {
     const utrDocRef = doc(db, 'deposits', utr);
     const existingCheck = await getDoc(utrDocRef);
 
-    // If UTR was already submitted and successfully processed
-    if(existingCheck.exists() && existingCheck.data().status === 'success') {
-      toast('This UTR has already been credited!');
-      btn.disabled = false;
-      btn.innerText = "Submit UTR";
+    if(existingCheck.exists() && (existingCheck.data().status === 'completed' || existingCheck.data().status === 'approved')) {
+      toast('This UTR has already been approved!');
+      setTimeout(() => location.href = 'wallet.html', 1000);
       return;
     }
 
     const amt = currentPendingAmount || parseFloat(document.getElementById('payModalAmt').innerText);
 
-    // Write primary record where doc.id === UTR
-    // This allows MacroDroid Webhook to instantly find and credit the deposit
+    // Save primary record where doc ID = UTR
     await setDoc(utrDocRef, {
       userId: currentUser.uid,
       orderId: currentPendingOrderId || ('RC' + Date.now()),
@@ -416,12 +444,9 @@ document.getElementById('submitUtrBtn').addEventListener('click', async () => {
       createdAt: serverTimestamp()
     });
 
-    // Cleanup old temporary order if exists
+    // ⚡ CRUCIAL: Remove the old RC... staging order so pending modal never loops
     if(currentPendingOrderId && currentPendingOrderId !== utr) {
-      updateDoc(doc(db, 'deposits', currentPendingOrderId), {
-        status: 'replaced_by_utr',
-        targetUtr: utr
-      }).catch(()=>{});
+      deleteDoc(doc(db, 'deposits', currentPendingOrderId)).catch(()=>{});
     }
 
     // Ledger Transaction Record
@@ -435,23 +460,15 @@ document.getElementById('submitUtrBtn').addEventListener('click', async () => {
       createdAt: serverTimestamp()
     });
 
-    toast('UTR submitted! Auto-crediting in a few seconds...');
-
-    // ⚡ Real-time listener: Listen for webhook auto-credit
-    if(statusUnsubscribe) statusUnsubscribe();
-    statusUnsubscribe = onSnapshot(utrDocRef, (snap) => {
-      if(snap.exists() && snap.data().status === 'success') {
-        toast('🎉 Payment Received! ₹' + amt + ' added to balance.');
-        setTimeout(() => location.href = 'wallet.html', 1200);
-      }
-    });
+    toast('UTR submitted! Waiting for confirmation...');
+    listenToPendingDoc(utr);
 
     setTimeout(() => {
       if(btn) {
         btn.disabled = false;
-        btn.innerText = "Waiting for bank match...";
+        btn.innerText = "Waiting for verification...";
       }
-    }, 4000);
+    }, 3000);
 
   } catch(err) {
     toast('Submission error: ' + err.message);
@@ -463,11 +480,10 @@ document.getElementById('submitUtrBtn').addEventListener('click', async () => {
 window.cancelCurrentOrder = async function() {
   if(!currentPendingOrderId) return;
   try {
-    await updateDoc(doc(db, 'deposits', currentPendingOrderId), {
-      status: 'cancelled',
-      cancelledAt: serverTimestamp()
-    });
-    toast('Order cancelled');
+    // Delete document completely so it never shows up again
+    await deleteDoc(doc(db, 'deposits', currentPendingOrderId));
+    document.getElementById('pendingModal').classList.remove('show');
+    toast('Order cancelled successfully');
     setTimeout(() => location.reload(), 600);
   } catch(e) {
     toast('Failed to cancel order');
