@@ -98,7 +98,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="wager-card">
   <div class="wager-head">
     <h4><span>🎯</span> Turnover Requirements</h4>
-    <span class="wager-badge locked" id="wagerBadge">Wager Pending</span>
+    <span class="wager-badge locked" id="wagerBadge">Checking Bets...</span>
   </div>
   <div class="wager-grid">
     <div class="wager-box">
@@ -113,7 +113,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="progress-track">
     <div class="progress-fill" id="wagerProgress"></div>
   </div>
-  <div class="wager-tip" id="wagerTip">You need to bet remaining amount on games before submitting a withdrawal request.</div>
+  <div class="wager-tip" id="wagerTip">Calculating real gameplay bets...</div>
 </div>
 
 <div class="input-box">
@@ -147,8 +147,8 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <div class="rules">
   <p>Withdrawal range: <span class="red">₹110.00 - ₹50,000.00</span></p>
   <p>Service fee: <span class="red">0%</span></p>
-  <p>Turnover rule: <span class="red">1.0x gameplay bet required on all deposits &amp; bonuses</span></p>
-  <p>Bonus amount cannot be withdrawn without betting.</p>
+  <p>Turnover rule: <span class="red">1.0x bet turnover on deposits &amp; claimed bonuses</span></p>
+  <p>Game winnings/profits do not increase turnover requirements.</p>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -156,7 +156,10 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, addDoc, collection, serverTimestamp, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore, doc, getDoc, addDoc, collection, serverTimestamp, updateDoc, 
+  increment, query, where, getDocs, limit 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVQh9b7L3IYgWFIYA3wWorVBk1uXRFDZo",
@@ -190,36 +193,62 @@ let remainingWager = 0;
 let selectedQRBlob = null;
 const MIN_WD = 110;
 
+const GAME_BET_COLLECTIONS = [
+  'bets_30s', 'bets', 'bets_3m', 'bets_5m', 'bets_10m',
+  'bets_trx', 'bets_k3', 'bets_5d', 'bets_aviator', 'bets_cricket',
+  'bets_mines', 'bets_dragontiger', 'bets_plinko', 'bets_limbo'
+];
+
 onAuthStateChanged(auth, async (user) => {
   if(!user) return location.replace('index.html');
   currentUser = user;
   
-  const snap = await getDoc(doc(db,'users',user.uid));
+  const userRef = doc(db, 'users', user.uid);
+  const snap = await getDoc(userRef);
+  
   if(snap.exists()) {
     const data = snap.data();
     userBalance = Number(data.balance || 0);
+
+    // 1. Calculate Real Completed Bets directly from game collections
+    completedWager = Number(data.totalBetTurnover || 0);
     
-    // Total Completed Bets
-    completedWager = Number(data.totalBetTurnover || data.totalBetsAmount || 0);
+    // Aggregator check to fetch real bets if user profile hasn't updated yet
+    let liveBetsTotal = 0;
+    try {
+      const betPromises = GAME_BET_COLLECTIONS.map(async (colName) => {
+        try {
+          const q = query(collection(db, colName), where('userId', '==', user.uid), limit(100));
+          const qSnap = await getDocs(q);
+          let sum = 0;
+          qSnap.forEach(d => {
+            sum += Number(d.data().amount || 0);
+          });
+          return sum;
+        } catch(e) { return 0; }
+      });
+      const betResults = await Promise.all(betPromises);
+      liveBetsTotal = betResults.reduce((a, b) => a + b, 0);
+    } catch(err) {
+      console.warn("Bet aggregator notice:", err);
+    }
 
-    // Total Deposits & Bonuses
+    if (liveBetsTotal > completedWager) {
+      completedWager = liveBetsTotal;
+      // Auto-heal profile so it stays synced
+      updateDoc(userRef, { totalBetTurnover: completedWager }).catch(()=>{});
+    }
+
+    // 2. Real BDG Turnover Rule:
+    // Turnover is ONLY on Recharges + Bonus claimed (1.0x).
+    // Winning money NEVER increases turnover!
     const totalDeposits = Number(data.totalRecharge || data.totalDeposit || 0);
-    const totalBonus = Number(data.totalBonus || 0);
+    const totalBonus = Number(data.totalBonus || (data.welcomeClaimed ? 28 : 0));
 
-    // 🔒 STRICT BONUS LOCK ENGINE:
-    // Required wager must cover all deposits AND all received bonuses
-    if (data.requiredWager !== undefined && data.requiredWager !== null) {
-      requiredWager = Number(data.requiredWager);
-    } else {
-      requiredWager = totalDeposits + totalBonus;
-    }
+    // Base required turnover is strictly Deposits + Bonuses
+    requiredWager = totalDeposits + totalBonus;
 
-    // Agar user ne koi bet nahi lagayi hai (completedWager == 0) aur uske paas balance hai (bonus/balance),
-    // toh requiredWager kam se kam uske balance jitna hona chahiye taaki direct bonus withdraw na ho sake!
-    if (completedWager === 0 && userBalance > 0) {
-      requiredWager = Math.max(requiredWager, userBalance);
-    }
-
+    // Remaining required bet
     remainingWager = Math.max(0, requiredWager - completedWager);
 
     document.getElementById('availBal').textContent = '₹' + userBalance.toFixed(2);
@@ -227,23 +256,27 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('completedWagerText').textContent = '₹' + completedWager.toFixed(2);
     document.getElementById('remainingWagerText').textContent = '₹' + remainingWager.toFixed(2);
 
-    const progressPct = requiredWager > 0 ? Math.min(100, (completedWager / requiredWager) * 100) : (userBalance > 0 ? 0 : 100);
+    const progressPct = requiredWager > 0 ? Math.min(100, (completedWager / requiredWager) * 100) : 100;
     document.getElementById('wagerProgress').style.width = `${progressPct}%`;
 
     const badge = document.getElementById('wagerBadge');
     const tip = document.getElementById('wagerTip');
     
-    if (remainingWager <= 0 && userBalance > 0 && completedWager > 0) {
+    // If turnover finished OR user has fulfilled requirements
+    if (remainingWager <= 0) {
       badge.textContent = 'Unlocked ✓';
       badge.className = 'wager-badge unlocked';
+      document.getElementById('remainingWagerText').textContent = '₹0.00';
       document.getElementById('remainingWagerText').style.color = '#00e676';
-      tip.innerHTML = '<span style="color:#00e676;">Turnover requirement fulfilled! You can withdraw now.</span>';
+      tip.innerHTML = '<span style="color:#00e676;font-weight:700;">Turnover requirement completed! All winnings are unlocked for withdrawal.</span>';
     } else {
       badge.textContent = 'Locked ✕';
       badge.className = 'wager-badge locked';
       document.getElementById('remainingWagerText').style.color = '#ff4d4f';
-      tip.innerHTML = `You must bet at least <strong style="color:var(--gold);">₹${remainingWager.toFixed(2)}</strong> on games to unlock withdrawal. Bonus cannot be directly withdrawn.`;
+      tip.innerHTML = `You need to place <strong style="color:var(--gold);">₹${remainingWager.toFixed(2)}</strong> more bets on any game to unlock withdrawal.`;
     }
+
+    checkAmt();
   }
 });
 
@@ -267,8 +300,8 @@ window.checkAmt = function() {
   const btn = document.getElementById('wdBtn');
   document.getElementById('recvAmt').textContent = '₹' + val.toFixed(2);
 
-  // Strict: remaining wager must be 0, user must have completed bets, and balance sufficient
-  const canWithdraw = (val >= MIN_WD && val <= userBalance && remainingWager <= 0 && completedWager > 0);
+  // User can withdraw when: amount >= min, balance is sufficient, and remaining turnover is 0
+  const canWithdraw = (val >= MIN_WD && val <= userBalance && remainingWager <= 0);
   btn.disabled = !canWithdraw;
 };
 
@@ -326,11 +359,8 @@ window.submitWithdraw = async function() {
   const amt = parseFloat(document.getElementById('amtInput').value);
   const upiId = document.getElementById('upiInput').value.trim();
   
-  if(completedWager === 0) {
-    return toast(`Bonus abuse detected! Play games first to unlock withdrawal.`);
-  }
   if(remainingWager > 0) {
-    return toast(`Bet turnover pending: ₹${remainingWager.toFixed(2)} remaining`);
+    return toast(`Turnover pending: ₹${remainingWager.toFixed(2)} remaining`);
   }
   if(amt < MIN_WD) return toast(`Min withdraw is ₹${MIN_WD}`);
   if(amt > userBalance) return toast('Insufficient balance');
@@ -343,12 +373,13 @@ window.submitWithdraw = async function() {
   try {
     const orderId = 'WD' + Date.now();
     
-    // Deduct Balance
+    // Deduct Balance from users collection
     await updateDoc(doc(db, 'users', currentUser.uid), {
-      balance: increment(-amt)
+      balance: increment(-amt),
+      totalWithdraw: increment(amt)
     });
 
-    // Save in withdrawals collection
+    // 1. Save in withdrawals collection (where admin panel listens)
     await addDoc(collection(db, 'withdrawals'), {
       userId: currentUser.uid,
       orderId: orderId,
@@ -358,17 +389,18 @@ window.submitWithdraw = async function() {
       createdAt: serverTimestamp()
     });
 
-    // Save in transactions collection
+    // 2. Save in transactions ledger
     await addDoc(collection(db, 'transactions'), {
       userId: currentUser.uid,
+      orderId: orderId,
       type: 'withdraw',
-      title: 'Withdrawal Pending',
+      title: 'Bank Withdrawal',
       amount: -amt,
       status: 'pending',
       createdAt: serverTimestamp()
     });
 
-    // Send Telegram Alert
+    // Send Telegram Notification to Admin
     await notifyTelegramBot(orderId, amt, upiId, selectedQRBlob);
 
     toast('Withdrawal request submitted!');

@@ -443,7 +443,7 @@ onAuthStateChanged(auth, async (user) => {
     }
   });
 
-  // Load Transactions & Real-time status cross-verification
+  // Load Transactions & Real-time cross-verification
   loadTransactions(user.uid);
 });
 
@@ -465,29 +465,38 @@ document.getElementById('refreshBtn').addEventListener('click', async (e)=>{
 });
 
 // ==========================================================
-// ⚡ 2. SMART TRANSACTION RESOLVER (FIXES PENDING BUG)
+// ⚡ 2. SMART MULTI-SOURCE RESOLVER (DEPOSIT + WITHDRAWAL FIX)
 // ==========================================================
 async function loadTransactions(uid){
   const listEl = document.getElementById('txList');
   try{
-    // A. Query user's approved deposits directly from deposits collection
+    // A. Query Deposits
     const depSnap = await getDocs(query(collection(db, 'deposits'), where('userId', '==', uid), limit(35)));
     const depStatusMap = new Map();
     depSnap.forEach(d => {
       const data = d.data();
       const st = (data.status || '').toLowerCase();
-      // Map both doc id and UTR to its real status
       depStatusMap.set(d.id, st);
       if(data.utr) depStatusMap.set(String(data.utr).trim(), st);
       if(data.orderId) depStatusMap.set(String(data.orderId).trim(), st);
     });
 
-    // B. Query transactions ledger
+    // B. Query Withdrawals (Fixes the stuck Withdrawal Pending bug)
+    const wdSnap = await getDocs(query(collection(db, 'withdrawals'), where('userId', '==', uid), limit(35)));
+    const wdStatusMap = new Map();
+    wdSnap.forEach(d => {
+      const data = d.data();
+      const st = (data.status || '').toLowerCase();
+      wdStatusMap.set(d.id, st);
+      if(data.orderId) wdStatusMap.set(String(data.orderId).trim(), st);
+    });
+
+    // C. Query Transactions Ledger
     const txRef = collection(db, 'transactions');
-    const q = query(txRef, where('userId', '==', uid), limit(30));
+    const q = query(txRef, where('userId', '==', uid), limit(35));
     const snap = await getDocs(q);
 
-    if(snap.empty && depSnap.empty){
+    if(snap.empty && depSnap.empty && wdSnap.empty){
       listEl.innerHTML = `
         <div class="empty-state">
           <svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/></svg>
@@ -499,21 +508,58 @@ async function loadTransactions(uid){
     let arr = [];
     snap.forEach(d => arr.push({ docId: d.id, ...d.data() }));
 
-    // C. Reconcile statuses (If deposits collection says approved/completed, turn Pending -> Success)
+    // Include withdrawals that might only exist in 'withdrawals' collection
+    wdSnap.forEach(d => {
+      const w = d.data();
+      const orderId = w.orderId || d.id;
+      const alreadyExists = arr.some(t => t.docId === d.id || t.orderId === orderId || t.docId === `wd_${orderId}`);
+      if(!alreadyExists) {
+        arr.push({
+          docId: d.id,
+          type: 'withdraw',
+          orderId: orderId,
+          title: 'Bank Withdrawal',
+          amount: -Math.abs(Number(w.amount || 0)),
+          status: w.status || 'pending',
+          createdAt: w.createdAt || w.processedAt
+        });
+      }
+    });
+
+    // D. Cross-reconcile statuses in real-time
     arr.forEach(t => {
       const utrKey = String(t.utr || '').trim();
       const orderKey = String(t.orderId || '').trim();
-      const liveDepStatus = depStatusMap.get(utrKey) || depStatusMap.get(orderKey) || depStatusMap.get(t.docId.replace('dep_', ''));
+      const type = (t.type || t.transactionType || '').toLowerCase();
 
+      // Check Deposit Status
+      const liveDepStatus = depStatusMap.get(utrKey) || depStatusMap.get(orderKey) || depStatusMap.get(t.docId.replace('dep_', ''));
       if(liveDepStatus) {
         if(['completed', 'approved', 'success'].includes(liveDepStatus)) {
           t.status = 'success';
-          // Auto-heal firestore record in background so it never stays pending
           if(t.status !== 'success') {
             updateDoc(doc(db, 'transactions', t.docId), { status: 'success' }).catch(()=>{});
           }
         } else if(['rejected', 'failed', 'cancelled'].includes(liveDepStatus)) {
           t.status = 'failed';
+        }
+      }
+
+      // Check Withdrawal Status
+      const liveWdStatus = wdStatusMap.get(orderKey) || wdStatusMap.get(t.docId) || wdStatusMap.get(t.docId.replace('wd_', ''));
+      if(liveWdStatus) {
+        if(['completed', 'approved', 'success'].includes(liveWdStatus)) {
+          t.status = 'success';
+          t.title = 'Bank Withdrawal';
+          if(t.status !== 'success') {
+            updateDoc(doc(db, 'transactions', t.docId), { status: 'success', title: 'Bank Withdrawal' }).catch(()=>{});
+          }
+        } else if(['rejected', 'failed', 'cancelled'].includes(liveWdStatus)) {
+          t.status = 'failed';
+          t.title = 'Withdrawal Rejected (Refunded)';
+          if(t.status !== 'failed') {
+            updateDoc(doc(db, 'transactions', t.docId), { status: 'failed', title: 'Withdrawal Rejected (Refunded)' }).catch(()=>{});
+          }
         }
       }
     });
@@ -525,7 +571,7 @@ async function loadTransactions(uid){
     });
 
     let html = '';
-    arr.slice(0, 15).forEach(t => {
+    arr.slice(0, 20).forEach(t => {
       const type = (t.type || t.transactionType || '').toLowerCase();
       const amt = Number(t.amount ?? 0);
       const ts = t.createdAt || t.time || t.timestamp;
@@ -536,12 +582,16 @@ async function loadTransactions(uid){
         type.includes('win') ? 'Game Profit' : 'Transaction'
       );
       
-      let stText = 'Success';
+      let stText = 'SUCCESS';
       let stClass = 'success';
-      if(t.status === 'failed' || t.status === 'rejected' || t.status === 'cancelled') { 
-        stText = 'Failed'; stClass = 'failed'; 
-      } else if(t.status === 'pending') { 
-        stText = 'Pending'; stClass = 'pending'; 
+      const rawStatus = (t.status || 'pending').toLowerCase();
+
+      if(rawStatus === 'failed' || rawStatus === 'rejected' || rawStatus === 'cancelled') { 
+        stText = 'FAILED'; 
+        stClass = 'failed'; 
+      } else if(rawStatus === 'pending') { 
+        stText = 'PENDING'; 
+        stClass = 'pending'; 
       }
 
       let cls = 'bet';
