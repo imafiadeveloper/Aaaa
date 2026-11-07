@@ -3,8 +3,59 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="robots" content="noindex,nofollow" />
-<title>BDG LOTTERY7 — Login</title>
+
+<!-- ⚡ GOOGLE SEARCH CONSOLE VERIFICATION TAG -->
+<meta name="google-site-verification" content="SPKoDnNAOqwnzcNFFmnbBl2YCTiXmBuhRwYwFyEsrJU" />
+
+<!-- ⚡ GOOGLE SEO META TAGS -->
+<title>BDG GAME - Official Login, Register & Online Lottery Games</title>
+<meta name="description" content="Play official BDG Game online. Win Go 30s, Aviator, TRX Win, Slots & Casino games. Register now and get instant daily cash bonuses & fast withdrawals.">
+<meta name="keywords" content="BDG Game, BDG Lottery, Win Go, Aviator, BDG Register, BDG Login, BDG Lottery 7">
+<link rel="canonical" href="https://bdglottery7.pages.dev/">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph Preview -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bdglottery7.pages.dev/">
+<meta property="og:title" content="BDG GAME - Play Lottery, Aviator & Slots Online">
+<meta property="og:description" content="Official BDG Lottery platform with instant recharge and daily cash rebate. Sign up now.">
+<meta property="og:image" content="https://bdglottery7.pages.dev/images/banner1.png">
+
+<!-- Google Rich Sitelinks Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://bdglottery7.pages.dev/#website",
+      "url": "https://bdglottery7.pages.dev/",
+      "name": "BDG GAME",
+      "description": "Official BDG Lottery & Casino Gaming Platform"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Register",
+      "url": "https://bdglottery7.pages.dev/index?action=register"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Login",
+      "url": "https://bdglottery7.pages.dev/index"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Aviator Crash",
+      "url": "https://bdglottery7.pages.dev/aviator"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Win Go 30s",
+      "url": "https://bdglottery7.pages.dev/wingo30"
+    }
+  ]
+}
+</script>
 
 <!-- ⚡ CLEAN URL ENGINE: Removes .html immediately from browser bar -->
 <script>
@@ -320,7 +371,7 @@
       <div class="input-box">
         <input id="phonePwd" type="password" placeholder="Please enter the password" maxlength="32" />
         <button class="eye-btn" onclick="togglePwd('phonePwd', this)" aria-label="Show">
-          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="13" r="3"/></svg>
         </button>
       </div>
     </div>
@@ -353,7 +404,7 @@
       <div class="input-box">
         <input id="emailPwd" type="password" placeholder="Please enter the password" maxlength="32" />
         <button class="eye-btn" onclick="togglePwd('emailPwd', this)" aria-label="Show">
-          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="13" r="3"/></svg>
         </button>
       </div>
     </div>
@@ -406,7 +457,6 @@
       <input id="regPwd" class="modal-input" type="password" maxlength="32" placeholder="Set password (min 6)" />
       <input id="regPwd2" class="modal-input" type="password" maxlength="32" placeholder="Confirm password" />
       
-      <!-- INVITE CODE (REQUIRED) -->
       <input id="regInviteCode" class="modal-input" type="text" maxlength="30" placeholder="Invite Code (Required)" style="border-color: #fd565c; text-transform: uppercase;" />
       
       <div class="tip-row" style="color:#fd565c;">
@@ -629,7 +679,6 @@ function openRegister() {
 }
 window.openRegister = openRegister;
 
-// MULTI-FALLBACK INVITE CODE RESOLVER
 async function findParentInviter(code) {
   const cleanCode = (code || '').trim().toUpperCase();
   if (!cleanCode) return null;
@@ -710,7 +759,7 @@ async function doRegister() {
       inviteCode: newShortCode,
       referralCode: newShortCode,
       referredBy: (parentId === 'ADMIN_SYSTEM') ? null : parentId,
-      balance: 28, // ₹28 Signup Bonus
+      balance: 28,
       firstDepositDone: false,
       totalBetTurnover: 0,
       createdAt: serverTimestamp()
@@ -852,17 +901,19 @@ async function sendSupport() {
 }
 window.sendSupport = sendSupport;
 
-// Auto Open Register & Auto Fill Invite Code from URL
 window.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const refCode = urlParams.get('ref') || urlParams.get('invite') || urlParams.get('code');
-  
-  if (refCode) {
+  const action = urlParams.get('action');
+
+  if (refCode || action === 'register') {
     openRegister();
-    const invInput = document.getElementById('regInviteCode');
-    if (invInput) {
-      invInput.value = refCode.trim().toUpperCase();
-      invInput.style.borderColor = '#00e676';
+    if (refCode) {
+      const invInput = document.getElementById('regInviteCode');
+      if (invInput) {
+        invInput.value = refCode.trim().toUpperCase();
+        invInput.style.borderColor = '#00e676';
+      }
     }
   } else {
     const last = localStorage.getItem('bdg7_last');
