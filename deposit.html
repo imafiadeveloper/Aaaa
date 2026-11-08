@@ -97,30 +97,52 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .modal-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(5px);
   z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;
+  overflow-y:auto;
 }
 .modal-overlay.show{display:flex;animation:popIn 0.25s ease;}
 @keyframes popIn{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
 
 .pay-card{
-  width:100%;max-width:330px;background:#1e1e22;border-radius:22px;
+  width:100%;max-width:340px;background:#1e1e22;border-radius:22px;
   padding:20px 16px;text-align:center;border:1px solid var(--border-gold);
   box-shadow:0 12px 35px rgba(0,0,0,0.8);position:relative;
+  margin:auto;max-height:92vh;overflow-y:auto;
 }
 .pay-title{font-size:16px;font-weight:900;color:#fff;}
-.pay-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);margin:6px 0 12px;}
+.pay-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);margin:6px 0 10px;}
 
 .qr-box{
   background:#fff;padding:10px;border-radius:12px;display:inline-block;
-  margin:0 auto 12px;box-shadow:0 4px 14px rgba(0,0,0,0.4);
+  margin:0 auto 10px;box-shadow:0 4px 14px rgba(0,0,0,0.4);
 }
 #qrcodeCanvas{display:flex;align-items:center;justify-content:center;}
 
 .upi-copy-row{
   background:var(--card-sub);border:1px solid var(--border);border-radius:10px;
-  padding:8px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
+  padding:8px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
 }
 .upi-copy-row span{font-size:12px;color:var(--gold);font-weight:700;}
 .btn-copy{font-size:11px;font-weight:800;color:#00e676;cursor:pointer;}
+
+/* ⚡ UPI Direct Intent Launcher Buttons */
+.upi-app-grid{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-bottom:12px;
+}
+.app-btn{
+  background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:12px;
+  padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;transition:transform 0.15s, border-color 0.15s;
+}
+.app-btn:active{transform:scale(0.94);border-color:var(--gold);}
+.app-btn .app-icon{
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:16px;font-weight:900;
+}
+.app-btn .app-name{font-size:10px;color:#d5d8e2;font-weight:700;}
+.app-paytm .app-icon{background:#00b9f5;color:#fff;}
+.app-phonepe .app-icon{background:#5f259f;color:#fff;}
+.app-gpay .app-icon{background:#ffffff;color:#4285f4;}
+.app-bhim .app-icon{background:#f37023;color:#fff;}
 
 .utr-input-box{margin-bottom:12px;}
 .utr-input-box input{
@@ -209,7 +231,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
     <div class="ci-icon">⚡</div>
     <div>
       <div class="ci-name">UPI Fast QR</div>
-      <div class="ci-sub">Instant 10s Auto-Pay</div>
+      <div class="ci-sub">Scan / 1-Click App</div>
     </div>
   </div>
   <div class="channel-item" id="chPaytm" onclick="selectChannel('Paytm / PhonePe')">
@@ -248,10 +270,9 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </h4>
   <ul>
     <li>Minimum deposit is <strong>₹100.00</strong>.</li>
-    <li>Scan the generated QR code using PhonePe, Google Pay, or Paytm.</li>
-    <li>After completing payment, submit the exact <strong>12-digit UTR/Ref No.</strong></li>
-    <li>Wait up to <strong>15 minutes</strong> for our auto-sync engine to approve.</li>
-    <li>Do not modify the amount while paying on your UPI app.</li>
+    <li>Tap any UPI app button below (Paytm, PhonePe, GPay, BHIM) to open the app directly, or scan the QR code.</li>
+    <li>Once payment is complete, return to this tab and paste the <strong>12-digit UPI UTR / Ref No.</strong></li>
+    <li>Our engine verifies and approves deposits within <strong>15 minutes</strong>.</li>
   </ul>
 </div>
 
@@ -260,7 +281,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="pay-card">
     <div class="modal-close-cross" onclick="closePayModal()">✕</div>
 
-    <!-- View A: Pay QR & Enter UTR -->
+    <!-- View A: Pay QR, App Launcher & Enter UTR -->
     <div id="viewPayment">
       <div class="pay-title">UPI Fast QR Payment</div>
       <div class="pay-amt" id="modalAmountDisplay">₹100.00</div>
@@ -274,12 +295,33 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
         <span class="btn-copy" onclick="copyUpiId()">Copy UPI</span>
       </div>
 
+      <!-- ⚡ Direct App Launcher Row -->
+      <div style="font-size:11px;font-weight:700;color:#8f929b;margin-bottom:6px;text-align:left;">Or pay with your installed app:</div>
+      <div class="upi-app-grid">
+        <div class="app-btn app-paytm" onclick="launchUpiApp('paytm')">
+          <div class="app-icon">P</div>
+          <div class="app-name">Paytm</div>
+        </div>
+        <div class="app-btn app-phonepe" onclick="launchUpiApp('phonepe')">
+          <div class="app-icon">Pe</div>
+          <div class="app-name">PhonePe</div>
+        </div>
+        <div class="app-btn app-gpay" onclick="launchUpiApp('gpay')">
+          <div class="app-icon">G</div>
+          <div class="app-name">GPay</div>
+        </div>
+        <div class="app-btn app-bhim" onclick="launchUpiApp('upi')">
+          <div class="app-icon">B</div>
+          <div class="app-name">Any UPI</div>
+        </div>
+      </div>
+
       <div class="utr-input-box">
         <input type="text" id="utrInputField" maxlength="12" placeholder="Enter 12-Digit UPI Ref / UTR No.">
       </div>
 
       <button class="btn-confirm-pay" onclick="submitDepositUTR()">Submit UTR &amp; Verify</button>
-      <p style="font-size:10px;color:#8f929b;">Submit UTR immediately after payment for auto-credit</p>
+      <p style="font-size:10px;color:#8f929b;">After payment completes in app, paste the 12-digit UTR here</p>
     </div>
 
     <!-- View B: 15-Minute Waiting & Verification Screen -->
@@ -393,6 +435,40 @@ window.copyUpiId = () => {
   navigator.clipboard.writeText(UPI_RECEIVER).then(() => toast('UPI ID Copied!'));
 };
 
+function getUpiParams() {
+  return `pa=${encodeURIComponent(UPI_RECEIVER)}&pn=${encodeURIComponent('BDG GAME')}&am=${currentAmount}&cu=INR&tn=${encodeURIComponent('BDGDeposit')}`;
+}
+
+// 📲 Direct Launch Installed UPI Apps
+window.launchUpiApp = (appName) => {
+  const params = getUpiParams();
+  let intentUrl = `upi://pay?${params}`;
+
+  if (appName === 'paytm') {
+    // Paytm deep-link protocol
+    intentUrl = `paytmmp://pay?${params}`;
+  } else if (appName === 'phonepe') {
+    // PhonePe deep-link protocol
+    intentUrl = `phonepe://pay?${params}`;
+  } else if (appName === 'gpay') {
+    // Google Pay / Tez protocol
+    intentUrl = `tez://upi/pay?${params}`;
+  } else {
+    // Standard system-wide UPI app picker
+    intentUrl = `upi://pay?${params}`;
+  }
+
+  toast(`Opening ${appName.toUpperCase()}...`);
+  // Try launching app intent
+  window.location.href = intentUrl;
+
+  // Fallback to generic upi intent if specific schema doesn't trigger
+  setTimeout(() => {
+    if (document.hidden) return;
+    window.location.href = `upi://pay?${params}`;
+  }, 1200);
+};
+
 // Open Payment Modal & Generate Dynamic QR
 window.openPaymentFlow = () => {
   if (currentAmount < 100) return toast('Minimum recharge is ₹100');
@@ -403,7 +479,7 @@ window.openPaymentFlow = () => {
   document.getElementById('utrInputField').value = '';
 
   // Generate Intent UPI Link:
-  const upiIntent = `upi://pay?pa=${UPI_RECEIVER}&pn=BDG%20GAME&am=${currentAmount}&cu=INR&tn=BDGDeposit`;
+  const upiIntent = `upi://pay?${getUpiParams()}`;
   
   const qrContainer = document.getElementById("qrcodeCanvas");
   qrContainer.innerHTML = '';
