@@ -277,7 +277,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
   addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
-  where, runTransaction
+  where, runTransaction, orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -388,7 +388,7 @@ async function generateAndSaveResult(periodId, slotIndex) {
   const snap = await getDoc(ref);
   if (snap.exists()) {
     await resolveBets(periodId, snap.data());
-    return;
+    return snap.data();
   }
   const data = { ...computeDeterministicResult(slotIndex, periodId), createdAt: serverTimestamp() };
   try {
@@ -399,31 +399,7 @@ async function generateAndSaveResult(periodId, slotIndex) {
   } catch(e){}
   await resolveBets(periodId, data);
   pruneOldResults();
-}
-
-/* 🔁 GAPLESS CONSECUTIVE BACKFILL (Prevents Missing Periods Forever) */
-async function backfillConsecutiveSlots() {
-  try {
-    const { slotIndex } = getISTDateComponents();
-    const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(15)));
-    let maxKnownIndex = slotIndex - 10;
-
-    snap.forEach(d => {
-      const p = d.data().period;
-      if (p && p.includes('K3')) {
-        const parts = p.split('K3');
-        if (parts[1]) {
-          const idx = parseInt(parts[1]) - 10000;
-          if (!isNaN(idx) && idx > maxKnownIndex) maxKnownIndex = idx;
-        }
-      }
-    });
-
-    for (let s = maxKnownIndex + 1; s < slotIndex; s++) {
-      const pId = getPeriodIdFromIndex(s);
-      await generateAndSaveResult(pId, s);
-    }
-  } catch(e){}
+  return data;
 }
 
 async function resolveBets(periodId, resData) {
@@ -507,9 +483,8 @@ onAuthStateChanged(auth, async (user) => {
     userBalance = Number(snap.data().balance || 0);
     document.getElementById('balVal').textContent = userBalance.toFixed(2);
   }
-  await backfillConsecutiveSlots();
   startTimer();
-  loadGameHistory();
+  await loadGameHistory();
 });
 
 function startTimer() {
@@ -591,24 +566,55 @@ window.confirmBet = async () => {
   finally { btn.disabled = false; }
 };
 
+// ===============================================================
+// ⚡ 100% LINE-WISE CONTINUOUS PERIOD HISTORY GENERATOR & RENDERER (K3 DICE)
+// ===============================================================
 async function loadGameHistory() {
   const rBox = document.getElementById('historyRows');
   const dPrev = document.getElementById('topDicePrev');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), limit(15));
-    const snap = await getDocs(q);
-    let arr = [];
-    snap.forEach(d => arr.push(d.data()));
-    arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
+    const { slotIndex } = getISTDateComponents();
+    const dbMap = new Map();
 
-    if (arr[0]) {
-      const topD1 = arr[0].d1 || 1;
-      const topD2 = arr[0].d2 || 2;
-      const topD3 = arr[0].d3 || 3;
+    try {
+      const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(15));
+      const snap = await getDocs(q);
+      snap.forEach(d => dbMap.set(d.data().period, d.data()));
+    } catch(err) {
+      const fallbackSnap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(25)));
+      fallbackSnap.forEach(d => dbMap.set(d.data().period, d.data()));
+    }
+
+    const sequentialList = [];
+    const missingSaves = [];
+
+    // Har halat me line-wise continuous pichle 15 slots render honge bina kisi gap ke
+    for (let i = 1; i <= 15; i++) {
+      const targetIdx = slotIndex - i;
+      if (targetIdx < 1) continue;
+      const targetPId = getPeriodIdFromIndex(targetIdx);
+
+      if (dbMap.has(targetPId)) {
+        sequentialList.push(dbMap.get(targetPId));
+      } else {
+        const generated = computeDeterministicResult(targetIdx, targetPId);
+        sequentialList.push(generated);
+        missingSaves.push(generateAndSaveResult(targetPId, targetIdx));
+      }
+    }
+
+    if (missingSaves.length > 0) {
+      Promise.all(missingSaves).catch(() => {});
+    }
+
+    if (sequentialList[0]) {
+      const topD1 = sequentialList[0].d1 || 1;
+      const topD2 = sequentialList[0].d2 || 2;
+      const topD3 = sequentialList[0].d3 || 3;
       dPrev.innerHTML = `<div class="dice-cube">${diceSymbols[topD1]}</div><div class="dice-cube">${diceSymbols[topD2]}</div><div class="dice-cube">${diceSymbols[topD3]}</div>`;
     }
 
-    rBox.innerHTML = arr.slice(0, 10).map(d => {
+    rBox.innerHTML = sequentialList.slice(0, 10).map(d => {
       const d1 = d.d1 || (d.number ? (d.number % 6) + 1 : 1);
       const d2 = d.d2 || ((d1 + 1) % 6 + 1);
       const d3 = d.d3 || ((d2 + 1) % 6 + 1);
@@ -621,7 +627,9 @@ async function loadGameHistory() {
           <div class="col" style="color:var(--gold);font-weight:900;">${sum} (${size})</div>
         </div>`;
     }).join('');
-  } catch(e){}
+  } catch(e){
+    console.error("K3 history render error:", e);
+  }
 }
 
 async function loadMyHistory() {

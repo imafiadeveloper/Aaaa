@@ -370,7 +370,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
   addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
-  where, runTransaction
+  where, runTransaction, orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -522,6 +522,16 @@ function getPeriodId() {
   return getPeriodIdFromIndex(slotIndex);
 }
 
+function calculateDeterministicResult(slotIndex, periodId) {
+  const seed = (slotIndex * 9301 + 49297) % 233280;
+  const num = Math.abs(seed) % 10;
+  let color = 'violet';
+  if ([1, 3, 7, 9].includes(num)) color = 'green';
+  else if ([2, 4, 6, 8].includes(num)) color = 'red';
+  const size = num >= 5 ? 'big' : 'small';
+  return { period: periodId, number: num, color, size, slotIndex };
+}
+
 // Auto prune old docs
 async function pruneOldResults() {
   try {
@@ -582,14 +592,7 @@ async function fetchAdminPresetOrDeterministic(slotIndex, periodId) {
     console.warn("Admin control fetch warning:", err);
   }
 
-  // Fallback: Deterministic lowest-pool algorithm
-  const seed = (slotIndex * 9301 + 49297) % 233280;
-  const num = Math.abs(seed) % 10;
-  let color = 'violet';
-  if ([1, 3, 7, 9].includes(num)) color = 'green';
-  else if ([2, 4, 6, 8].includes(num)) color = 'red';
-  const size = num >= 5 ? 'big' : 'small';
-  return { period: periodId, number: num, color, size, slotIndex };
+  return calculateDeterministicResult(slotIndex, periodId);
 }
 
 async function generateAndSaveResult(periodId, slotIndex) {
@@ -597,7 +600,7 @@ async function generateAndSaveResult(periodId, slotIndex) {
   const snap = await getDoc(ref);
   if (snap.exists()) {
     await resolveBets(periodId, snap.data());
-    return;
+    return snap.data();
   }
   const generated = await fetchAdminPresetOrDeterministic(slotIndex, periodId);
   const data = { ...generated, createdAt: serverTimestamp() };
@@ -609,27 +612,7 @@ async function generateAndSaveResult(periodId, slotIndex) {
   } catch(e){}
   await resolveBets(periodId, data);
   pruneOldResults();
-}
-
-async function backfillConsecutiveSlots() {
-  try {
-    const { slotIndex } = getISTDateComponents();
-    const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(15)));
-    let maxKnownIndex = slotIndex - 10;
-
-    snap.forEach(d => {
-      const p = d.data().period;
-      if (p && p.length >= 17) {
-        const idx = parseInt(p.slice(-5)) - 30000;
-        if (!isNaN(idx) && idx > maxKnownIndex) maxKnownIndex = idx;
-      }
-    });
-
-    for (let s = maxKnownIndex + 1; s < slotIndex; s++) {
-      const pId = getPeriodIdFromIndex(s);
-      await generateAndSaveResult(pId, s);
-    }
-  } catch(e){}
+  return data;
 }
 
 async function resolveBets(periodId, resData) {
@@ -724,9 +707,8 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('balVal').textContent = userBalance.toFixed(2);
   }
   initBalls();
-  await backfillConsecutiveSlots();
   startTimer();
-  loadGameHistory();
+  await loadGameHistory();
 });
 
 // Render 0-9 Image Balls
@@ -874,33 +856,66 @@ window.confirmBet = async () => {
   finally { btn.disabled = false; }
 };
 
+// ===============================================================
+// ⚡ 100% LINE-WISE CONTINUOUS PERIOD HISTORY GENERATOR & RENDERER (3 MIN)
+// ===============================================================
 async function loadGameHistory() {
   const rBox = document.getElementById('historyRows');
   const topBalls = document.getElementById('topPrevBalls');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), limit(25));
-    const snap = await getDocs(q);
-    let arr = [];
-    snap.forEach(d => arr.push(d.data()));
-    arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
+    const { slotIndex } = getISTDateComponents();
+    const dbMap = new Map();
 
-    topBalls.innerHTML = arr.slice(0, 5).map(d => `
+    try {
+      const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(15));
+      const snap = await getDocs(q);
+      snap.forEach(d => dbMap.set(d.data().period, d.data()));
+    } catch(err) {
+      const fallbackSnap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(25)));
+      fallbackSnap.forEach(d => dbMap.set(d.data().period, d.data()));
+    }
+
+    const sequentialList = [];
+    const missingSaves = [];
+
+    // Har condition me continuous line-wise pichle 15 slots strictly sequence me render honge
+    for (let i = 1; i <= 15; i++) {
+      const targetIdx = slotIndex - i;
+      if (targetIdx < 1) continue;
+      const targetPId = getPeriodIdFromIndex(targetIdx);
+
+      if (dbMap.has(targetPId)) {
+        sequentialList.push(dbMap.get(targetPId));
+      } else {
+        const generated = calculateDeterministicResult(targetIdx, targetPId);
+        sequentialList.push(generated);
+        missingSaves.push(generateAndSaveResult(targetPId, targetIdx));
+      }
+    }
+
+    if (missingSaves.length > 0) {
+      Promise.all(missingSaves).catch(() => {});
+    }
+
+    topBalls.innerHTML = sequentialList.slice(0, 5).map(d => `
       <div class="prev-ball ${d.color}">${d.number}</div>
     `).join('');
 
-    rBox.innerHTML = arr.slice(0, 10).map(d => `
+    rBox.innerHTML = sequentialList.slice(0, 10).map(d => `
       <div class="th-row">
         <div class="col-period">${d.period}</div>
         <div class="col col-num ${d.color}">${d.number}</div>
-        <div class="col">${d.size}</div>
+        <div class="col" style="text-transform:lowercase;">${d.size}</div>
         <div class="col"><span class="col-dot dot-${d.color}"></span></div>
       </div>
     `).join('');
 
-    document.getElementById('chartGrid').innerHTML = arr.slice(0, 30).map(d => `
+    document.getElementById('chartGrid').innerHTML = sequentialList.slice(0, 15).map(d => `
       <div style="aspect-ratio:1;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;border:1px solid ${d.color==='green'?'#00b977':(d.color==='red'?'#f44336':'#9c27b0')};color:#fff;">${d.number}</div>
     `).join('');
-  } catch(e){}
+  } catch(e){
+    console.error("Game history render error:", e);
+  }
 }
 
 async function loadMyHistory() {
