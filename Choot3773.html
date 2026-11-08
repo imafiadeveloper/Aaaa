@@ -3,154 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BDG LOTTERY7 — Ultimate Admin Control Panel</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<title>BDG LOTTERY7 — Master Admin Control Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --gold: #FAE59F;
-  --gold-grad: linear-gradient(180deg,#FFE793 0%,#C48E2F 100%);
-  --bg: #0e0e11;
-  --card: #18181c;
-  --card-sub: #222228;
-  --border: rgba(255,255,255,0.08);
-  --red: #ff4d4f;
+  --bg-core: #090a0f;
+  --bg-card: #13151f;
+  --bg-card-sub: #1b1e2e;
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(250, 229, 159, 0.4);
+  
+  --gold: #fae59f;
+  --gold-gradient: linear-gradient(135deg, #ffe793 0%, #c48e2f 100%);
   --green: #00e676;
+  --green-glow: rgba(0, 230, 118, 0.2);
+  --red: #ff4d4f;
+  --red-glow: rgba(255, 77, 79, 0.2);
   --violet: #b388ff;
-  --blue: #1e90ff;
+  --blue: #2979ff;
   --amber: #ffab00;
+  --text-muted: #8e95a5;
 }
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; -webkit-tap-highlight-color:transparent; }
-body { background:var(--bg); color:#fff; min-height:100vh; padding-bottom:60px; }
-button { cursor:pointer; border:none; outline:none; }
-input, select, textarea { outline:none; border:none; background:transparent; color:#fff; font-family:inherit; }
 
-/* Navbar */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif; -webkit-tap-highlight-color:transparent; }
+body { background: var(--bg-core); color: #fff; min-height: 100vh; padding-bottom: 70px; }
+button { cursor: pointer; border: none; outline: none; }
+input, select, textarea { outline: none; border: none; background: transparent; color: #fff; font-family: inherit; }
+
+/* Sticky Navbar */
 .navbar {
-  position:sticky; top:0; z-index:100; height:56px; background:#141418;
-  display:flex; align-items:center; justify-content:space-between; padding:0 16px;
-  border-bottom:1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; height: 60px; background: rgba(19, 21, 31, 0.95);
+  backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; border-bottom: 1px solid var(--border-light);
 }
-.nav-brand { font-size:16px; font-weight:900; color:var(--gold); display:flex; align-items:center; gap:8px; }
-.admin-badge { background:rgba(255,77,79,0.2); color:var(--red); font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; border:1px solid rgba(255,77,79,0.3); }
+.nav-brand { font-size: 15px; font-weight: 800; color: var(--gold); display: flex; align-items: center; gap: 8px; }
+.badge-root {
+  background: rgba(255, 77, 79, 0.15); color: var(--red); font-size: 10px; font-weight: 800;
+  padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255, 77, 79, 0.3); letter-spacing: 0.5px;
+}
 
-/* Tabs */
-.tabs-wrap { display:flex; gap:8px; padding:12px 16px; overflow-x:auto; background:#121215; border-bottom:1px solid var(--border); }
+/* Nav Tabs */
+.tabs-wrap {
+  display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; background: #0f1118;
+  border-bottom: 1px solid var(--border-light); scrollbar-width: none;
+}
+.tabs-wrap::-webkit-scrollbar { display: none; }
 .tab-btn {
-  flex:0 0 auto; background:var(--card); color:#8f929b; padding:8px 14px;
-  border-radius:20px; font-size:12px; font-weight:700; border:1px solid var(--border);
-  transition:all 0.2s;
+  flex: 0 0 auto; background: var(--bg-card); color: var(--text-muted); padding: 9px 16px;
+  border-radius: 12px; font-size: 12px; font-weight: 700; border: 1px solid var(--border-light);
+  transition: all 0.2s ease;
 }
-.tab-btn.active { background:var(--gold-grad); color:#1c1304; border-color:transparent; }
+.tab-btn.active { background: var(--gold-gradient); color: #161103; font-weight: 800; border-color: transparent; box-shadow: 0 4px 14px rgba(250, 229, 159, 0.25); }
 
-.section { display:none; padding:16px; }
-.section.active { display:block; }
+/* Main Sections */
+.section { display: none; padding: 16px; max-width: 680px; margin: 0 auto; }
+.section.active { display: block; }
 
-/* Cards */
-.card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:14px; box-shadow:0 4px 14px rgba(0,0,0,0.4); }
-.card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-.card-head h3 { font-size:14px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px; }
+/* Standard Cards */
+.card {
+  background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 16px;
+  padding: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.card-head h3 { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #fff; }
 
-/* Sub Filter Bars */
-.sub-filter-bar { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; }
+/* Sub Filters */
+.sub-filter-bar { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; }
+.sub-filter-bar::-webkit-scrollbar { display: none; }
 .sub-pill {
-  padding:6px 14px; background:var(--card-sub); border:1px solid var(--border);
-  border-radius:14px; font-size:11px; font-weight:700; color:#8f929b; cursor:pointer;
-  white-space:nowrap; transition:all 0.15s;
+  padding: 7px 14px; background: var(--bg-card-sub); border: 1px solid var(--border-light);
+  border-radius: 10px; font-size: 11px; font-weight: 700; color: var(--text-muted); cursor: pointer; white-space: nowrap;
 }
-.sub-pill.active { background:var(--gold); color:#1a1a1a; font-weight:900; }
+.sub-pill.active { background: var(--gold); color: #161103; font-weight: 800; }
 
-/* WinGo Controller */
-.game-selector { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; }
+/* WinGo Game Interval Bar */
+.game-selector { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; }
 .g-pill {
-  padding:8px 14px; background:var(--card-sub); border:1px solid var(--border); border-radius:10px;
-  font-size:12px; font-weight:700; color:#aaa; cursor:pointer;
+  flex: 1 0 auto; text-align: center; padding: 10px 14px; background: var(--bg-card-sub);
+  border: 1px solid var(--border-light); border-radius: 12px; font-size: 12px; font-weight: 700;
+  color: var(--text-muted); cursor: pointer; transition: all 0.2s;
 }
-.g-pill.active { background:var(--gold); color:#1a1a1a; font-weight:800; }
+.g-pill.active { background: var(--gold); color: #111; font-weight: 800; border-color: transparent; }
 
-.mode-toggle { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+/* Live Master Mode Banner */
+.mode-status-banner {
+  padding: 14px; border-radius: 14px; margin-bottom: 16px; border: 1.5px solid;
+  display: flex; flex-direction: column; gap: 4px; transition: all 0.2s ease;
+}
+.mode-status-banner.is-auto { background: rgba(0, 230, 118, 0.08); border-color: var(--green); }
+.mode-status-banner.is-manual { background: rgba(255, 77, 79, 0.08); border-color: var(--red); }
+.banner-top { display: flex; justify-content: space-between; align-items: center; }
+.banner-title { font-size: 11px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+.status-pill {
+  font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px;
+}
+.status-pill.auto { background: var(--green); color: #042512; }
+.status-pill.manual { background: var(--red); color: #fff; }
+.banner-desc { font-size: 12px; color: #cfd4e0; line-height: 1.4; }
+
+/* Mode Switch Buttons */
+.mode-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
 .mode-btn {
-  padding:12px; border-radius:12px; background:var(--card-sub); border:1.5px solid var(--border);
-  font-size:13px; font-weight:800; text-align:center; color:#888; cursor:pointer;
+  padding: 12px; border-radius: 12px; background: var(--bg-card-sub); border: 2px solid var(--border-light);
+  font-size: 13px; font-weight: 800; text-align: center; color: var(--text-muted); transition: all 0.2s;
 }
-.mode-btn.active-auto { border-color:var(--green); background:rgba(0,230,118,0.12); color:var(--green); }
-.mode-btn.active-manual { border-color:var(--red); background:rgba(255,77,79,0.12); color:var(--red); }
+.mode-btn.active-auto { border-color: var(--green); background: var(--green-glow); color: var(--green); }
+.mode-btn.active-manual { border-color: var(--red); background: var(--red-glow); color: var(--red); }
 
-.pool-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:16px; }
-.pool-box { background:#121215; border-radius:10px; padding:10px; text-align:center; border:1px solid var(--border); }
-.pool-box span { font-size:10px; color:#8f929b; text-transform:uppercase; font-weight:700; display:block; }
-.pool-box strong { font-family:'Orbitron',sans-serif; font-size:14px; margin-top:4px; display:block; }
+/* Bets Pool Box */
+.pool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.pool-box { background: #0c0d13; border-radius: 12px; padding: 10px; text-align: center; border: 1px solid var(--border-light); }
+.pool-box span { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; display: block; }
+.pool-box strong { font-family: 'Orbitron', sans-serif; font-size: 13px; margin-top: 5px; display: block; }
 
-.decision-title { font-size:11px; color:#8f929b; text-transform:uppercase; font-weight:800; margin-bottom:8px; }
-.bs-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+/* Control Grids */
+.control-step-box {
+  background: var(--bg-card-sub); border-radius: 12px; padding: 12px; margin-bottom: 14px;
+  border: 1px solid var(--border-light);
+}
+.step-label { font-size: 11px; font-weight: 800; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; }
+
+.bs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .bs-btn {
-  padding:12px; border-radius:12px; font-family:'Orbitron',sans-serif; font-size:15px; font-weight:900;
-  text-align:center; cursor:pointer; border:2px solid transparent; background:var(--card-sub);
+  padding: 12px; border-radius: 10px; font-family: 'Orbitron', sans-serif; font-size: 14px;
+  font-weight: 900; text-align: center; background: #12141f; border: 2px solid transparent; color: #aaa;
 }
-.bs-btn.big { color:#ffa502; }
-.bs-btn.small { color:#1e90ff; }
-.bs-btn.selected { border-color:var(--gold); background:rgba(250,229,159,0.15); box-shadow:0 0 12px rgba(250,229,159,0.3); }
+.bs-btn.big { color: #ffa502; }
+.bs-btn.small { color: #2979ff; }
+.bs-btn.selected { border-color: var(--gold); background: rgba(250, 229, 159, 0.15); box-shadow: 0 0 14px rgba(250, 229, 159, 0.25); }
 
-.color-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:12px; }
-.c-pick-btn {
-  padding:10px; border-radius:10px; font-size:12px; font-weight:800; text-align:center; cursor:pointer;
-  border:2px solid transparent;
-}
-.c-pick-btn.green { background:rgba(0,230,118,0.15); color:var(--green); border-color:rgba(0,230,118,0.3); }
-.c-pick-btn.violet { background:rgba(179,136,255,0.15); color:var(--violet); border-color:rgba(179,136,255,0.3); }
-.c-pick-btn.red { background:rgba(255,77,79,0.15); color:var(--red); border-color:rgba(255,77,79,0.3); }
-.c-pick-btn.selected { border-color:#fff; box-shadow:0 0 10px #fff; }
+.color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.c-pick-btn { padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 800; text-align: center; border: 2px solid transparent; }
+.c-pick-btn.green { background: rgba(0, 230, 118, 0.12); color: var(--green); border-color: rgba(0, 230, 118, 0.25); }
+.c-pick-btn.violet { background: rgba(179, 136, 255, 0.12); color: var(--violet); border-color: rgba(179, 136, 255, 0.25); }
+.c-pick-btn.red { background: rgba(255, 77, 79, 0.12); color: var(--red); border-color: rgba(255, 77, 79, 0.25); }
+.c-pick-btn.selected { border-color: #fff; box-shadow: 0 0 12px #fff; }
 
-.num-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-bottom:16px; }
+.num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .num-btn {
-  aspect-ratio:1; border-radius:10px; font-family:'Orbitron',sans-serif;
-  font-size:18px; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center;
-  border:2px solid transparent; cursor:pointer;
+  aspect-ratio: 1; border-radius: 10px; font-family: 'Orbitron', sans-serif; font-size: 18px;
+  font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center;
+  border: 2px solid transparent;
 }
-.num-btn.selected { border-color:#fff; transform:scale(1.05); box-shadow:0 0 14px rgba(255,255,255,0.7); }
-.c-green { background:linear-gradient(135deg, #00b09b, #96c93d); }
-.c-red { background:linear-gradient(135deg, #ff416c, #ff4b2b); }
-.c-violet { background:linear-gradient(135deg, #8a2387, #e94057); }
+.num-btn.selected { border-color: #fff; transform: scale(1.06); box-shadow: 0 0 14px rgba(255, 255, 255, 0.8); }
+.c-green { background: linear-gradient(135deg, #00b09b, #96c93d); }
+.c-red { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+.c-violet { background: linear-gradient(135deg, #8a2387, #e94057); }
 
-.target-badge {
-  background:#141416; border:1px solid var(--gold); border-radius:10px; padding:10px 14px;
-  margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;
+/* Buttons & Inputs */
+.btn-submit {
+  width: 100%; height: 48px; border-radius: 12px; font-size: 14px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
 }
-.target-badge span { font-size:12px; color:#8f929b; }
-.target-badge strong { font-family:'Orbitron',sans-serif; color:var(--gold); font-size:14px; }
+.btn-gold { background: var(--gold-gradient); color: #1c1304; }
+.btn-gold:active { transform: scale(0.98); }
+.btn-sm { padding: 7px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; }
+.btn-red { background: rgba(255, 77, 79, 0.15); color: var(--red); border: 1px solid var(--red); }
+.btn-green { background: rgba(0, 230, 118, 0.15); color: var(--green); border: 1px solid var(--green); }
 
-/* Items, Cards & Badges */
-.user-item { background:var(--card-sub); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:12px; }
-.user-item.frozen { border-color:var(--red); background:rgba(255,77,79,0.06); }
-.u-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:12px; }
-.u-row:last-child { margin-bottom:0; }
-.input-row { display:flex; gap:8px; background:#121215; padding:8px 12px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; }
-.input-row input { flex:1; font-size:13px; }
+.input-row {
+  display: flex; gap: 8px; background: #0c0d13; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid var(--border-light); margin-bottom: 10px;
+}
+.input-row input { flex: 1; font-size: 13px; }
+
+/* Item List Card */
+.user-item { background: var(--bg-card-sub); border: 1px solid var(--border-light); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.user-item.frozen { border-color: var(--red); background: rgba(255, 77, 79, 0.05); }
+.u-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 12px; }
+.u-row:last-child { margin-bottom: 0; }
 
 .channel-badge {
-  font-size:10px; font-weight:800; color:var(--gold); background:rgba(250,229,159,0.12);
-  padding:2px 8px; border-radius:6px; border:1px solid rgba(250,229,159,0.25);
+  font-size: 10px; font-weight: 800; color: var(--gold); background: rgba(250, 229, 159, 0.12);
+  padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(250, 229, 159, 0.25);
 }
-.badge-status { font-size:10px; font-weight:800; padding:3px 8px; border-radius:8px; text-transform:uppercase; }
-.st-pending { background:rgba(255,171,0,0.15); color:var(--amber); border:1px solid rgba(255,171,0,0.3); }
-.st-processing { background:rgba(30,144,255,0.15); color:var(--blue); border:1px solid rgba(30,144,255,0.3); }
-.st-success { background:rgba(0,230,118,0.15); color:var(--green); border:1px solid rgba(0,230,118,0.3); }
-.st-failed { background:rgba(255,77,79,0.15); color:var(--red); border:1px solid rgba(255,77,79,0.3); }
-
-.badge-frozen { background:rgba(255,77,79,0.2); color:var(--red); border:1px solid var(--red); }
-.badge-active { background:rgba(0,230,118,0.2); color:var(--green); border:1px solid var(--green); }
-
-.btn-sm { padding:8px 14px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer; }
-.btn-gold { background:var(--gold-grad); color:#1c1304; }
-.btn-red { background:rgba(255,77,79,0.2); color:var(--red); border:1px solid var(--red); }
-.btn-green { background:rgba(0,230,118,0.2); color:var(--green); border:1px solid var(--green); }
-.btn-blue { background:rgba(30,144,255,0.2); color:var(--blue); border:1px solid var(--blue); }
+.badge-status { font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }
+.st-pending { background: rgba(255, 171, 0, 0.15); color: var(--amber); }
+.st-processing { background: rgba(41, 121, 255, 0.15); color: var(--blue); }
+.st-success { background: rgba(0, 230, 118, 0.15); color: var(--green); }
+.st-failed { background: rgba(255, 77, 79, 0.15); color: var(--red); }
 
 /* Toast */
 .toast {
-  position:fixed; top:20px; left:50%; transform:translateX(-50%);
-  background:rgba(20,20,25,0.96); border:1px solid var(--gold); color:#fff;
-  font-size:13px; font-weight:700; padding:10px 20px; border-radius:10px;
-  display:none; z-index:9999;
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  background: #191c28; border: 1.5px solid var(--gold); color: #fff;
+  font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 12px;
+  display: none; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 </style>
 </head>
@@ -158,17 +196,17 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 
 <header class="navbar">
   <div class="nav-brand">
-    <span>⚡ BDG ADMIN MASTER</span>
-    <span class="admin-badge">ROOT ACCESS</span>
+    <span>⚡ BDG CONTROL PANEL</span>
+    <span class="badge-root">ROOT</span>
   </div>
   <button class="btn-sm btn-red" onclick="location.href='home.html'">Exit</button>
 </header>
 
 <nav class="tabs-wrap">
-  <button class="tab-btn active" onclick="switchTab('wingoTab', this)">WinGo Control</button>
-  <button class="tab-btn" onclick="switchTab('depositTab', this)">Deposits (Live Hub)</button>
+  <button class="tab-btn active" onclick="switchTab('wingoTab', this)">WinGo Engine</button>
+  <button class="tab-btn" onclick="switchTab('depositTab', this)">Deposits (Live)</button>
   <button class="tab-btn" onclick="switchTab('withdrawTab', this)">Withdrawals</button>
-  <button class="tab-btn" onclick="switchTab('usersTab', this)">User Records &amp; Freeze</button>
+  <button class="tab-btn" onclick="switchTab('usersTab', this)">Users &amp; Ban</button>
   <button class="tab-btn" onclick="switchTab('giftTab', this)">Gift Codes</button>
   <button class="tab-btn" onclick="switchTab('notifyTab', this)">Broadcasts</button>
 </nav>
@@ -177,10 +215,11 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 <section id="wingoTab" class="section active">
   <div class="card">
     <div class="card-head">
-      <h3>WinGo Real-Time Engine</h3>
+      <h3>WinGo Real-Time Game Engine</h3>
       <span id="gamePeriod" style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:13px; font-weight:900;">Period: ...</span>
     </div>
 
+    <!-- Game Interval Selector -->
     <div class="game-selector">
       <div class="g-pill active" onclick="selectGame('bets_30s', 'results_30s', '30s', 30, this)">WinGo 30s</div>
       <div class="g-pill" onclick="selectGame('bets', 'results', '1m', 60, this)">WinGo 1M</div>
@@ -188,55 +227,87 @@ input, select, textarea { outline:none; border:none; background:transparent; col
       <div class="g-pill" onclick="selectGame('bets_5m', 'results_5m', '5m', 300, this)">WinGo 5M</div>
     </div>
 
-    <div class="mode-toggle">
-      <div class="mode-btn active-auto" id="autoModeBtn" onclick="setMode('auto')">AUTO (Lowest Bet Wins)</div>
-      <div class="mode-btn" id="manualModeBtn" onclick="setMode('manual')">MANUAL OVERRIDE</div>
+    <!-- Live Status Banner -->
+    <div class="mode-status-banner is-auto" id="modeBanner">
+      <div class="banner-top">
+        <span class="banner-title">Current Engine State</span>
+        <span class="status-pill auto" id="bannerStatusPill">AUTO ACTIVE</span>
+      </div>
+      <div class="banner-desc" id="bannerDesc">
+        System is calculating automatically. The combination with the <strong>lowest payout / lowest total bet</strong> will win this round to maximize house balance.
+      </div>
     </div>
 
-    <div class="decision-title">Current Round Total User Bets</div>
+    <!-- Toggle Buttons -->
+    <div class="mode-toggle">
+      <button class="mode-btn active-auto" id="autoModeBtn" onclick="setMode('auto')">
+        🟢 AUTO MODE (Safe)
+      </button>
+      <button class="mode-btn" id="manualModeBtn" onclick="setMode('manual')">
+        🔴 MANUAL OVERRIDE
+      </button>
+    </div>
+
+    <!-- Round Bet Pools -->
+    <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; margin-bottom:8px;">Live Round Bets Received</div>
     <div class="pool-grid">
       <div class="pool-box"><span>Green (1,3,7,9)</span><strong style="color:var(--green);" id="poolGreen">₹0</strong></div>
       <div class="pool-box"><span>Violet (0,5)</span><strong style="color:var(--violet);" id="poolViolet">₹0</strong></div>
       <div class="pool-box"><span>Red (2,4,6,8)</span><strong style="color:var(--red);" id="poolRed">₹0</strong></div>
       <div class="pool-box"><span>Big (5-9)</span><strong style="color:#ffa502;" id="poolBig">₹0</strong></div>
-      <div class="pool-box"><span>Small (0-4)</span><strong style="color:#1e90ff;" id="poolSmall">₹0</strong></div>
+      <div class="pool-box"><span>Small (0-4)</span><strong style="color:#2979ff;" id="poolSmall">₹0</strong></div>
       <div class="pool-box"><span>Total Pot</span><strong style="color:var(--gold);" id="poolTotal">₹0</strong></div>
     </div>
 
-    <div class="target-badge">
-      <span>Scheduled Next Result:</span>
-      <strong id="targetPreview">AUTO (System Calculated)</strong>
+    <!-- MANUAL CONTROLLER INTERFACE -->
+    <div id="manualControlsArea" style="opacity: 0.45; pointer-events: none; transition: opacity 0.2s;">
+      
+      <div class="control-step-box">
+        <div class="step-label">
+          <span>Step 1: Quick Size Override</span>
+          <span id="labelSelectedSize" style="color:#fff;">None</span>
+        </div>
+        <div class="bs-grid">
+          <div class="bs-btn big" id="btnBig" onclick="selectSize('Big')">BIG (5, 6, 7, 8, 9)</div>
+          <div class="bs-btn small" id="btnSmall" onclick="selectSize('Small')">SMALL (0, 1, 2, 3, 4)</div>
+        </div>
+      </div>
+
+      <div class="control-step-box">
+        <div class="step-label">
+          <span>Step 2: Quick Color Override</span>
+          <span id="labelSelectedColor" style="color:#fff;">None</span>
+        </div>
+        <div class="color-grid">
+          <div class="c-pick-btn green" id="btnColGreen" onclick="selectColor('Green')">GREEN</div>
+          <div class="c-pick-btn violet" id="btnColViolet" onclick="selectColor('Violet')">VIOLET</div>
+          <div class="c-pick-btn red" id="btnColRed" onclick="selectColor('Red')">RED</div>
+        </div>
+      </div>
+
+      <div class="control-step-box">
+        <div class="step-label">
+          <span>Step 3: Or Exact Winning Number</span>
+          <span id="labelSelectedNum" style="color:var(--gold);">None</span>
+        </div>
+        <div class="num-grid">
+          <div class="num-btn c-violet" onclick="selectNumber(0, this)">0</div>
+          <div class="num-btn c-green" onclick="selectNumber(1, this)">1</div>
+          <div class="num-btn c-red" onclick="selectNumber(2, this)">2</div>
+          <div class="num-btn c-green" onclick="selectNumber(3, this)">3</div>
+          <div class="num-btn c-red" onclick="selectNumber(4, this)">4</div>
+          <div class="num-btn c-violet" onclick="selectNumber(5, this)">5</div>
+          <div class="num-btn c-red" onclick="selectNumber(6, this)">6</div>
+          <div class="num-btn c-green" onclick="selectNumber(7, this)">7</div>
+          <div class="num-btn c-red" onclick="selectNumber(8, this)">8</div>
+          <div class="num-btn c-green" onclick="selectNumber(9, this)">9</div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="decision-title">1. Quick Size Override</div>
-    <div class="bs-grid">
-      <div class="bs-btn big" id="btnBig" onclick="selectSize('Big')">BIG (5, 6, 7, 8, 9)</div>
-      <div class="bs-btn small" id="btnSmall" onclick="selectSize('Small')">SMALL (0, 1, 2, 3, 4)</div>
-    </div>
-
-    <div class="decision-title">2. Quick Color Override</div>
-    <div class="color-grid">
-      <div class="c-pick-btn green" id="btnColGreen" onclick="selectColor('Green')">GREEN</div>
-      <div class="c-pick-btn violet" id="btnColViolet" onclick="selectColor('Violet')">VIOLET</div>
-      <div class="c-pick-btn red" id="btnColRed" onclick="selectColor('Red')">RED</div>
-    </div>
-
-    <div class="decision-title">3. Or Select Exact Winning Number</div>
-    <div class="num-grid">
-      <div class="num-btn c-violet" onclick="selectNumber(0, this)">0</div>
-      <div class="num-btn c-green" onclick="selectNumber(1, this)">1</div>
-      <div class="num-btn c-red" onclick="selectNumber(2, this)">2</div>
-      <div class="num-btn c-green" onclick="selectNumber(3, this)">3</div>
-      <div class="num-btn c-red" onclick="selectNumber(4, this)">4</div>
-      <div class="num-btn c-violet" onclick="selectNumber(5, this)">5</div>
-      <div class="num-btn c-red" onclick="selectNumber(6, this)">6</div>
-      <div class="num-btn c-green" onclick="selectNumber(7, this)">7</div>
-      <div class="num-btn c-red" onclick="selectNumber(8, this)">8</div>
-      <div class="num-btn c-green" onclick="selectNumber(9, this)">9</div>
-    </div>
-
-    <button class="btn-sm btn-gold" style="width:100%; height:46px; font-size:14px; font-weight:900;" onclick="saveWinGoControl()">
-      LOCK &amp; FORCE NEXT RESULT NOW
+    <button class="btn-submit btn-gold" onclick="saveWinGoControl()">
+      <span>💾 LOCK &amp; SAVE DECISION TO FIREBASE</span>
     </button>
   </div>
 </section>
@@ -245,16 +316,15 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 <section id="depositTab" class="section">
   <div class="card">
     <div class="card-head">
-      <h3>Incoming Deposits (All Gateways &amp; UTRs)</h3>
+      <h3>Deposit Verification Hub</h3>
       <button class="btn-sm btn-gold" onclick="loadDeposits()">Refresh</button>
     </div>
 
-    <!-- Filter Pills -->
     <div class="sub-filter-bar">
-      <div class="sub-pill active" onclick="filterDepositView('review', this)">Pending &amp; Review</div>
-      <div class="sub-pill" onclick="filterDepositView('success', this)">Success / Completed</div>
-      <div class="sub-pill" onclick="filterDepositView('failed', this)">Rejected</div>
-      <div class="sub-pill" onclick="filterDepositView('all', this)">All Records</div>
+      <div class="sub-pill active" onclick="filterDepositView('review', this)">Pending / In Review</div>
+      <div class="sub-pill" onclick="filterDepositView('success', this)">Success / Approved</div>
+      <div class="sub-pill" onclick="filterDepositView('failed', this)">Declined</div>
+      <div class="sub-pill" onclick="filterDepositView('all', this)">All History</div>
     </div>
 
     <div id="depositListContainer">
@@ -271,7 +341,7 @@ input, select, textarea { outline:none; border:none; background:transparent; col
       <button class="btn-sm btn-gold" onclick="loadWithdrawals()">Refresh</button>
     </div>
     <div id="withdrawListContainer">
-      <div style="text-align:center; padding:30px; color:#666;">Loading withdrawals...</div>
+      <div style="text-align:center; padding:30px; color:#666;">Loading requests...</div>
     </div>
   </div>
 </section>
@@ -280,11 +350,11 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 <section id="usersTab" class="section">
   <div class="card">
     <div class="card-head">
-      <h3>User Database &amp; Freeze Control</h3>
+      <h3>User Database &amp; Instant Freeze</h3>
       <button class="btn-sm btn-gold" onclick="loadUsers()">Refresh</button>
     </div>
     <div class="input-row">
-      <input type="text" id="userSearchInput" placeholder="Search by Phone, UID or Invite Code..." oninput="filterUsers()">
+      <input type="text" id="userSearchInput" placeholder="Search phone, UID or invitation code..." oninput="filterUsers()">
     </div>
     <div id="usersListContainer">
       <div style="text-align:center; padding:30px; color:#666;">Loading users...</div>
@@ -296,15 +366,15 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 <section id="giftTab" class="section">
   <div class="card">
     <div class="card-head">
-      <h3>Generate 32-Char Gift Code</h3>
+      <h3>Generate Promo Gift Code</h3>
     </div>
     <div class="input-row">
-      <input type="number" id="giftAmount" placeholder="Reward Amount (₹)">
+      <input type="number" id="giftAmount" placeholder="Gift Value Per User (₹)">
     </div>
     <div class="input-row">
-      <input type="number" id="giftMaxUsers" placeholder="Max Claim Users Limit (e.g. 10)">
+      <input type="number" id="giftMaxUsers" placeholder="Max Claim Users Limit (e.g. 50)">
     </div>
-    <button class="btn-sm btn-gold" style="width:100%; height:42px;" onclick="generateGiftCode()">GENERATE &amp; ACTIVATE CODE</button>
+    <button class="btn-submit btn-gold" onclick="generateGiftCode()">GENERATE &amp; PUBLISH CODE</button>
   </div>
 
   <div class="card">
@@ -318,14 +388,14 @@ input, select, textarea { outline:none; border:none; background:transparent; col
 <!-- 6. BROADCAST SYSTEM -->
 <section id="notifyTab" class="section">
   <div class="card">
-    <div class="card-head"><h3>Send Global Notification</h3></div>
+    <div class="card-head"><h3>Send Push Notification</h3></div>
     <div class="input-row">
       <input type="text" id="broadcastTitle" placeholder="Notification Title">
     </div>
     <div class="input-row" style="height:90px;">
-      <textarea id="broadcastMsg" style="width:100%; height:100%; background:transparent; border:none; outline:none; color:#fff; font-size:13px;" placeholder="Type broadcast message here..."></textarea>
+      <textarea id="broadcastMsg" style="width:100%; height:100%; background:transparent; border:none; outline:none; color:#fff; font-size:13px;" placeholder="Message to be sent to all users..."></textarea>
     </div>
-    <button class="btn-sm btn-gold" style="width:100%; height:42px;" onclick="sendBroadcast()">SEND NOTIFICATION TO ALL USERS</button>
+    <button class="btn-submit btn-gold" onclick="sendBroadcast()">BROADCAST TO ALL USERS</button>
   </div>
 </section>
 
@@ -349,8 +419,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// State Management
-let currentMode = 'auto';
+// State Variables
+let currentMode = 'auto'; // 'auto' | 'manual'
 let selectedSize = null;
 let selectedColor = null;
 let selectedNum = null;
@@ -368,7 +438,7 @@ let currentDepositFilter = 'review';
 const toastEl = document.getElementById('toast');
 window.toast = (m) => {
   toastEl.textContent = m; toastEl.style.display = 'block';
-  setTimeout(() => toastEl.style.display = 'none', 2000);
+  setTimeout(() => toastEl.style.display = 'none', 2400);
 };
 
 window.switchTab = (id, el) => {
@@ -415,7 +485,7 @@ function listenToBets() {
   const q = query(
     collection(db, currentBetsCol), 
     where('status', '==', 'pending'),
-    limit(150)
+    limit(200)
   );
 
   betsUnsubscribe = onSnapshot(q, (snap) => {
@@ -450,45 +520,64 @@ function listenToBets() {
 }
 listenToBets();
 
+// Mode Switch Handler (Auto vs Manual)
 window.setMode = (m) => {
   currentMode = m;
-  if(m === 'auto') {
+  const banner = document.getElementById('modeBanner');
+  const bannerStatusPill = document.getElementById('bannerStatusPill');
+  const bannerDesc = document.getElementById('bannerDesc');
+  const manualControlsArea = document.getElementById('manualControlsArea');
+
+  if (m === 'auto') {
     document.getElementById('autoModeBtn').className = 'mode-btn active-auto';
     document.getElementById('manualModeBtn').className = 'mode-btn';
-    selectedNum = null;
-    selectedSize = null;
-    selectedColor = null;
+
+    banner.className = 'mode-status-banner is-auto';
+    bannerStatusPill.className = 'status-pill auto';
+    bannerStatusPill.innerText = 'AUTO ACTIVE';
+    bannerDesc.innerHTML = 'System is calculating automatically. The outcome with the <strong>lowest payout / lowest total bet</strong> will win this round to keep maximum profit.';
+    
+    manualControlsArea.style.opacity = '0.4';
+    manualControlsArea.style.pointerEvents = 'none';
+
     clearSelections();
-    document.getElementById('targetPreview').innerText = "AUTO (System Calculated)";
   } else {
     document.getElementById('manualModeBtn').className = 'mode-btn active-manual';
     document.getElementById('autoModeBtn').className = 'mode-btn';
-    updatePreview();
+
+    banner.className = 'mode-status-banner is-manual';
+    bannerStatusPill.className = 'status-pill manual';
+    bannerStatusPill.innerText = 'MANUAL OVERRIDE';
+    
+    manualControlsArea.style.opacity = '1';
+    manualControlsArea.style.pointerEvents = 'auto';
+
+    updateManualSummaryUI();
   }
 };
 
 window.selectSize = (size) => {
-  setMode('manual');
+  if (currentMode !== 'manual') setMode('manual');
   selectedSize = size;
   selectedNum = null;
   document.querySelectorAll('.bs-btn').forEach(b => b.classList.remove('selected'));
   document.getElementById(`btn${size}`).classList.add('selected');
   document.querySelectorAll('.num-btn').forEach(b => b.classList.remove('selected'));
-  updatePreview();
+  updateManualSummaryUI();
 };
 
 window.selectColor = (color) => {
-  setMode('manual');
+  if (currentMode !== 'manual') setMode('manual');
   selectedColor = color;
   selectedNum = null;
   document.querySelectorAll('.c-pick-btn').forEach(b => b.classList.remove('selected'));
   document.getElementById(`btnCol${color}`).classList.add('selected');
   document.querySelectorAll('.num-btn').forEach(b => b.classList.remove('selected'));
-  updatePreview();
+  updateManualSummaryUI();
 };
 
 window.selectNumber = (num, el) => {
-  setMode('manual');
+  if (currentMode !== 'manual') setMode('manual');
   selectedNum = num;
   selectedSize = num >= 5 ? 'Big' : 'Small';
   selectedColor = (num === 0 || num === 5) ? 'Violet' : (num % 2 === 0 ? 'Red' : 'Green');
@@ -498,29 +587,38 @@ window.selectNumber = (num, el) => {
   document.getElementById(`btn${selectedSize}`).classList.add('selected');
   document.getElementById(`btnCol${selectedColor}`).classList.add('selected');
 
-  updatePreview();
+  updateManualSummaryUI();
 };
 
 function clearSelections() {
+  selectedNum = null;
+  selectedSize = null;
+  selectedColor = null;
   document.querySelectorAll('.bs-btn').forEach(b => b.classList.remove('selected'));
   document.querySelectorAll('.c-pick-btn').forEach(b => b.classList.remove('selected'));
   document.querySelectorAll('.num-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('labelSelectedSize').innerText = 'None';
+  document.getElementById('labelSelectedColor').innerText = 'None';
+  document.getElementById('labelSelectedNum').innerText = 'None';
 }
 
-function updatePreview() {
-  let preview = '';
-  if(selectedNum !== null) {
-    preview = `Number ${selectedNum} (${selectedSize}, ${selectedColor})`;
-  } else if(selectedSize && selectedColor) {
-    preview = `${selectedSize} + ${selectedColor}`;
-  } else if(selectedSize) {
-    preview = `Size: ${selectedSize}`;
-  } else if(selectedColor) {
-    preview = `Color: ${selectedColor}`;
+function updateManualSummaryUI() {
+  document.getElementById('labelSelectedSize').innerText = selectedSize || 'None';
+  document.getElementById('labelSelectedColor').innerText = selectedColor || 'None';
+  document.getElementById('labelSelectedNum').innerText = selectedNum !== null ? selectedNum : 'None';
+
+  const bannerDesc = document.getElementById('bannerDesc');
+  if (selectedNum !== null) {
+    bannerDesc.innerHTML = `Manual Override: Exact Number <strong>${selectedNum}</strong> (${selectedSize}, ${selectedColor}) will be declared the winner for round <strong>${currentPeriod}</strong>.`;
+  } else if (selectedSize && selectedColor) {
+    bannerDesc.innerHTML = `Manual Override: Selected <strong>${selectedSize}</strong> and Color <strong>${selectedColor}</strong>. Winning number will match these attributes.`;
+  } else if (selectedSize) {
+    bannerDesc.innerHTML = `Manual Override: Size locked to <strong>${selectedSize}</strong>.`;
+  } else if (selectedColor) {
+    bannerDesc.innerHTML = `Manual Override: Color locked to <strong>${selectedColor}</strong>.`;
   } else {
-    preview = "MANUAL (Select an Option)";
+    bannerDesc.innerHTML = `Manual Mode active. Please select Size, Color, or an Exact Number below.`;
   }
-  document.getElementById('targetPreview').innerText = preview;
 }
 
 window.saveWinGoControl = async () => {
@@ -543,7 +641,7 @@ window.saveWinGoControl = async () => {
 };
 
 // ========================================================
-// 2. FIXED DEPOSIT ENGINE (DISPLAYS CHANNEL, UTR, PHONE & TIME)
+// 2. FIXED DEPOSIT ENGINE
 // ========================================================
 window.filterDepositView = (filterType, el) => {
   document.querySelectorAll('.sub-pill').forEach(p => p.classList.remove('active'));
@@ -557,7 +655,6 @@ window.loadDeposits = async () => {
   container.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">Fetching deposits from database...</div>`;
 
   try {
-    // Read up to 80 recent deposits without restricting to only 'pending'
     const q = query(collection(db, 'deposits'), limit(80));
     const snap = await getDocs(q);
 
@@ -577,7 +674,6 @@ window.loadDeposits = async () => {
       });
     });
 
-    // Sort by newest created first
     allDepositsMaster.sort((a,b) => {
       const tA = a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
       const tB = b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
@@ -650,7 +746,7 @@ function renderDepositsUI() {
           <span class="badge-status ${badgeClass}">${badgeText}</span>
         </div>
 
-        <div class="u-row" style="margin-top:6px; color:#8f929b;">
+        <div class="u-row" style="margin-top:6px; color:var(--text-muted);">
           <span>UID: ${uid.slice(0, 10)} (${phone})</span>
           <span>Time: ${dateStr}</span>
         </div>
@@ -672,14 +768,12 @@ window.processDeposit = async (docId, userId, amount, action) => {
   if (!confirm(`Are you sure you want to ${action.toUpperCase()} this deposit of ₹${amount}?`)) return;
   try {
     if (action === 'approved') {
-      // 1. Credit balance & unlock games in User record
       await updateDoc(doc(db, 'users', userId), {
         balance: increment(amount),
         totalRecharge: increment(amount),
         firstDepositDone: true
       });
 
-      // 2. Mark deposit success
       await updateDoc(doc(db, 'deposits', docId), {
         status: 'success',
         approvedAt: serverTimestamp(),
@@ -849,7 +943,7 @@ window.toggleUserFreeze = async (uid, shouldFreeze) => {
   try {
     await updateDoc(doc(db, 'users', uid), {
       isFrozen: shouldFreeze,
-      frozenReason: shouldFreeze ? "Wrong / Illegal Betting Violation" : null,
+      frozenReason: shouldFreeze ? "Manual Admin Freeze" : null,
       frozenAt: shouldFreeze ? serverTimestamp() : null
     });
     toast(`User account successfully ${shouldFreeze ? 'FROZEN' : 'UNFROZEN'}!`);
