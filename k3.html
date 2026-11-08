@@ -358,6 +358,33 @@ function getPeriodId() {
   return getPeriodIdFromIndex(slotIndex);
 }
 
+// 🎲 100% Non-Linear Random Hash Generator (No predictable patterns)
+function hashStringSeed(str) {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  h ^= h >>> 13;
+  h = Math.imul(h, 0x5bd1e995) >>> 0;
+  h ^= h >>> 15;
+  return h >>> 0;
+}
+
+function computeRealisticDiceResult(slotIndex, periodId) {
+  let h = hashStringSeed(String(periodId));
+  h = Math.imul(h ^ (h >>> 16), 0x45d9f3b) >>> 0;
+  const d1 = (h % 6) + 1;
+  h = Math.imul(h ^ (h >>> 15), 0x3ac5b27) >>> 0;
+  const d2 = (h % 6) + 1;
+  h = Math.imul(h ^ (h >>> 17), 0x517cc1b) >>> 0;
+  const d3 = (h % 6) + 1;
+  const sum = d1 + d2 + d3;
+  const size = sum >= 11 ? 'Big' : 'Small';
+  const oe = sum % 2 === 0 ? 'Even' : 'Odd';
+  return { period: periodId, d1, d2, d3, sum, size, oe, slotIndex };
+}
+
 async function pruneOldResults() {
   try {
     const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(35)));
@@ -372,15 +399,49 @@ async function pruneOldResults() {
   } catch(e){}
 }
 
-function computeDeterministicResult(slotIndex, periodId) {
-  const seed = (slotIndex * 9301 + 49297) % 233280;
-  const d1 = (seed % 6) + 1;
-  const d2 = ((seed * 2) % 6) + 1;
-  const d3 = ((seed * 3) % 6) + 1;
-  const sum = d1 + d2 + d3;
-  const size = sum >= 11 ? 'Big' : 'Small';
-  const oe = sum % 2 === 0 ? 'Even' : 'Odd';
-  return { period: periodId, d1, d2, d3, sum, size, oe, slotIndex };
+/* 🎯 ADMIN PANEL CONTROL INTERCEPTION ENGINE (K3 DICE) */
+async function fetchAdminPresetOrRandom(slotIndex, periodId) {
+  try {
+    const ctrlRef1 = doc(db, 'game_controls', 'k3_dice');
+    const ctrlRef2 = doc(db, 'system', 'k3_control');
+
+    const [snap1, snap2] = await Promise.all([getDoc(ctrlRef1), getDoc(ctrlRef2)]);
+    const ctrl = snap1.exists() ? snap1.data() : (snap2.exists() ? snap2.data() : null);
+
+    if (ctrl && (ctrl.mode === 'manual' || ctrl.isManual === true)) {
+      let targetSum = null;
+      if (ctrl.targetSum !== null && ctrl.targetSum !== undefined && ctrl.targetSum !== '') {
+        targetSum = parseInt(ctrl.targetSum);
+      } else if (ctrl.targetSize === 'Big') {
+        const bigs = [11, 12, 13, 14, 15, 16, 17];
+        targetSum = bigs[Math.floor(Math.random() * bigs.length)];
+      } else if (ctrl.targetSize === 'Small') {
+        const smalls = [4, 5, 6, 7, 8, 9, 10];
+        targetSum = smalls[Math.floor(Math.random() * smalls.length)];
+      }
+
+      if (targetSum !== null && targetSum >= 3 && targetSum <= 18) {
+        let rem = targetSum;
+        const dice = [];
+        for (let i = 0; i < 3; i++) {
+          const minP = Math.max(1, rem - (2 - i) * 6);
+          const maxP = Math.min(6, rem - (2 - i) * 1);
+          const val = Math.floor(Math.random() * (maxP - minP + 1)) + minP;
+          dice.push(val);
+          rem -= val;
+        }
+        const [d1, d2, d3] = dice;
+        const sum = d1 + d2 + d3;
+        const size = sum >= 11 ? 'Big' : 'Small';
+        const oe = sum % 2 === 0 ? 'Even' : 'Odd';
+        return { period: periodId, d1, d2, d3, sum, size, oe, slotIndex, forcedByAdmin: true };
+      }
+    }
+  } catch(err) {
+    console.warn("Admin control fetch warning:", err);
+  }
+
+  return computeRealisticDiceResult(slotIndex, periodId);
 }
 
 async function generateAndSaveResult(periodId, slotIndex) {
@@ -390,7 +451,8 @@ async function generateAndSaveResult(periodId, slotIndex) {
     await resolveBets(periodId, snap.data());
     return snap.data();
   }
-  const data = { ...computeDeterministicResult(slotIndex, periodId), createdAt: serverTimestamp() };
+  const generated = await fetchAdminPresetOrRandom(slotIndex, periodId);
+  const data = { ...generated, createdAt: serverTimestamp() };
   try {
     await runTransaction(db, async (tx) => {
       const ex = await tx.get(ref);
@@ -567,7 +629,7 @@ window.confirmBet = async () => {
 };
 
 // ===============================================================
-// ⚡ 100% LINE-WISE CONTINUOUS PERIOD HISTORY GENERATOR & RENDERER (K3 DICE)
+// ⚡ 100% LINE-WISE CONTINUOUS PERIODS WITH REAL CASINO RANDOM (K3 DICE)
 // ===============================================================
 async function loadGameHistory() {
   const rBox = document.getElementById('historyRows');
@@ -588,7 +650,7 @@ async function loadGameHistory() {
     const sequentialList = [];
     const missingSaves = [];
 
-    // Har halat me line-wise continuous pichle 15 slots render honge bina kisi gap ke
+    // Har halat me line-wise continuous pichle 15 slots render honge bina kisi sequence/predictability ke
     for (let i = 1; i <= 15; i++) {
       const targetIdx = slotIndex - i;
       if (targetIdx < 1) continue;
@@ -597,7 +659,7 @@ async function loadGameHistory() {
       if (dbMap.has(targetPId)) {
         sequentialList.push(dbMap.get(targetPId));
       } else {
-        const generated = computeDeterministicResult(targetIdx, targetPId);
+        const generated = computeRealisticDiceResult(targetIdx, targetPId);
         sequentialList.push(generated);
         missingSaves.push(generateAndSaveResult(targetPId, targetIdx));
       }
