@@ -275,7 +275,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
   addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
-  where, runTransaction
+  where, runTransaction, orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -366,6 +366,15 @@ function generateTrxHash(slot) {
   return { hash, lastDigit };
 }
 
+function computeDeterministicResult(slot, periodId) {
+  const { hash, lastDigit } = generateTrxHash(slot);
+  let color = 'violet';
+  if ([1,3,7,9].includes(lastDigit)) color = 'green';
+  else if ([2,4,6,8].includes(lastDigit)) color = 'red';
+  const size = lastDigit >= 5 ? 'big' : 'small';
+  return { period: periodId, hash, number: lastDigit, color, size, slot };
+}
+
 /* 🧹 24h Auto-Cleanup Results */
 async function cleanupOldResults() {
   try {
@@ -383,38 +392,14 @@ async function cleanupOldResults() {
   } catch(e){}
 }
 
-/* Gapless Backfill */
-async function backfillMissingPeriods() {
-  try {
-    const q = query(collection(db, RESULT_COLLECTION), limit(50));
-    const snap = await getDocs(q);
-    const cur = getSlot();
-    let maxSlot = cur - 15;
-    snap.forEach(d => {
-      const p = d.data().period;
-      if (p && p.length >= 12) {
-        const slotDay = parseInt(p.slice(-4));
-        const dt = Date.UTC(parseInt(p.slice(0,4)), parseInt(p.slice(4,6))-1, parseInt(p.slice(6,8)));
-        const s = Math.floor((dt + slotDay * SLOT_MS - EPOCH) / SLOT_MS);
-        if (s > maxSlot) maxSlot = s;
-      }
-    });
-    for (let s = maxSlot + 1; s < cur; s++) {
-      await saveResultForSlot(s, getPeriodId(s));
-    }
-  } catch(e){}
-}
-
 async function saveResultForSlot(slot, periodId) {
   const ref = doc(db, RESULT_COLLECTION, periodId);
   const snap = await getDoc(ref);
-  if (snap.exists()) return;
-  const { hash, lastDigit } = generateTrxHash(slot);
-  let color = 'violet';
-  if ([1,3,7,9].includes(lastDigit)) color = 'green';
-  else if ([2,4,6,8].includes(lastDigit)) color = 'red';
-  const size = lastDigit >= 5 ? 'big' : 'small';
-  const data = { period: periodId, hash, number: lastDigit, color, size, createdAt: serverTimestamp() };
+  if (snap.exists()) {
+    await resolveBets(periodId, snap.data());
+    return snap.data();
+  }
+  const data = { ...computeDeterministicResult(slot, periodId), createdAt: serverTimestamp() };
   try {
     await runTransaction(db, async (tx) => {
       const ex = await tx.get(ref);
@@ -422,6 +407,7 @@ async function saveResultForSlot(slot, periodId) {
     });
   } catch(e){}
   await resolveBets(periodId, data);
+  return data;
 }
 
 async function resolveBets(periodId, resData) {
@@ -490,9 +476,8 @@ onAuthStateChanged(auth, async (user) => {
   }
   initNumGrid();
   await cleanupOldResults();
-  await backfillMissingPeriods();
   startTimer();
-  loadGameHistory();
+  await loadGameHistory();
   loadMyHistory();
 });
 
@@ -613,18 +598,48 @@ function showResultModal(isWin, amt) {
 }
 window.closePopup = () => document.getElementById('resultPopup').classList.remove('show');
 
+// ===============================================================
+// ⚡ 100% LINE-WISE CONTINUOUS PERIOD HISTORY GENERATOR & RENDERER (TRX WIN)
+// ===============================================================
 async function loadGameHistory() {
   const gList = document.getElementById('gameList');
   const recBar = document.getElementById('recentBar');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), limit(30));
-    const snap = await getDocs(q);
-    let arr = [];
-    snap.forEach(d => arr.push(d.data()));
-    arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
+    const curSlot = getSlot();
+    const dbMap = new Map();
+
+    try {
+      const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(15));
+      const snap = await getDocs(q);
+      snap.forEach(d => dbMap.set(d.data().period, d.data()));
+    } catch(err) {
+      const fallbackSnap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(25)));
+      fallbackSnap.forEach(d => dbMap.set(d.data().period, d.data()));
+    }
+
+    const sequentialList = [];
+    const missingSaves = [];
+
+    // Har condition me continuous line-wise pichle 15 slots sequence me render honge
+    for (let i = 1; i <= 15; i++) {
+      const targetSlot = curSlot - i;
+      const targetPId = getPeriodId(targetSlot);
+
+      if (dbMap.has(targetPId)) {
+        sequentialList.push(dbMap.get(targetPId));
+      } else {
+        const generated = computeDeterministicResult(targetSlot, targetPId);
+        sequentialList.push(generated);
+        missingSaves.push(saveResultForSlot(targetSlot, targetPId));
+      }
+    }
+
+    if (missingSaves.length > 0) {
+      Promise.all(missingSaves).catch(() => {});
+    }
 
     // Recent top chips
-    recBar.innerHTML = arr.slice(0, 10).map(d => `
+    recBar.innerHTML = sequentialList.slice(0, 10).map(d => `
       <div class="res-chip">
         <div class="chip-num">${d.number}</div>
         <div class="chip-dot dot-${d.color}"></div>
@@ -632,7 +647,7 @@ async function loadGameHistory() {
     `).join('');
 
     // Table rows
-    gList.innerHTML = arr.slice(0, 10).map(d => `
+    gList.innerHTML = sequentialList.slice(0, 10).map(d => `
       <div class="table-row">
         <div class="col" style="font-family:'Orbitron',sans-serif;font-size:11px;">${d.period.slice(-5)}</div>
         <div class="col" style="font-family:'Roboto Mono',monospace;font-size:10px;color:var(--trx-cyan);">${(d.hash||'').slice(-6)}</div>
@@ -642,10 +657,12 @@ async function loadGameHistory() {
     `).join('');
 
     // Chart trend
-    document.getElementById('chartGrid').innerHTML = arr.slice(0, 30).map(d => `
+    document.getElementById('chartGrid').innerHTML = sequentialList.slice(0, 30).map(d => `
       <div style="aspect-ratio:1;border-radius:50%;background:#202533;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:'Orbitron',sans-serif;font-weight:800;border:1px solid ${d.color==='green'?'var(--green)':(d.color==='red'?'var(--trx-red)':'var(--violet)')};color:#fff;">${d.number}</div>
     `).join('');
-  } catch(e){}
+  } catch(e){
+    console.error("TRX history render error:", e);
+  }
 }
 
 async function loadMyHistory() {
