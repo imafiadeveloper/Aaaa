@@ -227,7 +227,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </header>
 
-<!-- Wallet Balance Section with Withdraw & Deposit -->
 <div class="wallet-card">
   <div class="bal-wrap">₹<span id="balVal">0.00</span> <svg viewBox="0 0 24 24" onclick="location.reload()"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
   <div class="wal-label">Wallet balance</div>
@@ -310,13 +309,11 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- 5-Sec Flip Overlay -->
 <div class="exact-draw-overlay" id="drawOverlay">
   <div class="draw-flip-card"><div class="draw-flip-digit" id="drawD1">0</div></div>
   <div class="draw-flip-card"><div class="draw-flip-digit" id="drawD2">5</div></div>
 </div>
 
-<!-- WIN / LOSE POPUP MODAL -->
 <div class="result-popup" id="resultPopup">
   <div class="res-card-box">
     <div class="res-badge">
@@ -333,7 +330,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="res-ticket">
         <div class="ticket-lbl" id="popTicketLbl">Bonus</div>
         <div class="ticket-amt" id="popTicketAmt">₹3,920.00</div>
-        <div class="ticket-period" id="popTicketPeriod">Period: Win 30sec 20261106100051147</div>
+        <div class="ticket-period" id="popTicketPeriod">Period: Win 30sec 20261108100050695</div>
       </div>
       <div class="res-auto-lbl">
         <span class="auto-radio"></span>
@@ -344,7 +341,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- Bet Modal with Manual Custom Input -->
 <div class="modal-overlay" id="betModal">
   <div class="sheet">
     <div class="sheet-head">
@@ -376,7 +372,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import {
   getFirestore, doc, getDoc, updateDoc, increment, collection,
   addDoc, serverTimestamp, query, limit, getDocs, deleteDoc,
-  where, runTransaction
+  where, runTransaction, orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -409,9 +405,6 @@ window.toast = (msg) => {
   setTimeout(() => t.style.display = 'none', 1800);
 };
 
-// ==========================================
-// 🔊 REAL CASINO AUDIO ENGINE (Web Audio API)
-// ==========================================
 let audioCtx = null;
 function getAudioContext() {
   if (!audioCtx) {
@@ -448,7 +441,7 @@ function playTickSound() {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, ctx.currentTime); // High pitch tick
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
     gain.gain.setValueAtTime(0.12, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
     osc.connect(gain);
@@ -463,7 +456,7 @@ function playWinSound() {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
-    const notes = [523.25, 659.25, 783.99, 1046.50]; // C - E - G - High C Fanfare
+    const notes = [523.25, 659.25, 783.99, 1046.50];
     notes.forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -488,7 +481,7 @@ function playLossSound() {
     const gain = ctx.createGain();
     osc.type = 'sawtooth';
     osc.frequency.setValueAtTime(260, ctx.currentTime);
-    osc.frequency.linearRampToValueAtTime(140, ctx.currentTime + 0.35); // Sad slide
+    osc.frequency.linearRampToValueAtTime(140, ctx.currentTime + 0.35);
     gain.gain.setValueAtTime(0.18, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
     osc.connect(gain);
@@ -498,10 +491,8 @@ function playLossSound() {
   } catch(e){}
 }
 
-/* User interaction to unlock Web Audio */
 document.addEventListener('click', () => { getAudioContext(); }, { once: true });
 
-/* IST Timezone (UTC + 5:30) Calculation */
 function getISTDateComponents() {
   const now = new Date();
   const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -526,29 +517,18 @@ function getPeriodId() {
   return getPeriodIdFromIndex(slotIndex);
 }
 
-// Auto prune: keeps latest 15 records
-async function pruneOldResults() {
-  try {
-    const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(35)));
-    if (snap.size > 15) {
-      let docs = [];
-      snap.forEach(d => docs.push(d));
-      docs.sort((a,b) => (b.data().period || '').localeCompare(a.data().period || ''));
-      const deletes = [];
-      for (let i = 15; i < docs.length; i++) {
-        deletes.push(deleteDoc(docs[i].ref));
-      }
-      await Promise.all(deletes);
-    }
-  } catch(e){}
+function calculateDeterministicResult(slotIndex, periodId) {
+  const seed = (slotIndex * 9301 + 49297) % 233280;
+  const num = Math.abs(seed) % 10;
+  let color = 'violet';
+  if ([1, 3, 7, 9].includes(num)) color = 'green';
+  else if ([2, 4, 6, 8].includes(num)) color = 'red';
+  const size = num >= 5 ? 'big' : 'small';
+  return { period: periodId, number: num, color, size, slotIndex };
 }
 
-// ==========================================================
-// 🎯 ADMIN PANEL CONTROL INTERCEPTION ENGINE (100% CONTROL)
-// ==========================================================
 async function fetchAdminPresetOrDeterministic(slotIndex, periodId) {
   try {
-    // 1. Check primary admin doc
     const ctrlRef1 = doc(db, 'game_controls', 'wingo_30s');
     const ctrlRef2 = doc(db, 'system', 'wingo_30s_control');
 
@@ -557,21 +537,15 @@ async function fetchAdminPresetOrDeterministic(slotIndex, periodId) {
 
     if (ctrl && ctrl.mode === 'manual') {
       let forcedNum = null;
-
-      // Priority A: Exact Number Selected
       if (ctrl.targetNumber !== null && ctrl.targetNumber !== undefined && ctrl.targetNumber !== '') {
         forcedNum = parseInt(ctrl.targetNumber);
-      }
-      // Priority B: Big / Small Selected
-      else if (ctrl.targetSize === 'Big') {
+      } else if (ctrl.targetSize === 'Big') {
         const bigs = [5, 6, 7, 8, 9];
         forcedNum = bigs[Math.floor(Math.random() * bigs.length)];
       } else if (ctrl.targetSize === 'Small') {
         const smalls = [0, 1, 2, 3, 4];
         forcedNum = smalls[Math.floor(Math.random() * smalls.length)];
-      }
-      // Priority C: Color Selected
-      else if (ctrl.targetColor === 'Green') {
+      } else if (ctrl.targetColor === 'Green') {
         const greens = [1, 3, 7, 9];
         forcedNum = greens[Math.floor(Math.random() * greens.length)];
       } else if (ctrl.targetColor === 'Red') {
@@ -590,18 +564,9 @@ async function fetchAdminPresetOrDeterministic(slotIndex, periodId) {
         return { period: periodId, number: forcedNum, color, size, slotIndex, forcedByAdmin: true };
       }
     }
-  } catch(err) {
-    console.warn("Admin control fetch warning:", err);
-  }
+  } catch(err){}
 
-  // Fallback: Deterministic lowest-pool algorithm
-  const seed = (slotIndex * 9301 + 49297) % 233280;
-  const num = Math.abs(seed) % 10;
-  let color = 'violet';
-  if ([1, 3, 7, 9].includes(num)) color = 'green';
-  else if ([2, 4, 6, 8].includes(num)) color = 'red';
-  const size = num >= 5 ? 'big' : 'small';
-  return { period: periodId, number: num, color, size, slotIndex };
+  return calculateDeterministicResult(slotIndex, periodId);
 }
 
 async function generateAndSaveResult(periodId, slotIndex) {
@@ -609,7 +574,7 @@ async function generateAndSaveResult(periodId, slotIndex) {
   const snap = await getDoc(ref);
   if (snap.exists()) {
     await resolveBets(periodId, snap.data());
-    return;
+    return snap.data();
   }
 
   const generated = await fetchAdminPresetOrDeterministic(slotIndex, periodId);
@@ -623,28 +588,7 @@ async function generateAndSaveResult(periodId, slotIndex) {
   } catch(e){}
 
   await resolveBets(periodId, data);
-  pruneOldResults();
-}
-
-async function backfillConsecutiveSlots() {
-  try {
-    const { slotIndex } = getISTDateComponents();
-    const snap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(15)));
-    let maxKnownIndex = slotIndex - 10;
-
-    snap.forEach(d => {
-      const p = d.data().period;
-      if (p && p.length >= 17) {
-        const idx = parseInt(p.slice(-5)) - 50000;
-        if (!isNaN(idx) && idx > maxKnownIndex) maxKnownIndex = idx;
-      }
-    });
-
-    for (let s = maxKnownIndex + 1; s < slotIndex; s++) {
-      const pId = getPeriodIdFromIndex(s);
-      await generateAndSaveResult(pId, s);
-    }
-  } catch(e){}
+  return data;
 }
 
 async function resolveBets(periodId, resData) {
@@ -679,7 +623,7 @@ async function resolveBets(periodId, resData) {
       let winAmt = 0;
       if (won) {
         const gross = b.amount * multi;
-        winAmt = gross - (gross * 0.15); // 15% platform commission
+        winAmt = gross - (gross * 0.15);
         winTotal += winAmt;
       } else {
         lostTotal += b.amount;
@@ -692,17 +636,16 @@ async function resolveBets(periodId, resData) {
       await updateDoc(doc(db, 'users', currentUser.uid), { balance: increment(winTotal) });
       userBalance += winTotal;
       document.getElementById('balVal').textContent = userBalance.toFixed(2);
-      playWinSound(); // 🏆 Play Win Fanfare
+      playWinSound();
       showPopup(true, winTotal, periodId, resData);
     } else if (lostTotal > 0) {
-      playLossSound(); // 💔 Play Loss Tone
+      playLossSound();
       showPopup(false, lostTotal, periodId, resData);
     }
     loadMyHistory();
   } catch(e){}
 }
 
-/* ==================== WIN / LOSE POPUP LOGIC ==================== */
 function showPopup(isWin, amount, periodId, resData) {
   const pop = document.getElementById('resultPopup');
   document.getElementById('popTitle').textContent = isWin ? 'Congratulations' : 'Better Luck Next Time';
@@ -744,9 +687,8 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('balVal').textContent = userBalance.toFixed(2);
   }
   initBalls();
-  await backfillConsecutiveSlots();
   startTimer();
-  loadGameHistory();
+  await loadGameHistory();
 });
 
 function initBalls() {
@@ -795,7 +737,6 @@ function startTimer() {
     const overlay = document.getElementById('drawOverlay');
     const bBoard = document.getElementById('betBoard');
 
-    // 5-Sec Countdown State & Beep
     if (secLeft <= 5) {
       isBettingClosed = true;
       bBoard.style.opacity = '0.4';
@@ -805,7 +746,6 @@ function startTimer() {
       document.getElementById('drawD1').textContent = '0';
       document.getElementById('drawD2').textContent = secLeft;
 
-      // Play count down tick every second in the last 5 seconds
       if (Math.floor(now % 1000) < 260) {
         playTickSound();
       }
@@ -818,7 +758,6 @@ function startTimer() {
   }, 250);
 }
 
-/* Modal Open & Manual Bet Handlers */
 window.openBet = (choice, type) => {
   if (isBettingClosed) return toast('Betting closed for this round');
   selectedChoice = choice; selectedType = type;
@@ -893,33 +832,66 @@ window.confirmBet = async () => {
   finally { btn.disabled = false; }
 };
 
+// ===============================================================
+// ⚡ 100% LINE-WISE CONTINUOUS PERIOD HISTORY GENERATOR & RENDERER
+// ===============================================================
 async function loadGameHistory() {
   const rBox = document.getElementById('historyRows');
   const topBalls = document.getElementById('topPrevBalls');
   try {
-    const q = query(collection(db, RESULT_COLLECTION), limit(25));
-    const snap = await getDocs(q);
-    let arr = [];
-    snap.forEach(d => arr.push(d.data()));
-    arr.sort((a,b) => (b.period||'').localeCompare(a.period||''));
+    const { slotIndex } = getISTDateComponents();
+    const dbMap = new Map();
 
-    topBalls.innerHTML = arr.slice(0, 5).map(d => `
+    try {
+      const q = query(collection(db, RESULT_COLLECTION), orderBy('period', 'desc'), limit(15));
+      const snap = await getDocs(q);
+      snap.forEach(d => dbMap.set(d.data().period, d.data()));
+    } catch(err) {
+      const fallbackSnap = await getDocs(query(collection(db, RESULT_COLLECTION), limit(25)));
+      fallbackSnap.forEach(d => dbMap.set(d.data().period, d.data()));
+    }
+
+    const sequentialList = [];
+    const missingSaves = [];
+
+    // Har halat me line-wise continuous pichle 15 slots render honge
+    for (let i = 1; i <= 15; i++) {
+      const targetIdx = slotIndex - i;
+      if (targetIdx < 1) continue;
+      const targetPId = getPeriodIdFromIndex(targetIdx);
+
+      if (dbMap.has(targetPId)) {
+        sequentialList.push(dbMap.get(targetPId));
+      } else {
+        const generated = calculateDeterministicResult(targetIdx, targetPId);
+        sequentialList.push(generated);
+        missingSaves.push(generateAndSaveResult(targetPId, targetIdx));
+      }
+    }
+
+    if (missingSaves.length > 0) {
+      Promise.all(missingSaves).catch(() => {});
+    }
+
+    topBalls.innerHTML = sequentialList.slice(0, 5).map(d => `
       <div class="prev-ball ${d.color}">${d.number}</div>
     `).join('');
 
-    rBox.innerHTML = arr.slice(0, 10).map(d => `
+    rBox.innerHTML = sequentialList.slice(0, 10).map(d => `
       <div class="th-row">
         <div class="col-period">${d.period}</div>
         <div class="col col-num ${d.color}">${d.number}</div>
-        <div class="col">${d.size}</div>
+        <div class="col" style="text-transform:lowercase;">${d.size}</div>
         <div class="col"><span class="col-dot dot-${d.color}"></span></div>
       </div>
     `).join('');
 
-    document.getElementById('chartGrid').innerHTML = arr.slice(0, 30).map(d => `
+    document.getElementById('chartGrid').innerHTML = sequentialList.slice(0, 15).map(d => `
       <div style="aspect-ratio:1;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;border:1px solid ${d.color==='green'?'#00b977':(d.color==='red'?'#f44336':'#9c27b0')};color:#fff;">${d.number}</div>
     `).join('');
-  } catch(e){}
+  } catch(e){
+    console.error("Game history render error:", e);
+  }
 }
 
 async function loadMyHistory() {
