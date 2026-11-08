@@ -111,11 +111,21 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .pay-title{font-size:16px;font-weight:900;color:#fff;}
 .pay-amt{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);margin:6px 0 10px;}
 
+/* QR Image Container */
 .qr-box{
-  background:#fff;padding:10px;border-radius:12px;display:inline-block;
+  background:#fff;padding:8px;border-radius:12px;display:inline-block;
   margin:0 auto 10px;box-shadow:0 4px 14px rgba(0,0,0,0.4);
+  width:170px;height:170px;
 }
-#qrcodeCanvas{display:flex;align-items:center;justify-content:center;}
+.qr-box img{
+  width:100%;height:100%;object-fit:contain;border-radius:6px;
+}
+.qr-timer-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(250,229,159,0.1);border:1px solid rgba(250,229,159,0.25);
+  padding:3px 10px;border-radius:12px;font-size:10px;color:var(--gold);font-weight:800;
+  margin-bottom:10px;
+}
 
 .upi-copy-row{
   background:var(--card-sub);border:1px solid var(--border);border-radius:10px;
@@ -136,7 +146,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 .app-btn:active{transform:scale(0.94);border-color:var(--gold);}
 .app-btn .app-icon{
   width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
-  justify-content:center;font-size:16px;font-weight:900;
+  justify-content:center;font-size:15px;font-weight:900;
 }
 .app-btn .app-name{font-size:10px;color:#d5d8e2;font-weight:700;}
 .app-paytm .app-icon{background:#00b9f5;color:#fff;}
@@ -176,7 +186,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   100% {transform:scale(0.95);box-shadow:0 0 0 0 rgba(255,171,0,0);}
 }
 
-/* Modal Close Cross */
 .modal-close-cross{
   position:absolute;top:14px;right:16px;font-size:16px;color:#8f929b;cursor:pointer;
 }
@@ -215,7 +224,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="nav-right-btn" onclick="location.href='deposit-history.html'">History</div>
 </header>
 
-<!-- Current Balance Card -->
 <div class="balance-card">
   <div class="bc-info">
     <span>Main Game Balance</span>
@@ -224,14 +232,13 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <div class="bc-icon">💰</div>
 </div>
 
-<!-- Select Payment Channel -->
 <div class="section-label">⚡ Payment Channel</div>
 <div class="channels-grid">
   <div class="channel-item active" id="chUpiFast" onclick="selectChannel('UPI Fast QR')">
     <div class="ci-icon">⚡</div>
     <div>
       <div class="ci-name">UPI Fast QR</div>
-      <div class="ci-sub">Scan / 1-Click App</div>
+      <div class="ci-sub">15m Auto-Rotate QR</div>
     </div>
   </div>
   <div class="channel-item" id="chPaytm" onclick="selectChannel('Paytm / PhonePe')">
@@ -243,7 +250,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </div>
 </div>
 
-<!-- Quick Amount Buttons -->
 <div class="section-label">💵 Select Deposit Amount</div>
 <div class="amounts-grid">
   <button class="amt-btn active" onclick="setDepositAmount(100, this)">₹100</button>
@@ -254,7 +260,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   <button class="amt-btn" onclick="setDepositAmount(5000, this)">₹5,000</button>
 </div>
 
-<!-- Custom Input Box -->
 <div class="input-wrap">
   <span>₹</span>
   <input type="number" id="customAmountInput" value="100" min="100" max="50000" oninput="onCustomAmountChange()">
@@ -262,7 +267,6 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
 
 <button class="btn-proceed" onclick="openPaymentFlow()">Proceed to Pay</button>
 
-<!-- Instructions -->
 <div class="inst-card">
   <h4>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
@@ -270,24 +274,29 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
   </h4>
   <ul>
     <li>Minimum deposit is <strong>₹100.00</strong>.</li>
-    <li>Tap any UPI app button below (Paytm, PhonePe, GPay, BHIM) to open the app directly, or scan the QR code.</li>
-    <li>Once payment is complete, return to this tab and paste the <strong>12-digit UPI UTR / Ref No.</strong></li>
-    <li>Our engine verifies and approves deposits within <strong>15 minutes</strong>.</li>
+    <li>Security Engine rotates fresh active payment QRs every <strong>15 minutes</strong>.</li>
+    <li>Tap any UPI app button below (Paytm, PhonePe, GPay, BHIM) to open your installed app directly, or scan the QR code.</li>
+    <li>After completing the payment, paste the exact <strong>12-digit UTR/Ref No.</strong> into the verification box.</li>
   </ul>
 </div>
 
-<!-- ================= STEP 1: PAYMENT QR & UTR SUBMISSION MODAL ================= -->
+<!-- ================= STEP 1: PAYMENT QR & APP INTENT MODAL ================= -->
 <div class="modal-overlay" id="payModal">
   <div class="pay-card">
     <div class="modal-close-cross" onclick="closePayModal()">✕</div>
 
-    <!-- View A: Pay QR, App Launcher & Enter UTR -->
     <div id="viewPayment">
       <div class="pay-title">UPI Fast QR Payment</div>
       <div class="pay-amt" id="modalAmountDisplay">₹100.00</div>
 
+      <div class="qr-timer-pill">
+        <span>🔄 Next QR refresh in:</span>
+        <strong id="qrCycleTime">15:00</strong>
+      </div>
+
+      <!-- Rotated QR Display -->
       <div class="qr-box">
-        <div id="qrcodeCanvas"></div>
+        <img id="rotatedQrImg" src="https://i.ibb.co/Zp7Vkgrb/IMG-20261108-114201.jpg" alt="Deposit QR Code">
       </div>
 
       <div class="upi-copy-row">
@@ -295,8 +304,8 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
         <span class="btn-copy" onclick="copyUpiId()">Copy UPI</span>
       </div>
 
-      <!-- ⚡ Direct App Launcher Row -->
-      <div style="font-size:11px;font-weight:700;color:#8f929b;margin-bottom:6px;text-align:left;">Or pay with your installed app:</div>
+      <!-- App Launcher Intent -->
+      <div style="font-size:11px;font-weight:700;color:#8f929b;margin-bottom:6px;text-align:left;">Or pay directly with installed app:</div>
       <div class="upi-app-grid">
         <div class="app-btn app-paytm" onclick="launchUpiApp('paytm')">
           <div class="app-icon">P</div>
@@ -321,10 +330,10 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       </div>
 
       <button class="btn-confirm-pay" onclick="submitDepositUTR()">Submit UTR &amp; Verify</button>
-      <p style="font-size:10px;color:#8f929b;">After payment completes in app, paste the 12-digit UTR here</p>
+      <p style="font-size:10px;color:#8f929b;">Complete the transaction and paste the 12-digit UTR here</p>
     </div>
 
-    <!-- View B: 15-Minute Waiting & Verification Screen -->
+    <!-- View B: 15-Minute Waiting / Sync Screen -->
     <div class="waiting-screen" id="viewWaiting">
       <div class="pay-title" style="color:var(--gold);">Payment Under Verification</div>
       
@@ -332,7 +341,7 @@ button{border:none;outline:none;cursor:pointer;background:transparent;color:inhe
       <div class="wait-timer" id="waitTimerDisplay">15:00</div>
       
       <p style="font-size:12px;color:#d5d8e2;margin-bottom:6px;font-weight:700;">Please wait while our system verifies your payment</p>
-      <p style="font-size:11px;color:#8f929b;line-height:1.5;">Auto-syncing via banking gateway. Your balance will be credited automatically within 15 minutes.</p>
+      <p style="font-size:11px;color:#8f929b;line-height:1.5;">Auto-syncing via banking gateway. Balance will be updated automatically.</p>
 
       <div style="background:#141416;border-radius:10px;padding:8px 12px;margin:14px 0;font-size:11px;color:#8f929b;">
         Order ID: <strong id="waitOrderId" style="color:#fff;">#--</strong> | UTR: <strong id="waitUtr" style="color:var(--gold);">--</strong>
@@ -377,14 +386,28 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// UPI Receiver ID
-const UPI_RECEIVER = "aman.1930@superyes";
+// 3 Dynamic Rotated QR Channels (Changes every 15 mins)
+const QR_ROTATION_LIST = [
+  {
+    qrUrl: "https://i.ibb.co/Zp7Vkgrb/IMG-20261108-114201.jpg",
+    upiId: "aman.1930@superyes"
+  },
+  {
+    qrUrl: "https://i.ibb.co/Wvz5Kb4z/IMG-20261108-114149.jpg",
+    upiId: "aman.1930@superyes"
+  },
+  {
+    qrUrl: "https://i.ibb.co/Nn9tprL8/IMG-20261108-114126.jpg",
+    upiId: "aman.1930@superyes"
+  }
+];
 
 let currentUser = null;
 let currentAmount = 100;
 let selectedChannel = 'UPI Fast QR';
 let currentDepositDocId = null;
 let timerInterval = null;
+let qrCycleInterval = null;
 let depositListenerUnsubscribe = null;
 
 const toastEl = document.getElementById('toast');
@@ -394,10 +417,44 @@ window.toast = (msg) => {
   setTimeout(() => toastEl.classList.remove('show'), 2200);
 };
 
+// 15-Minute QR Determination Engine
+function getActiveQR() {
+  const now = Date.now();
+  const fifteenMins = 15 * 60 * 1000;
+  const currentSlotIndex = Math.floor(now / fifteenMins);
+  const pickedIndex = currentSlotIndex % QR_ROTATION_LIST.length;
+  const msLeftInSlot = fifteenMins - (now % fifteenMins);
+  return {
+    ...QR_ROTATION_LIST[pickedIndex],
+    secondsLeft: Math.floor(msLeftInSlot / 1000)
+  };
+}
+
+function updateActiveQRView() {
+  const activeData = getActiveQR();
+  const qrImg = document.getElementById('rotatedQrImg');
+  if (qrImg && qrImg.src !== activeData.qrUrl) {
+    qrImg.src = activeData.qrUrl;
+  }
+  const upiLabel = document.getElementById('displayUpiId');
+  if (upiLabel) upiLabel.textContent = activeData.upiId;
+
+  const m = Math.floor(activeData.secondsLeft / 60);
+  const s = activeData.secondsLeft % 60;
+  const timeSpan = document.getElementById('qrCycleTime');
+  if (timeSpan) {
+    timeSpan.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+}
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) return location.replace('index.html');
   currentUser = user;
   loadUserBalance();
+  updateActiveQRView();
+
+  if (qrCycleInterval) clearInterval(qrCycleInterval);
+  qrCycleInterval = setInterval(updateActiveQRView, 1000);
 });
 
 async function loadUserBalance() {
@@ -432,44 +489,40 @@ window.onCustomAmountChange = () => {
 };
 
 window.copyUpiId = () => {
-  navigator.clipboard.writeText(UPI_RECEIVER).then(() => toast('UPI ID Copied!'));
+  const activeData = getActiveQR();
+  navigator.clipboard.writeText(activeData.upiId).then(() => toast('Active UPI ID Copied!'));
 };
 
 function getUpiParams() {
-  return `pa=${encodeURIComponent(UPI_RECEIVER)}&pn=${encodeURIComponent('BDG GAME')}&am=${currentAmount}&cu=INR&tn=${encodeURIComponent('BDGDeposit')}`;
+  const activeData = getActiveQR();
+  return `pa=${encodeURIComponent(activeData.upiId)}&pn=${encodeURIComponent('BDG GAME')}&am=${currentAmount}&cu=INR&tn=${encodeURIComponent('BDGDeposit')}`;
 }
 
-// 📲 Direct Launch Installed UPI Apps
+// 📲 Direct Launch Installed UPI Apps (Paytm, PhonePe, GPay, BHIM)
 window.launchUpiApp = (appName) => {
   const params = getUpiParams();
   let intentUrl = `upi://pay?${params}`;
 
   if (appName === 'paytm') {
-    // Paytm deep-link protocol
     intentUrl = `paytmmp://pay?${params}`;
   } else if (appName === 'phonepe') {
-    // PhonePe deep-link protocol
     intentUrl = `phonepe://pay?${params}`;
   } else if (appName === 'gpay') {
-    // Google Pay / Tez protocol
     intentUrl = `tez://upi/pay?${params}`;
   } else {
-    // Standard system-wide UPI app picker
     intentUrl = `upi://pay?${params}`;
   }
 
   toast(`Opening ${appName.toUpperCase()}...`);
-  // Try launching app intent
   window.location.href = intentUrl;
 
-  // Fallback to generic upi intent if specific schema doesn't trigger
+  // Fallback to standard UPI picker if specific schema does not respond
   setTimeout(() => {
     if (document.hidden) return;
     window.location.href = `upi://pay?${params}`;
   }, 1200);
 };
 
-// Open Payment Modal & Generate Dynamic QR
 window.openPaymentFlow = () => {
   if (currentAmount < 100) return toast('Minimum recharge is ₹100');
 
@@ -478,20 +531,7 @@ window.openPaymentFlow = () => {
   document.getElementById('viewWaiting').classList.remove('show');
   document.getElementById('utrInputField').value = '';
 
-  // Generate Intent UPI Link:
-  const upiIntent = `upi://pay?${getUpiParams()}`;
-  
-  const qrContainer = document.getElementById("qrcodeCanvas");
-  qrContainer.innerHTML = '';
-  new QRCode(qrContainer, {
-    text: upiIntent,
-    width: 150,
-    height: 150,
-    colorDark: "#000000",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.M
-  });
-
+  updateActiveQRView();
   document.getElementById('payModal').classList.add('show');
 };
 
@@ -508,31 +548,29 @@ window.submitDepositUTR = async () => {
 
   const orderId = `DEP${Date.now().toString().slice(-8)}`;
   currentDepositDocId = `dep_${Date.now()}_${currentUser.uid.slice(0, 5)}`;
+  const activeData = getActiveQR();
 
   try {
     toast('Registering transaction...');
 
-    // 1. Create Pending Deposit Doc in Firestore
     await setDoc(doc(db, 'deposits', currentDepositDocId), {
       orderId: orderId,
       userId: currentUser.uid,
       amount: Number(currentAmount),
       utr: utr,
       channel: selectedChannel,
-      status: 'processing', // Auto-Approved app will switch this to 'success'
+      receiverUpi: activeData.upiId,
+      qrSnapshot: activeData.qrUrl,
+      status: 'processing',
       createdAt: serverTimestamp()
     });
 
-    // 2. Switch to 15-Minute Waiting Screen
     document.getElementById('viewPayment').style.display = 'none';
     document.getElementById('viewWaiting').classList.add('show');
     document.getElementById('waitOrderId').textContent = `#${orderId}`;
     document.getElementById('waitUtr').textContent = utr;
 
-    // 3. Start 15 Min (900 seconds) Countdown
     start15MinuteTimer(900);
-
-    // 4. Real-time Listener on this specific Deposit Document
     listenToDepositStatus(currentDepositDocId);
 
   } catch(e) {
@@ -540,7 +578,6 @@ window.submitDepositUTR = async () => {
   }
 };
 
-// ⏱️ 15-Minute Countdown Timer Engine
 function start15MinuteTimer(durationSeconds) {
   if (timerInterval) clearInterval(timerInterval);
   let timeLeft = durationSeconds;
@@ -554,12 +591,10 @@ function start15MinuteTimer(durationSeconds) {
     const seconds = timeLeft % 60;
     timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-    // ❌ TIMER EXPIRED (PAYMENT FAILED / TIMEOUT)
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
       if (depositListenerUnsubscribe) depositListenerUnsubscribe();
 
-      // Mark status failed in Firestore
       try {
         await updateDoc(doc(db, 'deposits', currentDepositDocId), {
           status: 'failed',
@@ -573,7 +608,6 @@ function start15MinuteTimer(durationSeconds) {
   }, 1000);
 }
 
-// 📡 Real-time Firestore Listener
 function listenToDepositStatus(docId) {
   if (depositListenerUnsubscribe) depositListenerUnsubscribe();
 
@@ -582,7 +616,6 @@ function listenToDepositStatus(docId) {
     const data = snap.data();
     const st = (data.status || '').toLowerCase();
 
-    // ✅ APPROVED BY ANDROID NOTIFICATION LISTENER
     if (st === 'success' || st === 'completed' || st === 'approved') {
       if (timerInterval) clearInterval(timerInterval);
       if (depositListenerUnsubscribe) depositListenerUnsubscribe();
@@ -590,7 +623,6 @@ function listenToDepositStatus(docId) {
       closePayModal();
       showFinalResultPopup(true, "Payment Successful!", `₹${Number(data.amount).toFixed(2)} has been credited to your game wallet.`);
     } 
-    // ❌ REJECTED / FAILED
     else if (st === 'failed' || st === 'rejected' || st === 'cancelled') {
       if (timerInterval) clearInterval(timerInterval);
       if (depositListenerUnsubscribe) depositListenerUnsubscribe();
